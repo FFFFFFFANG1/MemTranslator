@@ -1,0 +1,7 @@
+pilot/data/raw/
+pilot/runs/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+.venv/
+.DS_Store
