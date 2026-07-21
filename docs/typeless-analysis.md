@@ -81,7 +81,7 @@
 **4.5 个性化状态（与我们最相关）**【强推断链】
 zero-retention（即弃）+ 历史仅本地 ⇒ **服务端不能持有用户画像** ⇒ "learns your voice, no setup" 的唯一实现路径：客户端从本地历史提炼风格证据（或直接选取最近/相似的 K 条确认输出作 few-shot），**每次请求随行上传**。即：个性化记忆的 owner 是客户端，云端无状态。
 - 这与我们 MemTranslator 的部署形态互证：requirement memory 完全可以客户端持有、translate 时上行——zero-retention 类产品约束下这甚至是唯一形态。
-- Typeless 文档从未提"从用户对输出的手工修改中学习"（他们的编辑发生在目标应用里，采集不到——插入即失控）。**我们的 demo 编辑发生在自己的 composer 里，diff 可采集**——这是 MemTranslator 相对 Typeless 形态的结构性信息优势（TODO"编辑 diff 回流"的价值论证）。
+- ~~Typeless 文档从未提"从用户对输出的手工修改中学习"（编辑发生在目标应用里，采集不到）~~ **【2026-07-22 逆向部分证伪，见 §8.4】**：它其实在本地算"AI 润色文本 vs 实际结果"的 diff（`isLargeModify/addedCount/removedCount/changedCount`）并存 `edited_text`。但我们的 composer diff 采集更干净（同一输入框、不依赖跨 app AX 跟踪，且它的 extraction 实测未落地产出）——信息优势论断仍成立。
 
 **4.6 企业与合规**【事实+弱推断】：WorkOS=SSO/SCIM；HIPAA ⇒ 与模型供应商有 BAA（OpenAI/Google 企业协议均可签）；AWS 单云。计量按输出词数（8,000 词/周），Stripe 订阅。
 
@@ -102,10 +102,50 @@ zero-retention（即弃）+ 历史仅本地 ⇒ **服务端不能持有用户画
 3. **编辑 diff 回流**是我们形态独有的信号源（§4.5），应提升优先级（现 TODO #1）。
 4. **两级生成**（即时 patch + 终稿重写）值得进 phase 2 设计讨论。
 
-## 7. 未知项
+## 7. 未知项（部分经 §8 逆向解决）
 
-- 各模式具体用哪家哪档模型、路由策略（供应商三选的内部分工是推断）。
-- 风格证据的具体表示（few-shot 样本 vs 归纳出的 style profile 文本）。
-- ASR 与润色是否已合并为单一多模态调用（gpt-4o-audio/gemini native audio 路线；按 2025-11 的延迟战与 Groq 存在，推断仍是 ASR→LLM 两段，置信中）。
-- Windows/Android 端集成细节（未抓 per-platform release notes 全文）。
+- ~~各模式用哪家哪档模型、路由策略~~ **仍未知且逆向也拿不到**：客户端主进程无任何模型名/provider host/prompt 明文（§8.4），ASR+润色全在服务端，逆向客户端到此为止。
+- ~~风格证据的具体表示~~ **仍未知**：`personal_auto_style_on` 确认自动风格是独立子系统（§8.3），但风格证据的表示在服务端，本地 db 只存 history+diff。
+- ASR 与润色是否合并为单一多模态调用——仍未知（服务端）。
+- Windows/Android 端集成细节（未抓 per-platform release notes；macOS 端逆向见 §8）。
+
+---
+
+## 8. 本地 app 逆向补充（一手证据，2026-07-22）
+
+> 对象：`/Applications/Typeless.app` v2.0.1（siriux 付费版，macOS）。方法：只读静态检查——bundle 结构、Electron `app.asar` 解包、Drizzle 迁移 SQL、`~/Library/Application Support/Typeless/` 下的配置 JSON 与 SQLite schema。边界：不改任何文件、不碰 license、不外发数据、不把 Typeless 专有代码/prompt/用户历史内容搬入本 repo（下述均为架构结论与 schema 字段名）。**限制**：主进程 JS 经字符串数组混淆且关键逻辑在服务端，故润色 prompt 与 provider 路由拿不到（见 §8.4）。
+
+### 8.1 技术栈（事实）
+Electron（`Electron Framework.framework` + Squirrel 自动更新 + 4 个 helper 进程）+ Vite/React 前端（`dist/renderer/` 228 个 hash 命名 chunk）+ 主进程 `dist/main/index.js`(524K,混淆) + 音频 `dist/main/worker/opusWorker.js`。本地存储 Drizzle ORM/SQLite。依赖里打包了 **Vercel AI SDK**（`ai-sdk.dev`、`vercel/ai` 的 openai-responses-language-model）与 **@google/genai**（js-genai v1.19）。崩溃 Sentry、分析 Mixpanel。bundle id `now.typeless.desktop`，`public.app-category.developer-tools`。
+
+### 8.2 本地存储 schema（Drizzle 11 个迁移，明文）
+单表 `history`（后 `history_v2`）。字段揭示的采集面：
+- 文本：`refined_text`（润色输出）、`edited_text` + `edited_text_status`(默认`NOT_EXTRACTED`) + `edited_text_attempts`、`hasRevertedAI`（撤销 AI）。
+- 上下文：`ax_text`/`ax_html`（Accessibility 读取的目标字段）、`focused_app_name`/`bundle_id`/`window_title`/`web_title`/`web_domain`/`web_url`。
+- 音频：`audio`(blob，v2 移除)、`audio_local_path`；`audio_cloud_path` 曾于迁移 0002 加入、0003 即删除（呼应 zero-retention）。
+- 其他：`detected_language`/`languages`、`mode`(voice_transcript/command/translation)、`user_id`、`duration`。
+- **索引**：建了大量 `(user_id, focused_app_bundle_id, web_domain, status, created_at)` 复合索引——**历史按"用户×应用×网站域名"分桶检索**。这是 per-app tone 的实现证据（原 §4.4/4.5 的推断坐实）。
+- 迁移 0000 时间戳 = 2025-06-24：产品 2025-06 已开发，11 月才公开。
+- 实测（我的库 24 条，仅看机制不看内容）：`edited_text_status` 全为 `NOT_EXTRACTED`——**"从编辑提炼"的 extraction pipeline 存在字段但未见落地产出**。
+
+### 8.3 服务端下发的用户档案（`app-storage.json` key 结构，一手）
+- **两个个性化开关**：`personal_auto_dictionary_on` + `personal_auto_style_on`——自动词典与自动风格是**两个独立子系统**，都可关。
+- **历史云端同步可选**：`transcription_sync_enabled(_at)`（默认本地；开启才上云，与 history 的 `user_id` 对应）。zero-retention 指"处理即弃"，不阻止用户选择性同步历史。
+- **按应用/网站控制启用**：`app_blacklist/whitelist`、`url_blacklist/whitelist` + `regex/domain/exact/prefix` 匹配 + `accessibilityConfig`。
+- **润色行为开关**：`auto_punctuation`、`smart_formatting`、`output_language_map`、`target_languages`。
+- **配额客户端缓存**：`VOICE_TO_TEXT_WEEKLY_WORD_CNT`/`MONTHLY_WORD_CNT`/`DAILY_REQ_MAX_CNT`（8000 词/周免费档在端上计量）。
+- 订阅/推荐/团队一大套；`rsa_public_key`+`rsa:is-enabled`（客户端持服务端 RSA 公钥，请求签名或字段加密）。
+- `app-settings.json`：`enabledOpusCompression`、`dynamicMicrophoneDegradationEnabled`（弱网降码率）、`pushToTalk`/`keyboardShortcut`、三模式 shortcut、`historyDurationSeconds`、`__DEV_API_HOST`。
+
+### 8.4 主进程行为与网络形态（`dist/main/index.js`，混淆但字段名可读）
+- **单一网关**：主进程唯一自有 host = `api.typeless.com`（+`__DEV_API_HOST` 覆盖）。**无任何模型名、provider host、润色 prompt 明文**——ASR 与润色 LLM 调用**全在服务端**，客户端只上传音频+上下文、收润色结果。（整个 asar 里 "whisper" 命中 415 次多来自打包的 AI SDK 依赖，非客户端直接调用。）→ 原 §4 的"AWS 网关中转，供应商在后端"从推断升级为证据；也解释抓包只见 api.typeless.com（TLS）。
+- **本地编辑 diff**：主进程计算 `{isLargeModify, addedCount, removedCount, changedCount}`，配合 `refined_inserted_text` 与 `original_input_box:{text_before_cursor, cursor_state}`——读输入框光标前文本作上下文、插入润色文本、再跟踪 diff 存 `edited_text`。→ 修正 §4.5（它确实采集编辑，非"采集不到"）。
+- **音频 Opus 压缩上传**：`enabledOpusCompression` + `opusWorker.js` + `Recordings/` 386 个 `.ogg` + 弱网降码率。→ §4.2 从推断升级为证据。
+- `PHASE3_TIMEOUT` 等分阶段标记暗示多阶段流水（采集→上传/ASR→润色/插入），与 V2.0 两级生成呼应（弱证据）。
+
+### 8.5 对 MemTranslator 的净增结论
+1. **"客户端持有个性化状态、随请求上行、云端处理即弃"被一手证据坐实**（§8.3 的 auto 开关 + §8.4 单网关 + zero-retention）——我们 memory store 客户端持有的部署形态有直接产品先例，且带隐私卖点。
+2. **per-app scope 有工业实现**：Typeless 用 `(app_bundle_id, web_domain)` 给历史分桶 + 黑白名单控制启用（§8.2/8.3）。我们的 scope 判定（query-time LLM 判定 condition）是同一问题的更细粒度、可审计版本；论文可对照"隐式分桶 vs 显式 scoped requirement"。
+3. **编辑 diff 是双方都想要的信号，但我们采集面更干净**：Typeless 靠跨 app AX 跟踪算 diff、且 extraction 实测未产出（§8.2）；我们的 composer 编辑在同一输入框内，diff 无损可采。TODO"编辑 diff 回流"的价值被强化。
+4. **prompt 与 provider 路由是服务端机密**：逆向客户端到此为止，这条线不必再投入。
 - iOS App Store 的 privacy nutrition label、App Store 版本历史（未抓取成功）。
