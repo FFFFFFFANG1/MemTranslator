@@ -7,7 +7,7 @@
 
 约束（本次讨论给定）：
 
-1. **Write path 固定两步：extraction → consolidation，各一次 LLM call，每次触发至多 2 次生成式调用。**（embedding 调用不计入：便宜、可本地、非生成式，单独核算。）
+1. **Write path 固定两步：extraction → consolidation。** consolidation 全局**单次批量** call（与 Mem0 per-fact update 的关键差异，不放宽）；extraction 按 user-turn 分批（默认 5 turn/批，turn 先压缩：user >2000 tok 留头尾各 1000、assistant 只留标题+头尾各 500，实现见 `proto/src/memtranslator/transcript.py`），即每 session 生成式调用 = ⌈user_turns/5⌉ + 1。短 session（≤5 user turn）仍是至多 2 次。（2026-07-21 从"固定 ≤2 次"放宽：长 transcript 塞不进单 call 是 §6-5 预留的问题，压缩+分批是其解。embedding 调用不计入：便宜、可本地、非生成式，单独核算。）
 2. 只存 **requirement / preference**（用户对 agent 行为的要求），不存事实知识。五个参考系统存的都是通用记忆（事实、事件、实体）；我们是 idea 里说的"意图解释层不是知识层"，这决定了下面一系列取舍。
 3. 错误 memory 的代价高于遗漏：translator 会把它编译进指令、下游无从纠错（diagnosis §四）。所以全链路的默认失败方向是**保守**——吃不准就丢弃（DROP），和 translator 的 noop 默认同一哲学。
 4. 每条 memory 必须能指回用户原话（provenance + quote）——可审计、可撤销，与 patch-based translation 的卖点一致。
@@ -113,7 +113,7 @@
  （parse 失败 → 整批 DROP + 原始输出进 quarantine 文件待人工）
 ```
 
-**Call 1 — Extraction。** 输入：session transcript（超长则截尾部 + 前部摘要，实现细节）。输出契约：
+**Call 1 — Extraction（分批）。** 输入：压缩后的 session transcript，按 user-turn 每 5 个一批、每批一次 call（见 §0 约束 1；quote 校验相应要求逐字取自 **user turn** 的保留窗口内）。输出契约（每批相同）：
 
 ```json
 {"candidates": [
@@ -198,11 +198,11 @@ Prompt 要点（完整 prompt 实现时写，要点先定）：
 
 | 项 | 次数 | 规模 |
 |---|---|---|
-| Extraction call | 1 | 输入 ~3–8k tok（transcript），输出 ~0.5k |
-| Consolidation call | 0–1 | 输入 ~1.5k（候选+旧记忆），输出 ~0.3k |
+| Extraction call | ⌈user_turns/5⌉ | 每批输入有压缩上限（user ≤2000 tok/turn、assistant ≤~1000），输出 ~0.5k |
+| Consolidation call | 0–1 | 输入 ~1.5k（全部候选+旧记忆），输出 ~0.3k |
 | embedding | ~8 次 | 候选数 × 1（旧记忆 embedding 已缓存） |
 
-flash 级模型（haiku / gemini-flash）下每 session < $0.01。生成式调用 ≤2，满足约束 1；无信号 session 只花 1 次。
+flash 级模型（haiku / gemini-flash）下典型 session（≤10 user turn）< $0.02。短 session（≤5 user turn）保持 ≤2 次生成式调用；无信号 session 不发 consolidation。
 
 ## 6. 开放问题（不装作已解决）
 

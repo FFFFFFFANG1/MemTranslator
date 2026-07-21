@@ -4,7 +4,7 @@
 
 ## 需要队内对齐（设计 ↔ 实现分歧）
 
-- [ ] **write path 调用次数约束**：`617e7a2` 引入 user-batch=5 分批 extract 后，每 session 的生成式调用 = ceil(user_turns/5) + 1，不再满足 memory-design §0 约束 1 的"至多 2 次"。二选一：(a) 设计文档放宽为"每 5-user-turn 批次 1 次 extract + 全局 1 次 consolidate"（长 session 塞不进单 call 是 §6-5 预留的真问题，压缩+分批是合理解）；(b) 实现改为压缩后仍单次 extract。定了之后同步 memory-design §0/§3.2 和 §5 预算表。
+- [x] ~~write path 调用次数约束~~：2026-07-21 采纳 (a)——设计放宽为分批 extract（5 user-turn/批，turn 压缩）+ 全局单次 consolidate；memory-design §0/§3.2/§5 已同步。
 
 ## 原型缺口（按优先级）
 
