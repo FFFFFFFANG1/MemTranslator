@@ -16,10 +16,11 @@ SYSTEM = """You maintain long-term memory of a user's REQUIREMENTS for how their
 
 Assistant turns may be compressed (title/subtitle, and for long replies only head+tail token windows). User turns are complete unless a very long message was head+tail truncated. Quote MUST still be copied VERBATIM from a USER turn as shown.
 
-Extract ONLY these three signal types:
+Extract ONLY these four signal types:
 - next_turn_feedback: the user corrects, amends, or redirects the assistant's previous response ("I didn't want a summary, analyze its problems").
 - repeated_requirement: the user asks for the same behavior they have asked for before in this transcript.
 - explicit_instruction: the user states a standing rule ("from now on, always...").
+- user_edit: an [EDIT NOTE ...] block shows the user edited the system-polished draft before sending. What the user DELETED from the draft is evidence against the deleted requirement (misapplied, or scope too broad — consolidation may SUPERSEDE or narrow it); what the user ADDED is a candidate new requirement. For user_edit candidates the quote must come from the user's own text (the sent turn or their pre-translation request), never from the system draft.
 
 Do NOT extract:
 - one-off situational requests ("translate this one into French");

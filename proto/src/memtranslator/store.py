@@ -88,6 +88,19 @@ class MemoryStore:
             f.write(json.dumps({"at": now_iso(), "stage": stage, "reason": reason, "raw": raw},
                                ensure_ascii=False) + "\n")
 
+    def seed_defaults(self, entries: list[MemoryEntry]) -> int:
+        """Write factory-default fallback entries once (design §3.3 default profile).
+
+        Idempotent: a store that already contains any source=="default" entry
+        (whatever its status — a retired default must stay retired) is left
+        untouched. Returns how many entries were written."""
+        if any(e.source == "default" for e in self._entries.values()):
+            return 0
+        for entry in entries:
+            entry.source = "default"
+            self._append(entry)
+        return len(entries)
+
     # --- read ---
 
     def get(self, mid: str) -> MemoryEntry | None:
@@ -111,6 +124,7 @@ class MemoryStore:
 
         def score(e: MemoryEntry) -> tuple:
             kw_hits = sum(1 for w in e.scope.keywords if w.lower() in q or any(w.lower() in t for t in q))
-            return (kw_hits, e.strength, e.updated_at)
+            # Learned entries outrank factory defaults at equal keyword relevance.
+            return (kw_hits, e.source != "default", e.strength, e.updated_at)
 
         return sorted(live, key=score, reverse=True)[:k]

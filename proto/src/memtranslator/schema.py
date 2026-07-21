@@ -14,7 +14,8 @@ from datetime import datetime, timezone
 
 SCHEMA_VERSION = 1
 
-SIGNALS = ("next_turn_feedback", "repeated_requirement", "explicit_instruction")
+SIGNALS = ("next_turn_feedback", "repeated_requirement", "explicit_instruction", "user_edit")
+SOURCES = ("learned", "default")
 STATUSES = ("active", "superseded", "retired")
 OPS = ("ADD", "REINFORCE", "SUPERSEDE", "DROP")
 
@@ -58,6 +59,7 @@ class MemoryEntry:
     scope: Scope
     polarity: str = "do"
     mid: str = field(default_factory=new_mid)
+    source: str = "learned"  # "default" = factory-seeded fallback profile entry
     strength: int = 1
     status: str = "active"
     supersedes: list[str] = field(default_factory=list)
@@ -78,6 +80,7 @@ class MemoryEntry:
             scope=Scope(**{k: d["scope"][k] for k in ("condition", "task_type", "keywords") if k in d["scope"]}),
             polarity=d.get("polarity", "do"),
             mid=d["mid"],
+            source=d.get("source", "learned"),
             strength=d.get("strength", 1),
             status=d.get("status", "active"),
             supersedes=d.get("supersedes", []),

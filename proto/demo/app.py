@@ -23,7 +23,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
-from memtranslator import AnthropicLLM, MemoryStore, run_translate, run_write_path
+from memtranslator import AnthropicLLM, MemoryEntry, MemoryStore, Scope, run_translate, run_write_path
 from memtranslator.llm import DOWNSTREAM_MODEL
 from memtranslator.schema import now_iso
 from memtranslator.transcript import compress_assistant, compress_user
@@ -32,6 +32,22 @@ STATE_DIR = Path(__file__).parent / "state"
 app = FastAPI(title="MemTranslator demo")
 
 store = MemoryStore(STATE_DIR / "memory.jsonl")
+
+# Factory default profile (design §3.3 fallback). PLACEHOLDER content — the
+# real default set is a product decision, pending. Idempotent across restarts.
+store.seed_defaults([
+    MemoryEntry(
+        requirement="Respond in the language the user writes in, unless asked otherwise.",
+        scope=Scope(condition="any request (default style baseline)",
+                    task_type="default", keywords=["language"]),
+    ),
+    MemoryEntry(
+        requirement="Keep responses focused on what was asked; avoid unrequested tangents.",
+        scope=Scope(condition="any request (default style baseline)",
+                    task_type="default", keywords=["focus", "concise"]),
+    ),
+])
+
 flash = AnthropicLLM()  # write path + translator
 downstream = AnthropicLLM(model=DOWNSTREAM_MODEL)
 
@@ -45,8 +61,10 @@ class TranslateReq(BaseModel):
 
 
 class SendReq(BaseModel):
-    text: str            # what the user actually confirmed in the composer
-    original: str = ""   # pre-edit original, kept for the transcript
+    text: str            # full payload sent downstream (request + attached content)
+    request: str = ""    # composer text alone — the segment comparable to `polished`
+    original: str = ""   # pre-translation request, kept for the transcript
+    polished: str = ""   # system draft the user saw (empty if no translation ran)
 
 
 @app.get("/")
@@ -69,10 +87,13 @@ def translate(req: TranslateReq):
 @app.post("/send")
 def send(req: SendReq):
     # Store compressed forms for the write path; UI still gets the full reply.
+    # polished/final feed the user_edit signal (edit-diff evidence, design §3.3).
     transcript.append({
         "role": "user",
         "text": compress_user(req.text),
+        "final": req.request or req.text,
         "original": req.original,
+        "polished": req.polished,
     })
     # Sonnet 5 runs adaptive thinking by default; leave headroom so the
     # text answer isn't squeezed out by thinking tokens (max_tokens caps both).
@@ -100,9 +121,10 @@ def end_session():
 def memories():
     return {"entries": [
         {"mid": e.mid, "requirement": e.requirement, "status": e.status,
+         "source": e.source,
          "strength": e.strength, "scope": e.scope.condition, "polarity": e.polarity,
          "quotes": [p.quote for p in e.provenance], "last_applied_at": e.last_applied_at}
-        for e in sorted(store.all(), key=lambda e: e.created_at, reverse=True)
+        for e in sorted(store.all(), key=lambda e: (e.source != "default", e.created_at), reverse=True)
     ]}
 
 

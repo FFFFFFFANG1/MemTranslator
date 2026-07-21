@@ -133,8 +133,10 @@ async function refreshMems() {
   for (const e of d.entries) {
     const div = document.createElement("div");
     div.className = "mem " + e.status;
+    if (e.source === "default") div.style.opacity = ".65";
     div.innerHTML = `<div>${e.requirement}</div>
       <div class="meta"><span class="badge">${e.status}</span>
+        ${e.source === "default" ? '<span class="badge">default</span>' : ""}
         <span class="badge">${e.polarity}</span>
         <span>strength ${e.strength}</span></div>
       <div class="meta">scope: ${e.scope}</div>`;
@@ -191,10 +193,11 @@ $("send").onclick = async () => {
   $("input").value = ""; $("content").value = "";
   $("input").classList.remove("polished");
   $("applied-bar").className = ""; $("applied-bar").innerHTML = "";
-  const orig = originalText; originalText = null; lastPolished = null;
+  const orig = originalText, polishedForSend = lastPolished;
+  originalText = null; lastPolished = null;
   setStatus("waiting for downstream agent…");
   try {
-    const d = await api("/send", { text: full, original: orig || "" });
+    const d = await api("/send", { text: full, request: text, original: orig || "", polished: polishedForSend || "" });
     addMsg("assistant", d.reply);
     setStatus("");
   } catch (e) { setStatus("send failed: " + e.message); }

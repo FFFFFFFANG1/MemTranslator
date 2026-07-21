@@ -110,6 +110,30 @@ def compress_turn(role: str, text: str) -> str:
     return text
 
 
+EDIT_NOTE_WINDOW_TOKENS = 200
+
+
+def render_edit_note(turn: Mapping[str, Any]) -> str | None:
+    """Edit-diff evidence block for a user turn where the user modified the
+    system-polished draft before sending (unique signal of this product shape:
+    the edit happens in our own composer, so the diff is capturable).
+
+    Requires turn['polished'] differing from turn['text']-as-sent; 'original'
+    (the pre-translation request) is included when present so the model can
+    attribute who added what."""
+    polished = (turn.get("polished") or "").strip()
+    final = (turn.get("final") or turn.get("text") or "").strip()
+    if not polished or not final or polished == final:
+        return None
+    lines = ["[EDIT NOTE: the user edited the system-polished draft before sending."]
+    original = (turn.get("original") or "").strip()
+    if original and original != final:
+        lines.append(f" user's pre-translation request: {head_tail(original, EDIT_NOTE_WINDOW_TOKENS, EDIT_NOTE_WINDOW_TOKENS)}")
+    lines.append(f" system draft (NOT the user's words): {head_tail(polished, EDIT_NOTE_WINDOW_TOKENS, EDIT_NOTE_WINDOW_TOKENS)}")
+    lines.append(" The user turn above is what they actually sent. Differences from the draft are direct evidence of their real requirements.]")
+    return "\n".join(lines)
+
+
 def format_transcript(turns: Sequence[Mapping[str, Any]]) -> str:
     """Render turns for extract. Uses turn['index'] when present (global id)."""
     lines: list[str] = []
@@ -117,6 +141,10 @@ def format_transcript(turns: Sequence[Mapping[str, Any]]) -> str:
         idx = turn["index"] if "index" in turn else i
         role = str(turn["role"]).upper()
         lines.append(f"{role} (turn {idx}): {turn['text']}")
+        if role == "USER":
+            note = render_edit_note(turn)
+            if note:
+                lines.append(note)
     return "\n".join(lines)
 
 
