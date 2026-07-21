@@ -7,8 +7,8 @@ Flow per message:
      lands back in the input box, the user stays in control).
   2. POST /send — whatever text the user confirmed goes to the downstream
      agent, which never sees the memory store.
-  3. POST /end_session — runs the ≤2-call write path over this session's
-     transcript and reports extracted/consolidated ops.
+  3. POST /end_session — runs the write path (user-batch=5 extract + consolidate)
+     over this session's compressed transcript and reports ops.
 
 Run:  uv run uvicorn demo.app:app --port 8123  (needs ANTHROPIC_API_KEY)
 State lives in demo/state/ (gitignored).
@@ -26,6 +26,7 @@ from pydantic import BaseModel
 from memtranslator import AnthropicLLM, MemoryStore, run_translate, run_write_path
 from memtranslator.llm import DOWNSTREAM_MODEL
 from memtranslator.schema import now_iso
+from memtranslator.transcript import compress_assistant, compress_user
 
 STATE_DIR = Path(__file__).parent / "state"
 app = FastAPI(title="MemTranslator demo")
@@ -67,12 +68,17 @@ def translate(req: TranslateReq):
 
 @app.post("/send")
 def send(req: SendReq):
-    transcript.append({"role": "user", "text": req.text, "original": req.original})
+    # Store compressed forms for the write path; UI still gets the full reply.
+    transcript.append({
+        "role": "user",
+        "text": compress_user(req.text),
+        "original": req.original,
+    })
     # Sonnet 5 runs adaptive thinking by default; leave headroom so the
     # text answer isn't squeezed out by thinking tokens (max_tokens caps both).
     reply = downstream.complete(
         system="You are a helpful assistant.", user=req.text, max_tokens=8000)
-    transcript.append({"role": "assistant", "text": reply})
+    transcript.append({"role": "assistant", "text": compress_assistant(reply)})
     return {"reply": reply}
 
 
@@ -81,11 +87,8 @@ def end_session():
     global transcript, session_id
     if not transcript:
         return {"ops": [], "note": "empty session"}
-    lines = []
-    for i, turn in enumerate(t for t in transcript):
-        # Write path sees what the user TYPED (post-edit text), the honest signal.
-        lines.append(f"{turn['role'].upper()} (turn {i}): {turn['text']}")
-    applied = run_write_path(flash, "\n".join(lines), store, session_id=session_id)
+    # Turn list → user-batch=5 extract + one consolidate (see pipeline).
+    applied = run_write_path(flash, transcript, store, session_id=session_id)
     result = [{"op": op.op, "target": op.target_mid, "requirement": cand.requirement,
                "signal": cand.signal, "quote": cand.quote} for cand, op in applied]
     transcript = []

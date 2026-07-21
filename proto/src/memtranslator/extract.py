@@ -14,6 +14,8 @@ MAX_CANDIDATES = 8
 
 SYSTEM = """You maintain long-term memory of a user's REQUIREMENTS for how their AI agents should behave. You read one conversation transcript and extract requirement candidates.
 
+Assistant turns may be compressed (title/subtitle, and for long replies only head+tail token windows). User turns are complete unless a very long message was head+tail truncated. Quote MUST still be copied VERBATIM from a USER turn as shown.
+
 Extract ONLY these three signal types:
 - next_turn_feedback: the user corrects, amends, or redirects the assistant's previous response ("I didn't want a summary, analyze its problems").
 - repeated_requirement: the user asks for the same behavior they have asked for before in this transcript.
