@@ -164,6 +164,8 @@ Prompt 要点（完整 prompt 实现时写，要点先定）：
 4. 全部候选交给 translator——**scope 的最终判定在 translator**（pilot 已确立的路线：机械层只管召回，不管判定）；
 5. 回流：translator patch 的 `applied_memory_ids` 写回对应条目的 `last_applied_at`，形成使用闭环。
 
+**Fallback：default profile（2026-07-21 产品决策）。** 产品必须有 fallback——个性化 memory 检索不到或不适用时，系统不能退化为裸传。机制：出厂预置一组 **default requirement 条目**（`source: "default"` 标记、低 strength、宽 scope.condition），作为 store 的正常条目参与 recall/translate；用户的个性化条目积累后通过排序压过它们，冲突时 SUPERSEDE 覆盖它们（default 被覆盖 = 个性化的自然过程）。translator 仍然禁止现场发挥通用指令——fallback 的内容是静态预置、用户在 memory 面板可见可编辑可 retire 的，不是 LLM 生成的；这样 fallback 与 FAR/过度补全控制不矛盾（可审计的默认 ≠ 模型瞎补）。noop 语义相应收窄：连 default 条目都不适用的请求才原样传递。开放点：default profile 的内容集与是否按 task_type 分套预置，需要产品定义。
+
 **Runtime 形态（2026-07-21 决策）：typeless 式人在环。** polished input 生成后落回聊天输入框、**可被用户直接编辑后再发送**（类比 Typeless 语音输入的转写-修改流）。这改变了 false application 的风险论证：diagnosis §四指出翻译式架构错误不可逆（下游无从纠错），但在此形态下每个 patch 都过用户的眼睛和手，错误应用有人工兜底；被用户改掉的 patch 本身还是 next-turn feedback 的一种（编辑 diff 即监督信号，接近 PRELUDE/CIPHER 的 edit 信号），可回流 write path。FAR 指标仍是一等公民（用户不该被迫频繁修正），但从"安全问题"降级为"体验问题"。原型（proto/demo）已实现此交互。
 
 不做 SimpleMem 式复杂度自适应 k、不做 OpenViking 式目录导航：量级不需要，等真到 10³+ 再说。

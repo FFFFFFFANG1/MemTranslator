@@ -8,6 +8,7 @@
 
 ## 原型缺口（按优先级）
 
+- [ ] **default profile fallback**（2026-07-21 产品决策，design §3.3）：MemoryEntry 加 `source: "default" | "learned"` 字段；出厂预置 default 条目参与正常 recall，个性化条目排序优先/可 SUPERSEDE 覆盖；demo memory 面板区分展示。内容集待产品定义。
 - [ ] **编辑 diff 回流**：用户在 composer 里改动 polished 文本的 diff 是天然反馈信号（typeless 决策的后半截，见 memory-design §3.3），目前 demo 只记录最终发送文本，diff 没有进 write path。
 - [ ] **wrong-case dump**（HMS 借鉴点）：translator 判错/漏应用的 case 全量落盘（query、召回 memory、patch、判定），pilot Task 10 实现时并入。
 - [ ] **embedding 召回**：`store.recall()` 目前是 keyword+strength+新近度；design §3.3 的 embedding 混合召回未实现（当前条目量级下影响小）。
