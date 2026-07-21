@@ -1,4 +1,4 @@
-# UserTranslator
+# MemTranslator
 
 Memory-grounded user translator for personal agents: compile user memory into the request (a translation layer between user and agent) instead of injecting it into the agent's context.
 

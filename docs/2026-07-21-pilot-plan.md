@@ -102,7 +102,7 @@ pilot 回答且只回答一个问题：**oracle memory 条件下，把记忆编�
 ## 3. 目录结构
 
 ```
-UserTranslator/                  ← git repo（本 plan Task 0 初始化）
+MemTranslator/                   ← git repo（github.com/FFFFFFFANG1/MemTranslator）
   docs/
     idea.md                      ← 已存在
     diagnosis.md                 ← 已存在
@@ -142,11 +142,10 @@ UserTranslator/                  ← git repo（本 plan Task 0 初始化）
 **Files:**
 - Create: `pilot/pyproject.toml`, `pilot/src/pilot/__init__.py`, `pilot/src/pilot/config.py`, `.gitignore`
 
-- [ ] **Step 1: git init + uv 项目**
+- [ ] **Step 1: 目录与 uv 项目**（git repo、.gitignore、remote 已于 2026-07-21 建好，此处只补 pilot 结构）
 
 ```bash
-cd "/Users/siriux/Library/Mobile Documents/com~apple~CloudDocs/Documents/Codes/Projects/UserTranslator"
-git init
+cd "/Users/siriux/Library/Mobile Documents/com~apple~CloudDocs/Documents/Codes/Projects/MemTranslator"
 mkdir -p pilot/src/pilot pilot/tests pilot/data/instances pilot/runs
 touch pilot/src/pilot/__init__.py
 ```
