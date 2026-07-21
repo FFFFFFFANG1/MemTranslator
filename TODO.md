@@ -17,6 +17,7 @@
 - [ ] **隐式 retire**：只有显式 retire；"strength=1 且 N session 未 applied → retired"（design §6-3）等 last_applied_at 数据积累后定。
 - [ ] **并发写保护**：多 session 并行写同一 store 无锁（design §6-4）；v0 前提是单写者。
 - [ ] tiktoken 是 OpenAI tokenizer，对 Claude 文本低估 ~15-20%——做压缩窗口预算够用（现状），若将来用于成本统计需换 `count_tokens` API。
+- [ ] **两级生成**（typeless-analysis §5 启示，phase 2 设计讨论）：即时 patch（现状）+ 可选终稿深度重写；Typeless V2.0 的乱序重组/跨段撤销证明该分层在产品上成立。
 
 ## Pilot（未开始）
 
