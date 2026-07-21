@@ -1,0 +1,26 @@
+[project]
+name = "memtranslator"
+version = "0.1.0"
+description = "Prototype of the memory-grounded user translator: scoped requirement memory compiled into user requests."
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=0.117.0",
+    "fastapi>=0.139.2",
+    "uvicorn>=0.51.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/memtranslator"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

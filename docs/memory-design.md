@@ -21,8 +21,10 @@
 | **SimpleMem** | 三视图索引 memory unit（semantic 稠密向量 / lexical 稀疏关键词 / symbolic 结构化元数据）；滑窗 + entropy 闸门过滤后单 pass LLM 压缩；异步 consolidation 把相似簇合成高层抽象、**原条目 archive 不删**；检索按 query 复杂度自适应 k=3–20 | 三视图索引思路（→ embedding + keywords + 结构化 scope）；"先判有没有信号、再提取"内置进 extraction prompt；archive 不删 | 递归摘要合成（把多条记忆合成系统生成的抽象条目会产生"没有用户原话背书的 requirement"，违反立场 4；我们唯一的合成点是 SUPERSEDE 的 merged_requirement，且强制保留双方 provenance） |
 | **EverMemOS** | MemCell（Episode 叙述 + Atomic Facts + **Foresight**：带时间区间的前瞻意图/临时状态 + Metadata）；语义边界检测分段；在线聚类成 MemScene（带 recency bias 与冲突追踪）；存储上 Markdown 为 source of truth + LanceDB 索引、后台 daemon 同步 | Foresight 的 time-bounded 概念 → expires_at（"这周先别用 X""这个 deadline 前都要最短路径"这类临时要求）；"人可读文本为 source of truth + 派生索引"的存储模式 | 边界检测（我们以 session 为天然边界）；在线聚类 / MemScene / user profile 合成（同 SimpleMem 一栏的理由） |
 | **OpenViking** | 定位为"用户与 agent 之间的 memory center"；`viking://` 虚拟文件系统（resources / user / agent 目录，URI 定位）；写入自动分 L0 一句话摘要 / L1 概要 / L2 全文三层；Directory Recursive Retrieval（先定位目录再层内递归检索） | 架构定位与我们同构（memory 层站在用户与 agent 之间），可在论文 related work 里正面引用；目录路径启发了 scope 的层级 task_type 表示 | L0/L1/L2 分层（requirement 本身就是一句话，即 L0 粒度，无层可分）；文件系统导航式检索（量级不需要） |
+| **HMS**（代码深读，见 [hms-mandol-notes.md](hms-mandol-notes.md)） | answer 前用纯规则（regex+词重叠计分，零 LLM）把 recall 结果组织成 evidence ledger；失败 case 全量落盘→人工归纳静态 control→关键词门控注入；consolidation prompt 纪律（NO COMPUTATION / SAME FACET→UPDATE / PRESERVE HISTORY）；`mentioned_at` 代码赋值不信 LLM | wrong-case dump 进 pilot；纪律条款已并入我们 Call 2 prompt；directives 双注入格式参考 translator patch 措辞 | ledger 本体（我们 memory 视图小，暂不需要确定性重组） |
+| **Mandol** | basic+abstract 双层图记忆；emotional memory（偏好层）为 session 级 map-reduce 摘要且**默认检索路径不查它**；每 session 数十次 LLM call；match-judge 协议（编号候选+confidence 阈值+向量兜底） | match-judge 协议候选用于 REINFORCE 判定升级；单行可 grep 的监控输出 | 偏好当摘要存（被集成端边缘化的实证反例，论文竞品分析直接引用）；消化式整段重写（与 append-only 对立） |
 
-一句话总结差异：五个系统解决"**什么都记，然后找得到**"；我们解决"**只记要求，然后用得准**"。规模小三个数量级、错误代价高一个数量级，所以设计整体从"检索效率"倾斜向"写入保守 + 可审计"。
+一句话总结差异：这些系统解决"**什么都记，然后找得到**"；我们解决"**只记要求，然后用得准**"。规模小三个数量级、错误代价高一个数量级，所以设计整体从"检索效率"倾斜向"写入保守 + 可审计"。
 
 ## 2. Data structure
 
@@ -162,6 +164,8 @@ Prompt 要点（完整 prompt 实现时写，要点先定）：
 4. 全部候选交给 translator——**scope 的最终判定在 translator**（pilot 已确立的路线：机械层只管召回，不管判定）；
 5. 回流：translator patch 的 `applied_memory_ids` 写回对应条目的 `last_applied_at`，形成使用闭环。
 
+**Runtime 形态（2026-07-21 决策）：typeless 式人在环。** polished input 生成后落回聊天输入框、**可被用户直接编辑后再发送**（类比 Typeless 语音输入的转写-修改流）。这改变了 false application 的风险论证：diagnosis §四指出翻译式架构错误不可逆（下游无从纠错），但在此形态下每个 patch 都过用户的眼睛和手，错误应用有人工兜底；被用户改掉的 patch 本身还是 next-turn feedback 的一种（编辑 diff 即监督信号，接近 PRELUDE/CIPHER 的 edit 信号），可回流 write path。FAR 指标仍是一等公民（用户不该被迫频繁修正），但从"安全问题"降级为"体验问题"。原型（proto/demo）已实现此交互。
+
 不做 SimpleMem 式复杂度自适应 k、不做 OpenViking 式目录导航：量级不需要，等真到 10³+ 再说。
 
 ### 3.4 失败与降级表
@@ -227,3 +231,5 @@ flash 级模型（haiku / gemini-flash）下每 session < $0.01。生成式调�
 | SimpleMem | [arXiv 2601.02553](https://arxiv.org/abs/2601.02553)（三视图索引、滑窗 τ=0.35 闸门、每窗口单 pass、簇触发 consolidation τ=0.85、k=3–20 自适应、原条目 archive；vs Mem0 F1 +26.4%、构建 14×） | 一手（HTML 全文提取） |
 | EverMemOS | [arXiv 2601.02163 汇总页](https://www.emergentmind.com/papers/2601.02163)（MemCell 四组件、MemScene、三阶段生命周期）；[DeepWiki](https://deepwiki.com/EverMind-AI/EverMemOS/6.2-memory-extraction-components)（Markdown source of truth + LanceDB + daemon）；[repo](https://github.com/EverMind-AI/EverMemOS) | 二手（汇总站/生成式 wiki），实现前建议读原论文 |
 | OpenViking | [MarkTechPost 2026-03](https://www.marktechpost.com/2026/03/15/meet-openviking-an-open-source-context-database-that-brings-filesystem-based-memory-and-retrieval-to-ai-agent-systems-like-openclaw/)（viking:// 文件系统、L0/L1/L2、Directory Recursive Retrieval）；[官方 blog](https://blog.openviking.ai/post/openviking-agent-memory-design/)（未能抓取，网络拦截） | 二手 |
+| HMS | [Shadow-Weave/HMS](https://github.com/Shadow-Weave/HMS) 代码深读，关键引用经人工抽查，文件行号见 [hms-mandol-notes.md](hms-mandol-notes.md) | 一手（代码级） |
+| Mandol | [AgentCombo/Mandol](https://github.com/AgentCombo/Mandol)（main 分支）代码深读 + [arXiv 2606.29778](https://arxiv.org/abs/2606.29778)；注意 main ≠ paper-repro，详见 notes | 一手（代码级） |
