@@ -7,3 +7,6 @@ __pycache__/
 .DS_Store
 proto/demo/state/
 proto/.venv/
+pilot/.venv/
+pilot/data/raw/
+pilot/runs/
