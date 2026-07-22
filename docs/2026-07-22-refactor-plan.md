@@ -17,7 +17,7 @@
 1. **重心漂移**：dev 的增量几乎全是 PrefEval 四臂实验（harness Tasks 0–8 已建成，B2 dry-run 已跑：20 正例 + 5 负例），外加 Mem0/Zep 六臂 baseline plan、LongMemEval probe。anchor §3/§8 明确：PrefEval 主体是 content preference，不是我们的战场；bench 只是辅助指标。
 2. **版本术语被实验挟持**：TODO.md 头部定义「v0 = pilot、v1 = phase 2」；anchor §7 定义 v0 = 产品壳立住。两套 v0 指向完全不同的工作。
 3. **产品缺口停滞**：anchor §4 把「编辑 diff 回流」定为算法主线的学习信号，TODO 里它还是未动工事项；TODO 头部甚至写着「前端 demo 已冻结」——与 anchor §1「体验第一」直接冲突。
-4. **北极星不在工作分支**：position_anchor.md 只在 main；日常工作在 dev，dev 不含 anchor。research 分支的 Typeless 分析已并入 main（docs/typeless-analysis.md），该分支已无独立价值。
+4. **北极星不在工作分支**：position_anchor.md 只在 main；日常工作在 dev，dev 不含 anchor。（Typeless 分析的权威版在 **research 分支**：151 行、含 2026-07-22 本地 app 逆向一手证据 §8；main 上是 111 行旧版；dev 上已按 adfe8c5「Move Typeless analysis to the research branch」有意移除。research 有独立价值，不动它。）
 5. **dry-run 数字需要一个了结**（出处：docs/pilot-results-b2-dryrun.md、docs/pilot-results-b2-neg.md）：content-pref 集上 A3 translator 的 adherence 输给注入臂（强下游 75% vs 100%，Δ−25pp，CI 不含 0），但 FAR 20% vs 40–60%、下游 input token 约为注入的 1/5、P(noop|neg)=4/5。这些数字按旧判据（G1）趋向 NO-GO，按 anchor 视角则是「战场选错了，产品面纪律（noop/FAR/token）反而是亮点」。不写下来就会丢。
 
 **没偏的部分（不动）**：proto/ 全部——requirement-only store、2-call write path、0 生成式 call 的 read path、haiku translator、composer 人在环 demo、30 测试。memory-design.md 仍是 v1 主线设计文档。
@@ -36,7 +36,7 @@
 ## Task 0: dev 同步 main（已执行 2026-07-22）
 
 - [x] **Step 1: 本 plan 先入 main**（方向文档与 anchor 放一起）：`git checkout main && git pull && git add docs/2026-07-22-refactor-plan.md && git commit && git push`
-- [x] **Step 2: dev 并入 main**：`git checkout dev && git merge main && git push origin dev`（带入 position_anchor.md、docs/typeless-analysis.md、新 README、本 plan；无冲突——自 merge-base 3d4fa4c 起两侧改动文件不相交）
+- [x] **Step 2: dev 并入 main**：`git checkout dev && git merge main && git push origin dev`（带入 position_anchor.md、新 README、本 plan；无冲突。merge 同时保留了 dev 对 docs/typeless-analysis.md 的删除——该文件按 adfe8c5 归 research 分支管，属预期）
 
 说明：**不做 main←dev 的反向合并**——pilot 反正要删（D2），不让它在 main 上出现一轮；Task 6 完成后两分支自然收敛一致。本 plan 引用的 `pilot-results-b2-*.md` 在 Task 6 之前只存在于 dev。
 
@@ -156,8 +156,9 @@ git commit -m "[docs] Mark superseded docs as frozen under the position anchor"
 ## v0 — 产品壳（当前优先）
 
 - [ ] **编辑 diff 回流**（anchor §4 钉死的学习信号；typeless-analysis §4.5
-  论证这是我们对 Typeless 的结构性信息优势）：demo composer 已能编辑
-  polished 文本，缺 polished→sent 的 diff 采集、落盘、进 write path。
+  ——research 分支——论证这是我们对 Typeless 的结构性信息优势）：demo
+  composer 已能编辑 polished 文本，缺 polished→sent 的 diff 采集、落盘、
+  进 write path。
 - [ ] **default profile fallback**（design §3.3）：MemoryEntry 加
   `source: "default" | "learned"`；出厂条目参与 recall，learned 优先/可
   SUPERSEDE；demo memory 面板区分展示。内容集待产品定义。
@@ -183,7 +184,8 @@ git commit -m "[docs] Mark superseded docs as frozen under the position anchor"
 
 ## v2 — latency / 前端体验
 
-- [ ] 两级生成：即时 patch + 可选终稿深度重写（typeless-analysis §5）。
+- [ ] 两级生成：即时 patch + 可选终稿深度重写（typeless-analysis §5，
+  research 分支）。
 - [ ] tiktoken 对 Claude 文本低估 ~15–20%：压缩窗口预算够用；做成本统计时
   换 `count_tokens` API。
 
@@ -215,7 +217,7 @@ git commit -m "[docs] Rewrite TODO around the anchor roadmap and unfreeze the de
 新增两行：
 
 ```markdown
-- `docs/typeless-analysis.md` — Typeless product analysis (our runtime-form reference)
+- `docs/typeless-analysis.md` (research branch) — Typeless product analysis (our runtime-form reference)
 - `docs/pilot-postmortem.md` — PrefEval pilot: what ran, the numbers, why it stopped
 ```
 
@@ -291,7 +293,9 @@ git push origin dev
 git checkout main && git merge dev -m "[docs] Sync the anchor refactor from dev" && git push origin main && git checkout dev
 ```
 
-- [ ] **Step 3: research 分支处置留给 FFFFFFFANG1**（其内容已在 main 的 typeless-analysis.md；不替队友删分支）。
+预期副作用：main 上的旧版 docs/typeless-analysis.md（111 行）随本 merge 被删——dev 在 adfe8c5 已把该文件移交 research 分支（research 版 151 行更全），main 不再留旧版。
+
+- [ ] **Step 3: research 分支保留不动**——它是 Typeless 分析的权威所在（含 main 旧版没有的 §8 本地逆向一手证据），不是冗余分支。
 
 ---
 
@@ -309,3 +313,4 @@ git checkout main && git merge dev -m "[docs] Sync the anchor refactor from dev"
 - 拍板 D1/D2/D3 已写入 §1 并贯穿各 task；原「pilot→bench 降级复用」方案随 D2 废弃。
 - 无 TBD/占位符；所有插入文本给全文。
 - 一致性：Task 1/2/3 三处对 pilot 删除的表述统一为「已从 dev 删除，git history `cab2cce`」；banner 链接相对路径（docs/ 内互链、`../position_anchor.md`）已核。
+- 2026-07-22 修正：初版误记「research 已并入 main、无独立价值」——实际 typeless-analysis 权威版在 research（151 行，含 §8 本地逆向；main 旧版 111 行；dev 按 adfe8c5 有意不携带）。相关引用已改标 research 分支，Task 6 对 main 旧版的预期删除已写明。
