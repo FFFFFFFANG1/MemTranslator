@@ -3,5 +3,4 @@ __pycache__/
 *.egg-info/
 .venv/
 .DS_Store
-proto/demo/state/
-proto/.venv/
+/data/
