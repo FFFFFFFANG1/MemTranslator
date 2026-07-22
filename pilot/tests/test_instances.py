@@ -1,46 +1,47 @@
-import json
-
-from pilot.config import MEMORY_STORE_SIZE, N_NEGATIVE, N_POSITIVE
-from pilot.data_prep import build_instances, load_prefeval, super_category
-
-DATA = load_prefeval()
+from pilot.data_prep import build_instances, super_category
 
 
-def test_counts_and_shapes():
-    pos, neg = build_instances(DATA)
-    assert len(pos) == N_POSITIVE and len(neg) == N_NEGATIVE
+def fake_items():
+    return [{"topic": f"cat{i}_sub", "preference": f"pref-{i}-{j}",
+             "query": f"query-{i}-{j}"}
+            for i in range(10) for j in range(30)]
+
+
+def test_counts_and_shape():
+    pos, neg = build_instances(fake_items(), n_pos=20, n_neg=10)
+    assert len(pos) == 20 and len(neg) == 10
     for inst in pos + neg:
-        assert len(inst.memory_store) == MEMORY_STORE_SIZE
-        assert len({e["mid"] for e in inst.memory_store}) == MEMORY_STORE_SIZE
+        assert len(inst["memory_store"]) == 8
+        assert inst["content"] == ""
 
 
-def test_positive_gold_in_store_and_distractors_cross_category():
-    pos, _ = build_instances(DATA)
+def test_positive_has_exactly_one_relevant_memory():
+    pos, _ = build_instances(fake_items(), n_pos=20, n_neg=10)
     for inst in pos:
-        gold = [e for e in inst.memory_store if e["mid"] == inst.gold_mid]
-        assert len(gold) == 1 and gold[0]["text"] == inst.gold_preference
-        for e in inst.memory_store:
-            if e["mid"] != inst.gold_mid:
-                assert super_category(e["topic"]) != super_category(inst.query_topic)
+        hits = [m for m in inst["memory_store"]
+                if m["mid"] == inst["relevant_memory_id"]]
+        assert len(hits) == 1
+        assert hits[0]["text"] == inst["preference"]
+        others = [m for m in inst["memory_store"]
+                  if m["mid"] != inst["relevant_memory_id"]]
+        assert all(super_category(m["topic"]) != super_category(inst["topic"])
+                   for m in others)
 
 
-def test_negative_store_fully_cross_category():
-    _, neg = build_instances(DATA)
+def test_negative_has_no_same_supercategory_memory():
+    _, neg = build_instances(fake_items(), n_pos=20, n_neg=10)
     for inst in neg:
-        assert inst.gold_mid is None and inst.gold_preference is None
-        for e in inst.memory_store:
-            assert super_category(e["topic"]) != super_category(inst.query_topic)
+        assert inst["preference"] is None
+        assert all(super_category(m["topic"]) != super_category(inst["topic"])
+                   for m in inst["memory_store"])
 
 
-def test_deterministic_under_seed():
-    a_pos, a_neg = build_instances(DATA)
-    b_pos, b_neg = build_instances(DATA)
-    assert json.dumps([i.iid for i in a_pos]) == json.dumps([i.iid for i in b_pos])
-    assert a_pos[0].memory_store == b_pos[0].memory_store
-    assert a_neg[-1].memory_store == b_neg[-1].memory_store
+def test_deterministic():
+    a = build_instances(fake_items(), n_pos=20, n_neg=10)
+    b = build_instances(fake_items(), n_pos=20, n_neg=10)
+    assert a == b
 
 
 def test_stratification_covers_topics():
-    pos, _ = build_instances(DATA)
-    topics = {i.query_topic for i in pos}
-    assert len(topics) == 20  # every topic contributes positives
+    pos, _ = build_instances(fake_items(), n_pos=20, n_neg=10)
+    assert len({i["topic"] for i in pos}) == 10

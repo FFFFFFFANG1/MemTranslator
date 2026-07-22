@@ -1,147 +1,110 @@
-"""PrefEval -> pilot instances (pilot plan §1.3, facts per docs/prefeval-notes.md).
+"""Build pilot instances from PrefEval (plan Task 3; facts per
+docs/prefeval-notes.md).
 
-Positives (150): stratified over the 20 topics; each instance carries a
-memory_store of 8 entries — the gold preference at a random position plus 7
-distractors drawn from *different super-categories* (so a distractor can't
-accidentally apply to the query).
+Schema per plan: {id, kind, topic, preference, request, content,
+memory_store: [{mid, text, topic}], relevant_memory_id}.
 
-Negatives (100): the query's preference is discarded; all 8 store entries come
-from super-categories different from the query's (stricter than plan's
-"different topic", per prefeval-notes: travel_hotel vs travel_restaurant are
-too close to count as unrelated).
-
-Deterministic under config.SEED; output committed to data/instances/ for
-reproducibility.
+Stricter than plan's "different topic" rule (prefeval-notes §对 pilot plan 的影响):
+distractors and negative stores are drawn from different *super-categories*
+(travel_hotel vs travel_restaurant are too close to count as unrelated).
+Deterministic under config.SEED; output committed for reproducibility.
 """
 
 from __future__ import annotations
 
 import json
 import random
-from dataclasses import asdict, dataclass, field
-from pathlib import Path
 
-from .config import DATA_INSTANCES, MEMORY_STORE_SIZE, N_NEGATIVE, N_POSITIVE, PREFEVAL_DIR, SEED
+from pilot.config import INSTANCES, K_DISTRACTORS, N_NEG, N_POS, PREFEVAL_DIR, SEED
 
 
 def super_category(topic: str) -> str:
     return topic.split("_")[0]
 
 
-@dataclass
-class PrefItem:
-    topic: str
-    preference: str
-    question: str
-    explanation: str
+# ---- LOADER: the only place allowed to depend on the PrefEval repo layout ----
+def load_prefeval() -> list[dict]:
+    """Returns [{"topic", "preference", "query"}, ...] (verified in Task 1)."""
+    items = []
+    for f in sorted(PREFEVAL_DIR.glob("*.json")):
+        for row in json.loads(f.read_text()):
+            items.append({"topic": f.stem,
+                          "preference": row["preference"],
+                          "query": row["question"]})
+    if not items:
+        raise FileNotFoundError(f"no PrefEval topic files under {PREFEVAL_DIR}")
+    return items
+# -----------------------------------------------------------------------------
 
 
-@dataclass
-class Instance:
-    iid: str
-    kind: str  # "positive" | "negative"
-    query: str
-    query_topic: str
-    memory_store: list[dict]  # [{mid, text, topic}]
-    gold_mid: str | None = None
-    gold_preference: str | None = None
-    gold_explanation: str | None = None
-    meta: dict = field(default_factory=dict)
+def _distractors(rng: random.Random, items: list[dict], exclude_supercat: str,
+                 k: int) -> list[dict]:
+    pool = [it for it in items if super_category(it["topic"]) != exclude_supercat]
+    return rng.sample(pool, k)
 
 
-def load_prefeval(root: Path = PREFEVAL_DIR) -> dict[str, list[PrefItem]]:
-    out: dict[str, list[PrefItem]] = {}
-    for f in sorted(root.glob("*.json")):
-        topic = f.stem
-        rows = json.loads(f.read_text())
-        out[topic] = [
-            PrefItem(topic=topic, preference=r["preference"], question=r["question"],
-                     explanation=r.get("explanation", ""))
-            for r in rows
-        ]
-    if not out:
-        raise FileNotFoundError(f"no PrefEval topic files under {root}")
-    return out
-
-
-def _pick_distractors(rng: random.Random, pool: list[PrefItem], exclude_supercat: str,
-                      n: int) -> list[PrefItem]:
-    cands = [p for p in pool if super_category(p.topic) != exclude_supercat]
-    return rng.sample(cands, n)
-
-
-def build_instances(data: dict[str, list[PrefItem]] | None = None,
-                    n_pos: int = N_POSITIVE, n_neg: int = N_NEGATIVE,
-                    store_size: int = MEMORY_STORE_SIZE,
-                    seed: int = SEED) -> tuple[list[Instance], list[Instance]]:
+def build_instances(items: list[dict], n_pos: int = N_POS, n_neg: int = N_NEG,
+                    k: int = K_DISTRACTORS, seed: int = SEED):
     rng = random.Random(seed)
-    data = data or load_prefeval()
-    topics = sorted(data)
-    flat = [p for items in data.values() for p in items]
+    by_topic: dict[str, list[dict]] = {}
+    for it in items:
+        by_topic.setdefault(it["topic"], []).append(it)
+    topics = sorted(by_topic)
 
-    # --- positives: round-robin over topics until n_pos ---
-    per_topic = {t: rng.sample(data[t], len(data[t])) for t in topics}
-    positives: list[Instance] = []
-    ti = 0
-    while len(positives) < n_pos:
-        topic = topics[ti % len(topics)]
-        ti += 1
-        if not per_topic[topic]:
-            continue
-        item = per_topic[topic].pop()
-        distractors = _pick_distractors(rng, flat, super_category(topic), store_size - 1)
-        entries = [{"mid": "", "text": d.preference, "topic": d.topic} for d in distractors]
-        gold_pos = rng.randrange(store_size)
-        entries.insert(gold_pos, {"mid": "", "text": item.preference, "topic": item.topic})
-        for i, e in enumerate(entries):
-            e["mid"] = f"m{i}"
-        positives.append(Instance(
-            iid=f"pos-{len(positives):04d}-{topic}",
-            kind="positive",
-            query=item.question,
-            query_topic=topic,
-            memory_store=entries,
-            gold_mid=f"m{gold_pos}",
-            gold_preference=item.preference,
-            gold_explanation=item.explanation,
-        ))
+    def stratified(n: int) -> list[tuple[str, dict]]:
+        picked: list[tuple[str, dict]] = []
+        used: dict[str, set[int]] = {t: set() for t in topics}
+        i = 0
+        while len(picked) < n:
+            t = topics[i % len(topics)]
+            avail = [j for j in range(len(by_topic[t])) if j not in used[t]]
+            if avail:
+                j = rng.choice(avail)
+                used[t].add(j)
+                picked.append((t, by_topic[t][j]))
+            i += 1
+        return picked
 
-    # --- negatives: query from topic X, store entirely from other super-categories ---
-    neg_sources = {t: rng.sample(data[t], len(data[t])) for t in topics}
-    negatives: list[Instance] = []
-    ti = 0
-    while len(negatives) < n_neg:
-        topic = topics[ti % len(topics)]
-        ti += 1
-        if not neg_sources[topic]:
-            continue
-        item = neg_sources[topic].pop()
-        store_items = _pick_distractors(rng, flat, super_category(topic), store_size)
-        entries = [{"mid": f"m{i}", "text": d.preference, "topic": d.topic}
-                   for i, d in enumerate(store_items)]
-        negatives.append(Instance(
-            iid=f"neg-{len(negatives):04d}-{topic}",
-            kind="negative",
-            query=item.question,
-            query_topic=topic,
-            memory_store=entries,
-        ))
+    positives = []
+    for idx, (t, it) in enumerate(stratified(n_pos)):
+        mems = [(t, it["preference"])] + [
+            (d["topic"], d["preference"])
+            for d in _distractors(rng, items, super_category(t), k)]
+        rng.shuffle(mems)
+        store = [{"mid": f"m{i+1}", "text": text, "topic": mt}
+                 for i, (mt, text) in enumerate(mems)]
+        rel = next(m["mid"] for m in store
+                   if m["text"] == it["preference"] and m["topic"] == t)
+        positives.append({
+            "id": f"pos-{t}-{idx:04d}", "kind": "positive", "topic": t,
+            "preference": it["preference"], "request": it["query"],
+            "content": "", "memory_store": store, "relevant_memory_id": rel,
+        })
 
+    negatives = []
+    for idx, (t, it) in enumerate(stratified(n_neg)):
+        picks = _distractors(rng, items, super_category(t), k + 1)
+        store = [{"mid": f"m{i+1}", "text": d["preference"], "topic": d["topic"]}
+                 for i, d in enumerate(picks)]
+        negatives.append({
+            "id": f"neg-{t}-{idx:04d}", "kind": "negative", "topic": t,
+            "preference": None, "request": it["query"],
+            "content": "", "memory_store": store, "relevant_memory_id": None,
+        })
     return positives, negatives
 
 
-def write_jsonl(instances: list[Instance], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w") as f:
-        for inst in instances:
-            f.write(json.dumps(asdict(inst), ensure_ascii=False) + "\n")
-
-
 def main() -> None:
-    pos, neg = build_instances()
-    write_jsonl(pos, DATA_INSTANCES / "positives.jsonl")
-    write_jsonl(neg, DATA_INSTANCES / "negatives.jsonl")
-    print(f"wrote {len(pos)} positives, {len(neg)} negatives to {DATA_INSTANCES}")
+    items = load_prefeval()
+    pos, neg = build_instances(items)
+    INSTANCES.mkdir(parents=True, exist_ok=True)
+    out = INSTANCES / "pilot.jsonl"
+    with out.open("w") as f:
+        for inst in pos + neg:
+            f.write(json.dumps(inst, ensure_ascii=False) + "\n")
+    topics = {i["topic"] for i in pos + neg}
+    print(f"{len(pos)} positive + {len(neg)} negative -> {out}")
+    print(f"{len(topics)} topics covered")
 
 
 if __name__ == "__main__":

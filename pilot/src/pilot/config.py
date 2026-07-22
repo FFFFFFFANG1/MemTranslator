@@ -9,29 +9,40 @@ from __future__ import annotations
 from pathlib import Path
 
 PILOT_ROOT = Path(__file__).resolve().parent.parent.parent
-DATA_RAW = PILOT_ROOT / "data" / "raw"
-DATA_INSTANCES = PILOT_ROOT / "data" / "instances"
+DATA = PILOT_ROOT / "data"
+DATA_RAW = DATA / "raw"
+INSTANCES = DATA / "instances"
 RUNS = PILOT_ROOT / "runs"
+CACHE_DIR = RUNS / "llm_cache"
+RESULTS = RUNS / "results"
 
 PREFEVAL_DIR = DATA_RAW / "PrefEval" / "benchmark_dataset" / "explicit_preference"
 LONGMEMEVAL_ORACLE = DATA_RAW / "LongMemEval" / "data" / "longmemeval_oracle.json"
 
 # --- models (pilot plan §1.4) ---
-DOWNSTREAM_STRONG = "claude-opus-4-8"
-DOWNSTREAM_WEAK = "claude-haiku-4-5"
-TRANSLATOR_MODEL = "claude-haiku-4-5"
-JUDGE_MODEL = "claude-opus-4-8"
+MODELS = {
+    "downstream_strong": "claude-opus-4-8",
+    "downstream_weak": "claude-haiku-4-5",
+    "translator": "claude-haiku-4-5",
+    "judge": "claude-opus-4-8",
+}
+DOWNSTREAM_TIERS = ["downstream_strong", "downstream_weak"]
 
-# --- baseline internals (B0 memo: config definitively smoked) ---
+# --- arms ---
+ARMS = ["A0_none", "A1_system", "A2_inject", "A3_translator"]
+BASELINE_ARMS = ["B1_mem0", "B2_graphiti"]  # opt-in via --with-baselines
+
+# --- baseline internals (frozen in docs/baseline-b0-memo.md) ---
 MEM0_INTERNAL_LLM = "claude-haiku-4-5-20251001"   # anthropic provider works
 GRAPHITI_INTERNAL_LLM = "gpt-4.1-mini"             # anthropic client trial pending (B1)
 EMBEDDING_MODEL = "text-embedding-3-small"         # openai, used by both baselines
 
 # --- experiment shape (pilot plan §1.3) ---
-N_POSITIVE = 150
-N_NEGATIVE = 100
+N_POS = 150
+N_NEG = 100
 N_LONGDOC = 30
-MEMORY_STORE_SIZE = 8   # entries visible per instance (top-k for injection arms)
+K_DISTRACTORS = 7            # store size = K_DISTRACTORS + 1
+MEMORY_STORE_SIZE = K_DISTRACTORS + 1
 RECALL_K = 8
 
 SEED = 20260721

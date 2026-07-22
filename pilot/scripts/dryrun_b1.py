@@ -15,16 +15,17 @@ import sys
 from pathlib import Path
 
 from pilot.baselines import ADAPTERS
-from pilot.config import DATA_INSTANCES, RUNS
+from pilot.config import INSTANCES as DATA_INSTANCES
+from pilot.config import RUNS
 
 WORK = RUNS / "dryrun_b1"
 
 
 def main() -> None:
-    inst = json.loads((DATA_INSTANCES / "positives.jsonl").read_text().splitlines()[0])
-    print(f"instance {inst['iid']}")
-    print(f"query: {inst['query']}")
-    print(f"gold:  {inst['gold_preference']}\n")
+    inst = json.loads((DATA_INSTANCES / "pilot.jsonl").read_text().splitlines()[0])
+    print(f"instance {inst['id']}")
+    print(f"query: {inst['request']}")
+    print(f"gold:  {inst['preference']}\n")
 
     which = sys.argv[1:] or list(ADAPTERS)
     for name in which:
@@ -33,10 +34,10 @@ def main() -> None:
         shutil.rmtree(workdir, ignore_errors=True)
         workdir.mkdir(parents=True, exist_ok=True)
         adapter = cls(workdir) if name != "topk_inject" else cls()
-        r = adapter.ingest_and_inject(inst["memory_store"], inst["query"])
+        r = adapter.ingest_and_inject(inst["memory_store"], inst["request"])
         # Loose recall check: systems rephrase (mem0 stores third person), so
         # count a hit when >=2 distinctive gold words survive in the block.
-        gold_words = [w.strip(".,").lower() for w in inst["gold_preference"].split()
+        gold_words = [w.strip(".,").lower() for w in inst["preference"].split()
                       if len(w) > 6]
         hits = sum(1 for w in gold_words if w in r.text.lower())
         gold_hit = hits >= min(2, len(gold_words))
