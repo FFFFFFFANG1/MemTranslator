@@ -1,11 +1,9 @@
 # MemTranslator
 
-Memory-grounded user translator for personal agents: compile user memory into the request (a translation layer between user and agent) instead of injecting it into the agent's context.
+An open-source translator between the user and their agents: it learns how the user wants tasks done (delivery requirements) and compiles them into the request itself, so downstream agents never read memory. All direction lives in `position_anchor.md`.
 
-- **`position_anchor.md` — 项目定位锚点（冲突时以本文为准）**
-- `docs/idea.md` — early position draft (historical)
-- `docs/diagnosis.md` — novelty / benchmark diagnosis
-- `docs/2026-07-21-pilot-plan.md` — PrefEval-oriented pilot plan (see anchor §8 on bench attitude)
-- `docs/memory-design.md` — memory-layer design: schema + write path
-- `docs/hms-mandol-notes.md` — code-level notes on HMS and Mandol with adoption decisions
+- `position_anchor.md` — 项目定位锚点（唯一方向依据）
+- `docs/archive.md` — record of the 2026-07 first build (record only; every approach in it deviates from the anchor)
 - `proto/` — working prototype (memory store, write/read paths, typeless-style demo UI, tests)
+
+Rebuilding from zero per anchor §7.
