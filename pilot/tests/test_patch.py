@@ -28,3 +28,24 @@ def test_fenced_json_ok():
 def test_apply_without_new_request_is_noop():
     patch, err = parse_patch('{"decision": "apply"}')
     assert patch == {"decision": "noop"} and err is True
+
+
+def test_json_with_trailing_prose_parses():
+    # observed in B2 dry-run: haiku appends an explanation after the JSON
+    patch, err = parse_patch(
+        '{"decision": "noop"}\n\nThe user is asking for suggestions...')
+    assert patch == {"decision": "noop"} and err is False
+
+
+def test_fenced_json_with_trailing_prose_parses():
+    patch, err = parse_patch(
+        '```json\n{"decision": "apply", "applied_memory_ids": ["m1"], '
+        '"new_request": "x"}\n```\n\nExplanation: because...')
+    assert patch["decision"] == "apply" and err is False
+
+
+def test_braces_inside_strings_do_not_confuse_extractor():
+    patch, err = parse_patch(
+        '{"decision": "apply", "applied_memory_ids": [], '
+        '"new_request": "use {curly} braces literally"}')
+    assert patch["new_request"] == "use {curly} braces literally" and err is False

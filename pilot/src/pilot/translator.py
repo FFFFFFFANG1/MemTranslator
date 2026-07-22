@@ -38,14 +38,41 @@ def _translator_user(instance: dict) -> str:
             f"User request:\n{instance['request']}{content_note}\n\nJSON:")
 
 
+def _first_json_object(s: str) -> dict | None:
+    """Extract the first balanced top-level JSON object; the model often
+    appends prose after the JSON (observed in B2 dry-run), which is fine —
+    we just must not let the trailing text fail the whole parse."""
+    start = s.find("{")
+    while start != -1:
+        depth = 0
+        in_str = False
+        esc = False
+        for i in range(start, len(s)):
+            c = s[i]
+            if esc:
+                esc = False
+            elif c == "\\":
+                esc = True
+            elif c == '"':
+                in_str = not in_str
+            elif not in_str:
+                if c == "{":
+                    depth += 1
+                elif c == "}":
+                    depth -= 1
+                    if depth == 0:
+                        try:
+                            return json.loads(s[start:i + 1])
+                        except json.JSONDecodeError:
+                            break
+        start = s.find("{", start + 1)
+    return None
+
+
 def parse_patch(raw: str) -> tuple[dict, bool]:
     """Returns (patch, parse_error). Any failure degrades to noop."""
-    s = raw.strip()
-    if s.startswith("```"):
-        s = s.strip("`")
-        s = s.removeprefix("json").strip()
-    try:
-        patch = json.loads(s)
+    patch = _first_json_object(raw)
+    if patch is not None:
         if patch.get("decision") == "noop":
             return {"decision": "noop"}, False
         if (patch.get("decision") == "apply"
@@ -54,8 +81,6 @@ def parse_patch(raw: str) -> tuple[dict, bool]:
             return {"decision": "apply",
                     "applied_memory_ids": patch.get("applied_memory_ids", []),
                     "new_request": patch["new_request"].strip()}, False
-    except json.JSONDecodeError:
-        pass
     return {"decision": "noop"}, True
 
 
