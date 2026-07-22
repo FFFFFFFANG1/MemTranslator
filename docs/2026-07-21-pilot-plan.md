@@ -223,7 +223,7 @@ Expected: 打印 MODELS dict，无 ImportError。
 - [ ] **Step 6: Commit**
 
 ```bash
-cd .. && git add -A && git commit -m "Scaffold pilot project with uv and experiment config."
+cd .. && git add -A && git commit -m "[pilot] Scaffold project with uv and experiment config"
 ```
 
 ---
@@ -263,7 +263,7 @@ V2 失败（无法解析三元组）→ 停，改 plan §1.3 与 Task 3 后再�
 - [ ] **Step 5: Commit**
 
 ```bash
-git add docs/prefeval-notes.md && git commit -m "Verify PrefEval data layout and record findings."
+git add docs/prefeval-notes.md && git commit -m "[docs] Record PrefEval data layout verification"
 ```
 
 ---
@@ -341,7 +341,7 @@ Expected: `ok False True`（第二次命中缓存）。
 - [ ] **Step 3: Commit**
 
 ```bash
-git add -A && git commit -m "Add cached LLM client with retry on transient errors."
+git add -A && git commit -m "[pilot] Add cached LLM client with retry on transient errors"
 ```
 
 ---
@@ -528,7 +528,7 @@ LOADER 若因字段名报错，按 prefeval-notes.md 修正后重跑（这是设
 - [ ] **Step 6: Commit**
 
 ```bash
-git add -A && git commit -m "Build positive and negative pilot instances from PrefEval."
+git add -A && git commit -m "[pilot] Build positive and negative instances from PrefEval"
 ```
 
 ---
@@ -597,7 +597,7 @@ Expected: 30 行 jsonl。抽 5 条读 content 是否像样、request 是否与 p
 - [ ] **Step 3: Commit**
 
 ```bash
-git add -A && git commit -m "Generate long-content instances for the preservation ablation."
+git add -A && git commit -m "[pilot] Generate long-content instances for the preservation ablation"
 ```
 
 ---
@@ -709,7 +709,7 @@ Expected: 5 passed。
 - [ ] **Step 5: Commit**
 
 ```bash
-git add -A && git commit -m "Add four-arm downstream prompt assembly."
+git add -A && git commit -m "[pilot] Add four-arm downstream prompt assembly"
 ```
 
 ---
@@ -858,7 +858,7 @@ Expected: 合法 JSON patch；正例大概率 `apply` 且 new_request 融入了�
 - [ ] **Step 5: Commit**
 
 ```bash
-git add -A && git commit -m "Add translator with noop-default patching and robust parsing."
+git add -A && git commit -m "[pilot] Add translator with noop-default patching and robust parsing"
 ```
 
 ---
@@ -953,7 +953,7 @@ Expected: `verdict: violated`。
 - [ ] **Step 3: Commit**
 
 ```bash
-git add -A && git commit -m "Add adherence, false-application, and preservation judges."
+git add -A && git commit -m "[pilot] Add adherence, false-application, and preservation judges"
 ```
 
 ---
@@ -1074,7 +1074,7 @@ Expected: 首行打印 "2 instances to run (3 already done)"（跳过已完成�
 - [ ] **Step 4: Commit**
 
 ```bash
-git add -A && git commit -m "Add resumable experiment orchestrator with per-instance heartbeat."
+git add -A && git commit -m "[pilot] Add resumable orchestrator with per-instance heartbeat"
 ```
 
 ---
@@ -1199,7 +1199,7 @@ uv run python -m pilot.calibrate score
 - [ ] **Step 5: Commit**
 
 ```bash
-git add -A && git commit -m "Add negative-set screening and judge calibration gates."
+git add -A && git commit -m "[pilot] Add negative-set screening and judge calibration gates"
 ```
 
 ---
@@ -1233,7 +1233,7 @@ grep -c '"parse_error": true' runs/results/pilot-full.jsonl   # translator 解�
 - [ ] **Step 4: Commit（只提交 log 摘要说明，不提交 runs/）**
 
 ```bash
-git add -A && git commit -m "Record full pilot run completion notes."
+git add -A && git commit -m "[pilot] Record full run completion notes"
 ```
 
 ---
@@ -1428,7 +1428,7 @@ Expected: `docs/pilot-results.md` 生成，含 5 张表。渲染检查一遍（�
 - [ ] **Step 5: Commit**
 
 ```bash
-git add -A && git commit -m "Add analysis with bootstrap CIs and generate the pilot report."
+git add -A && git commit -m "[pilot] Add analysis with bootstrap CIs and generate the report"
 ```
 
 ---
@@ -1513,7 +1513,7 @@ Expected: 30 行心跳；pilot-results.md 末尾多出 ablation 小节。
 - [ ] **Step 3: Commit**
 
 ```bash
-git add -A && git commit -m "Add full-rewrite ablation quantifying content corruption."
+git add -A && git commit -m "[pilot] Add full-rewrite ablation quantifying content corruption"
 ```
 
 ---
@@ -1554,7 +1554,7 @@ git add -A && git commit -m "Add full-rewrite ablation quantifying content corru
 - [ ] **Step 2: Commit**
 
 ```bash
-git add docs/go-no-go.md && git commit -m "Write pilot go/no-go memo."
+git add docs/go-no-go.md && git commit -m "[docs] Write pilot go/no-go memo"
 ```
 
 ---
