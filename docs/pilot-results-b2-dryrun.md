@@ -41,7 +41,7 @@ n = 20 instances (20 positive, 0 negative)
 
 - P(apply | positive) = 14/20 = 70.0%
 - P(noop | negative) = 0/0 = 0.0%  ← 判据 G3
-- parse errors: 6
+- parse errors: 0
 - preservation: core-task changed 0, over-reach beyond memories 0 (of 20 positives)
 
 ## Downstream input tokens (mean per instance)
