@@ -45,7 +45,6 @@
 - `docs/2026-07-22-refactor-plan.md` — 被本次清零取代的 refactor plan（拍板记录 D1–D3 在其 §1）
 - `TODO.md` — 旧任务清单（v0=pilot 的旧版本术语）
 - `pilot/` — 全部 harness 代码、测试与实例数据
-- `proto/` — 第一轮原型（memory store、2-call write path、typeless 式 FastAPI demo；删除前最后版本在 `ac1810b`，测试 49+1 全绿。2026-07-23 siriux 确认连同代码一起清零）
 
 ## 旧 proto 沉淀的产品决策（记录，不预设后续沿用）
 
