@@ -2,11 +2,13 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **拍板决议（2026-07-24，siriux）：** ① gate 加"每 suite ≥70%"下限；② judge = `deepseek-v4-pro`，case 扩展生成 = `deepseek-v4-flash`，均走仓库根 `.env` 配置的 OpenAI-compatible 通道（当前为 Volcano Ark coding 端点，`thinking: disabled` + `temperature: 0`；`.env` 已 gitignore）；③ E suite 从始至终三 suite 一起算，v1 落地前 overall fail 是事实陈述。Task 3 的 config/judge 代码已按此更新；translator 仍走产品路径 `claude-haiku-4-5` 不变。
+
 **Goal:** 建一个小规模、语义透明的 bench，作为"第一版面向用户效果"的验收标尺：**总分 ≥ 80% ⇔ 第一版够好，可以面向用户**。本分支只做 bench（数据 + harness + 报告），不改产品代码（`src/` 只读）。
 
 **Architecture:** 三个 suite 对着第一版对用户的三个可感知承诺——**T**（translate：热键改写靠谱）、**L**（learn：从纠正与编辑 diff 里学对 requirement）、**E**（end-to-end：多轮交互后越来越少需要纠正）。T 直接调 `memtranslator.translate`（v0 已有，立即可跑出真实分）；L/E 通过 `ExtractionProvider` 接口对接尚未实现的 v1 管线（bench 先行，v1 落地后接入拿真分）。判分机械 checker 优先，软约束用逐判据二值 LLM judge。
 
-**Tech Stack:** 现有 uv 项目扩展；顶层 `bench/` 包（不进 wheel）；judge 复用 `memtranslator.llm.complete`；零新依赖。
+**Tech Stack:** 现有 uv 项目扩展；顶层 `bench/` 包（不进 wheel）；judge 走仓库根 `.env` 的 OpenAI-compatible 通道（httpx 已在 dev 依赖组）；零新依赖。
 
 ---
 
@@ -77,7 +79,7 @@ uv run python -m bench.runner.run_e2e --provider null|reference
 uv run python -m bench.runner.report              # 读最新 results，出总分与 gate
 ```
 
-复现性：case 落盘进 git；LLM 全部 temperature 0（judge 与 translator 均走 `llm.complete`，anthropic SDK 默认 temperature=1.0，judge call 需显式传——见 Task 3 对 `complete` 的包装）；每次 run 的 results 快照带 model id + case 文件 hash + 时间戳。
+复现性：case 落盘进 git；judge 显式 `temperature=0` + `thinking: disabled`（DeepSeek 通道，见 Task 3）；translator 走产品路径 `llm.complete`（未暴露 temperature，bench 不改 src，接受抖动并用 Task 9 stability check 定量）；每次 run 的 results 快照带 model id + case 文件 hash + 时间戳。
 
 ---
 
@@ -89,7 +91,7 @@ uv run python -m bench.runner.report              # 读最新 results，出总�
 2. **faithfulness 层（机械）**：case 声明的关键词保留（`contains_all`）、语言保持（`same_language`）等。
 3. **constraint 层（judge，逐判据一 call，二值）**：apply case 由 runner 自动生成三类判据——每条期望命中的 requirement 生成「polished 请求显式携带了该约束」；固定一条「未发明清单外的新约束」；固定一条「核心任务未被改变」。case 可另带专属 judge 判据。
 
-**judge 纪律：** 强模型（拍板点 2，默认 `claude-opus-4-8`），temperature 0，一判据一 call（窄题化），输出 `{"verdict": "yes"|"no", "reason": ...}`；parse 失败按 fail 计入并打 flag，报告晒 parse 失败率。judge 可信度由 Task 9 的人工抽检背书（30 条一致率 ≥90%，否则改 prompt 重跑）。
+**judge 纪律：** `deepseek-v4-pro`（拍板点 2 决议，控制成本；产品路径不受影响），temperature 0 + thinking disabled，一判据一 call（窄题化），输出 `{"verdict": "yes"|"no", "reason": ...}`；parse 失败按 fail 计入并打 flag，报告晒 parse 失败率。judge 可信度由 Task 9 的人工抽检背书（30 条一致率 ≥90%，否则改 prompt 重跑）。
 
 **L suite 判定：** provider 输出 ops 与期望 ops 对齐——kind 机械比对；文本用 judge 判语义等价（「提取条目 R 是否表达了 gist G」）；期望为空的 case（noise-reject）出任何 op 即 fail。pass = 期望全命中 + 零违规误提。
 
@@ -437,19 +439,44 @@ git commit -m "[bench] Add deterministic checker registry"
 
 ```python
 """Bench-side config. The judge is NOT a product path, so anchor §5's
-flash-only rule does not apply — use a strong model for grading."""
+flash-only rule does not apply; per the 2026-07-24 sign-off it runs on
+deepseek-v4-pro over the OpenAI-compatible channel configured in the
+repo-root .env (currently Volcano Ark; swap channel or model here)."""
+import os
 from pathlib import Path
 
 BENCH_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = BENCH_ROOT.parent
 CASES = BENCH_ROOT / "cases"
 RESULTS = BENCH_ROOT / "results"
 
-JUDGE_MODEL = "claude-opus-4-8"      # 拍板点 2
+
+def _load_env(path: Path) -> dict[str, str]:
+    """Minimal KEY=VALUE reader for the repo-root .env; os.environ wins."""
+    out: dict[str, str] = {}
+    if path.exists():
+        for line in path.read_text().splitlines():
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, v = line.split("=", 1)
+                out[k.strip()] = v.strip()
+    for k in ("LLM_API_KEY", "LLM_BASE_URL", "LLM_MODEL"):
+        if k in os.environ:
+            out[k] = os.environ[k]
+    return out
+
+
+_ENV = _load_env(REPO_ROOT / ".env")
+LLM_BASE_URL = _ENV.get("LLM_BASE_URL", "https://api.deepseek.com")
+LLM_API_KEY = _ENV.get("LLM_API_KEY", os.environ.get("DEEPSEEK_API_KEY", ""))
+
+JUDGE_MODEL = "deepseek-v4-pro"      # 拍板点 2 决议（2026-07-24）
+GEN_MODEL = "deepseek-v4-flash"      # case 扩展生成用（同通道）
 JUDGE_MAX_TOKENS = 300
 E2E_SECOND_HALF_FROM = 9             # rounds 9..16 count toward the score
 E2E_PASS_THRESHOLD = 0.8
 GATE_OVERALL = 0.80
-GATE_PER_SUITE = 0.70                # 拍板点 1
+GATE_PER_SUITE = 0.70                # 拍板点 1 决议：加下限
 WEIGHTS = {"T": 0.4, "L": 0.3, "E": 0.3}
 ```
 
@@ -488,13 +515,16 @@ def test_garbage_fails_closed(monkeypatch):
 does not parse to a clean yes counts as no and raises a parse flag, which the
 report surfaces — a noisy judge must be visible, never silently generous.
 
-temperature=0 for reproducibility; memtranslator.llm.complete does not expose
-it, so we make the SDK call here (same client, same LLMUnavailable surface)."""
+Rides the OpenAI-compatible channel from the repo-root .env (2026-07-24
+sign-off: deepseek-v4-pro via Volcano Ark). thinking disabled — the criteria
+are deliberately narrow; reasoning tokens only add cost and latency. httpx is
+already a dev-group dependency, so no SDK is added."""
 import json
 
-import anthropic
+import httpx
 
-from bench.runner.config import JUDGE_MAX_TOKENS, JUDGE_MODEL
+from bench.runner.config import (JUDGE_MAX_TOKENS, JUDGE_MODEL, LLM_API_KEY,
+                                 LLM_BASE_URL)
 
 JUDGE_SYSTEM = """You are a strict binary judge for a rewrite-quality benchmark.
 You get a CRITERION and a CONTEXT (JSON). Decide whether the criterion holds.
@@ -502,17 +532,22 @@ Judge only what the criterion asks; do not reward extra qualities.
 Answer with exactly one JSON object, nothing else:
 {"verdict": "yes"|"no", "reason": "<one short sentence>"}"""
 
-_client: anthropic.Anthropic | None = None
+_client: httpx.Client | None = None
 
 
 def _complete(system: str, user: str) -> str:
     global _client
     if _client is None:
-        _client = anthropic.Anthropic()
-    resp = _client.messages.create(
-        model=JUDGE_MODEL, max_tokens=JUDGE_MAX_TOKENS, temperature=0,
-        system=system, messages=[{"role": "user", "content": user}])
-    return "".join(b.text for b in resp.content if b.type == "text")
+        _client = httpx.Client(timeout=120)
+    resp = _client.post(
+        f"{LLM_BASE_URL}/chat/completions",
+        headers={"Authorization": f"Bearer {LLM_API_KEY}"},
+        json={"model": JUDGE_MODEL, "max_tokens": JUDGE_MAX_TOKENS,
+              "temperature": 0, "thinking": {"type": "disabled"},
+              "messages": [{"role": "system", "content": system},
+                           {"role": "user", "content": user}]})
+    resp.raise_for_status()
+    return resp.json()["choices"][0]["message"]["content"]
 
 
 def judge(criterion: str, context: dict) -> tuple[bool, bool]:
@@ -585,7 +620,8 @@ git commit -m "[bench] Add fail-closed binary judge with bench config"
 ````markdown
 # Case 扩展生成（每 category 补至 10 条）
 
-用强模型（opus 档）按下述 prompt 逐 category 生成，temperature 默认；生成后
+用 `deepseek-v4-flash`（拍板决议；`.env` 通道，thinking 默认开启帮助多样性）按下述
+prompt 逐 category 生成，temperature 默认；生成后
 **逐条人工审核**，过 checklist 才进 cases.jsonl，source 标 "generated"。
 
 ## 生成 prompt（替换 {CATEGORY_SPEC} 为计划 Task 4 表格中该行的"用户行为面 + 变化维度"，附上该类 2 条 seed 作为格式样例）
@@ -1546,22 +1582,22 @@ git push origin bench
 
 ---
 
-## 拍板点
+## 拍板点（已全部拍板，2026-07-24）
 
-1. **Gate 形态**：总分 ≥80% 之外是否加"每 suite ≥70%"下限？（建议加——防 T 满分拖着 L/E 混过；不加则纯 overall，更贴你原话）
-2. **Judge 模型**：默认 `claude-opus-4-8`（与 downstream 同档）。bench 判分不是产品路径，不受 anchor §5 flash 限制；也可换更便宜档，代价是 Task 9 抽检一致率风险。
-3. **E suite 计分时点**：E 依赖 v1，v1 落地前 overall 永远不可达 80%。(a) 三 suite 从始至终一起算（gate 就是 v1 的验收，当前 fail 是事实陈述）｜(b) 过渡期只算 T+L（权重临时 0.6/0.4），v1 接入后切回三 suite。**建议 (a)**——bench 本来就是"第一版"的标尺，不为中间态改标尺。
+1. **Gate 形态**：✅ **加**"每 suite ≥70%"下限（防 T 满分拖着 L/E 混过）。
+2. **Judge 模型**：✅ `deepseek-v4-pro`（控制成本；Ark `.env` 通道，thinking disabled）；case 扩展生成用 `deepseek-v4-flash`。可信度风险由 Task 9 抽检背书或否决。
+3. **E suite 计分时点**：✅ (a) 三 suite 从始至终一起算——gate 就是 v1 的验收，当前 fail 是事实陈述。
 
 ## 成本与规模（估）
 
-| 一次全量 | LLM 调用 | tokens 量级 | 费用（估） |
-|---|---|---|---|
-| Suite T ×1 | 60 translate (haiku) + ~170 judge (opus) | ~80k in-out haiku + ~200k opus | ~$3 |
-| Suite L ×1 | 36 provider (haiku) + ~60 judge | ~150k opus | ~$2 |
-| Suite E ×1 | 128 translate + ~350 judge + ~30 extract | ~450k opus | ~$5 |
-| stability 双跑 T | 同 T | — | ~$3 |
+| 一次全量 | LLM 调用 | 说明 |
+|---|---|---|
+| Suite T ×1 | 60 translate (haiku) + ~170 judge (deepseek-v4-pro) | judge 换 deepseek 后成本重心在 haiku 侧 |
+| Suite L ×1 | 36 provider (haiku) + ~60 judge | |
+| Suite E ×1 | 128 translate (haiku) + ~350 judge + ~30 extract | |
+| stability 双跑 T | 同 T | |
 
-全流程（含 Task 9 三基线 + 双跑）**约 $15–20 / 完整周期**；日常回归只跑单 suite。数字为 prompt 预算估算，首跑后以 usage 实测校准进 README。
+haiku 侧合计 ~250 call（~300k in / ~60k out tokens，按牌价约 $0.6）；judge/生成侧 ~600+ call 走 Ark coding 通道，牌价未核（该通道疑似包量计费）——**全流程 API 成本上界估 <$5，首跑后以 usage 实测校准进 README**；日常回归只跑单 suite。
 
 ## Self-review 记录
 
