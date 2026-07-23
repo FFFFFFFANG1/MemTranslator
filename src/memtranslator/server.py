@@ -6,6 +6,7 @@ context. Sends are logged with their edit diff (recorded in v0, learned
 from in v1).
 """
 import json
+import time
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
@@ -13,6 +14,7 @@ from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 
 from memtranslator import config, llm
+from memtranslator.signals import classify_submit
 from memtranslator.store import EventLog, Store
 from memtranslator.translate import translate
 
@@ -35,6 +37,13 @@ class TranslateIn(BaseModel):
 class ChatIn(BaseModel):
     messages: list[dict]
     translate_id: str | None = None
+
+
+class SubmitIn(BaseModel):
+    text: str
+    source: str
+    session_id: str | None = None
+    cwd: str | None = None
 
 
 def create_app(store_path: Path | None = None,
@@ -101,6 +110,26 @@ def create_app(store_path: Path | None = None,
                 "polished": result["polished"], "applied": applied,
                 "parse_error": result["parse_error"],
                 "latency_ms": result["latency_ms"]}
+
+    @app.post("/api/events/submit")
+    def submit_event(body: SubmitIn):
+        text = body.text.strip()
+        if not text:
+            raise HTTPException(400, "empty text")
+        translates = [e for e in events.read_all() if e["kind"] == "translate"]
+        verdict = classify_submit(text, time.time(), translates)
+        events.append("submit", {
+            "text": text, "source": body.source,
+            "session_id": body.session_id, "cwd": body.cwd,
+            "classification": verdict["classification"],
+            "matched_translate_id": verdict["matched_translate_id"],
+            "similarity": verdict["similarity"],
+        })
+        return verdict
+
+    @app.get("/api/events")
+    def list_events(limit: int = 50):
+        return {"events": list(reversed(events.read_all()))[:limit]}
 
     @app.post("/api/chat")
     def chat(body: ChatIn):

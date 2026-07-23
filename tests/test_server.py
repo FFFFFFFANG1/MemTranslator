@@ -78,3 +78,38 @@ def test_chat_rejects_bad_history(tmp_path):
     assert client.post("/api/chat", json={
         "messages": [{"role": "assistant", "content": "hi"}],
     }).status_code == 400
+
+
+def test_submit_event_joins_with_translate(tmp_path, monkeypatch):
+    client, app = make_client(tmp_path)
+    rid = client.post("/api/requirements", json={"text": "Short."}).json()["id"]
+    monkeypatch.setattr(llm, "complete", lambda *a, **k: (
+        f'{{"decision": "apply", "applied_ids": ["{rid}"], '
+        f'"polished": "polished text"}}'))
+    tr = client.post("/api/translate", json={"text": "raw text"}).json()
+
+    r = client.post("/api/events/submit", json={
+        "text": "polished text", "source": "claude-code",
+        "session_id": "s-1", "cwd": "/tmp/x"})
+    body = r.json()
+    assert body["classification"] == "accepted_verbatim"
+    assert body["matched_translate_id"] == tr["translate_id"]
+
+    sub = [e for e in app.state.events.read_all() if e["kind"] == "submit"][-1]
+    assert sub["source"] == "claude-code"
+    assert sub["classification"] == "accepted_verbatim"
+
+
+def test_submit_event_natural_without_translate(tmp_path):
+    client, app = make_client(tmp_path)
+    r = client.post("/api/events/submit", json={
+        "text": "不是让你总结，是要批判分析", "source": "claude-code"})
+    assert r.json()["classification"] == "natural"
+
+
+def test_events_endpoint_lists_newest_first(tmp_path):
+    client, app = make_client(tmp_path)
+    client.post("/api/events/submit", json={"text": "a", "source": "x"})
+    client.post("/api/events/submit", json={"text": "b", "source": "x"})
+    events = client.get("/api/events?limit=1").json()["events"]
+    assert len(events) == 1 and events[0]["text"] == "b"
