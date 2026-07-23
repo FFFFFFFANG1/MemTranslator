@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/Library/Mobile Documents/com~apple~CloudDocs/Documents/Codes/Projects/MemTranslator/hooks/claude-code/user-prompt-submit.sh\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}
