@@ -24,4 +24,18 @@ hand-curated, no leaderboard chasing).
 
 ## Current water line
 
-(filled by Task 5 / Task 9 runs)
+**T = 0.817** (first real run, 2026-07-24; translator=`claude-haiku-4-5`,
+judge=`deepseek-v4-pro` via Ark, 0 judge parse flags; snapshot
+`T-20260724-005534`)
+
+| category | rate | note |
+|---|---|---|
+| scope-noop | 1.00 | never touches unrelated input |
+| apply-single | 0.90 | 1 fail: zh requirement dragged an en input into zh |
+| apply-multi | 0.90 | 1 fail: one of two constraints not woven in |
+| exception | 0.80 | 1 real miss + 1 suspected judge false-negative (t-exc-004, → Task 9 audit) |
+| language-mixed | 0.80 | same language-drag failure mode as above |
+| preserve-long | 0.50 | v0's main weakness: long pasted material → conservative noop |
+
+L / E: pending v1 (NullProvider floor and ReferenceProvider baseline recorded
+by Task 9).
