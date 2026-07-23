@@ -36,3 +36,43 @@ Produce 8 cases.
 4. contains_all 关键词确实是"任何正确改写都必须保留"的实体，无误伤。
 5. judge 判据（如有）单义、可二值判定。
 6. 与已有 case 不近重复（域、约束、句式至少一处明显不同）。
+
+---
+
+# Suite L 扩展生成（每 category 补至 6 条；生成 5/类 + seed 1/类）
+
+同款流程：`deepseek-v4-flash` 生成 → 逐条人工审核 → 过审进
+`bench/cases/extraction/cases.jsonl`（source=generated）。schema 见 seed；
+category 语义与期望见计划 Task 7 表（§2 评分协议）。
+
+## 生成 prompt（{CATEGORY_SPEC} 换为该类行为面；附该类 seed 作格式样例）
+
+You are creating extraction benchmark cases for a memory pipeline that turns
+user signals into durable delivery requirements (rules about HOW tasks are
+executed/delivered). Cases feed a provider `extract(events, existing) -> ops`.
+
+Category to generate: {CATEGORY_SPEC}
+
+Rules for every case:
+- Everyday scenarios for a developer / grad student / knowledge worker.
+- Durable delivery rules only; content preferences and personal facts are
+  NEGATIVE material (they belong in noise-reject cases with expect_ops []).
+- "events" is the exact event list the provider will see; keep it minimal and
+  realistic. edited_diff events need all three of raw / polished / final.
+- expect_ops gists must be short English paraphrases of the durable rule; a
+  case with expect_ops [] means ANY extraction is a failure.
+- relation cases: "existing" holds the store texts; target is the INDEX into
+  existing. reinforce = restating the same rule; contradict = durably
+  overriding it (include the corrected rule text in the gist).
+- Output raw JSONL, ids {prefix}-002..006, category "{category}",
+  source "generated". No prose, no fences.
+
+Produce 5 cases.
+
+## L 审核 checklist
+
+1. 日常性同 T checklist 1。
+2. expect_ops 的 gist 与 events 语义一致，无脑补；[] 类确实不该提取。
+3. noise-reject-task 的一次性限定词（这次/例外/临时）真实自然。
+4. relation 的 target 指向正确，reinforce/contradict 语义清晰二选一。
+5. 与已有 case 不近重复。
