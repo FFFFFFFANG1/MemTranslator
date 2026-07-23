@@ -57,7 +57,8 @@ def create_app(store_path: Path | None = None,
 
     @app.get("/")
     def index():
-        return FileResponse(config.WEB_DIR / "index.html")
+        return FileResponse(config.WEB_DIR / "index.html",
+                            headers={"Cache-Control": "no-cache"})
 
     @app.get("/api/health")
     def health():
@@ -93,7 +94,10 @@ def create_app(store_path: Path | None = None,
         text = body.text.strip()
         if not text:
             raise HTTPException(400, "empty request")
-        result = translate(text, store.list())
+        try:
+            result = translate(text, store.list())
+        except llm.LLMUnavailable:
+            raise HTTPException(502, "llm_unreachable")
         translate_counter["n"] += 1
         translate_id = f"tr-{translate_counter['n']}-{int(len(text))}"
         events.append("translate", {
@@ -156,6 +160,8 @@ def create_app(store_path: Path | None = None,
                                              DOWNSTREAM_SYSTEM, body.messages):
                     yield f"data: {json.dumps({'text': chunk}, ensure_ascii=False)}\n\n"
                 yield "data: {\"done\": true}\n\n"
+            except llm.LLMUnavailable:
+                yield "data: {\"error\": \"llm_unreachable\"}\n\n"
             except Exception as e:  # surface errors to the UI, never hang
                 yield f"data: {json.dumps({'error': str(e)}, ensure_ascii=False)}\n\n"
 

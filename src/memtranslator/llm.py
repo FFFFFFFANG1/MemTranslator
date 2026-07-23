@@ -1,10 +1,18 @@
 """Thin Anthropic client. Lazy so tests never need a key; tests monkeypatch
-`complete` and `stream_text` at module level."""
+`complete` and `stream_text` at module level.
+
+Network failures (this machine reaches Anthropic through a local proxy that
+can flap) surface as LLMUnavailable so endpoints can answer with an explicit,
+user-facing state instead of a bare 500."""
 from collections.abc import Iterator
 
 import anthropic
 
 _client: anthropic.Anthropic | None = None
+
+
+class LLMUnavailable(Exception):
+    """The model endpoint could not be reached (network/proxy down)."""
 
 
 def _get_client() -> anthropic.Anthropic:
@@ -15,21 +23,31 @@ def _get_client() -> anthropic.Anthropic:
 
 
 def complete(model: str, system: str, user: str, max_tokens: int = 1024) -> str:
-    resp = _get_client().messages.create(
-        model=model,
-        max_tokens=max_tokens,
-        system=system,
-        messages=[{"role": "user", "content": user}],
-    )
+    try:
+        resp = _get_client().messages.create(
+            model=model,
+            max_tokens=max_tokens,
+            system=system,
+            messages=[{"role": "user", "content": user}],
+        )
+    except anthropic.APIConnectionError as e:
+        raise LLMUnavailable("connection") from e
+    except anthropic.APIStatusError as e:
+        raise LLMUnavailable(f"status:{e.status_code}") from e
     return "".join(b.text for b in resp.content if b.type == "text")
 
 
 def stream_text(model: str, system: str, messages: list[dict],
                 max_tokens: int = 2048) -> Iterator[str]:
-    with _get_client().messages.stream(
-        model=model,
-        max_tokens=max_tokens,
-        system=system,
-        messages=messages,
-    ) as stream:
-        yield from stream.text_stream
+    try:
+        with _get_client().messages.stream(
+            model=model,
+            max_tokens=max_tokens,
+            system=system,
+            messages=messages,
+        ) as stream:
+            yield from stream.text_stream
+    except anthropic.APIConnectionError as e:
+        raise LLMUnavailable("connection") from e
+    except anthropic.APIStatusError as e:
+        raise LLMUnavailable(f"status:{e.status_code}") from e

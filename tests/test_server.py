@@ -107,6 +107,19 @@ def test_submit_event_natural_without_translate(tmp_path):
     assert r.json()["classification"] == "natural"
 
 
+def test_translate_502_when_llm_unreachable(tmp_path, monkeypatch):
+    client, _ = make_client(tmp_path)
+    client.post("/api/requirements", json={"text": "Short."})
+
+    def down(*a, **k):
+        raise llm.LLMUnavailable("connection")
+
+    monkeypatch.setattr(llm, "complete", down)
+    r = client.post("/api/translate", json={"text": "hello"})
+    assert r.status_code == 502
+    assert r.json()["detail"] == "llm_unreachable"
+
+
 def test_events_endpoint_lists_newest_first(tmp_path):
     client, app = make_client(tmp_path)
     client.post("/api/events/submit", json={"text": "a", "source": "x"})

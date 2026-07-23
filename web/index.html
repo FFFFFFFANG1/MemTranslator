@@ -230,6 +230,7 @@ button .k{opacity:.5;font-size:10.5px;margin-left:5px;font-family:var(--mono)}
   line-height:1.6;color:var(--parchment);word-break:break-word;
 }
 .req .date{font-size:10px;color:var(--faint);margin-top:4px;font-family:var(--mono)}
+.req .text[contenteditable="true"]{outline:1px solid var(--gold);outline-offset:3px;border-radius:3px}
 .req .retire{
   position:absolute;top:6px;right:4px;opacity:0;
   background:none;border:0;color:var(--faint);font-size:14px;padding:2px 6px;
@@ -377,6 +378,32 @@ function renderRequirements() {
   }
   reqListEl.innerHTML = html;
 
+  reqListEl.querySelectorAll(".req:not(.retired) .text").forEach(el => {
+    el.ondblclick = () => {
+      const id = el.closest(".req").dataset.id;
+      const old = el.textContent;
+      el.contentEditable = "true";
+      el.focus();
+      document.getSelection().selectAllChildren(el);
+      const finish = async (save) => {
+        el.contentEditable = "false";
+        const text = el.textContent.trim();
+        if (!save || !text || text === old) { el.textContent = old; return; }
+        await fetch(`/api/requirements/${id}`, {
+          method: "PATCH",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({text}),
+        });
+        await loadRequirements();
+      };
+      el.onblur = () => finish(true);
+      el.onkeydown = (e) => {
+        if (e.isComposing || e.keyCode === 229) return;
+        if (e.key === "Enter") { e.preventDefault(); el.blur(); }
+        if (e.key === "Escape") { el.onblur = null; finish(false); }
+      };
+    };
+  });
   reqListEl.querySelectorAll(".retire").forEach(btn =>
     btn.onclick = () => setStatus(btn.closest(".req").dataset.id, "retired"));
   reqListEl.querySelectorAll(".revive").forEach(btn =>
@@ -455,6 +482,7 @@ async function polish() {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({text}),
     });
+    if (r.status === 502) throw new Error("UNREACHABLE");
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const out = await r.json();
     if (out.decision === "apply") {
@@ -478,7 +506,9 @@ async function polish() {
         polished: text, appliedIds: [] };
     }
   } catch (err) {
-    setNotice("rust", `润色失败（${err.message}）· 原文未动`);
+    setNotice("rust", err.message === "UNREACHABLE"
+      ? "模型不可达（检查本地代理）· 原文未动"
+      : `润色失败（${err.message}）· 原文未动`);
   } finally {
     state.busy = false;
     polishBtn.disabled = sendBtn.disabled = false;
@@ -543,7 +573,8 @@ async function send() {
           body.textContent = acc;
           chatEl.scrollTop = chatEl.scrollHeight;
         } else if (evt.error) {
-          throw new Error(evt.error);
+          throw new Error(evt.error === "llm_unreachable"
+            ? "模型不可达，检查本地代理" : evt.error);
         }
       }
     }
@@ -573,11 +604,17 @@ inputEl.addEventListener("input", () => {
   if (state.lastTranslate) renderChips();  // refresh "已手动编辑" tag
 });
 inputEl.addEventListener("keydown", (e) => {
+  // IME composition: Enter confirms the candidate, it must never send
+  if (e.isComposing || e.keyCode === 229) return;
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "e") {
     e.preventDefault(); polish();
   } else if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault(); send();
   }
+});
+$("#add-input").addEventListener("keydown", (e) => {
+  if ((e.isComposing || e.keyCode === 229) && e.key === "Enter")
+    e.preventDefault();  // don't submit the form on IME confirm
 });
 polishBtn.onclick = polish;
 sendBtn.onclick = send;
