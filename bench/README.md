@@ -22,20 +22,46 @@ hand-curated, no leaderboard chasing).
     uv run python -m bench.runner.run_e2e --provider reference
     uv run python -m bench.runner.report
 
-## Current water line
+## Current water line (2026-07-24)
 
-**T = 0.817** (first real run, 2026-07-24; translator=`claude-haiku-4-5`,
-judge=`deepseek-v4-pro` via Ark, 0 judge parse flags; snapshot
-`T-20260724-005534`)
+Models: translator=`claude-haiku-4-5` (product path, temperature unpinned),
+judge=`deepseek-v4-pro` via the .env Ark channel (temperature 0, thinking
+disabled). Judge parse flags: 0 across all runs.
 
-| category | rate | note |
-|---|---|---|
-| scope-noop | 1.00 | never touches unrelated input |
-| apply-single | 0.90 | 1 fail: zh requirement dragged an en input into zh |
-| apply-multi | 0.90 | 1 fail: one of two constraints not woven in |
-| exception | 0.80 | 1 real miss + 1 suspected judge false-negative (t-exc-004, → Task 9 audit) |
-| language-mixed | 0.80 | same language-drag failure mode as above |
-| preserve-long | 0.50 | v0's main weakness: long pasted material → conservative noop |
+| suite | score | provider | note |
+|---|---|---|---|
+| **T** | **0.817 / 0.800** (two runs) | v0 oracle | real v0 water line |
+| **L** | 0.333 floor / **0.806 baseline** | null / reference | baseline to beat for v1 |
+| **E** | **0.000 floor / 0.500 baseline** | null / reference | 4/8 personas pass on the naive baseline |
 
-L / E: pending v1 (NullProvider floor and ReferenceProvider baseline recorded
-by Task 9).
+**T per-category (run 1 / run 2):** scope-noop 1.00/1.00 ·
+apply-single 0.90/0.90 · apply-multi 0.90/1.00 · exception 0.80/0.70 ·
+language-mixed 0.80/0.60 · preserve-long 0.50/0.60.
+v0's weak spots: long pasted material → conservative noop (preserve-long),
+and zh requirements dragging en inputs into zh (language-mixed).
+
+**Stability (T, two runs):** case-level flips 5/60 (8.3%). Attribution: all
+5 flips trace to the translator producing different output between runs
+(decision or polished changed); zero flips with identical translator output —
+i.e. the grading layer (mech + judge) showed no instability, and the flip
+rate measures v0's own run-to-run variance (product path keeps its default
+temperature; the bench does not modify src). Suite score moved 0.817 → 0.800.
+
+**L reference detail:** diff-new-constraint 0.17 (the naive one-call baseline
+cannot learn from edit diffs — exactly the v1 value proposition),
+noise-reject-content 0.67, all other categories 1.00.
+
+**E reference detail:** researcher-zh/writer-zh 1.00, pm-en/student-en 0.88,
+mixed-lang 0.50, dev-zh 0.38, datasci-zh 0.75, minimalist-zh 0.00. The
+baseline learns personas whose corrections restate rules explicitly, and
+loses the ones where a correction appears once and the rest must come from
+edit diffs — the same b3 gap Suite L isolates.
+
+**Judge trust:** binary fail-closed verdicts, 0 parse flags; one suspected
+false-negative observed (t-exc-004). Human audit sheet:
+`bench/gen/judge-audit.md` (30 sampled verdicts, awaiting siriux's
+annotation; gate: ≥90% agreement).
+
+**Gate status:** with L/E on stand-in providers the overall is far below
+0.80 — expected and by design (sign-off ③: the gate is the v1 acceptance
+bar; today's FAIL is a statement of fact, not a bug).

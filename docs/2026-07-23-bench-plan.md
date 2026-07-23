@@ -1,5 +1,7 @@
 # Bench Plan：第一版验收基准（v1-acceptance bench）
 
+> **状态：全部执行完成（2026-07-24）**，唯余 Task 9 Step 2 的人工闸门（`bench/gen/judge-audit.md` 30 条抽检，等 siriux 标注）。水位：T 0.817/0.800（v0 真实分，双跑翻转 5/60 全部归因 translator 方差、判定层 0 翻转）；L null 0.333 / reference 0.806；E null 0.000 / reference 0.500；overall 0.712，gate FAIL（预期内，见拍板 ③）。执行偏差记录：① judge/生成换 DeepSeek（见下条决议）；② Suite T 的 60 条含 43 generated + 16 handwritten + 1 prefeval（生成候选 48 弃 4、手写替补 4；PrefEval 合格 delivery 条目仅 1 条，"宁缺毋滥"应验）；③ run_e2e 增加 persona 数硬校验（iCloud 曾瞬时藏文件导致 7/8 静默跑分）；④ `.venv` 已 symlink 到 `~/.venvs/memtranslator-venv`（iCloud 是 editable .pth 间歇失效根因）；⑤ stability 阈值口径澄清——<5% 约束的是判定层抖动（实测 0），被测系统方差如实记录不修。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 > **拍板决议（2026-07-24，siriux）：** ① gate 加"每 suite ≥70%"下限；② judge = `deepseek-v4-pro`，case 扩展生成 = `deepseek-v4-flash`，均走仓库根 `.env` 配置的 OpenAI-compatible 通道（当前为 Volcano Ark coding 端点，`thinking: disabled` + `temperature: 0`；`.env` 已 gitignore）；③ E suite 从始至终三 suite 一起算，v1 落地前 overall fail 是事实陈述。Task 3 的 config/judge 代码已按此更新；translator 仍走产品路径 `claude-haiku-4-5` 不变。
