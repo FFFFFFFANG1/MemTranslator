@@ -27,5 +27,25 @@ uv run uvicorn memtranslator.server:app --port 8123
 
 Open http://127.0.0.1:8123 — add a requirement on the right, type a request, hit **⌘E** to polish (the result lands back in the composer, editable), then **Enter** to send. The downstream agent only sees the text you confirmed. Runtime state lives in `data/` (gitignored); delete it to reset.
 
+> On this machine, keep the venv outside the iCloud tree or file eviction
+> will randomly break editable installs:
+> `export UV_PROJECT_ENVIRONMENT="$HOME/.venvs/memtranslator"` before `uv` calls.
+
+## The closed loop (v0.5)
+
+Two channels join inside the daemon — no markers ever embedded in text:
+
+    hotkey app ──(raw, polished)──▶ daemon ◀──(final text)── agent hook
+                            join → accepted / edited / reverted / natural
+
+- **Hotkey shell** (`uv run --group hotkey python -m memtranslator.hotkey`):
+  menu bar ⇄, global ⌥⌘E polishes the focused text field via Accessibility
+  (grant permission on first run). AX write-back with a clipboard fallback.
+- **Claude Code hook**: merge `hooks/claude-code/settings-fragment.json`
+  into `~/.claude/settings.json`. Fail-open: if the daemon is down the
+  prompt passes through untouched. Cursor / Codex hooks: not yet.
+- Everything stays on your machine: capture, storage (`data/`), and the
+  flash extraction planned for v1.
+
 - `position_anchor.md` — 项目定位锚点（唯一方向依据）
 - `docs/archive.md` — record of the 2026-07 first build (record only; every approach in it deviates from the anchor)
