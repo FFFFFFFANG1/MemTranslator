@@ -11,6 +11,11 @@ dependencies = [
 
 [dependency-groups]
 dev = ["pytest>=8", "httpx>=0.27"]
+hotkey = [
+    "pyobjc-framework-Cocoa>=10",
+    "pyobjc-framework-Quartz>=10",
+    "pyobjc-framework-ApplicationServices>=10",
+]
 
 [build-system]
 requires = ["hatchling"]
