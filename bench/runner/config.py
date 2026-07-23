@@ -35,6 +35,9 @@ GEN_MODEL = "deepseek-v4-flash"      # case 扩展生成用（同通道）
 JUDGE_MAX_TOKENS = 300
 E2E_SECOND_HALF_FROM = 9             # rounds 9..16 count toward the score
 E2E_PASS_THRESHOLD = 0.8
+E2E_PERSONA_COUNT = 8                # nominal suite size; fewer = hard error
+                                     # (iCloud can transiently hide a file —
+                                     # a silently smaller suite skews scores)
 GATE_OVERALL = 0.80
 GATE_PER_SUITE = 0.70                # 拍板点 1 决议：加下限
 WEIGHTS = {"T": 0.4, "L": 0.3, "E": 0.3}

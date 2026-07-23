@@ -23,10 +23,16 @@ def suite_score(results: list[dict]) -> float:
 
 
 def write_snapshot(suite: str, cases_path: str, results: list[dict]) -> Path:
-    RESULTS.mkdir(exist_ok=True)
+    RESULTS.mkdir(parents=True, exist_ok=True)
     stamp = time.strftime("%Y%m%d-%H%M%S")
-    case_hash = hashlib.sha256(
-        Path(cases_path).read_bytes()).hexdigest()[:12]
+    p = Path(cases_path)
+    if p.is_dir():
+        h = hashlib.sha256()
+        for f in sorted(p.glob("*.json")):
+            h.update(f.read_bytes())
+        case_hash = h.hexdigest()[:12]
+    else:
+        case_hash = hashlib.sha256(p.read_bytes()).hexdigest()[:12]
     snap = {"suite": suite, "at": stamp, "judge_model": JUDGE_MODEL,
             "cases_file": str(cases_path), "cases_hash": case_hash,
             "score": suite_score(results),
