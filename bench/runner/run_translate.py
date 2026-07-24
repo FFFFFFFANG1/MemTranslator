@@ -4,6 +4,9 @@ import argparse
 import json
 import time
 
+import httpx
+
+from memtranslator.llm import LLMUnavailable
 from memtranslator.schema import Requirement
 from memtranslator.translate import translate
 
@@ -95,7 +98,19 @@ def main():
     cases = load_translate_cases(args.cases)
     results = []
     for i, case in enumerate(cases, 1):
-        r = run_case(case)
+        # transient-channel retry: the Anthropic proxy on this machine flaps,
+        # and one blip must not kill a whole run (backoff 5/15/45s, then die)
+        for attempt in range(4):
+            try:
+                r = run_case(case)
+                break
+            except (LLMUnavailable, httpx.HTTPError):
+                if attempt == 3:
+                    raise
+                wait = 5 * 3 ** attempt
+                print(f"[{i}/{len(cases)}] {case.id} channel unavailable, "
+                      f"retry in {wait}s", flush=True)
+                time.sleep(wait)
         results.append(r)
         print(f"[{i}/{len(cases)}] {case.id} "
               f"{'PASS' if r['pass'] else 'FAIL'}", flush=True)
