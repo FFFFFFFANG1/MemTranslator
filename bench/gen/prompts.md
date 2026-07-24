@@ -76,3 +76,29 @@ Produce 5 cases.
 3. noise-reject-task 的一次性限定词（这次/例外/临时）真实自然。
 4. relation 的 target 指向正确，reinforce/contradict 语义清晰二选一。
 5. 与已有 case 不近重复。
+
+---
+
+# Suite L 第二批：CRUD 补全（revoke / diff-supersede / dedup，各 6 条；2026-07-24 拍板）
+
+op 词表扩为 `{new, reinforce, contradict, retire, merge}`；events 为 [] 的
+case 走 `provider.consolidate(existing)`（对齐 pipeline proposal 的
+extraction + consolidation 两 call）。生成与审核流程同上，三类 spec：
+
+- **revoke**：规则的持久撤销。(a) natural 撤销句（不用了/forget that rule）
+  → 一个 `retire`（target 必填，无 gist）；(b) edited_diff 里用户仅把
+  polished 织入的库中约束删回 raw（一次性负信号，机械 strength 处理）
+  → expect_ops **[]**。比例约 3:2。
+- **diff-supersede**：edited_diff 里 final 把 polished 织入的约束**改了参数**
+  （120→80 词、bullet→table、英文→中文）→ 一个 `contradict`（target=被改
+  条目，gist=新规则）。注意 raw/polished/final 必须是**用户请求**而非产出物
+  内容；polished 织入的约束必须真来自 existing（第一批生成曾在这两点翻车）。
+- **dedup**：events 必须 []。existing 3–5 条中恰有 2–3 条同义（改写或 zh/en
+  互译），其余明显不同 → 一个 `merge`（targets=重复下标集，gist=合并后规则）。
+  多余合并（把不同规则并进去）即 fail。
+
+## 第二批审核 checklist 增补
+
+6. supersede 的 diff 三元组是请求文本；polished 织入约束 grounded 于 existing。
+7. revoke (b) 与 supersede 的区分：删除→[]，改参→contradict——绝不混淆。
+8. dedup 的 targets 集合精确（漏合、多合都 fail）；merge 对语义必须真等价。
