@@ -69,7 +69,8 @@ class Store:
         for op in ops:
             kind = op.get("kind")
             if kind == "new":
-                self.add(op["text"], key=op.get("key", ""),
+                self.add(op["text"], kind=op.get("rkind", "requirement"),
+                         key=op.get("key", ""),
                          scope=op.get("scope") or {}, source="learned",
                          salience=op.get("salience", 3))
                 applied += 1

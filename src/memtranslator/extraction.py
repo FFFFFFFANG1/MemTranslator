@@ -1,0 +1,139 @@
+"""Write-path call #1: batched extraction + diff attribution (design §5).
+
+One flash call digests both signal routes — route-A discourse spans and
+route-B (raw, polished, final) diff triples — against a NUMBERED index of the
+current store. The model refers to entries by index number, never by raw id
+(design R6: hex ids are not robust to copy through a flash model; numbers
+are). Out-of-range numbers drop the op and raise a flag.
+"""
+import json
+
+from memtranslator import llm
+from memtranslator.config import INDEX_ROW_TOKENS, MODELS, SALIENCE_MIN
+from memtranslator.schema import Requirement
+
+EXTRACTION_SYSTEM = """You maintain a store of a user's delivery requirements — durable rules about
+HOW tasks should be executed and delivered (length, format, tone, language,
+method, workflow). You receive:
+- STORE: the current entries, numbered [1]..[N];
+- SIGNALS-A: sentence spans from the user's messages that may set or correct
+  a durable rule;
+- SIGNALS-B: rewrite records {raw → polished → final} where "final" is what
+  the user actually sent after our rewrite, with a mechanical survival label
+  for the injected constraints (kept / removed / mixed).
+
+Emit requirement operations, following ALL of these rules:
+1. Extract only durable "how the task is done" rules the user expressed.
+   NEVER extract: content preferences (what to recommend, personal facts,
+   tastes), one-off instructions scoped to a single task ("this time", "这次",
+   "例外", "just this once"), or task content itself.
+2. If a signal restates an existing entry, emit "reinforce" with its number.
+   If it durably overrides or narrows one, emit "contradict" with the number
+   and the corrected text (fold exceptions into the text, e.g. "...— except
+   formal cover letters"). If the user durably withdraws one with no
+   replacement, emit "retire" with the number. Same facet → update, never
+   create a duplicate.
+3. SIGNALS-B: text the user ADDED into "final" that states a reusable
+   constraint → "new" (or contradict/reinforce if it maps to an entry).
+   A merely deleted injected constraint is a one-off signal — emit nothing
+   for it (mechanical strength already handled it). If the user REWORDED an
+   injected constraint but kept its meaning, that is feedback on our rewrite
+   style: emit "style_rule" with a short imperative rule (≤25 tokens) about
+   how to phrase rewrites.
+4. Requirement text: single sentence, user's language, imperative gist.
+   Include "key": a two-part facet key like email.length / code.explanation /
+   report.format (reuse an existing entry's key when the facet matches).
+   Include "scope" only when clearly not global, e.g. {"task": "email"}.
+5. Rate each op "salience" 1-5 (how clearly the user expressed a durable
+   rule). Uncertain guesses get low salience. No computation, no invention.
+
+Output STRICTLY a JSON array (possibly empty), nothing else:
+[{"op": "new"|"reinforce"|"contradict"|"retire"|"style_rule",
+  "target": <index number or null>, "text": "...", "key": "facet.attr",
+  "scope": {}, "salience": 1-5, "evidence": "<short quote>"}]"""
+
+
+def _index_block(existing: list[Requirement]) -> str:
+    rows = []
+    for n, r in enumerate(existing, 1):
+        text = r.text if len(r.text) <= INDEX_ROW_TOKENS * 4 \
+            else r.text[:INDEX_ROW_TOKENS * 4] + "…"
+        rows.append(f"[{n}] ({r.key or 'unclassified'}) {text}")
+    return "\n".join(rows) or "(store is empty)"
+
+
+def build_user_prompt(a_candidates: list[str], b_candidates: list[dict],
+                      existing: list[Requirement]) -> str:
+    parts = [f"STORE:\n{_index_block(existing)}"]
+    if a_candidates:
+        lines = "\n".join(f"- {s}" for s in a_candidates)
+        parts.append(f"SIGNALS-A (message spans):\n{lines}")
+    if b_candidates:
+        blocks = []
+        for b in b_candidates:
+            blocks.append(json.dumps(
+                {"raw": b["raw"], "polished": b["polished"],
+                 "final": b["final"], "applied": b.get("applied", []),
+                 "survival": b.get("survival", "unknown")},
+                ensure_ascii=False))
+        parts.append("SIGNALS-B (rewrite records):\n" + "\n".join(blocks))
+    parts.append("JSON:")
+    return "\n\n".join(parts)
+
+
+def parse_ops(raw: str, existing: list[Requirement]) -> tuple[list[dict], list[str]]:
+    """LLM output → store ops. Numbers become ids here; anything malformed
+    is dropped with a flag, never guessed."""
+    s = raw.strip()
+    start, end = s.find("["), s.rfind("]")
+    if start < 0 or end <= start:
+        return [], ["unparseable"]
+    try:
+        items = json.loads(s[start:end + 1])
+    except json.JSONDecodeError:
+        return [], ["unparseable"]
+
+    ops, flags = [], []
+    for it in items:
+        if not isinstance(it, dict):
+            continue
+        op = it.get("op")
+        salience = it.get("salience", 0)
+        if not isinstance(salience, int) or salience < SALIENCE_MIN:
+            continue
+        target_id = None
+        if it.get("target") is not None:
+            t = it["target"]
+            if not isinstance(t, int) or not (1 <= t <= len(existing)):
+                flags.append(f"target out of range: {t!r}")
+                continue
+            target_id = existing[t - 1].id
+
+        if op == "new" and isinstance(it.get("text"), str):
+            ops.append({"kind": "new", "text": it["text"],
+                        "key": it.get("key", ""),
+                        "scope": it.get("scope") or {}, "salience": salience})
+        elif op == "style_rule" and isinstance(it.get("text"), str):
+            ops.append({"kind": "new", "text": it["text"], "key": "",
+                        "scope": {}, "salience": salience,
+                        "rkind": "style_rule"})
+        elif op == "reinforce" and target_id:
+            ops.append({"kind": "reinforce", "target_id": target_id})
+        elif op == "contradict" and target_id and isinstance(it.get("text"), str):
+            ops.append({"kind": "contradict", "target_id": target_id,
+                        "text": it["text"], "key": it.get("key", ""),
+                        "scope": it.get("scope") or {}, "salience": salience})
+        elif op == "retire" and target_id:
+            ops.append({"kind": "retire", "target_id": target_id})
+        else:
+            flags.append(f"malformed op: {op!r}")
+    return ops, flags
+
+
+def run_extraction(a_candidates: list[str], b_candidates: list[dict],
+                   existing: list[Requirement]) -> dict:
+    user = build_user_prompt(a_candidates, b_candidates, existing)
+    raw = llm.complete(MODELS["translator"], EXTRACTION_SYSTEM, user,
+                       max_tokens=1500)
+    ops, flags = parse_ops(raw, existing)
+    return {"ops": ops, "flags": flags}
