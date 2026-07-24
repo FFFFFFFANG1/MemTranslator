@@ -94,4 +94,37 @@ class ReferenceProvider:
         return _parse_ops(raw)
 
 
-PROVIDERS = {"null": NullProvider, "reference": ReferenceProvider}
+class V1Provider:
+    """The real v1 pipeline behind the bench seam (design §9): signal layer
+    (screening + span attribution) → batched extraction → ops. Thin on
+    purpose — no time triggers (the bench feeds explicit batches), and
+    style_rule ops are filtered out: they are product-internal rewrite
+    feedback, not requirement ops in the bench contract."""
+
+    def extract(self, events, existing):
+        from memtranslator.extraction import run_extraction
+        from memtranslator.signals import attribute_diff, screen_message
+
+        keys = [r.key for r in existing if r.key]
+        a_spans, b_triples = [], []
+        for e in events:
+            if e.get("type") == "natural":
+                a_spans += screen_message(e["text"], existing_keys=keys)
+            elif e.get("type") == "edited_diff":
+                attr = attribute_diff(e["raw"], e["polished"], e["final"])
+                b_triples.append({
+                    "raw": e["raw"], "polished": e["polished"],
+                    "final": e["final"], "applied": [],
+                    "survival": attr["injection_survival"]})
+        if not a_spans and not b_triples:
+            return []
+        out = run_extraction(a_spans, b_triples, existing)
+        return [o for o in out["ops"] if o.get("rkind") != "style_rule"]
+
+    def consolidate(self, existing):
+        from memtranslator.consolidate import consolidation_ops
+        return consolidation_ops(existing)["ops"]
+
+
+PROVIDERS = {"null": NullProvider, "reference": ReferenceProvider,
+             "v1": V1Provider}

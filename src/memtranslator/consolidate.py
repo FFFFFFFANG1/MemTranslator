@@ -57,14 +57,17 @@ def buckets(reqs: list[Requirement]) -> list[list[Requirement]]:
     return out
 
 
-def run_consolidation(store: Store) -> dict:
-    bucket_groups = buckets(store.active())
-    styles = [r for r in store.active() if r.kind == "style_rule"]
+def consolidation_ops(reqs: list[Requirement]) -> dict:
+    """Pure half of consolidation: bucket → (maybe) call → parsed ops.
+    Persisting is the caller's job — the bench adapter grades these ops
+    directly, the product path applies them via run_consolidation."""
+    active = [r for r in reqs if r.status == "active"]
+    bucket_groups = buckets(active)
+    styles = [r for r in active if r.kind == "style_rule"]
     style_over = len(styles) > STYLE_RULE_CAP
 
     if not bucket_groups and not style_over:
-        return {"ops": [], "flags": [],
-                "store": {"applied": 0, "skipped": []}}
+        return {"ops": [], "flags": []}
 
     numbered: list[Requirement] = []
     for grp in bucket_groups:
@@ -88,5 +91,10 @@ def run_consolidation(store: Store) -> dict:
     raw = llm.complete(MODELS["translator"], CONSOLIDATE_SYSTEM,
                        "\n\n".join(parts), max_tokens=1200)
     ops, flags = parse_ops(raw, numbered)
-    applied = store.apply_ops(ops)
-    return {"ops": ops, "flags": flags, "store": applied}
+    return {"ops": ops, "flags": flags}
+
+
+def run_consolidation(store: Store) -> dict:
+    out = consolidation_ops(store.active())
+    applied = store.apply_ops(out["ops"])
+    return {"ops": out["ops"], "flags": out["flags"], "store": applied}
