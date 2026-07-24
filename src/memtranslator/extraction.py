@@ -38,8 +38,11 @@ Emit requirement operations, following ALL of these rules:
    tone, length, method) COUNTS as a durable signal even when seen once —
    that is the point of this channel. Cover the FULL added delta — if the
    user added both a language and a tone constraint, the new rule carries
-   both; keep the task's stated context (e.g. "emails to the landlord"), do
-   not generalize beyond it. NEVER emit ops about constraints that were
+   both. Bind each learned rule to the breadth the user's intent supports:
+   delivery mechanics (length, format, language, structure) generalize to
+   the TASK TYPE ("emails I ask you to draft", "code answers"), never to the
+   specific instance (this landlord, this file); interpersonal tone and
+   recipient-specific asks stay scoped to their stated context. NEVER emit ops about constraints that were
    already in "polished" (our own injections are not user signals — no
    reinforce for them). A deleted or weakened injected constraint is a
    one-off signal: emit NOTHING for it — no retire, no contradict

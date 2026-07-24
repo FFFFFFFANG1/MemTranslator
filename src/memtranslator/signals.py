@@ -153,9 +153,10 @@ _WITHDRAW_PAT = re.compile(
     r"no need to|remove|drop (that|the)", re.IGNORECASE)
 _META_PAT = re.compile(
     r"格式|语气|长度|语言|风格|单位|段落|字数|词数|\d+\s*[词字]|简短|简洁|"
-    r"详细|正式|口语|注释|大纲|引用|来源|出处|结论|总结|解释|bullet|markdown|"
-    r"latex|format|tone|length|style|concise|formal|comment|cite|source|"
-    r"outline|summar|jargon|type hints?", re.IGNORECASE)
+    r"[写说]短|短一?点|详细|正式|口语|注释|大纲|引用|来源|出处|结论|总结|"
+    r"解释|复述|重复|bullet|markdown|latex|format|tone|length|style|concise|"
+    r"formal|comment|cite|source|outline|summar|jargon|repeat|rephrase|"
+    r"type hints?", re.IGNORECASE)
 _IMPERATIVE_PAT = re.compile(
     r"帮我别|给我直接|你要|你别|i need|i want|don't|do not|please\s",
     re.IGNORECASE)
