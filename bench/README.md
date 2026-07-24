@@ -31,7 +31,7 @@ disabled). Judge parse flags: 0 across all runs.
 | suite | score | provider | note |
 |---|---|---|---|
 | **T** | **0.817 / 0.800 / 0.833** (runs 1-2: v1 criterion wording; run 3: v2) | v0 oracle | real v0 water line |
-| **L** | 0.333 floor / **0.806 baseline** | null / reference | baseline to beat for v1 |
+| **L** | 0.259 floor / **0.833 baseline** | null / reference | 54 cases, 9 categories after the CRUD expansion |
 | **E** | **0.000 floor / 0.500 baseline** | null / reference | 4/8 personas pass on the naive baseline |
 
 **T per-category (run 1 / run 2):** scope-noop 1.00/1.00 ·
@@ -47,9 +47,25 @@ i.e. the grading layer (mech + judge) showed no instability, and the flip
 rate measures v0's own run-to-run variance (product path keeps its default
 temperature; the bench does not modify src). Suite score moved 0.817 → 0.800.
 
-**L reference detail:** diff-new-constraint 0.17 (the naive one-call baseline
-cannot learn from edit diffs — exactly the v1 value proposition),
-noise-reject-content 0.67, all other categories 1.00.
+**L structure (since 2026-07-24, second batch):** 9 categories × 6 — the
+original 6 plus the CRUD completion: **revoke** (durable withdrawal → retire;
+one-off constraint deletion in a diff → must stay silent), **diff-supersede**
+(final edits the woven-in constraint's parameter → contradict), **dedup**
+(events=[], graded through the second provider entry point
+`consolidate(existing)` → merge; op vocabulary now
+new/reinforce/contradict/retire/merge, matching the pipeline proposal's
+extraction + consolidation two-call design). Old L snapshots (36-case, 6-cat)
+are not comparable with the new macro.
+
+**L reference detail (54-case, 2026-07-24, snapshot `L-20260724-173706`):**
+diff-new-constraint 0.17 and noise-reject-content 0.67 remain the naive
+baseline's two big gaps (edit-diff learning and noise precision — the v1
+value proposition). New categories: dedup 1.00, revoke 0.83 (its one miss is
+the case designed to catch exactly that error: a one-off constraint deletion
+misread as a durable retire), diff-supersede 0.83 (its one miss: the op was
+semantically perfect but referenced a mis-copied requirement id — evidence
+for the signal proposal's numbered-candidate match-judge design over raw id
+copying). 0 judge parse flags.
 
 **E reference detail:** researcher-zh/writer-zh 1.00, pm-en/student-en 0.88,
 mixed-lang 0.50, dev-zh 0.38, datasci-zh 0.75, minimalist-zh 0.00. The
