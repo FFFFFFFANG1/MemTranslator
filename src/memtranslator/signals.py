@@ -53,3 +53,184 @@ def classify_submit(text: str, at: float, translate_events: list[dict]) -> dict:
                 "matched_translate_id": tid, "similarity": sim_polished}
     return {"classification": "natural",
             "matched_translate_id": None, "similarity": None}
+
+
+# ---------------------------------------------------------------------------
+# M1 / B1 — mechanical span attribution over the (raw, polished, final) triple
+# (design 2026-07-24 §4; 0 tokens). Verdict drives the mechanical strength
+# rule; ambiguous cases carry the triple into the extraction batch instead.
+# ---------------------------------------------------------------------------
+
+# Length-weighted survival thresholds for injected spans: below KILL the
+# injection is effectively gone, above KEEP it survived; in between the
+# signal is ambiguous and the LLM attribution call decides. Engineering
+# constants over span arithmetic, not tuned against any eval data.
+_SURVIVE_KEEP = 0.7
+_SURVIVE_KILL = 0.3
+
+
+def _spans(a: str, b: str, tags: tuple, side: str) -> list[tuple[int, int]]:
+    """Opcode ranges on one side of a SequenceMatcher diff."""
+    out = []
+    for tag, i1, i2, j1, j2 in SequenceMatcher(None, a, b).get_opcodes():
+        if tag in tags:
+            out.append((i1, i2) if side == "a" else (j1, j2))
+    return [(s, e) for s, e in out if e > s]
+
+
+def attribute_diff(raw: str, polished: str, final: str) -> dict:
+    """Classify what the user's final edit did to the injected constraints.
+
+    Returns {verdict, injection_survival, strength_delta, user_added}:
+    verdict accepted|reverted|partial; survival kept|removed|mixed|none;
+    user_added = text the user added on top of polished (route-B b3 feed).
+    """
+    if _norm(final) == _norm(polished):
+        return {"verdict": "accepted", "injection_survival": "kept",
+                "strength_delta": +1, "user_added": []}
+    if _norm(final) == _norm(raw):
+        return {"verdict": "reverted", "injection_survival": "removed",
+                "strength_delta": -1, "user_added": []}
+
+    inject = _spans(raw, polished, ("insert", "replace"), side="b")
+    edits = _spans(polished, final, ("delete", "replace"), side="a")
+    user_added = [final[j1:j2] for j1, j2 in
+                  _spans(polished, final, ("insert", "replace"), side="b")]
+
+    total = sum(e - s for s, e in inject)
+    if total == 0:
+        return {"verdict": "partial", "injection_survival": "none",
+                "strength_delta": 0, "user_added": user_added}
+
+    removed = 0
+    for s, e in inject:
+        for es, ee in edits:
+            lo, hi = max(s, es), min(e, ee)
+            if hi > lo:
+                removed += hi - lo
+    survival = 1 - removed / total
+    if survival >= _SURVIVE_KEEP:
+        label, delta = "kept", +1
+    elif survival <= _SURVIVE_KILL:
+        label, delta = "removed", -1
+    else:
+        label, delta = "mixed", 0
+    return {"verdict": "partial", "injection_survival": label,
+            "strength_delta": delta, "user_added": user_added}
+
+
+# ---------------------------------------------------------------------------
+# M1 / Route A — sentence-level screening of natural messages (design §4;
+# 0 tokens). Splits a message into material vs discourse zones, scores
+# discourse sentences on rule-setting features, submits top spans only.
+#
+# Lexicon provenance (design §8 discipline): patterns come from the signal
+# proposal's examples ("不是/别再/以后都/记住/要求/太长/太短/重新"), the v0
+# translator vocabulary, and generic correction/meta-discourse phrasing.
+# Nothing here was derived from bench case files.
+# ---------------------------------------------------------------------------
+
+import re
+
+_RULE_PAT = re.compile(
+    r"以后|一律|从现在起|从今往后|每次都|别再|不要再|不是让你|说过|记住|"
+    r"必须|一概|太长|太短|重新|from now on|always|never|stop\s|i told you|"
+    r"remember to|make sure", re.IGNORECASE)
+_META_PAT = re.compile(
+    r"格式|语气|长度|语言|风格|单位|段落|字数|词数|简短|简洁|详细|正式|口语|"
+    r"注释|大纲|引用|结论|bullet|markdown|latex|format|tone|length|style|"
+    r"concise|formal|comment|cite|outline|type hints?", re.IGNORECASE)
+_IMPERATIVE_PAT = re.compile(
+    r"帮我别|给我直接|你要|你别|don't|do not|please\s", re.IGNORECASE)
+_MD_STRUCT = re.compile(r"^\s*(#{1,6}\s|[-*>]\s|\d+\.\s)")
+
+# Controlled facet lexicon: maps facet-key vocabulary to surface forms in
+# both product languages, so a stored key can boost a borderline sentence.
+_KEY_LEXICON = {
+    "email": ["email", "mail", "邮件"], "code": ["code", "代码"],
+    "report": ["report", "周报", "报告"], "doc": ["doc", "文档"],
+    "meeting": ["meeting", "会议"], "research": ["research", "调研", "论文"],
+    "tone": ["tone", "语气"], "length": ["length", "长度", "字数", "词数"],
+    "format": ["format", "格式"], "language": ["language", "语言"],
+    "style": ["style", "风格"], "explanation": ["explanation", "解释"],
+    "comment": ["comment", "注释"], "citation": ["cite", "引用", "出处"],
+}
+
+_SENT_SPLIT = re.compile(r"(?<=[。！？!?；;\n])")
+_MATERIAL_MIN_LEN = 80        # a run of ≥3 sentences this long reads as pasted material
+_SPAN_BUDGET = 600            # chars submitted per message, ~600 tokens for zh
+
+
+def _strip_code_fences(text: str) -> str:
+    parts = text.split("```")
+    return "\n".join(p for i, p in enumerate(parts) if i % 2 == 0)
+
+
+def _material_mask(sents: list[str]) -> list[bool]:
+    mask = [False] * len(sents)
+    for i, s in enumerate(sents):
+        if _MD_STRUCT.match(s) or "http://" in s or "https://" in s:
+            mask[i] = True
+    run = []
+    for i, s in enumerate(sents):
+        if len(s.strip()) >= _MATERIAL_MIN_LEN:
+            run.append(i)
+        else:
+            if len(run) >= 3:
+                for j in run:
+                    mask[j] = True
+            run = []
+    if len(run) >= 3:
+        for j in run:
+            mask[j] = True
+    return mask
+
+
+def _key_terms(existing_keys: list[str]) -> list[str]:
+    terms = []
+    for k in existing_keys:
+        for part in k.split("."):
+            terms += _KEY_LEXICON.get(part, [part] if len(part) > 2 else [])
+    return terms
+
+
+def screen_message(text: str,
+                   existing_keys: list[str] | None = None) -> list[str]:
+    """Return the spans of a natural message worth showing to extraction,
+    or [] (most messages — the whole-batch-silent → 0-call property)."""
+    sents = [s for s in _SENT_SPLIT.split(_strip_code_fences(text)) if s.strip()]
+    if not sents:
+        return []
+    material = _material_mask(sents)
+    key_terms = _key_terms(existing_keys or [])
+
+    scored = []
+    for i, s in enumerate(sents):
+        if material[i] or len(s.strip()) < 6:
+            continue
+        score = 0
+        if _RULE_PAT.search(s):
+            score += 3
+        if _META_PAT.search(s):
+            score += 2
+        if _IMPERATIVE_PAT.search(s):
+            score += 1
+        if len(sents) >= 3 and i in (0, len(sents) - 1):
+            score += 1
+        low = s.lower()
+        if any(t.lower() in low for t in key_terms):
+            score += 2
+        if score >= 3:
+            scored.append((score, i))
+
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    spans, budget, taken = [], _SPAN_BUDGET, set()
+    for _, i in scored[:3]:
+        lo, hi = max(0, i - 1), min(len(sents), i + 2)
+        piece = "".join(sents[j][:_MATERIAL_MIN_LEN] for j in range(lo, hi)
+                        if not material[j] and j not in taken)
+        taken.update(range(lo, hi))
+        if piece and len(piece) <= budget:
+            spans.append(piece)
+            budget -= len(piece)
+    return spans
