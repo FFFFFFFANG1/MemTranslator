@@ -33,13 +33,18 @@ Emit requirement operations, following ALL of these rules:
    formal cover letters"). If the user durably withdraws one with no
    replacement, emit "retire" with the number. Same facet → update, never
    create a duplicate.
-3. SIGNALS-B: text the user ADDED into "final" that states a reusable
-   constraint → "new" (or contradict/reinforce if it maps to an entry).
-   A merely deleted injected constraint is a one-off signal — emit nothing
-   for it (mechanical strength already handled it). If the user REWORDED an
-   injected constraint but kept its meaning, that is feedback on our rewrite
-   style: emit "style_rule" with a short imperative rule (≤25 tokens) about
-   how to phrase rewrites.
+3. SIGNALS-B: ops may come ONLY from text the user ADDED into "final"
+   relative to "polished". Cover the FULL added delta — if the user added
+   both a language and a tone constraint, the new rule carries both; keep
+   the task's stated context (e.g. "emails to the landlord"), do not
+   generalize beyond it. NEVER emit ops about constraints that were already
+   in "polished" (our own injections are not user signals — no reinforce for
+   them). A deleted or weakened injected constraint is a one-off signal:
+   emit NOTHING for it — no retire, no contradict (mechanical strength
+   already handled it; "survival: removed" describes exactly this). If the
+   user REWORDED an injected constraint but kept its meaning, that is
+   feedback on our rewrite style: emit "style_rule" with a short imperative
+   rule (≤25 tokens) about how to phrase rewrites.
 4. Requirement text: single sentence, user's language, imperative gist.
    Include "key": a two-part facet key like email.length / code.explanation /
    report.format (reuse an existing entry's key when the facet matches).

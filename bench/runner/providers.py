@@ -119,7 +119,17 @@ class V1Provider:
         if not a_spans and not b_triples:
             return []
         out = run_extraction(a_spans, b_triples, existing)
-        return [o for o in out["ops"] if o.get("rkind") != "style_rule"]
+        by_id = {r.id: r for r in existing}
+        ops = []
+        for o in out["ops"]:
+            if o.get("rkind") == "style_rule":
+                continue
+            # the bench contract grades reinforce text against the gist; the
+            # rule being reinforced IS the target entry's text
+            if o["kind"] == "reinforce" and "text" not in o:
+                o = {**o, "text": by_id[o["target_id"]].text}
+            ops.append(o)
+        return ops
 
     def consolidate(self, existing):
         from memtranslator.consolidate import consolidation_ops

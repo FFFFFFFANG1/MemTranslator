@@ -16,6 +16,16 @@ def test_should_consolidate_thresholds(tmp_path):
     assert should_consolidate(s, adds_since=0)
 
 
+def test_unkeyed_entries_form_one_bucket(tmp_path):
+    s = Store(tmp_path / "s.jsonl")
+    a = s.add("邮件写短点，120词以内")            # manual, no key
+    b = s.add("Emails must stay under 120 words")
+    only = s.add("代码只给代码", key="code.explanation")
+    bs = buckets(s.active())
+    assert [set(x.id for x in g) for g in bs] == [{a.id, b.id}]
+    assert all(only.id not in {x.id for x in g} for g in bs)
+
+
 def test_buckets_group_by_key_exact_then_prefix(tmp_path):
     s = Store(tmp_path / "s.jsonl")
     a = s.add("邮件写短点", key="email.length")

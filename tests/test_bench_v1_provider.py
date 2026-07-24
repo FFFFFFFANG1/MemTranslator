@@ -32,8 +32,10 @@ def test_routes_and_translates_numbered_ops(monkeypatch):
          {"type": "edited_diff", "raw": "r", "polished": "rp",
           "final": "rpf"}],
         existing)
-    # style op filtered; reinforce translated to the real id
-    assert ops == [{"kind": "reinforce", "target_id": existing[0].id}]
+    # style op filtered; reinforce translated to the real id AND carries the
+    # reinforced rule's text for the bench gist check
+    assert ops == [{"kind": "reinforce", "target_id": existing[0].id,
+                    "text": "周报要用 bullet points"}]
     assert "SIGNALS-A" in seen["user"] and "SIGNALS-B" in seen["user"]
 
 

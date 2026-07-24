@@ -132,16 +132,29 @@ def attribute_diff(raw: str, polished: str, final: str) -> dict:
 
 import re
 
+# Rule-setting / restating / correcting phrasings. The 太长/太短 entries from
+# the proposal generalize to 太X / "too X" (same correction pattern, any
+# adjective); restatement generalizes 说过 → 再说一遍/说了多少次/又来了;
+# "i said" is the English restatement counterpart. Generic phrasing classes,
+# not case-derived vocabulary.
 _RULE_PAT = re.compile(
-    r"以后|一律|从现在起|从今往后|每次都|别再|不要再|不是让你|说过|记住|"
-    r"必须|一概|太长|太短|重新|from now on|always|never|stop\s|i told you|"
+    r"以后|一律|从现在起|从今往后|每次都|别再|不要再|不是让你|说过|"
+    r"再说一遍|说了?多少次|又来了|记住|必须|一概|太[一-鿿]|重新|"
+    r"from now on|always|never|stop\s|i told you|i said|"
     r"remember to|make sure", re.IGNORECASE)
+# Withdrawal phrasings score lower than rule-setting: they need a
+# meta-discourse hit alongside ("邮件不用卡120词了" yes, "不用谢" no).
+_WITHDRAW_PAT = re.compile(
+    r"不用|不必|取消|算了|forget (that|the)|no longer|no need to",
+    re.IGNORECASE)
 _META_PAT = re.compile(
-    r"格式|语气|长度|语言|风格|单位|段落|字数|词数|简短|简洁|详细|正式|口语|"
-    r"注释|大纲|引用|结论|bullet|markdown|latex|format|tone|length|style|"
-    r"concise|formal|comment|cite|outline|type hints?", re.IGNORECASE)
+    r"格式|语气|长度|语言|风格|单位|段落|字数|词数|\d+\s*[词字]|简短|简洁|"
+    r"详细|正式|口语|注释|大纲|引用|结论|总结|解释|bullet|markdown|latex|"
+    r"format|tone|length|style|concise|formal|comment|cite|outline|summar|"
+    r"jargon|type hints?|too\s+\w+", re.IGNORECASE)
 _IMPERATIVE_PAT = re.compile(
-    r"帮我别|给我直接|你要|你别|don't|do not|please\s", re.IGNORECASE)
+    r"帮我别|给我直接|你要|你别|i need|i want|don't|do not|please\s",
+    re.IGNORECASE)
 _MD_STRUCT = re.compile(r"^\s*(#{1,6}\s|[-*>]\s|\d+\.\s)")
 
 # Controlled facet lexicon: maps facet-key vocabulary to surface forms in
@@ -211,6 +224,8 @@ def screen_message(text: str,
         score = 0
         if _RULE_PAT.search(s):
             score += 3
+        if _WITHDRAW_PAT.search(s):
+            score += 2
         if _META_PAT.search(s):
             score += 2
         if _IMPERATIVE_PAT.search(s):

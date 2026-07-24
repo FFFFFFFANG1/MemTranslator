@@ -40,8 +40,10 @@ def should_consolidate(store: Store, adds_since: int) -> bool:
 
 
 def buckets(reqs: list[Requirement]) -> list[list[Requirement]]:
-    """Exact-key buckets, then same-facet buckets for the leftovers.
-    Only groups of ≥2 come back; unkeyed entries never bucket."""
+    """Exact-key buckets, then same-facet buckets for the leftovers, then one
+    unclassified bucket: manually added entries carry no key, and they must
+    still be deduplicable — the model decides equivalence, we only group.
+    Only groups of ≥2 come back."""
     reqs = [r for r in reqs if r.kind == "requirement"]
     by_key: dict[str, list[Requirement]] = {}
     for r in reqs:
@@ -54,6 +56,9 @@ def buckets(reqs: list[Requirement]) -> list[list[Requirement]]:
     for r in leftovers:
         by_facet.setdefault(r.key.split(".", 1)[0], []).append(r)
     out += [grp for grp in by_facet.values() if len(grp) >= 2]
+    unkeyed = [r for r in reqs if not r.key]
+    if len(unkeyed) >= 2:
+        out.append(unkeyed)
     return out
 
 

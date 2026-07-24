@@ -132,3 +132,20 @@ def test_scr_existing_key_mention_boosts():
     weak = "邮件的语气这块正式一点吧"
     assert screen_message(weak) == []
     assert screen_message(weak, existing_keys=["email.tone"]) != []
+
+
+def test_scr_withdrawal_hits_with_meta_but_not_alone():
+    assert screen_message("邮件不用卡120词了，正常写就行") != []
+    assert screen_message("不用谢") == []
+    assert screen_message("这个不用了，换下一个话题") == []
+
+
+def test_scr_english_correction_phrasings_hit():
+    assert screen_message("You made it too formal; I need a friendly tone.") != []
+    assert screen_message(
+        "I said give me key points, not a summary of everything. Be concise.") != []
+
+
+def test_scr_restatement_hits():
+    assert screen_message("又来了，说了多少次代码别带解释，直接给代码") != []
+    assert screen_message("我再说一遍，提交信息里不要加表情符号，烦死了") != []
