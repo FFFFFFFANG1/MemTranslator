@@ -13,8 +13,15 @@ from bench.runner.judge import judge
 from bench.runner.report import write_snapshot
 from bench.runner.schema import load_translate_cases
 
-AUTO_NO_INVENTION = ("The rewritten request adds no constraint that is not "
-                     "grounded in the listed stored requirements.")
+# v2 wording (2026-07-24 sign-off): decomposed so a human auditor can replay
+# the exact same check — list added constraints, ground each one, then decide.
+AUTO_NO_INVENTION = (
+    "Compare the rewritten request against the original request and list "
+    "every constraint the rewrite ADDED (length, format, tone, language, "
+    "method, audience...). For each added constraint, check whether it is "
+    "grounded in one of the stored requirements. Verdict yes ONLY if every "
+    "added constraint is grounded; verdict no if at least one added "
+    "constraint has no grounding requirement, and name it in the reason.")
 AUTO_TASK_INTACT = ("The core task of the original request is unchanged in "
                     "the rewritten request.")
 
