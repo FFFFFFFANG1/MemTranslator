@@ -34,17 +34,19 @@ Emit requirement operations, following ALL of these rules:
    replacement, emit "retire" with the number. Same facet → update, never
    create a duplicate.
 3. SIGNALS-B: ops may come ONLY from text the user ADDED into "final"
-   relative to "polished". Cover the FULL added delta — if the user added
-   both a language and a tone constraint, the new rule carries both; keep
-   the task's stated context (e.g. "emails to the landlord"), do not
-   generalize beyond it. NEVER emit ops about constraints that were already
-   in "polished" (our own injections are not user signals — no reinforce for
-   them). A deleted or weakened injected constraint is a one-off signal:
-   emit NOTHING for it — no retire, no contradict (mechanical strength
-   already handled it; "survival: removed" describes exactly this). If the
-   user REWORDED an injected constraint but kept its meaning, that is
-   feedback on our rewrite style: emit "style_rule" with a short imperative
-   rule (≤25 tokens) about how to phrase rewrites.
+   relative to "polished". An added delivery constraint (format, language,
+   tone, length, method) COUNTS as a durable signal even when seen once —
+   that is the point of this channel. Cover the FULL added delta — if the
+   user added both a language and a tone constraint, the new rule carries
+   both; keep the task's stated context (e.g. "emails to the landlord"), do
+   not generalize beyond it. NEVER emit ops about constraints that were
+   already in "polished" (our own injections are not user signals — no
+   reinforce for them). A deleted or weakened injected constraint is a
+   one-off signal: emit NOTHING for it — no retire, no contradict
+   (mechanical strength already handled it; "survival: removed" describes
+   exactly this). If the user REWORDED an injected constraint but kept its
+   meaning, that is feedback on our rewrite style: emit "style_rule" with a
+   short imperative rule (≤25 tokens) about how to phrase rewrites.
 4. Requirement text: single sentence, user's language, imperative gist.
    Include "key": a two-part facet key like email.length / code.explanation /
    report.format (reuse an existing entry's key when the facet matches).
@@ -76,11 +78,16 @@ def build_user_prompt(a_candidates: list[str], b_candidates: list[dict],
     if b_candidates:
         blocks = []
         for b in b_candidates:
-            blocks.append(json.dumps(
+            block = json.dumps(
                 {"raw": b["raw"], "polished": b["polished"],
                  "final": b["final"], "applied": b.get("applied", []),
                  "survival": b.get("survival", "unknown")},
-                ensure_ascii=False))
+                ensure_ascii=False)
+            if b.get("survival") == "removed":
+                block += ("\n  NOTE: the injected constraint was deleted — "
+                          "one-off signal, already handled mechanically; "
+                          "emit NO op about the deleted constraint itself.")
+            blocks.append(block)
         parts.append("SIGNALS-B (rewrite records):\n" + "\n".join(blocks))
     parts.append("JSON:")
     return "\n\n".join(parts)

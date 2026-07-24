@@ -27,10 +27,15 @@ def _match(exp, op, existing, case, judge_flags) -> bool:
             return False
     if exp["kind"] == "retire":
         return True
+    # Narrow context on purpose (2026-07-24 fix): passing events/store here
+    # turned the equivalence check into a "faithful to this one event?"
+    # judgment and made verdicts flip on generalization wording — measured
+    # [T,F,T] with full context vs [T,T,T] narrow on the same pair. The
+    # criterion is text-vs-gist equivalence, nothing else.
     ok, flag = judge(
-        f"Extracted requirement text expresses this gist: {exp['gist']}",
-        {"extracted_text": op.get("text"), "events": case.events,
-         "store": case.existing})
+        f"The extracted requirement text states the same rule as this "
+        f"gist: {exp['gist']}",
+        {"extracted_text": op.get("text")})
     if flag:
         judge_flags.append(exp["gist"])
     return ok
