@@ -47,5 +47,9 @@ Two channels join inside the daemon — no markers ever embedded in text:
 - Everything stays on your machine: capture, storage (`data/`), and the
   flash extraction planned for v1.
 
+- `bench/` — the v1 acceptance bench: **overall ≥ 80% ⇔ the first
+  user-facing release is good enough** (T translate / L learn / E e2e;
+  see `bench/README.md` for the contract and current water line).
+
 - `position_anchor.md` — 项目定位锚点（唯一方向依据）
 - `docs/archive.md` — record of the 2026-07 first build (record only; every approach in it deviates from the anchor)
