@@ -74,12 +74,19 @@ def load_translate_cases(path: Path) -> list[TranslateCase]:
     return _check_unique_ids(cases)
 
 
+OP_KINDS = ("new", "reinforce", "contradict", "retire", "merge")
+
+
 def load_extraction_cases(path: Path) -> list[ExtractionCase]:
     cases = []
     for d in _rows(path):
         for op in d["expect_ops"]:
-            if op["kind"] not in ("new", "reinforce", "contradict"):
+            if op["kind"] not in OP_KINDS:
                 raise ValueError(f"{d['id']}: bad op kind {op['kind']}")
+            if op["kind"] == "retire" and op.get("target") is None:
+                raise ValueError(f"{d['id']}: retire op needs a target")
+            if op["kind"] == "merge" and len(op.get("targets") or []) < 2:
+                raise ValueError(f"{d['id']}: merge op needs ≥2 targets")
         cases.append(ExtractionCase(
             id=d["id"], category=d["category"], source=d["source"],
             existing=list(d["existing"]), events=list(d["events"]),

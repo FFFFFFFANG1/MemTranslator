@@ -50,3 +50,83 @@ def test_wrong_kind_fails(monkeypatch):
                            "gist": "code without explanations"}])
     ops = [{"kind": "new", "target_id": None, "text": "代码不要解释"}]
     assert rx.run_case(c, _OneShot(ops))["pass"] is False
+
+
+def test_retire_matches_mechanically(monkeypatch):
+    monkeypatch.setattr(rx, "judge",
+                        lambda *a: (_ for _ in ()).throw(AssertionError))
+    c = _case(category="revoke", existing=["邮件不超过120词。"],
+              events=[{"type": "natural", "text": "邮件不用卡120词了"}],
+              expect_ops=[{"kind": "retire", "target": 0}])
+
+    class _Retire:
+        def extract(self, events, existing):
+            return [{"kind": "retire", "target_id": existing[0].id}]
+    assert rx.run_case(c, _Retire())["pass"] is True
+
+
+def test_retire_wrong_target_fails(monkeypatch):
+    monkeypatch.setattr(rx, "judge", lambda crit, ctx: (True, False))
+    c = _case(category="revoke", existing=["邮件不超过120词。", "代码只给代码。"],
+              events=[{"type": "natural", "text": "邮件不用卡120词了"}],
+              expect_ops=[{"kind": "retire", "target": 0}])
+
+    class _WrongRetire:
+        def extract(self, events, existing):
+            return [{"kind": "retire", "target_id": existing[1].id}]
+    assert rx.run_case(c, _WrongRetire())["pass"] is False
+
+
+def test_empty_events_routes_to_consolidate(monkeypatch):
+    monkeypatch.setattr(rx, "judge", lambda crit, ctx: (True, False))
+    c = _case(category="dedup",
+              existing=["邮件写短点，120词以内。",
+                        "Emails must stay under 120 words.",
+                        "代码只给代码。"],
+              events=[],
+              expect_ops=[{"kind": "merge", "targets": [0, 1],
+                           "gist": "emails under 120 words"}])
+
+    class _Merger:
+        def extract(self, events, existing):
+            raise AssertionError("must call consolidate, not extract")
+        def consolidate(self, existing):
+            return [{"kind": "merge",
+                     "target_ids": [existing[0].id, existing[1].id],
+                     "text": "Emails under 120 words."}]
+    assert rx.run_case(c, _Merger())["pass"] is True
+
+
+def test_merge_wrong_target_set_fails(monkeypatch):
+    monkeypatch.setattr(rx, "judge", lambda crit, ctx: (True, False))
+    c = _case(category="dedup", existing=["a", "b", "c"], events=[],
+              expect_ops=[{"kind": "merge", "targets": [0, 1], "gist": "ab"}])
+
+    class _OverMerge:
+        def consolidate(self, existing):
+            return [{"kind": "merge",
+                     "target_ids": [r.id for r in existing],   # merged c too
+                     "text": "abc"}]
+    assert rx.run_case(c, _OverMerge())["pass"] is False
+
+
+def test_schema_rejects_bad_retire_and_merge(tmp_path):
+    import json
+    from bench.runner.schema import load_extraction_cases
+    base = dict(category="revoke", source="handwritten", existing=["x"],
+                events=[], expect_ops=[{"kind": "retire", "target": None}])
+    p = tmp_path / "bad.jsonl"
+    p.write_text(json.dumps({**base, "id": "b1"}, ensure_ascii=False))
+    try:
+        load_extraction_cases(p)
+        raise AssertionError("retire without target must be rejected")
+    except ValueError:
+        pass
+    p.write_text(json.dumps({**base, "id": "b2", "expect_ops":
+                             [{"kind": "merge", "targets": [0]}]},
+                            ensure_ascii=False))
+    try:
+        load_extraction_cases(p)
+        raise AssertionError("merge with <2 targets must be rejected")
+    except ValueError:
+        pass

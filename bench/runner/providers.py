@@ -11,16 +11,22 @@ from memtranslator import llm
 from memtranslator.config import MODELS
 from memtranslator.schema import Requirement
 
-# op: {"kind": "new"|"reinforce"|"contradict", "target_id": str|None, "text": str}
+# op: {"kind": "new"|"reinforce"|"contradict"|"retire", "target_id": str|None,
+#      "text": str}  |  {"kind": "merge", "target_ids": [str, ...], "text": str}
 
 
 class ExtractionProvider(Protocol):
     def extract(self, events: list[dict],
                 existing: list[Requirement]) -> list[dict]: ...
 
+    def consolidate(self, existing: list[Requirement]) -> list[dict]: ...
+
 
 class NullProvider:
     def extract(self, events, existing):
+        return []
+
+    def consolidate(self, existing):
         return []
 
 
@@ -33,9 +39,44 @@ one-off instructions scoped to a single task ("this time", "例外", "这次"),
 or task content itself.
 Existing requirements are listed with ids; if an event restates one, emit
 reinforce with its id; if it durably overrides one, emit contradict with its
-id and the corrected text. Otherwise emit new.
+id and the corrected text; if the user durably withdraws one with no
+replacement ("不用了", "forget that rule"), emit retire with its id. A user
+merely deleting a woven-in constraint from one request is a one-off signal —
+emit nothing for it.
 Output strictly a JSON array (possibly empty):
-[{"kind": "new"|"reinforce"|"contradict", "target_id": <id or null>, "text": "..."}]"""
+[{"kind": "new"|"reinforce"|"contradict"|"retire", "target_id": <id or null>, "text": "..."}]"""
+
+CONSOLIDATE_SYSTEM = """You tidy a store of a user's delivery requirements.
+Given the full store, find entries that express the SAME durable rule (near
+duplicates, translations of each other) and merge them; leave distinct rules
+alone. Only merge when the rules are genuinely equivalent.
+Output strictly a JSON array (possibly empty):
+[{"kind": "merge", "target_ids": ["<id>", "<id>", ...], "text": "<merged rule>"}]"""
+
+
+def _parse_ops(raw: str) -> list[dict]:
+    s = raw.strip()
+    start, end = s.find("["), s.rfind("]")
+    if start < 0 or end <= start:
+        return []
+    try:
+        ops = json.loads(s[start:end + 1])
+    except json.JSONDecodeError:
+        return []
+    out = []
+    for o in ops:
+        if not isinstance(o, dict):
+            continue
+        if o.get("kind") in ("new", "reinforce", "contradict") \
+                and isinstance(o.get("text"), str):
+            out.append(o)
+        elif o.get("kind") == "retire" and o.get("target_id"):
+            out.append(o)
+        elif o.get("kind") == "merge" \
+                and isinstance(o.get("target_ids"), list) \
+                and isinstance(o.get("text"), str):
+            out.append(o)
+    return out
 
 
 class ReferenceProvider:
@@ -44,17 +85,13 @@ class ReferenceProvider:
         evs = json.dumps(events, ensure_ascii=False, indent=1)
         raw = llm.complete(MODELS["translator"], REFERENCE_SYSTEM,
                            f"Existing requirements:\n{idx}\n\nEvents:\n{evs}\n\nJSON:")
-        s = raw.strip()
-        start, end = s.find("["), s.rfind("]")
-        if start < 0 or end <= start:
-            return []
-        try:
-            ops = json.loads(s[start:end + 1])
-        except json.JSONDecodeError:
-            return []
-        return [o for o in ops if isinstance(o, dict)
-                and o.get("kind") in ("new", "reinforce", "contradict")
-                and isinstance(o.get("text"), str)]
+        return _parse_ops(raw)
+
+    def consolidate(self, existing):
+        idx = "\n".join(f"- [{r.id}] {r.text}" for r in existing) or "(none)"
+        raw = llm.complete(MODELS["translator"], CONSOLIDATE_SYSTEM,
+                           f"Store:\n{idx}\n\nJSON:")
+        return _parse_ops(raw)
 
 
 PROVIDERS = {"null": NullProvider, "reference": ReferenceProvider}

@@ -12,27 +12,44 @@ from bench.runner.report import write_snapshot
 from bench.runner.schema import load_extraction_cases
 
 
+def _match(exp, op, existing, case, judge_flags) -> bool:
+    """Does provider op satisfy expected op? kind/target mechanical,
+    text semantics via judge. retire is fully mechanical (no text)."""
+    if op["kind"] != exp["kind"]:
+        return False
+    if exp["kind"] == "merge":
+        want = {existing[i].id for i in exp["targets"]}
+        if set(op.get("target_ids") or []) != want:
+            return False
+    elif exp.get("target") is not None:
+        if op.get("target_id") != existing[exp["target"]].id:
+            return False
+    if exp["kind"] == "retire":
+        return True
+    ok, flag = judge(
+        f"Extracted requirement text expresses this gist: {exp['gist']}",
+        {"extracted_text": op.get("text"), "events": case.events,
+         "store": case.existing})
+    if flag:
+        judge_flags.append(exp["gist"])
+    return ok
+
+
 def run_case(case, provider) -> dict:
     existing = [Requirement(text=t) for t in case.existing]
-    ops = provider.extract(case.events, existing)
+    # no events → this is a consolidation case: grade the store-tidying path
+    if case.events:
+        ops = provider.extract(case.events, existing)
+    else:
+        ops = provider.consolidate(existing)
     failures, judge_flags, used = [], [], set()
 
     for exp in case.expect_ops:
-        exp_target = (existing[exp["target"]].id
-                      if exp.get("target") is not None else None)
         matched = None
         for i, op in enumerate(ops):
-            if i in used or op["kind"] != exp["kind"]:
+            if i in used:
                 continue
-            if exp_target is not None and op.get("target_id") != exp_target:
-                continue
-            ok, flag = judge(
-                f"Extracted requirement text expresses this gist: "
-                f"{exp['gist']}",
-                {"extracted_text": op["text"], "events": case.events})
-            if flag:
-                judge_flags.append(exp["gist"])
-            if ok:
+            if _match(exp, op, existing, case, judge_flags):
                 matched = i
                 break
         if matched is None:
