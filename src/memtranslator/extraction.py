@@ -30,18 +30,23 @@ Emit requirement operations, following ALL of these rules:
 2. If a signal restates an existing entry, emit "reinforce" with its number.
    If it durably overrides or narrows one, emit "contradict" with the number
    and the corrected text (fold exceptions into the text, e.g. "...— except
-   formal cover letters"). If the user durably withdraws one with no
-   replacement, emit "retire" with the number. Same facet → update, never
-   create a duplicate.
+   formal cover letters"). If new evidence shows a stored rule's category is
+   TOO NARROW (the user applies the same rule to a wider or sibling
+   category), emit "contradict" with the WIDENED rule — reinforcing the
+   narrow wording would freeze the mistake. If the user durably withdraws
+   one with no replacement, emit "retire" with the number. Same facet →
+   update, never create a duplicate.
 3. SIGNALS-B: ops may come ONLY from text the user ADDED into "final"
    relative to "polished". An added delivery constraint (format, language,
    tone, length, method) COUNTS as a durable signal even when seen once —
    that is the point of this channel. Cover the FULL added delta — if the
    user added both a language and a tone constraint, the new rule carries
-   both. Bind each learned rule to the breadth the user's intent supports:
-   delivery mechanics (length, format, language, structure) generalize to
-   the TASK TYPE ("emails I ask you to draft", "code answers"), never to the
-   specific instance (this landlord, this file); interpersonal tone and
+   both. Bind each learned rule to the breadth the user's intent supports —
+   and when the user's own wording NAMES the category ("这种长文档", "emails
+   I ask you to draft", "调研类问题"), use exactly that wording as the rule's
+   breadth: the user's phrasing IS the scope. Only when no category is named,
+   infer the TASK TYPE (emails / code answers / reports), never the specific
+   instance (this landlord, this file). Interpersonal tone and
    recipient-specific asks stay scoped to their stated context. NEVER emit ops about constraints that were
    already in "polished" (our own injections are not user signals — no
    reinforce for them). A deleted or weakened injected constraint is a
