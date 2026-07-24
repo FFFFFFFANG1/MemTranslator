@@ -4,9 +4,6 @@ import argparse
 import json
 import time
 
-import httpx
-
-from memtranslator.llm import LLMUnavailable
 from memtranslator.schema import Requirement
 from memtranslator.translate import translate
 
@@ -14,6 +11,7 @@ from bench.runner.checkers import run_check
 from bench.runner.config import CASES
 from bench.runner.judge import judge
 from bench.runner.report import write_snapshot
+from bench.runner.retry import with_retry
 from bench.runner.schema import load_translate_cases
 
 # v2 wording (2026-07-24 sign-off): decomposed so a human auditor can replay
@@ -98,19 +96,8 @@ def main():
     cases = load_translate_cases(args.cases)
     results = []
     for i, case in enumerate(cases, 1):
-        # transient-channel retry: the Anthropic proxy on this machine flaps,
-        # and one blip must not kill a whole run (backoff 5/15/45s, then die)
-        for attempt in range(4):
-            try:
-                r = run_case(case)
-                break
-            except (LLMUnavailable, httpx.HTTPError):
-                if attempt == 3:
-                    raise
-                wait = 5 * 3 ** attempt
-                print(f"[{i}/{len(cases)}] {case.id} channel unavailable, "
-                      f"retry in {wait}s", flush=True)
-                time.sleep(wait)
+        r = with_retry(lambda: run_case(case),
+                       f"[{i}/{len(cases)}] {case.id}")
         results.append(r)
         print(f"[{i}/{len(cases)}] {case.id} "
               f"{'PASS' if r['pass'] else 'FAIL'}", flush=True)

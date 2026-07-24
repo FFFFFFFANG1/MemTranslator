@@ -9,6 +9,7 @@ from bench.runner.config import CASES
 from bench.runner.judge import judge
 from bench.runner.providers import PROVIDERS
 from bench.runner.report import write_snapshot
+from bench.runner.retry import with_retry
 from bench.runner.schema import load_extraction_cases
 
 
@@ -74,7 +75,8 @@ def main():
     cases = load_extraction_cases(args.cases)
     results = []
     for i, case in enumerate(cases, 1):
-        r = run_case(case, provider)
+        r = with_retry(lambda: run_case(case, provider),
+                       f"[{i}/{len(cases)}] {case.id}")
         results.append(r)
         print(f"[{i}/{len(cases)}] {case.id} "
               f"{'PASS' if r['pass'] else 'FAIL'}", flush=True)

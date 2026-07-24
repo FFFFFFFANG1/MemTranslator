@@ -14,6 +14,7 @@ from bench.runner.config import (CASES, E2E_PASS_THRESHOLD,
 from bench.runner.judge import judge
 from bench.runner.providers import PROVIDERS
 from bench.runner.report import write_snapshot
+from bench.runner.retry import with_retry
 
 _polish = translate            # seam for tests
 
@@ -82,7 +83,8 @@ def main():
     results = []
     for p in paths:
         persona = json.loads(Path(p).read_text())
-        r = run_persona(persona, provider)
+        r = with_retry(lambda: run_persona(persona, provider),
+                       persona['id'])
         results.append(r)
         print(f"{persona['id']}: second-half rate "
               f"{r['second_half_rate']:.2f} "
