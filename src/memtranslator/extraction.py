@@ -125,6 +125,19 @@ def parse_ops(raw: str, existing: list[Requirement]) -> tuple[list[dict], list[s
                         "scope": it.get("scope") or {}, "salience": salience})
         elif op == "retire" and target_id:
             ops.append({"kind": "retire", "target_id": target_id})
+        elif op == "merge":
+            ts = it.get("targets")
+            if (isinstance(ts, list) and len(ts) >= 2
+                    and all(isinstance(t, int) and 1 <= t <= len(existing)
+                            for t in ts)
+                    and isinstance(it.get("text"), str)):
+                ops.append({"kind": "merge",
+                            "target_ids": [existing[t - 1].id for t in ts],
+                            "text": it["text"], "key": it.get("key", ""),
+                            "scope": it.get("scope") or {},
+                            "salience": salience})
+            else:
+                flags.append(f"malformed merge: {ts!r}")
         else:
             flags.append(f"malformed op: {op!r}")
     return ops, flags
