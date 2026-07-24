@@ -57,10 +57,14 @@ baseline learns personas whose corrections restate rules explicitly, and
 loses the ones where a correction appears once and the rest must come from
 edit diffs — the same b3 gap Suite L isolates.
 
-**Judge trust:** binary fail-closed verdicts, 0 parse flags; one suspected
-false-negative observed (t-exc-004). Human audit sheet:
-`bench/gen/judge-audit.md` (30 sampled verdicts, awaiting siriux's
-annotation; gate: ≥90% agreement).
+**Judge trust: endorsed.** Human audit done 2026-07-24 (annotator: Fang):
+28/30 agreement (93.3%) ≥ 90% gate — 1 confirmed judge false-negative
+(t-exc-004), 1 row pending annotator re-check; details and v2 improvements in
+`bench/gen/judge-audit.md`. Open item for siriux: Fang proposes dropping the
+AUTO_NO_INVENTION criterion (hard to audit as phrased); it is also the only
+line of defense against invented constraints (it caught the two
+exception-category real misses), so this is a scoring-protocol decision, not
+applied yet.
 
 **Gate status:** with L/E on stand-in providers the overall is far below
 0.80 — expected and by design (sign-off ③: the gate is the v1 acceptance
