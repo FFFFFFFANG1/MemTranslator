@@ -14,7 +14,9 @@ from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 
 from memtranslator import config, llm
-from memtranslator.signals import classify_submit
+from memtranslator.consolidate import run_consolidation, should_consolidate
+from memtranslator.pipeline import Pipeline
+from memtranslator.signals import attribute_diff, classify_submit, screen_message
 from memtranslator.store import EventLog, Store
 from memtranslator.translate import translate
 
@@ -50,10 +52,44 @@ def create_app(store_path: Path | None = None,
                events_path: Path | None = None) -> FastAPI:
     store = Store(store_path or config.STORE_FILE)
     events = EventLog(events_path or config.EVENTS_FILE)
+    pipeline = Pipeline(store)
     app = FastAPI(title="MemTranslator")
     app.state.store = store
     app.state.events = events
+    app.state.pipeline = pipeline
     translate_counter = {"n": 0}
+
+    def _learn_from_submit(text: str, verdict: dict, now: float) -> None:
+        """The v1 learning loop (design §4/§5): classify → mechanical
+        strength → queue → lazy flush. Learning must never break the API —
+        an unreachable LLM leaves candidates queued for the next flush."""
+        cls = verdict["classification"]
+        if cls == "natural":
+            keys = [r.key for r in store.active() if r.key]
+            pipeline.add_natural(screen_message(text, existing_keys=keys), now)
+        else:
+            tr = next((e for e in reversed(events.read_all())
+                       if e.get("translate_id") == verdict["matched_translate_id"]
+                       and e["kind"] == "translate"), None)
+            if tr:
+                applied = tr.get("applied_ids", [])
+                attr = attribute_diff(tr["original"], tr["polished"], text)
+                if attr["strength_delta"]:
+                    store.bump_strength(applied, attr["strength_delta"])
+                if cls in ("reverted", "edited_after_polish"):
+                    pipeline.add_diff({
+                        "raw": tr["original"], "polished": tr["polished"],
+                        "final": text,
+                        "applied": [store.get(i).text for i in applied
+                                    if i in store._items],
+                        "survival": attr["injection_survival"]}, now)
+        try:
+            if pipeline.maybe_flush(now) is not None:
+                if should_consolidate(store, pipeline.adds_since_consolidate):
+                    run_consolidation(store)
+                    pipeline.adds_since_consolidate = 0
+        except llm.LLMUnavailable:
+            pass          # queue survives; the next submit retries the flush
 
     @app.get("/")
     def index():
@@ -120,8 +156,9 @@ def create_app(store_path: Path | None = None,
         text = body.text.strip()
         if not text:
             raise HTTPException(400, "empty text")
+        now = time.time()
         translates = [e for e in events.read_all() if e["kind"] == "translate"]
-        verdict = classify_submit(text, time.time(), translates)
+        verdict = classify_submit(text, now, translates)
         events.append("submit", {
             "text": text, "source": body.source,
             "session_id": body.session_id, "cwd": body.cwd,
@@ -129,6 +166,7 @@ def create_app(store_path: Path | None = None,
             "matched_translate_id": verdict["matched_translate_id"],
             "similarity": verdict["similarity"],
         })
+        _learn_from_submit(text, verdict, now)
         return verdict
 
     @app.get("/api/events")
