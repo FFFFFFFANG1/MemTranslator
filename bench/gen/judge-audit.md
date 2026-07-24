@@ -2,7 +2,7 @@
 
 - 样本源：`T-20260724-005534.json`（judge=`deepseek-v4-pro`），全部判定共 131 条，随机抽 30（seed 20260724；t-exc-004 疑似假阴性已强制纳入）。
 - 标注口径：**一致** = 你作为人类判官会给出同一 verdict；**不一致** = 你会给相反 verdict。一致率 ≥90%（≥27/30）则 judge 可信；否则改 JUDGE_SYSTEM 或拆细判据后重抽。
-- **结论（2026-07-24，标注人 Fang，统计 by agent）**：**28/30 一致（93.3%）≥ 90% → judge 背书成立**。构成：硬一致 14（含 #15/#30 两条条件式标注——完整 polished 里约束确实存在，按标注人给的条件计一致，见下"复核落定"）；弱一致 14（标注人注"need more info, but makes sense"——集中在两条自动判据，根因是本表未附 judge 实际看到的完整 context，v2 改进项）；不一致 1（#22 = t-exc-004，judge 假阴性确认）；口径歧义 1（#3，判据方向疑被读反，待标注人复核，不计入一致）。
+- **结论（2026-07-24，标注人 Fang，统计 by agent；#3 经 Fang 复核后定稿）**：**29/30 一致（96.7%）≥ 90% → judge 背书成立**。构成：硬一致 15（含 #15/#30 两条条件式标注——完整 polished 里约束确实存在，按标注人给的条件计一致；#3 初标时判据方向读反，Fang 复核确认 judge 正确，见下"复核落定"）；弱一致 14（标注人注"need more info, but makes sense"——集中在两条自动判据，根因是本表未附 judge 实际看到的完整 context，已由 make_audit.py v2 修复）；不一致 1（#22 = t-exc-004，judge 假阴性确认，该 case 判据措辞已修）。
 - **改进项（v2）**：抽检表每行附完整 context（stored_requirements + original_request + 完整 polished），消除"need more info"类；AUTO_NO_INVENTION 判据的去留/改写是判分协议变更，待 siriux 拍板（见 README gate 备注与汇报）。
 
 
@@ -43,6 +43,6 @@
 
 - **#15** t-multi-008：完整 polished 为 "…keep it under 50 words, focus on constructive feedback rather than criticism, **use a polite tone**, and include a suggestion for improvement." —— 标注人条件（"unless it's truncated, then yes"）满足，计**一致**。
 - **#30** t-multi-006：完整 polished 含 "**provide step-by-step instructions** using bullet points" —— 条件满足，计**一致**。
-- **#3** t-exc-006：该 case decision=noop，polished 即原文 "Explain the concept of dependency injection."，其中不含任何"要 code snippet"的约束，判据 "does NOT demand a code snippet" 应为 yes（judge 判 yes）。标注 "no, missed the requirement of missing snippet" 疑似把判据方向读反（判的是"未强加 snippet 约束"，不是"漏了 snippet"）。**暂计口径歧义、不计一致，待 Fang 复核。**
+- **#3** t-exc-006：该 case decision=noop，polished 即原文 "Explain the concept of dependency injection."，其中不含任何"要 code snippet"的约束，判据 "does NOT demand a code snippet" 应为 yes（judge 判 yes）。初标 "no" 系把判据方向读反（判的是"未强加 snippet 约束"，不是"漏了 snippet"）——**Fang 已复核确认（2026-07-24），计一致**。
 
 
