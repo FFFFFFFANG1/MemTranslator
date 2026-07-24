@@ -1,5 +1,7 @@
 # v1 Memory 系统设计（定稿）
 
+> **实现状态（2026-07-24 深夜）**：M0–M6 全部落地（dev 分支），116 测试绿，真机冒烟通过（translate 注入 + submit 预筛入队 + lazy flush 环路 live）。bench 验收：L v1 0.852–0.926（四轮全部超 reference 0.833 且过 gate 0.70）；E v1 0.125–0.375（未过 gate——16 轮链式结构放大单点学歪，run 间方差 ±0.2，宽度锚定修复已在插桩重放中机制级验证；E 计分协议改进为 open item，待 siriux 拍板）。gate overall FAIL（E 短板），按拍板 ③ 属实陈述。三轮实证驱动的设计修正已回写：编号候选协议未出一次 id 错、宽度锚定（用户原话=规则宽度 + 同族证据 contradict 拓宽）、L 判分 gist 等价窄 context 化。
+
 > 2026-07-24。基于 [2026-07-23-memory-pipeline-proposal.md](2026-07-23-memory-pipeline-proposal.md) 与 [2026-07-23-signal-algorithms-proposal.md](2026-07-23-signal-algorithms-proposal.md) 修订定稿；两份 proposal 的内容除本文列出的**修订**外全部继承，细节以 proposal 为准、冲突以本文为准。
 >
 > **siriux 拍定的两条底线（2026-07-24）：**

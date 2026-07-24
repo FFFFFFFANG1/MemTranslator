@@ -31,8 +31,18 @@ disabled). Judge parse flags: 0 across all runs.
 | suite | score | provider | note |
 |---|---|---|---|
 | **T** | **0.817 / 0.800 / 0.833** (runs 1-2: v1 criterion wording; run 3: v2) | v0 oracle | real v0 water line |
-| **L** | 0.259 floor / **0.833 baseline** | null / reference | 54 cases, 9 categories after the CRUD expansion |
-| **E** | **0.000 floor / 0.500 baseline** | null / reference | 4/8 personas pass on the naive baseline |
+| **L** | 0.259 floor / 0.833 baseline / **v1 0.852–0.926** (4 runs: 0.815 → 0.852 → 0.926 → 0.852) | null / reference / **v1** | v1 beats the baseline and clears the 0.70 gate in every run |
+| **E** | 0.000 floor / 0.500 baseline / **v1 0.125–0.375** (3 full runs) | null / reference / **v1** | below gate AND baseline — see the E-variance note |
+
+**E variance note (2026-07-24):** E's 16-round chain amplifies a single bad
+extraction into a collapsed second half (one narrow rule absorbs all sibling
+evidence via reinforce → every later round misses), so run-to-run spread is
+±0.2 and single runs carry little signal. The breadth-anchoring fix (user's
+own category wording = rule breadth; sibling evidence widens via contradict)
+was verified mechanically in an instrumented replay — writer-zh's flush 2
+emitted `contradict → "长文档开头需要包含目录"` exactly as designed — but E
+needs a measurement fix (multi-run averaging or per-round isolation) before
+its number is trustworthy. Open item for siriux: E scoring protocol.
 
 **T per-category (run 1 / run 2):** scope-noop 1.00/1.00 ·
 apply-single 0.90/0.90 · apply-multi 0.90/1.00 · exception 0.80/0.70 ·

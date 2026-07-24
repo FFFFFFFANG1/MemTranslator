@@ -100,6 +100,12 @@ def create_app(store_path: Path | None = None,
     def health():
         return {"ok": True, "models": config.MODELS}
 
+    @app.get("/api/pipeline/state")
+    def pipeline_state():
+        return {"pending": pipeline.pending_count(),
+                "adds_since_consolidate": pipeline.adds_since_consolidate,
+                "active_requirements": len(store.active())}
+
     @app.get("/api/requirements")
     def list_requirements():
         return {"requirements": [r.to_dict() for r in store.list()]}
