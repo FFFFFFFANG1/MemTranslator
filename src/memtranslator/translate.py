@@ -7,7 +7,8 @@ import json
 import time
 
 from memtranslator import llm
-from memtranslator.config import MODELS, RECALL_CAP
+from memtranslator.config import MODELS
+from memtranslator.recall import recall, style_block
 from memtranslator.schema import Requirement
 
 TRANSLATOR_SYSTEM = """You are a translator sitting between a user and their AI agent.
@@ -24,12 +25,6 @@ Output strictly one JSON object, nothing else:
 {"decision": "noop"}
 or
 {"decision": "apply", "applied_ids": ["req-1a2b3c4d"], "polished": "..."}"""
-
-
-def recall(requirements: list[Requirement]) -> list[Requirement]:
-    """Newest RECALL_CAP active requirements (anchor §4 context budget)."""
-    active = [r for r in requirements if r.status == "active"]
-    return sorted(active, key=lambda r: r.created_at)[-RECALL_CAP:]
 
 
 def _requirement_block(requirements: list[Requirement]) -> str:
@@ -71,17 +66,19 @@ def parse_patch(raw: str) -> tuple[dict, bool]:
     return {"decision": "noop"}, True
 
 
-def translate(text: str, requirements: list[Requirement]) -> dict:
+def translate(text: str, requirements: list[Requirement],
+              context: dict | None = None) -> dict:
     """Returns {decision, polished, applied_ids, parse_error, latency_ms}."""
-    recalled = recall(requirements)
+    recalled = recall(requirements, query=text, context=context)
     if not recalled:
         return {"decision": "noop", "polished": None, "applied_ids": [],
                 "parse_error": False, "latency_ms": 0,
                 "reason": "no_active_requirements"}
+    system = TRANSLATOR_SYSTEM + style_block(requirements)
     user = (f"Stored requirements:\n{_requirement_block(recalled)}\n\n"
             f"User request:\n{text}\n\nJSON:")
     t0 = time.time()
-    raw = llm.complete(MODELS["translator"], TRANSLATOR_SYSTEM, user)
+    raw = llm.complete(MODELS["translator"], system, user)
     latency_ms = int((time.time() - t0) * 1000)
     patch, parse_error = parse_patch(raw)
     known = {r.id for r in recalled}
