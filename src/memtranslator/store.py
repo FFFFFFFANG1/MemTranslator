@@ -11,7 +11,9 @@ import json
 import time
 from pathlib import Path
 
-from memtranslator.schema import STATUSES, Requirement
+from memtranslator.schema import KINDS, STATUSES, Requirement
+
+AUTO_RETIRE_AT = -2          # strength ≤ -2 → implicit retire (design §3)
 
 
 class Store:
@@ -30,14 +32,99 @@ class Store:
         with self.path.open("a") as f:
             f.write(json.dumps(req.to_dict(), ensure_ascii=False) + "\n")
 
-    def add(self, text: str) -> Requirement:
+    def add(self, text: str, *, kind: str = "requirement", key: str = "",
+            scope: dict | None = None, source: str = "manual",
+            salience: int = 3, supersedes: str | None = None) -> Requirement:
         text = text.strip()
         if not text:
             raise ValueError("requirement text is empty")
-        req = Requirement(text=text)
+        if kind not in KINDS:
+            raise ValueError(f"unknown kind: {kind}")
+        req = Requirement(text=text, kind=kind, key=key, scope=scope or {},
+                          source=source, salience=salience,
+                          supersedes=supersedes)
         self._items[req.id] = req
         self._append(req)
         return req
+
+    def bump_strength(self, req_ids: list[str], delta: int) -> None:
+        """Mechanical strength rule (0 token): accepted → +1, reverted → -1;
+        crossing AUTO_RETIRE_AT retires implicitly (recoverable via update)."""
+        for rid in req_ids:
+            req = self._items.get(rid)
+            if req is None:
+                continue
+            req.strength += delta
+            req.updated_at = time.time()
+            if req.strength <= AUTO_RETIRE_AT and req.status == "active":
+                req.status = "retired"
+            self._append(req)
+
+    def apply_ops(self, ops: list[dict]) -> dict:
+        """Apply extraction/consolidation ops (design §3 落库映射).
+
+        Unknown targets are skipped, never fatal — an op batch from an LLM
+        must not be able to crash the store."""
+        applied, skipped = 0, []
+        for op in ops:
+            kind = op.get("kind")
+            if kind == "new":
+                self.add(op["text"], key=op.get("key", ""),
+                         scope=op.get("scope") or {}, source="learned",
+                         salience=op.get("salience", 3))
+                applied += 1
+            elif kind == "reinforce":
+                req = self._items.get(op.get("target_id") or "")
+                if req is None:
+                    skipped.append(op)
+                    continue
+                req.strength += 1
+                req.updated_at = time.time()
+                self._append(req)
+                applied += 1
+            elif kind == "contradict":
+                old = self._items.get(op.get("target_id") or "")
+                if old is None:
+                    skipped.append(op)
+                    continue
+                if old.status == "active":
+                    old.status = "retired"
+                    old.updated_at = time.time()
+                    self._append(old)
+                self.add(op["text"], key=op.get("key") or old.key,
+                         scope=op.get("scope") or dict(old.scope),
+                         source="learned", salience=op.get("salience", 3),
+                         supersedes=old.id)
+                applied += 1
+            elif kind == "retire":
+                req = self._items.get(op.get("target_id") or "")
+                if req is None:
+                    skipped.append(op)
+                    continue
+                if req.status == "active":
+                    req.status = "retired"
+                    req.updated_at = time.time()
+                    self._append(req)
+                applied += 1
+            elif kind == "merge":
+                targets = [self._items.get(t) for t in
+                           (op.get("target_ids") or [])]
+                if any(t is None for t in targets) or len(targets) < 2:
+                    skipped.append(op)
+                    continue
+                for t in targets:
+                    if t.status == "active":
+                        t.status = "retired"
+                        t.updated_at = time.time()
+                        self._append(t)
+                self.add(op["text"], key=op.get("key") or targets[0].key,
+                         scope=op.get("scope") or dict(targets[0].scope),
+                         source="learned", salience=op.get("salience", 3),
+                         supersedes=targets[0].id)
+                applied += 1
+            else:
+                skipped.append(op)
+        return {"applied": applied, "skipped": skipped}
 
     def update(self, req_id: str, *, text: str | None = None,
                status: str | None = None) -> Requirement:
