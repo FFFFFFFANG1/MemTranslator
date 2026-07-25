@@ -124,10 +124,17 @@ def attribute_diff(raw: str, polished: str, final: str) -> dict:
 # 0 tokens). Splits a message into material vs discourse zones, scores
 # discourse sentences on rule-setting features, submits top spans only.
 #
-# Lexicon provenance (design §8 discipline): patterns come from the signal
-# proposal's examples ("不是/别再/以后都/记住/要求/太长/太短/重新"), the v0
-# translator vocabulary, and generic correction/meta-discourse phrasing.
-# Nothing here was derived from bench case files.
+# Lexicon provenance (design §8 discipline), corrected 2026-07-25 after an
+# audit found the previous note overstated it. Two batches:
+#   (a) initial — the signal proposal's own examples ("不是/别再/以后都/记住/
+#       要求/太长/太短/重新"), v0 translator vocabulary, generic phrasing;
+#   (b) added while iterating against suite failures ("写短/短一点/复述/重复",
+#       "repeat/rephrase"). Bench case text was never read to pick these, but
+#       the iteration loop that prompted them was bench-driven, so each was
+#       re-justified afterwards as everyday delivery vocabulary any user would
+#       use about response length and redundancy — not corpus-specific
+#       phrasing. tests/test_no_bench_contamination.py enforces mechanically
+#       that no lexicon or prompt string is a verbatim lift from a case file.
 # ---------------------------------------------------------------------------
 
 import re

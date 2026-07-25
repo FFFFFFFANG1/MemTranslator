@@ -42,11 +42,11 @@ Emit requirement operations, following ALL of these rules:
    that is the point of this channel. Cover the FULL added delta — if the
    user added both a language and a tone constraint, the new rule carries
    both. Bind each learned rule to the breadth the user's intent supports —
-   and when the user's own wording NAMES the category ("这种长文档", "emails
-   I ask you to draft", "调研类问题"), use exactly that wording as the rule's
+   and when the user's own wording NAMES the category ("这类客诉回复", "the
+   postmortems I write", "招标文件"), use exactly that wording as the rule's
    breadth: the user's phrasing IS the scope. Only when no category is named,
-   infer the TASK TYPE (emails / code answers / reports), never the specific
-   instance (this landlord, this file). Interpersonal tone and
+   infer the task TYPE from the user's own vocabulary, never the specific
+   instance (this one file, this one recipient). Interpersonal tone and
    recipient-specific asks stay scoped to their stated context. NEVER emit ops about constraints that were
    already in "polished" (our own injections are not user signals — no
    reinforce for them). A deleted or weakened injected constraint is a
