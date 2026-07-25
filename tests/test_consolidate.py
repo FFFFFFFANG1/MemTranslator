@@ -54,7 +54,7 @@ def test_merge_lands_in_store(monkeypatch, tmp_path):
     a = s.add("邮件写短点，120词以内", key="email.length")
     b = s.add("Emails under 120 words", key="email.length")
 
-    def fake(model, system, user, max_tokens=1024):
+    def fake(model, system, user, max_tokens=1024, **kw):
         assert "[1]" in user and "[2]" in user
         return json.dumps([{"op": "merge", "targets": [1, 2],
                             "text": "Emails must stay under 120 words.",
@@ -71,7 +71,7 @@ def test_style_curation_retires_over_cap(monkeypatch, tmp_path):
     rules = [s.add(f"style 规则 {i}", kind="style_rule", source="learned")
              for i in range(STYLE_RULE_CAP + 2)]
 
-    def fake(model, system, user, max_tokens=1024):
+    def fake(model, system, user, max_tokens=1024, **kw):
         assert "style" in user.lower()
         return json.dumps([{"op": "retire", "target": 1, "salience": 4},
                            {"op": "retire", "target": 2, "salience": 4}])

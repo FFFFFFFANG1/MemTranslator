@@ -8,7 +8,8 @@ import time
 from difflib import SequenceMatcher
 
 from memtranslator import llm
-from memtranslator.config import MODELS, PRESERVE_MIN_RATIO
+from memtranslator.config import (GEN_TEMPERATURE, MODELS,
+                                  PRESERVE_MIN_RATIO)
 from memtranslator.recall import recall, style_block
 from memtranslator.schema import Requirement
 
@@ -102,7 +103,8 @@ def translate(text: str, requirements: list[Requirement],
     user = (f"Stored requirements:\n{_requirement_block(recalled)}\n\n"
             f"User request:\n{text}\n\nJSON:")
     t0 = time.time()
-    raw = llm.complete(MODELS["translator"], system, user)
+    raw = llm.complete(MODELS["translator"], system, user,
+                       temperature=GEN_TEMPERATURE)
     latency_ms = int((time.time() - t0) * 1000)
     patch, parse_error = parse_patch(raw)
     known = {r.id for r in recalled}

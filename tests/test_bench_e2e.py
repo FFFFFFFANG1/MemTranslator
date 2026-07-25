@@ -38,7 +38,7 @@ def test_perfect_carry_scores_one(monkeypatch):
 
 def test_learning_provider_updates_store(monkeypatch):
     seen_sizes = []
-    def fake_polish(text, reqs):
+    def fake_polish(text, reqs, **kw):
         seen_sizes.append(len(reqs))
         return {"decision": "noop", "polished": None, "applied_ids": [],
                 "parse_error": False, "latency_ms": 0}
@@ -104,7 +104,7 @@ def test_repeats_average_and_report_spread(monkeypatch):
 def test_repaired_mode_resets_store_to_gold(monkeypatch):
     sizes = []
 
-    def fake_polish(text, reqs):
+    def fake_polish(text, reqs, **kw):
         sizes.append(len(reqs))
         return {"decision": "noop", "polished": None, "applied_ids": [],
                 "parse_error": False, "latency_ms": 0}
@@ -125,7 +125,7 @@ def test_repaired_mode_resets_store_to_gold(monkeypatch):
 def test_chained_mode_keeps_junk(monkeypatch):
     sizes = []
 
-    def fake_polish(text, reqs):
+    def fake_polish(text, reqs, **kw):
         sizes.append(len(reqs))
         return {"decision": "noop", "polished": None, "applied_ids": [],
                 "parse_error": False, "latency_ms": 0}

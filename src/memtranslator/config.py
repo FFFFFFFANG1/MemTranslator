@@ -32,3 +32,11 @@ INDEX_ROW_TOKENS = 20     # per-entry text budget in numbered indexes
 # below 1.0 to tolerate ordinary connective rewording ("催修暖气" → "催他尽快
 # 修暖气") while still catching deletion of user content.
 PRESERVE_MIN_RATIO = 0.85
+
+# Every product generative call is pinned to greedy decoding. anchor §5 ranks
+# "predictable rewrite magnitude" above peak accuracy: the same request with
+# the same store should produce the same rewrite, or the hotkey stops feeling
+# like a tool and starts feeling like a dice roll. It also removes the
+# dominant source of run-to-run noise in the write path (the SDK default is
+# temperature 1.0, which was measured as the largest variance term in suite E).
+GEN_TEMPERATURE = 0.0

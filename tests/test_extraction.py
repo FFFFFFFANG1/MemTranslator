@@ -71,7 +71,7 @@ def test_run_extraction_end_to_end(monkeypatch):
     existing = _reqs("周报要用 bullet points")
     seen = {}
 
-    def fake(model, system, user, max_tokens=1024):
+    def fake(model, system, user, max_tokens=1024, **kw):
         seen["user"] = user
         return json.dumps([
             {"op": "new", "text": "commit message 用英文",

@@ -22,13 +22,18 @@ def _get_client() -> anthropic.Anthropic:
     return _client
 
 
-def complete(model: str, system: str, user: str, max_tokens: int = 1024) -> str:
+def complete(model: str, system: str, user: str, max_tokens: int = 1024,
+             temperature: float | None = None) -> str:
+    """One-shot completion. `temperature=None` leaves the SDK default (1.0);
+    product paths pass an explicit value — see config.GEN_TEMPERATURE."""
+    extra = {} if temperature is None else {"temperature": temperature}
     try:
         resp = _get_client().messages.create(
             model=model,
             max_tokens=max_tokens,
             system=system,
             messages=[{"role": "user", "content": user}],
+            **extra,
         )
     except anthropic.APIConnectionError as e:
         raise LLMUnavailable("connection") from e

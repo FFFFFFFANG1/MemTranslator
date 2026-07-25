@@ -52,7 +52,7 @@ def test_style_block_caps_and_formats():
 def test_translate_injects_style_rules(monkeypatch):
     seen = {}
 
-    def fake(model, system, user, max_tokens=1024):
+    def fake(model, system, user, max_tokens=1024, **kw):
         seen["system"] = system
         return json.dumps({"decision": "noop"})
     monkeypatch.setattr(llm, "complete", fake)
@@ -65,7 +65,7 @@ def test_translate_injects_style_rules(monkeypatch):
 def test_translate_system_unchanged_without_styles(monkeypatch):
     seen = {}
 
-    def fake(model, system, user, max_tokens=1024):
+    def fake(model, system, user, max_tokens=1024, **kw):
         seen["system"] = system
         return json.dumps({"decision": "noop"})
     monkeypatch.setattr(llm, "complete", fake)

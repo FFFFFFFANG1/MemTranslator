@@ -9,7 +9,8 @@ are). Out-of-range numbers drop the op and raise a flag.
 import json
 
 from memtranslator import llm
-from memtranslator.config import INDEX_ROW_TOKENS, MODELS, SALIENCE_MIN
+from memtranslator.config import (GEN_TEMPERATURE, INDEX_ROW_TOKENS,
+                                  MODELS, SALIENCE_MIN)
 from memtranslator.schema import Requirement
 
 EXTRACTION_SYSTEM = """You maintain a store of a user's delivery requirements — durable rules about
@@ -167,6 +168,6 @@ def run_extraction(a_candidates: list[str], b_candidates: list[dict],
                    existing: list[Requirement]) -> dict:
     user = build_user_prompt(a_candidates, b_candidates, existing)
     raw = llm.complete(MODELS["translator"], EXTRACTION_SYSTEM, user,
-                       max_tokens=1500)
+                       max_tokens=1500, temperature=GEN_TEMPERATURE)
     ops, flags = parse_ops(raw, existing)
     return {"ops": ops, "flags": flags}

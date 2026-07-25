@@ -12,7 +12,7 @@ def _pipe(tmp_path):
 
 
 def _fake_ops(monkeypatch, calls):
-    def fake(model, system, user, max_tokens=1024):
+    def fake(model, system, user, max_tokens=1024, **kw):
         calls.append(user)
         return json.dumps([{"op": "new", "text": "学到的规则",
                             "key": "email.length", "salience": 4}])

@@ -20,7 +20,7 @@ def test_routes_and_translates_numbered_ops(monkeypatch):
                             key="report.format")]
     seen = {}
 
-    def fake(model, system, user, max_tokens=1024):
+    def fake(model, system, user, max_tokens=1024, **kw):
         seen["user"] = user
         return json.dumps([
             {"op": "reinforce", "target": 1, "salience": 4},

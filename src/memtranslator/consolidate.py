@@ -9,7 +9,7 @@ call when the cap is exceeded.
 """
 from memtranslator import llm
 from memtranslator.config import (CONSOLIDATE_ACTIVE, CONSOLIDATE_ADDS,
-                                  MODELS, STYLE_RULE_CAP)
+                                  GEN_TEMPERATURE, MODELS, STYLE_RULE_CAP)
 from memtranslator.extraction import _index_block, parse_ops
 from memtranslator.schema import Requirement
 from memtranslator.store import Store
@@ -94,7 +94,8 @@ def consolidation_ops(reqs: list[Requirement]) -> dict:
     parts.append("JSON:")
 
     raw = llm.complete(MODELS["translator"], CONSOLIDATE_SYSTEM,
-                       "\n\n".join(parts), max_tokens=1200)
+                       "\n\n".join(parts), max_tokens=1200,
+                       temperature=GEN_TEMPERATURE)
     ops, flags = parse_ops(raw, numbered)
     return {"ops": ops, "flags": flags}
 
