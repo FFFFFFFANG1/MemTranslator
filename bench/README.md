@@ -109,6 +109,8 @@ The recurring t-exc-004 false-negative (2/3 runs) traced to that case's own
 criterion wording (judge misread stored requirements as request text) and
 was disambiguated in the cases file; expect it to pass from run 4 on.
 
-**Gate status:** with L/E on stand-in providers the overall is far below
-0.80 — expected and by design (sign-off ③: the gate is the v1 acceptance
-bar; today's FAIL is a statement of fact, not a bug).
+**Gate status (2026-07-25):** superseded by the water line above. The
+overall is 0.855 under the v2 E metric and 0.764 under v1 semantics; the
+harness prints PASS because it computes the v2 number, but the threshold it
+compares against was set for v1. Read the ruler question above before quoting
+either figure.
