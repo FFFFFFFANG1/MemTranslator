@@ -11,9 +11,13 @@ from bench.runner.config import (GATE_OVERALL, GATE_PER_SUITE, JUDGE_MODEL,
 
 
 def category_rates(results: list[dict]) -> dict[str, float]:
+    """Mean per category. A result may carry a continuous `score` (suite E
+    grades partial credit); otherwise its binary pass counts as 0/1."""
     buckets = defaultdict(list)
     for r in results:
-        buckets[r["category"]].append(r["pass"])
+        buckets[r["category"]].append(
+            float(r["score"]) if r.get("score") is not None
+            else float(r["pass"]))
     return {c: sum(v) / len(v) for c, v in sorted(buckets.items())}
 
 

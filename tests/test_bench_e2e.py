@@ -59,3 +59,100 @@ def test_dir_hash_snapshot(tmp_path, monkeypatch):
     import json
     snap = json.loads(out.read_text())
     assert len(snap["cases_hash"]) == 12
+
+
+# ---------- scoring protocol v2 (2026-07-25) ----------
+
+def _multi_req_persona():
+    """Two applicable requirements per round — the case v1 scoring threw away:
+    carrying one of two scored exactly the same as carrying neither."""
+    rounds = [{"n": i, "task": f"task {i}", "applicable": [0, 1],
+               "final": f"task {i} + both", "natural_correction": None}
+              for i in range(1, 17)]
+    return {"id": "p2", "requirements": ["规则A", "规则B"], "rounds": rounds}
+
+
+def test_partial_credit_within_round(monkeypatch):
+    # carries 规则A, never 规则B → 0.5, not 0.0
+    monkeypatch.setattr(re2e, "_carries",
+                        lambda req, polished: (req == "规则A", False))
+    monkeypatch.setattr(re2e, "_polish", lambda text, reqs: {
+        "decision": "apply", "polished": text, "applied_ids": [],
+        "parse_error": False, "latency_ms": 0})
+    r = re2e.run_persona(_multi_req_persona(), NullProvider(), flush_every=4)
+    assert r["second_half_rate"] == 0.5
+    assert r["second_half_round_rate"] == 0.0      # all-or-nothing view kept
+    assert r["score"] == r["second_half_rate"]
+
+
+def test_repeats_average_and_report_spread(monkeypatch):
+    calls = {"n": 0}
+
+    def alternating(req, polished):
+        calls["n"] += 1
+        return (calls["n"] % 2 == 0, False)       # deterministic alternation
+    monkeypatch.setattr(re2e, "_carries", alternating)
+    monkeypatch.setattr(re2e, "_polish", lambda text, reqs: {
+        "decision": "apply", "polished": text, "applied_ids": [],
+        "parse_error": False, "latency_ms": 0})
+    r = re2e.run_persona_repeats(_persona(), NullProvider(), repeats=3)
+    assert r["repeats"] == 3 and len(r["rates"]) == 3
+    assert r["score"] == sum(r["rates"]) / 3
+    assert r["spread"] == max(r["rates"]) - min(r["rates"])
+
+
+def test_repaired_mode_resets_store_to_gold(monkeypatch):
+    sizes = []
+
+    def fake_polish(text, reqs):
+        sizes.append(len(reqs))
+        return {"decision": "noop", "polished": None, "applied_ids": [],
+                "parse_error": False, "latency_ms": 0}
+    monkeypatch.setattr(re2e, "_polish", fake_polish)
+    monkeypatch.setattr(re2e, "_carries", lambda req, polished: (False, False))
+
+    class _Garbage:
+        """Learns nothing useful — repaired mode must still restore gold."""
+        def extract(self, events, existing):
+            return [{"kind": "new", "target_id": None, "text": "垃圾规则"}]
+
+    r = re2e.run_persona(_multi_req_persona(), _Garbage(), flush_every=4,
+                         mode="repaired")
+    assert r["mode"] == "repaired"
+    assert sizes[-1] == 2          # exactly the two gold rules, junk discarded
+
+
+def test_chained_mode_keeps_junk(monkeypatch):
+    sizes = []
+
+    def fake_polish(text, reqs):
+        sizes.append(len(reqs))
+        return {"decision": "noop", "polished": None, "applied_ids": [],
+                "parse_error": False, "latency_ms": 0}
+    monkeypatch.setattr(re2e, "_polish", fake_polish)
+    monkeypatch.setattr(re2e, "_carries", lambda req, polished: (False, False))
+
+    class _Garbage:
+        def extract(self, events, existing):
+            return [{"kind": "new", "target_id": None, "text": "垃圾规则"}]
+
+    re2e.run_persona(_multi_req_persona(), _Garbage(), flush_every=4)
+    assert sizes[-1] > 2           # chained mode lets the junk accumulate
+
+
+def test_continuous_score_reaches_the_report(tmp_path, monkeypatch):
+    import bench.runner.report as report
+    rates = report.category_rates([
+        {"id": "a", "category": "persona", "score": 0.75, "pass": False},
+        {"id": "b", "category": "persona", "score": 0.25, "pass": False},
+    ])
+    assert rates["persona"] == 0.5      # v1 would have reported 0.0
+
+
+def test_binary_results_still_supported():
+    import bench.runner.report as report
+    rates = report.category_rates([
+        {"id": "a", "category": "x", "pass": True},
+        {"id": "b", "category": "x", "pass": False},
+    ])
+    assert rates["x"] == 0.5
