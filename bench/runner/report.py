@@ -2,6 +2,7 @@
 persist a reproducible snapshot per run."""
 import hashlib
 import json
+import re
 import time
 from collections import defaultdict
 from pathlib import Path
@@ -53,9 +54,19 @@ def write_snapshot(suite: str, cases_path: str, results: list[dict]) -> Path:
     return out
 
 
+_STAMP = re.compile(r"^(?P<suite>.+)-\d{8}-\d{6}$")
+
+
 def latest(suite: str) -> dict | None:
-    snaps = sorted(RESULTS.glob(f"{suite}-*.json"))
-    return json.loads(snaps[-1].read_text()) if snaps else None
+    """Newest snapshot for exactly this suite.
+
+    The suffix must be matched exactly, not globbed: diagnostic runs write
+    sibling names like `E-repaired-<stamp>.json`, and a `E-*.json` glob sorts
+    those AFTER `E-<stamp>.json` — which silently fed the easier diagnostic
+    score to the gate. The gate reads the chained suite or nothing."""
+    snaps = [p for p in RESULTS.glob(f"{suite}-*.json")
+             if (m := _STAMP.match(p.stem)) and m.group("suite") == suite]
+    return json.loads(max(snaps).read_text()) if snaps else None
 
 
 def main():

@@ -22,66 +22,78 @@ hand-curated, no leaderboard chasing).
     uv run python -m bench.runner.run_e2e --provider reference
     uv run python -m bench.runner.report
 
-## Current water line (2026-07-25, clean code)
+## Current water line (2026-07-25, after A3 + A1)
 
-"Clean" = after two integrity fixes landed the same day: bench-lifted phrases
-purged from the extraction prompt (now enforced by
-`tests/test_no_bench_contamination.py`), and the translator P0 below fixed.
-Numbers from earlier in the day are NOT comparable and were dropped.
+Models: translator = `claude-haiku-4-5`, **now pinned to temperature 0** for
+every product generative call (anchor §5 ranks predictable rewrite magnitude
+above peak accuracy; it was also the dominant variance term here). Judge =
+`deepseek-v4-pro`, temperature 0. 0 judge parse flags.
 
-Models: translator = `claude-haiku-4-5` (product path, temperature unpinned —
-this is the dominant variance source), judge = `deepseek-v4-pro` over the .env
-channel (temperature 0, thinking disabled). 0 judge parse flags.
+| suite | score | vs previous | note |
+|---|---|---|---|
+| **T** translate | **0.883** | 0.833 | scope-noop held at 1.00 — no over-application traded in |
+| **L** learn | **0.870** | 0.870 | unchanged, as expected: L never calls translate |
+| **E** chained (gate) | **0.802** | 0.727 | |
+| **E** repaired (diagnostic) | **0.857** | 0.841 | |
+| **overall** | **0.855** | 0.764 | gate reads chained E only |
 
-| suite | score | note |
-|---|---|---|
-| **T** translate | 0.833 (last measured pre-P0; re-measure pending) | v0 oracle path |
-| **L** learn | **0.870** | reference baseline 0.833, gate 0.70 — passes |
-| **E** e2e (chained, gate metric) | **0.727** | gate 0.70 under the v2 metric — see the threshold caveat |
-| **E** e2e (repaired, diagnostic) | **0.841** | store reset to gold rules after each flush |
+**T per category:** apply-single 1.00 · apply-multi 1.00 · language-mixed
+**1.00** (was 0.60–0.80, the second-weakest) · scope-noop 1.00 · exception
+0.90 · **preserve-long 0.40** — now the single weakest thing in the whole
+bench, and unaddressed: long pasted material still drives a conservative noop.
 
-**L per category:** dedup 1.00 · natural-explicit 1.00 · noise-reject-content
-1.00 · noise-reject-task 1.00 · diff-new-constraint 0.83 · diff-supersede 0.83
-· natural-correction 0.83 · relation 0.83 · **revoke 0.50** (the one weak
-category: telling a durable revocation apart from a one-off deviation).
+**L per category:** dedup / natural-explicit / noise-reject-content /
+noise-reject-task 1.00 · diff-new-constraint, diff-supersede,
+natural-correction, relation 0.83 · **revoke 0.50**.
 
-**De-contamination cost nothing measurable.** L on the clean prompt is 0.870,
-inside the 0.852–0.926 band measured with the contaminated exemplars. The
-lifted phrases were a discipline breach, not a score prop — worth stating
-plainly in both directions.
+### The gate outcome depends on which E ruler you accept
 
-**The E metric changed on 2026-07-25 and the gate threshold did not.** v1
-scored a round all-or-nothing and a persona pass/fail at 0.8; v2 grades
-partial credit per requirement, averages persona rates instead of counting
-threshold crossings, and averages `--repeat` runs. On the same clean chained
-runs the v1-style persona-pass fraction is 3/8 = 0.375 while the v2 continuous
-score is 0.727. The 0.70 gate was calibrated against v1 semantics, so
-"0.727 > 0.70" is not a pass — **the threshold needs recalibrating for the new
-ruler, and that is siriux's call, not the harness's.**
+Same runs, two aggregation rules for suite E:
 
-**Where E's remaining gap actually is.** repaired (0.841) minus chained
-(0.727) = 11 points attributable to memory error compounding; the other ~16
-points are a ceiling that survives a perfect store, i.e. translator-side
-under-application. Diagnosed by probe: "写个小工具监控训练 loss 曲线异常"
-with a stored "code comments in English" rule returns noop — the task type is
-not recognised as code. The same defect class shows up independently in suite
-T's language-mixed category (0.80).
+| E metric | E | overall | gate |
+|---|---|---|---|
+| v2 continuous (partial credit, persona mean, 3-run average) | 0.802 | **0.855** | PASS |
+| v1 persona-threshold count (round all-or-nothing, ≥0.8 per persona) | 0.500 | 0.764 | FAIL |
 
-**Variance is still the limiting factor on E.** Per-persona spread over 3 runs
-reaches 0.50 (dev-zh), mean 0.21. Any E comparison below ~0.15 is noise. More
-repeats, or personas conditioned to be less brittle, are needed before E can
-adjudicate a design change.
+The 0.70 per-suite floor and the 0.80 overall bar were both calibrated
+against v1 semantics. **Whether this release passes is therefore a pending
+decision about the ruler, not a fact the harness can report.** Recalibrating
+the threshold for the v2 metric is siriux's call.
 
-**P0 fixed this session — the translator was answering the request.** With
-several answer-shaped requirements stored at once ("keep answers short" / "no
-bullets" / "don't restate my question"), the flash backbone flipped from
-rewriting the request to answering it, and in one case satisfied "don't
-restate my question" by deleting words out of the question. In production that
-replaces the user's composer text with an answer which is then sent onward as
-if they had typed it. Fixed by three explicit prompt rules plus a mechanical
-`preserves_request()` guard (a rewrite may only add; ≥85% of the original must
-survive or the patch degrades to noop). Effect on the worst-hit persona
-(minimalist-zh): 0.44 → 0.81 chained, 0.48 → 0.96 repaired.
+**Two harness bugs found and fixed this session, both of which had inflated a
+number in our favour:**
+1. `latest("E")` globbed `E-*.json`, which also matches the diagnostic
+   `E-repaired-*.json`, and that sorts last — so the gate was silently
+   grading itself on the gold-state-injected score (0.857 instead of 0.802).
+   Now matched exactly, with a regression test.
+2. Four exemplar phrases in the extraction prompt were verbatim bench case
+   text. Purged; `tests/test_no_bench_contamination.py` now fails the build
+   on any verbatim lift.
+
+**Variance after pinning temperature:** mean per-persona spread over 3 runs
+fell 0.206 → 0.146, but dev-zh (0.38) and researcher-zh (0.33) remain high —
+greedy decoding is not bit-deterministic server-side, and the 16-round chain
+amplifies what is left. **Treat any E difference below ~0.10 as noise.**
+
+**Where E's remaining gap sits now:** repaired (0.857) − chained (0.802) =
+5.5 points of memory-compounding cost, down from 11.4. The ~14 points below
+the repaired ceiling are still translator-side; mixed-lang (0.50 even with a
+gold store) is the worst case.
+
+**Fixed this session (both product defects, both found via the bench):**
+- **P0 — the translator answered the request.** With several answer-shaped
+  requirements stored at once the flash backbone produced an answer instead of
+  a rewrite, or deleted words out of the user's question to satisfy "don't
+  restate my question". In production that replaces the composer text with an
+  answer and sends it onward as the user's own words. Fixed by three explicit
+  prompt rules plus `preserves_request()` (a rewrite only adds; ≥85% of the
+  original must survive or the patch degrades to noop).
+- **Under-application by vocabulary mismatch.** A requirement naming a kind of
+  work was skipped whenever the request shared no words with it ("uv 和
+  poetry 现在选哪个比较好" did not trigger a stored rule about research
+  questions). Applicability is now judged by task kind, not shared vocabulary.
+  This is what moved language-mixed to 1.00 and E chained +0.075, with
+  scope-noop unmoved at 1.00 — the over-application risk did not materialise.
 
 **Judge trust: endorsed.** Human audit done 2026-07-24 (annotator: Fang;
 final after re-check): 29/30 agreement (96.7%) ≥ 90% gate — the single

@@ -156,3 +156,23 @@ def test_binary_results_still_supported():
         {"id": "b", "category": "x", "pass": False},
     ])
     assert rates["x"] == 0.5
+
+
+def test_gate_never_reads_the_diagnostic_snapshot(tmp_path, monkeypatch):
+    """`E-repaired-*` must not satisfy a lookup for suite `E`. It did once:
+    the glob matched it and it sorts last, so the gate silently graded itself
+    on the easier gold-state-injected number."""
+    import json
+
+    import bench.runner.report as report
+    res = tmp_path / "results"
+    res.mkdir()
+    monkeypatch.setattr(report, "RESULTS", res)
+    (res / "E-20260725-120000.json").write_text(json.dumps(
+        {"suite": "E", "score": 0.70, "at": "20260725-120000",
+         "judge_model": "x", "results": []}))
+    (res / "E-repaired-20260725-130000.json").write_text(json.dumps(
+        {"suite": "E-repaired", "score": 0.99, "at": "20260725-130000",
+         "judge_model": "x", "results": []}))
+    assert report.latest("E")["score"] == 0.70
+    assert report.latest("E-repaired")["score"] == 0.99
