@@ -18,7 +18,7 @@ def _fake_translate_apply(monkeypatch):
     def fake(model, system, user, max_tokens=1024):
         rid = user.split("[", 1)[1].split("]", 1)[0]
         return json.dumps({"decision": "apply", "applied_ids": [rid],
-                           "polished": "给房东写封不超过120词的邮件"})
+                           "polished": "帮我给房东写封不超过120词的邮件"})
     monkeypatch.setattr(llm, "complete", fake)
 
 

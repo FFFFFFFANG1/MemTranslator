@@ -52,12 +52,12 @@ def test_chat_streams_and_logs_edit_diff(tmp_path, monkeypatch):
     rid = client.post("/api/requirements", json={"text": "Short."}).json()["id"]
     monkeypatch.setattr(llm, "complete", lambda *a, **k: (
         f'{{"decision": "apply", "applied_ids": ["{rid}"], '
-        f'"polished": "polished text"}}'))
+        f'"polished": "raw text, politely"}}'))
     tr = client.post("/api/translate", json={"text": "raw text"}).json()
 
     monkeypatch.setattr(llm, "stream_text", lambda *a, **k: iter(["Hel", "lo"]))
     r = client.post("/api/chat", json={
-        "messages": [{"role": "user", "content": "polished text EDITED"}],
+        "messages": [{"role": "user", "content": "raw text, politely EDITED"}],
         "translate_id": tr["translate_id"],
     })
     assert r.status_code == 200
@@ -68,7 +68,7 @@ def test_chat_streams_and_logs_edit_diff(tmp_path, monkeypatch):
 
     send = [e for e in app.state.events.read_all() if e["kind"] == "send"][-1]
     assert send["translate_id"] == tr["translate_id"]
-    assert send["polished"] == "polished text"
+    assert send["polished"] == "raw text, politely"
     assert send["edited_after_polish"] is True
 
 
@@ -85,11 +85,11 @@ def test_submit_event_joins_with_translate(tmp_path, monkeypatch):
     rid = client.post("/api/requirements", json={"text": "Short."}).json()["id"]
     monkeypatch.setattr(llm, "complete", lambda *a, **k: (
         f'{{"decision": "apply", "applied_ids": ["{rid}"], '
-        f'"polished": "polished text"}}'))
+        f'"polished": "raw text, politely"}}'))
     tr = client.post("/api/translate", json={"text": "raw text"}).json()
 
     r = client.post("/api/events/submit", json={
-        "text": "polished text", "source": "claude-code",
+        "text": "raw text, politely", "source": "claude-code",
         "session_id": "s-1", "cwd": "/tmp/x"})
     body = r.json()
     assert body["classification"] == "accepted_verbatim"

@@ -25,3 +25,10 @@ CONSOLIDATE_ACTIVE = 48   # consolidation fires above this many active reqs...
 CONSOLIDATE_ADDS = 16     # ...or after this many ADDs since the last pass
 STYLE_RULE_CAP = 10       # style_rule entries kept after curation
 INDEX_ROW_TOKENS = 20     # per-entry text budget in numbered indexes
+
+# A rewrite only adds: at least this share of the user's original text must
+# survive verbatim in the polished request, or the patch is discarded as a
+# replacement rather than a rewrite (translate.preserves_request). Set just
+# below 1.0 to tolerate ordinary connective rewording ("催修暖气" → "催他尽快
+# 修暖气") while still catching deletion of user content.
+PRESERVE_MIN_RATIO = 0.85

@@ -74,7 +74,7 @@ def test_translate_filters_unknown_applied_ids(monkeypatch):
     reqs = _reqs("A")
     monkeypatch.setattr(llm, "complete", lambda *a, **k: (
         '{"decision": "apply", "applied_ids": ["req-fabricated"], '
-        '"polished": "x"}'))
+        '"polished": "do something, briefly"}'))
     out = translate("do something", reqs)
     assert out["decision"] == "apply"
     assert out["applied_ids"] == []
