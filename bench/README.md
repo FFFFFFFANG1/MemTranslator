@@ -22,66 +22,66 @@ hand-curated, no leaderboard chasing).
     uv run python -m bench.runner.run_e2e --provider reference
     uv run python -m bench.runner.report
 
-## Current water line (2026-07-24)
+## Current water line (2026-07-25, clean code)
 
-Models: translator=`claude-haiku-4-5` (product path, temperature unpinned),
-judge=`deepseek-v4-pro` via the .env Ark channel (temperature 0, thinking
-disabled). Judge parse flags: 0 across all runs.
+"Clean" = after two integrity fixes landed the same day: bench-lifted phrases
+purged from the extraction prompt (now enforced by
+`tests/test_no_bench_contamination.py`), and the translator P0 below fixed.
+Numbers from earlier in the day are NOT comparable and were dropped.
 
-| suite | score | provider | note |
-|---|---|---|---|
-| **T** | **0.817 / 0.800 / 0.833** (runs 1-2: v1 criterion wording; run 3: v2) | v0 oracle | real v0 water line |
-| **L** | 0.259 floor / 0.833 baseline / **v1 0.852–0.926** (4 runs: 0.815 → 0.852 → 0.926 → 0.852) | null / reference / **v1** | v1 beats the baseline and clears the 0.70 gate in every run |
-| **E** | 0.000 floor / 0.500 baseline / **v1 0.125–0.375** (3 full runs) | null / reference / **v1** | below gate AND baseline — see the E-variance note |
+Models: translator = `claude-haiku-4-5` (product path, temperature unpinned —
+this is the dominant variance source), judge = `deepseek-v4-pro` over the .env
+channel (temperature 0, thinking disabled). 0 judge parse flags.
 
-**E variance note (2026-07-24):** E's 16-round chain amplifies a single bad
-extraction into a collapsed second half (one narrow rule absorbs all sibling
-evidence via reinforce → every later round misses), so run-to-run spread is
-±0.2 and single runs carry little signal. The breadth-anchoring fix (user's
-own category wording = rule breadth; sibling evidence widens via contradict)
-was verified mechanically in an instrumented replay — writer-zh's flush 2
-emitted `contradict → "长文档开头需要包含目录"` exactly as designed — but E
-needs a measurement fix (multi-run averaging or per-round isolation) before
-its number is trustworthy. Open item for siriux: E scoring protocol.
+| suite | score | note |
+|---|---|---|
+| **T** translate | 0.833 (last measured pre-P0; re-measure pending) | v0 oracle path |
+| **L** learn | **0.870** | reference baseline 0.833, gate 0.70 — passes |
+| **E** e2e (chained, gate metric) | **0.727** | gate 0.70 under the v2 metric — see the threshold caveat |
+| **E** e2e (repaired, diagnostic) | **0.841** | store reset to gold rules after each flush |
 
-**T per-category (run 1 / run 2):** scope-noop 1.00/1.00 ·
-apply-single 0.90/0.90 · apply-multi 0.90/1.00 · exception 0.80/0.70 ·
-language-mixed 0.80/0.60 · preserve-long 0.50/0.60.
-v0's weak spots: long pasted material → conservative noop (preserve-long),
-and zh requirements dragging en inputs into zh (language-mixed).
+**L per category:** dedup 1.00 · natural-explicit 1.00 · noise-reject-content
+1.00 · noise-reject-task 1.00 · diff-new-constraint 0.83 · diff-supersede 0.83
+· natural-correction 0.83 · relation 0.83 · **revoke 0.50** (the one weak
+category: telling a durable revocation apart from a one-off deviation).
 
-**Stability (T, two runs):** case-level flips 5/60 (8.3%). Attribution: all
-5 flips trace to the translator producing different output between runs
-(decision or polished changed); zero flips with identical translator output —
-i.e. the grading layer (mech + judge) showed no instability, and the flip
-rate measures v0's own run-to-run variance (product path keeps its default
-temperature; the bench does not modify src). Suite score moved 0.817 → 0.800.
+**De-contamination cost nothing measurable.** L on the clean prompt is 0.870,
+inside the 0.852–0.926 band measured with the contaminated exemplars. The
+lifted phrases were a discipline breach, not a score prop — worth stating
+plainly in both directions.
 
-**L structure (since 2026-07-24, second batch):** 9 categories × 6 — the
-original 6 plus the CRUD completion: **revoke** (durable withdrawal → retire;
-one-off constraint deletion in a diff → must stay silent), **diff-supersede**
-(final edits the woven-in constraint's parameter → contradict), **dedup**
-(events=[], graded through the second provider entry point
-`consolidate(existing)` → merge; op vocabulary now
-new/reinforce/contradict/retire/merge, matching the pipeline proposal's
-extraction + consolidation two-call design). Old L snapshots (36-case, 6-cat)
-are not comparable with the new macro.
+**The E metric changed on 2026-07-25 and the gate threshold did not.** v1
+scored a round all-or-nothing and a persona pass/fail at 0.8; v2 grades
+partial credit per requirement, averages persona rates instead of counting
+threshold crossings, and averages `--repeat` runs. On the same clean chained
+runs the v1-style persona-pass fraction is 3/8 = 0.375 while the v2 continuous
+score is 0.727. The 0.70 gate was calibrated against v1 semantics, so
+"0.727 > 0.70" is not a pass — **the threshold needs recalibrating for the new
+ruler, and that is siriux's call, not the harness's.**
 
-**L reference detail (54-case, 2026-07-24, snapshot `L-20260724-173706`):**
-diff-new-constraint 0.17 and noise-reject-content 0.67 remain the naive
-baseline's two big gaps (edit-diff learning and noise precision — the v1
-value proposition). New categories: dedup 1.00, revoke 0.83 (its one miss is
-the case designed to catch exactly that error: a one-off constraint deletion
-misread as a durable retire), diff-supersede 0.83 (its one miss: the op was
-semantically perfect but referenced a mis-copied requirement id — evidence
-for the signal proposal's numbered-candidate match-judge design over raw id
-copying). 0 judge parse flags.
+**Where E's remaining gap actually is.** repaired (0.841) minus chained
+(0.727) = 11 points attributable to memory error compounding; the other ~16
+points are a ceiling that survives a perfect store, i.e. translator-side
+under-application. Diagnosed by probe: "写个小工具监控训练 loss 曲线异常"
+with a stored "code comments in English" rule returns noop — the task type is
+not recognised as code. The same defect class shows up independently in suite
+T's language-mixed category (0.80).
 
-**E reference detail:** researcher-zh/writer-zh 1.00, pm-en/student-en 0.88,
-mixed-lang 0.50, dev-zh 0.38, datasci-zh 0.75, minimalist-zh 0.00. The
-baseline learns personas whose corrections restate rules explicitly, and
-loses the ones where a correction appears once and the rest must come from
-edit diffs — the same b3 gap Suite L isolates.
+**Variance is still the limiting factor on E.** Per-persona spread over 3 runs
+reaches 0.50 (dev-zh), mean 0.21. Any E comparison below ~0.15 is noise. More
+repeats, or personas conditioned to be less brittle, are needed before E can
+adjudicate a design change.
+
+**P0 fixed this session — the translator was answering the request.** With
+several answer-shaped requirements stored at once ("keep answers short" / "no
+bullets" / "don't restate my question"), the flash backbone flipped from
+rewriting the request to answering it, and in one case satisfied "don't
+restate my question" by deleting words out of the question. In production that
+replaces the user's composer text with an answer which is then sent onward as
+if they had typed it. Fixed by three explicit prompt rules plus a mechanical
+`preserves_request()` guard (a rewrite may only add; ≥85% of the original must
+survive or the patch degrades to noop). Effect on the worst-hit persona
+(minimalist-zh): 0.44 → 0.81 chained, 0.48 → 0.96 repaired.
 
 **Judge trust: endorsed.** Human audit done 2026-07-24 (annotator: Fang;
 final after re-check): 29/30 agreement (96.7%) ≥ 90% gate — the single
