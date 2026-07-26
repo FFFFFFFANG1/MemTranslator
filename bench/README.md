@@ -31,16 +31,11 @@ above peak accuracy; it was also the dominant variance term here). Judge =
 
 | suite | score | vs previous | note |
 |---|---|---|---|
-| **T** translate | **0.883** | 0.833 | scope-noop held at 1.00 — no over-application traded in |
+| **T** translate | **0.950** | 0.883 | see the preserve-long note — most of the jump is a bench repair |
 | **L** learn | **0.870** | 0.870 | unchanged, as expected: L never calls translate |
 | **E** chained (gate) | **0.802** | 0.727 | |
 | **E** repaired (diagnostic) | **0.857** | 0.841 | |
-| **overall** | **0.855** | 0.764 | gate reads chained E only |
-
-**T per category:** apply-single 1.00 · apply-multi 1.00 · language-mixed
-**1.00** (was 0.60–0.80, the second-weakest) · scope-noop 1.00 · exception
-0.90 · **preserve-long 0.40** — now the single weakest thing in the whole
-bench, and unaddressed: long pasted material still drives a conservative noop.
+| **overall** | **0.882** | 0.855 | gate reads chained E only; the ruler caveat below still applies |
 
 **T per category (2026-07-26):** apply-single / apply-multi / language-mixed
 / scope-noop 1.00 · exception 0.90 · **preserve-long 0.80** (was 0.40).
@@ -76,8 +71,8 @@ Same runs, two aggregation rules for suite E:
 
 | E metric | E | overall | gate |
 |---|---|---|---|
-| v2 continuous (partial credit, persona mean, 3-run average) | 0.802 | **0.855** | PASS |
-| v1 persona-threshold count (round all-or-nothing, ≥0.8 per persona) | 0.500 | 0.764 | FAIL |
+| v2 continuous (partial credit, persona mean, 3-run average) | 0.802 | **0.882** | PASS |
+| v1 persona-threshold count (round all-or-nothing, ≥0.8 per persona) | 0.500 | 0.791 | FAIL |
 
 The 0.70 per-suite floor and the 0.80 overall bar were both calibrated
 against v1 semantics. **Whether this release passes is therefore a pending
