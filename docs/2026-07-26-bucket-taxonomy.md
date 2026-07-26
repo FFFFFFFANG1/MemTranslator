@@ -18,8 +18,8 @@
 
 | # | 问 | 命中 → 桶 |
 |---|---|---|
-| 1 | agent 会去做**另一件事**吗?(动词/产物类型变了) | **task_goal** |
-| 2 | 做的事一样,但**下判断的标准或证据门槛**变了吗? | **reasoning_policy** |
+| 1 | 用户的请求里**任务动词缺失或含糊**,而这条规则补上/替换了它吗? | **task_goal** |
+| 2 | 动词清楚,但**达成它的方法与证据标准**含糊,这条规则补上了吗? | **reasoning_policy** |
 | 3 | 标准一样,但答案里会**少掉一块信息**吗? | **deliverables** |
 | 4 | 信息一样,只是**排布、渲染、长度、语言**变了吗? | **output_contract** |
 | 5 | 渲染一样,只是**语域/对谁说话**变了吗? | **communication_style** |
@@ -35,14 +35,31 @@
 
 ## 2. task_goal vs reasoning_policy —— 最难的那条线
 
-siriux 给的两个例子内容几乎相同,碰撞就在这里:
+siriux 给的两个例子内容几乎相同,碰撞就在这里。分开它们的**不是语义,是触发场景**(siriux 2026-07-26 补充):
 
-| | 例子 | 为什么是这个桶 |
+| | 用户请求里缺什么 | 规则做什么 |
 |---|---|---|
-| task_goal | "Critically evaluate research ideas **rather than merely elaborate them**" | 点名了**活动之间的替换**:elaborate → evaluate。删掉它,agent 去做的是另一件事 |
-| reasoning_policy | "Use critical analysis and **explicitly identify weaknesses**" | 活动仍是分析,只是规定了**分析必须达到的标准**(弱点必须被摆出来) |
+| **task_goal** | **根本没说要干什么**——任务动词缺失或含糊("看看这个""这个怎么样") | **补全意图**:从用户的描述推断该做的事,把动词填进去 |
+| **reasoning_policy** | 意图说了,但**只说了个大方向**("评估一下""分析一下") | **细化做法**:同一件事,补上具体该怎么做、按什么标准 |
 
-判据落到判定顺序的第 1 问:**规则里有没有"不要 A,而要 B"这种活动替换?** 有 → task_goal;没有、只是给同一活动加标准 → reasoning_policy。
+走一遍同一个场景:
+
+```
+用户打字:   帮我看看这个研究想法。<一大段想法>
+            ↑ 没有动词。"看看" 不构成任务
+
+task_goal 规则命中 → 补全成 "批判性评估其 novelty 与可行性"
+    帮我批判性评估这个研究想法的 novelty 和可行性。<一大段想法>
+
+再命中 reasoning_policy → 细化怎么评估
+    帮我批判性评估这个研究想法的 novelty 和可行性，
+    对照最接近的已有工作来判断新意，明确指出方法上的弱点，
+    并区分哪些是事实、哪些是推测。<一大段想法>
+```
+
+两个桶在同一次改写里可以**接力**:goal 先把空白填上,reasoning 再把方法补细。它们不竞争,是**先后关系**——这也是判定顺序把 task_goal 放在 reasoning_policy 之前的原因。
+
+判定第 1 问因此改写为:**用户的请求里任务动词是缺失或含糊的,而这条规则补上/替换了它吗?** 是 → `task_goal`。第 2 问:**动词清楚,但达成它的方法与证据标准含糊,这条规则补上了吗?** 是 → `reasoning_policy`。
 
 用户原话往往两者都沾,这时**拆成两条**:
 
@@ -68,6 +85,18 @@ siriux 的原话。它改的是**任务动词与切入角度**:总结/解释/比
 ### reasoning_policy 覆盖面
 
 批判性还是支持性;要不要核实事实;是否优先原始文献/官方文档而非二手;是否区分事实、推断与猜测;是否比较多种解释;不确定性怎么处理;是否反驳用户的假设;对 novelty、风险、因果的判断门槛。
+
+### 2.1 一个必须一并解决的冲突:translator 规则 1
+
+`task_goal` 的触发场景("用户没说要干什么")与 `translate.py` 现有 system prompt 的规则 1 **正面冲突**:
+
+> 1. If no stored requirement clearly applies, output a no-op. When uncertain, prefer no-op — **an underspecified request is often intentional**.
+
+这条 noop 偏置是在"库里只有输出形态类规则"的世界里写的,那时"请求含糊"确实通常是用户有意为之,不该乱补。但 `task_goal` 存在的**全部意义**就是补全含糊请求——两者不能同时成立。
+
+处置(实现 task_goal 时必须同步改,否则该桶在产品里永远不触发):规则 1 的 noop 偏置**保留**,但限定为"库里没有可依据的规则时";当库中存在 scope 匹配的 `task_goal` 条目时,含糊请求应当被补全,因为**用户已经事先说过含糊时该按什么理解**——这时补全不是猜测,是执行用户的既有交代。
+
+这条也顺带说明为什么 `task_goal` 的判分比其他桶难:它的正确性取决于"用户那句含糊的话本来想要什么",而这在 case 里必须由 scenario 显式声明,不能靠 judge 现场推断。Suite R 的 task_goal case 必须带上 gold 意图。
 
 ## 3. 已删除:domain_criteria
 
