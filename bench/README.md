@@ -22,7 +22,7 @@ hand-curated, no leaderboard chasing).
     uv run python -m bench.runner.run_e2e --provider reference
     uv run python -m bench.runner.report
 
-## Current water line (2026-07-25, after A3 + A1)
+## Current water line (2026-07-26)
 
 Models: translator = `claude-haiku-4-5`, **now pinned to temperature 0** for
 every product generative call (anchor §5 ranks predictable rewrite magnitude
@@ -41,6 +41,30 @@ above peak accuracy; it was also the dominant variance term here). Judge =
 **1.00** (was 0.60–0.80, the second-weakest) · scope-noop 1.00 · exception
 0.90 · **preserve-long 0.40** — now the single weakest thing in the whole
 bench, and unaddressed: long pasted material still drives a conservative noop.
+
+**T per category (2026-07-26):** apply-single / apply-multi / language-mixed
+/ scope-noop 1.00 · exception 0.90 · **preserve-long 0.80** (was 0.40).
+
+**Most of that preserve-long jump is a bench repair, not a product gain — do
+not read it as progress.** Six of the ten cases (t-long-005..010, all
+`generated`) had the stored requirement restated verbatim at the end of the
+user's own input, so the model's no-op was CORRECT and the bench was
+penalising it while rewarding redundant restatement. A control run settles the
+causality: strip the pasted payload and leave the short instruction, and the
+same six still no-op — "long pasted material causes conservative no-op" was
+never true. The six inputs are repaired (`source: generated-repaired`); the
+remaining two failures are kept deliberately, because there the rule is only
+PARTLY redundant and applying the novel part is genuinely right.
+
+**P1 fixed the same day — a long paste silently swallowed the hotkey.**
+`translate` inherited `llm.complete`'s default `max_tokens=1024`, but the
+rewrite is additive so the reply always restates the whole request. Measured
+on the product path: a 2,074-character Chinese paste truncated mid-payload,
+failed to parse, and degraded to a no-op with no signal to the user.
+`output_budget()` now scales the cap with the request (floor 1024, ceiling
+8192) and every no-op carries a `reason`. **The bench could not have caught
+this: its longest preserve-long input is 619 characters.** That gap between
+test-data scale and real usage is the concrete case for the Suite R scale-up.
 
 **L per category:** dedup / natural-explicit / noise-reject-content /
 noise-reject-task 1.00 · diff-new-constraint, diff-supersede,
