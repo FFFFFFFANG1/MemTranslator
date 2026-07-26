@@ -40,3 +40,10 @@ PRESERVE_MIN_RATIO = 0.85
 # dominant source of run-to-run noise in the write path (the SDK default is
 # temperature 1.0, which was measured as the largest variance term in suite E).
 GEN_TEMPERATURE = 0.0
+
+# The rewrite is additive, so its length tracks the request's. A fixed cap
+# truncates long pastes mid-payload and the hotkey silently does nothing;
+# translate.output_budget() scales within these bounds. The ceiling exists so
+# a pathological paste cannot bill an unbounded completion.
+MIN_OUTPUT_TOKENS = 1024
+MAX_OUTPUT_TOKENS = 8192

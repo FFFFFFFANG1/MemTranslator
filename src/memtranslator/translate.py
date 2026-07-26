@@ -8,7 +8,8 @@ import time
 from difflib import SequenceMatcher
 
 from memtranslator import llm
-from memtranslator.config import (GEN_TEMPERATURE, MODELS,
+from memtranslator.config import (GEN_TEMPERATURE, MAX_OUTPUT_TOKENS,
+                                  MIN_OUTPUT_TOKENS, MODELS,
                                   PRESERVE_MIN_RATIO)
 from memtranslator.recall import recall, style_block
 from memtranslator.schema import Requirement
@@ -30,6 +31,29 @@ Output strictly one JSON object, nothing else:
 {"decision": "noop"}
 or
 {"decision": "apply", "applied_ids": ["req-1a2b3c4d"], "polished": "..."}"""
+
+
+def _estimate_tokens(text: str) -> int:
+    """Cheap upper-ish estimate without a tokenizer: CJK runs about one token
+    per character, Latin script about one per four."""
+    cjk = sum(1 for ch in text if "一" <= ch <= "鿿")
+    return cjk + (len(text) - cjk) // 4 + 1
+
+
+def output_budget(text: str) -> int:
+    """max_tokens for one rewrite of `text`.
+
+    The rewrite only ADDS, so the reply is never shorter than the request —
+    a fixed cap therefore truncates long inputs mid-payload, the JSON fails
+    to parse, and the user sees the hotkey do nothing at all. Measured on the
+    product path before this existed: a 2,074-character Chinese paste came
+    back parse_error=True and silently no-op. The budget scales with the
+    request and keeps a headroom allowance for the injected constraints and
+    the JSON envelope.
+    """
+    est = _estimate_tokens(text)
+    return max(MIN_OUTPUT_TOKENS,
+               min(MAX_OUTPUT_TOKENS, int(est * 1.6) + 400))
 
 
 def preserves_request(original: str, polished: str) -> bool:
@@ -104,6 +128,7 @@ def translate(text: str, requirements: list[Requirement],
             f"User request:\n{text}\n\nJSON:")
     t0 = time.time()
     raw = llm.complete(MODELS["translator"], system, user,
+                       max_tokens=output_budget(text),
                        temperature=GEN_TEMPERATURE)
     latency_ms = int((time.time() - t0) * 1000)
     patch, parse_error = parse_patch(raw)
@@ -119,4 +144,5 @@ def translate(text: str, requirements: list[Requirement],
                 "applied_ids": applied, "parse_error": parse_error,
                 "latency_ms": latency_ms}
     return {"decision": "noop", "polished": None, "applied_ids": [],
-            "parse_error": parse_error, "latency_ms": latency_ms}
+            "parse_error": parse_error, "latency_ms": latency_ms,
+            "reason": "unparseable_output" if parse_error else "model_noop"}
