@@ -35,7 +35,25 @@ def _retry_after(exc) -> float | None:
 
 def _is_rate_limit(exc) -> bool:
     resp = getattr(exc, "response", None)
-    return resp is not None and resp.status_code == 429
+    if resp is not None and resp.status_code == 429:
+        return True
+    return "status:429" in str(exc)
+
+
+def _is_permanent(exc) -> bool:
+    """A 4xx other than 429 will fail identically on every retry. Backing off
+    seven times against an exhausted credit balance costs four minutes and
+    buries the actual message."""
+    text = str(exc)
+    if "status:429" in text:
+        return False
+    for code in ("status:400", "status:401", "status:403", "status:404",
+                 "status:413", "status:422"):
+        if code in text:
+            return True
+    resp = getattr(exc, "response", None)
+    return (resp is not None and 400 <= resp.status_code < 500
+            and resp.status_code != 429)
 
 
 def backoff_delay(attempt: int, rate_limited: bool = False) -> float:
@@ -51,6 +69,10 @@ def with_retry(fn, label: str):
         try:
             return fn()
         except (LLMUnavailable, httpx.HTTPError) as exc:
+            if _is_permanent(exc):
+                print(f"{label}: permanent failure, not retrying — {exc}",
+                      flush=True)
+                raise
             if attempt == MAX_ATTEMPTS - 1:
                 raise
             limited = _is_rate_limit(exc)

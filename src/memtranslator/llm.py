@@ -38,7 +38,12 @@ def complete(model: str, system: str, user: str, max_tokens: int = 1024,
     except anthropic.APIConnectionError as e:
         raise LLMUnavailable("connection") from e
     except anthropic.APIStatusError as e:
-        raise LLMUnavailable(f"status:{e.status_code}") from e
+        # Keep the server's explanation: "400" alone sent a debugging session
+        # chasing a prompt bug when the real cause was an exhausted balance.
+        detail = getattr(getattr(e, "body", None), "get", lambda _k: None)("error")
+        why = (detail or {}).get("message") if isinstance(detail, dict) else None
+        raise LLMUnavailable(
+            f"status:{e.status_code} {why or str(e)[:200]}") from e
     return "".join(b.text for b in resp.content if b.type == "text")
 
 
@@ -55,4 +60,9 @@ def stream_text(model: str, system: str, messages: list[dict],
     except anthropic.APIConnectionError as e:
         raise LLMUnavailable("connection") from e
     except anthropic.APIStatusError as e:
-        raise LLMUnavailable(f"status:{e.status_code}") from e
+        # Keep the server's explanation: "400" alone sent a debugging session
+        # chasing a prompt bug when the real cause was an exhausted balance.
+        detail = getattr(getattr(e, "body", None), "get", lambda _k: None)("error")
+        why = (detail or {}).get("message") if isinstance(detail, dict) else None
+        raise LLMUnavailable(
+            f"status:{e.status_code} {why or str(e)[:200]}") from e
