@@ -39,7 +39,7 @@ from bench.runner.config import (CASES, E2E_PASS_THRESHOLD,
 from bench.runner.judge import judge
 from bench.runner.providers import PROVIDERS
 from bench.runner.report import write_snapshot
-from bench.runner.retry import with_retry
+from bench.runner.parallel import run_items
 
 MODES = ("chained", "repaired")
 
@@ -143,6 +143,8 @@ def main():
                     help="independent runs averaged per persona")
     ap.add_argument("--mode", choices=MODES, default="chained",
                     help="chained = gate metric; repaired = diagnostic")
+    ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--fresh", action="store_true")
     args = ap.parse_args()
     provider = PROVIDERS[args.provider]()
     paths = sorted((CASES / "personas").glob("*.json"))
@@ -150,17 +152,19 @@ def main():
         raise RuntimeError(
             f"expected {E2E_PERSONA_COUNT} personas, globbed {len(paths)} — "
             f"refusing to run a silently smaller suite")
-    results = []
-    for p in paths:
-        persona = json.loads(Path(p).read_text())
-        r = with_retry(
-            lambda: run_persona_repeats(persona, provider, args.repeat,
-                                        args.mode),
-            persona["id"])
-        results.append(r)
-        print(f"{persona['id']}: {r['second_half_rate']:.2f} "
-              f"(spread {r['spread']:.2f} over {r['repeats']} runs) "
-              f"{'PASS' if r['pass'] else 'FAIL'}", flush=True)
+    # Rounds inside a persona are strictly ordered (the store evolves), but
+    # the eight personas are independent — parallelise across them only.
+    class _P:
+        def __init__(self, path):
+            self.data = json.loads(Path(path).read_text())
+            self.id = self.data["id"]
+
+    personas = [_P(p) for p in paths]
+    results = run_items(
+        f"E-{args.mode}" if args.mode != "chained" else "E",
+        personas,
+        lambda p: run_persona_repeats(p.data, provider, args.repeat, args.mode),
+        workers=args.workers, resume=not args.fresh)
     write_snapshot(f"E-{args.mode}" if args.mode != "chained" else "E",
                    str(CASES / "personas"), results)
 

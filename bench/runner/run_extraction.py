@@ -9,7 +9,7 @@ from bench.runner.config import CASES
 from bench.runner.judge import judge
 from bench.runner.providers import PROVIDERS
 from bench.runner.report import write_snapshot
-from bench.runner.retry import with_retry
+from bench.runner.parallel import run_items
 from bench.runner.schema import load_extraction_cases
 
 
@@ -75,17 +75,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--provider", choices=sorted(PROVIDERS), default="null")
     ap.add_argument("--cases", default=str(CASES / "extraction/cases.jsonl"))
+    ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--fresh", action="store_true",
+                    help="ignore any checkpoint and start over")
     args = ap.parse_args()
     provider = PROVIDERS[args.provider]()
     cases = load_extraction_cases(args.cases)
-    results = []
-    for i, case in enumerate(cases, 1):
-        r = with_retry(lambda: run_case(case, provider),
-                       f"[{i}/{len(cases)}] {case.id}")
-        results.append(r)
-        print(f"[{i}/{len(cases)}] {case.id} "
-              f"{'PASS' if r['pass'] else 'FAIL'}", flush=True)
-        time.sleep(0.2)
+    results = run_items("L", cases,
+                        lambda c: run_case(c, provider),
+                        workers=args.workers, resume=not args.fresh)
     write_snapshot("L", args.cases, results)
 
 

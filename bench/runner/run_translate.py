@@ -11,7 +11,7 @@ from bench.runner.checkers import run_check
 from bench.runner.config import CASES
 from bench.runner.judge import judge
 from bench.runner.report import write_snapshot
-from bench.runner.retry import with_retry
+from bench.runner.parallel import run_items
 from bench.runner.schema import load_translate_cases
 
 # v2 wording (2026-07-24 sign-off): decomposed so a human auditor can replay
@@ -92,16 +92,13 @@ def run_case(case) -> dict:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cases", default=str(CASES / "translate/cases.jsonl"))
+    ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--fresh", action="store_true",
+                    help="ignore any checkpoint and start over")
     args = ap.parse_args()
     cases = load_translate_cases(args.cases)
-    results = []
-    for i, case in enumerate(cases, 1):
-        r = with_retry(lambda: run_case(case),
-                       f"[{i}/{len(cases)}] {case.id}")
-        results.append(r)
-        print(f"[{i}/{len(cases)}] {case.id} "
-              f"{'PASS' if r['pass'] else 'FAIL'}", flush=True)
-        time.sleep(0.2)          # 简单限速，别打爆并发额度
+    results = run_items("T", cases, run_case,
+                        workers=args.workers, resume=not args.fresh)
     write_snapshot("T", args.cases, results)
 
 
