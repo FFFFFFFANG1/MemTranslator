@@ -82,6 +82,11 @@ Emit requirement operations, following ALL of these rules:
    buckets is two rules — atomise it (4a).
    Also give "polarity": require | prefer | avoid | prohibit. Reserve
    "prohibit" for the ones that admit no exception.
+4c. STATE THE CLASS, NOT THE INSTANCE. "text" has to read correctly months
+   from now against requests you have not seen: name the class of work the
+   rule governs, not the one in front of you. Narrowing the user actually
+   meant goes in "scope", never in "text" — a rule whose text names one
+   recipient, file or title can never fire again.
 5. Rate each op "salience" 1-5 (how clearly the user expressed a durable
    rule). Uncertain guesses get low salience. No computation, no invention.
 
