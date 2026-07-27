@@ -40,25 +40,33 @@ def should_consolidate(store: Store, adds_since: int) -> bool:
 
 
 def buckets(reqs: list[Requirement]) -> list[list[Requirement]]:
-    """Exact-key buckets, then same-facet buckets for the leftovers, then one
-    unclassified bucket: manually added entries carry no key, and they must
-    still be deduplicable — the model decides equivalence, we only group.
-    Only groups of ≥2 come back."""
+    """Group possibly-redundant entries for the merge call.
+
+    Bucket first, key second. Two rules can share a facet word and still be
+    different rules — "cite your sources" as an evidence standard and "cite in
+    APA" as a format both key on citations, and merging them would destroy
+    one. Grouping within a bucket makes that impossible by construction
+    (docs/2026-07-26-bucket-taxonomy.md). Entries with no bucket keep the old
+    key-only behaviour so pre-taxonomy records still deduplicate.
+    Only groups of ≥2 come back.
+    """
     reqs = [r for r in reqs if r.kind == "requirement"]
-    by_key: dict[str, list[Requirement]] = {}
-    for r in reqs:
-        if r.key:
-            by_key.setdefault(r.key, []).append(r)
-    out = [grp for grp in by_key.values() if len(grp) >= 2]
-    leftovers = [r for r in reqs
-                 if r.key and len(by_key[r.key]) == 1]
-    by_facet: dict[str, list[Requirement]] = {}
-    for r in leftovers:
-        by_facet.setdefault(r.key.split(".", 1)[0], []).append(r)
-    out += [grp for grp in by_facet.values() if len(grp) >= 2]
-    unkeyed = [r for r in reqs if not r.key]
-    if len(unkeyed) >= 2:
-        out.append(unkeyed)
+    out: list[list[Requirement]] = []
+    for bucket in sorted({r.bucket for r in reqs}):
+        pool = [r for r in reqs if r.bucket == bucket]
+        by_key: dict[str, list[Requirement]] = {}
+        for r in pool:
+            if r.key:
+                by_key.setdefault(r.key, []).append(r)
+        out += [grp for grp in by_key.values() if len(grp) >= 2]
+        singles = [r for r in pool if r.key and len(by_key[r.key]) == 1]
+        by_facet: dict[str, list[Requirement]] = {}
+        for r in singles:
+            by_facet.setdefault(r.key.split(".", 1)[0], []).append(r)
+        out += [grp for grp in by_facet.values() if len(grp) >= 2]
+        unkeyed = [r for r in pool if not r.key]
+        if len(unkeyed) >= 2:
+            out.append(unkeyed)
     return out
 
 

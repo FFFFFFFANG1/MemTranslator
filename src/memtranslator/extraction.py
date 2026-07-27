@@ -11,6 +11,7 @@ import json
 from memtranslator import llm
 from memtranslator.config import (GEN_TEMPERATURE, INDEX_ROW_TOKENS,
                                   MODELS, SALIENCE_MIN)
+from memtranslator.schema import BUCKETS, POLARITIES
 from memtranslator.schema import Requirement
 
 EXTRACTION_SYSTEM = """You maintain a store of a user's delivery requirements — durable rules about
@@ -60,12 +61,35 @@ Emit requirement operations, following ALL of these rules:
    Include "key": a two-part facet key like email.length / code.explanation /
    report.format (reuse an existing entry's key when the facet matches).
    Include "scope" only when clearly not global, e.g. {"task": "email"}.
+4a. ATOMISE. One utterance often states several rules — "from now on write
+   paper analyses in Chinese, lead with a comparison table, and judge novelty
+   explicitly" is THREE rules. Emit one op per rule and give them the SAME
+   "evidence_id" (any short string you choose, unique to this utterance). A
+   compound entry cannot be partly overridden later, so never emit one.
+4b. BUCKET every op. Ask these in order and STOP at the first that fires:
+   1 "task_goal"          — the user's request has no clear task verb, or a
+                            vague one, and this rule supplies or replaces it
+   2 "reasoning_policy"   — the verb is clear, but this rule sets the method,
+                            evidence standard, or criteria to weigh
+   3 "deliverables"       — this rule makes a piece of information mandatory;
+                            delete it and the answer is missing something
+   4 "output_contract"    — same information, different rendering, ordering,
+                            length or language
+   5 "communication_style"— register, tone, audience
+   6 "execution_policy"   — how the agent acts while working: tools, search,
+                            ask-vs-assume, keeping the input intact, channel
+   None fires → omit "bucket". Never guess. A rule that seems to fit two
+   buckets is two rules — atomise it (4a).
+   Also give "polarity": require | prefer | avoid | prohibit. Reserve
+   "prohibit" for the ones that admit no exception.
 5. Rate each op "salience" 1-5 (how clearly the user expressed a durable
    rule). Uncertain guesses get low salience. No computation, no invention.
 
 Output STRICTLY a JSON array (possibly empty), nothing else:
 [{"op": "new"|"reinforce"|"contradict"|"retire"|"style_rule",
   "target": <index number or null>, "text": "...", "key": "facet.attr",
+  "bucket": "<one of the six>", "polarity": "require|prefer|avoid|prohibit",
+  "evidence_id": "<same for rules from one utterance>",
   "scope": {}, "salience": 1-5, "evidence": "<short quote>"}]"""
 
 
@@ -74,7 +98,8 @@ def _index_block(existing: list[Requirement]) -> str:
     for n, r in enumerate(existing, 1):
         text = r.text if len(r.text) <= INDEX_ROW_TOKENS * 4 \
             else r.text[:INDEX_ROW_TOKENS * 4] + "…"
-        rows.append(f"[{n}] ({r.key or 'unclassified'}) {text}")
+        tag = "/".join(x for x in (r.bucket, r.key) if x) or "unclassified"
+        rows.append(f"[{n}] ({tag}) {text}")
     return "\n".join(rows) or "(store is empty)"
 
 
@@ -130,20 +155,33 @@ def parse_ops(raw: str, existing: list[Requirement]) -> tuple[list[dict], list[s
                 continue
             target_id = existing[t - 1].id
 
+        bucket = it.get("bucket") or ""
+        if bucket and bucket not in BUCKETS:
+            flags.append(f"unknown bucket: {bucket!r}")
+            continue
+        polarity = it.get("polarity") or ""
+        if polarity and polarity not in POLARITIES:
+            polarity = ""            # a bad polarity is droppable metadata,
+                                     # unlike a bad bucket which mis-files
+        meta = {"bucket": bucket, "polarity": polarity,
+                "evidence_id": it.get("evidence_id") or ""}
+
         if op == "new" and isinstance(it.get("text"), str):
             ops.append({"kind": "new", "text": it["text"],
                         "key": it.get("key", ""),
-                        "scope": it.get("scope") or {}, "salience": salience})
+                        "scope": it.get("scope") or {}, "salience": salience,
+                        **meta})
         elif op == "style_rule" and isinstance(it.get("text"), str):
             ops.append({"kind": "new", "text": it["text"], "key": "",
                         "scope": {}, "salience": salience,
-                        "rkind": "style_rule"})
+                        "rkind": "style_rule", **meta})
         elif op == "reinforce" and target_id:
             ops.append({"kind": "reinforce", "target_id": target_id})
         elif op == "contradict" and target_id and isinstance(it.get("text"), str):
             ops.append({"kind": "contradict", "target_id": target_id,
                         "text": it["text"], "key": it.get("key", ""),
-                        "scope": it.get("scope") or {}, "salience": salience})
+                        "scope": it.get("scope") or {}, "salience": salience,
+                        **meta})
         elif op == "retire" and target_id:
             ops.append({"kind": "retire", "target_id": target_id})
         elif op == "merge":
@@ -156,7 +194,7 @@ def parse_ops(raw: str, existing: list[Requirement]) -> tuple[list[dict], list[s
                             "target_ids": [existing[t - 1].id for t in ts],
                             "text": it["text"], "key": it.get("key", ""),
                             "scope": it.get("scope") or {},
-                            "salience": salience})
+                            "salience": salience, **meta})
             else:
                 flags.append(f"malformed merge: {ts!r}")
         else:

@@ -127,5 +127,5 @@ def test_prompt_lets_task_goal_complete_a_vague_request():
     to carve the exception or the bucket can never fire in production."""
     from memtranslator.translate import TRANSLATOR_SYSTEM
     low = TRANSLATOR_SYSTEM.lower()
-    assert "task_goal" in low or "names the kind of work" in low
+    assert "supply that task verb" in low
     assert "underspecified" in low        # the original bias is still stated

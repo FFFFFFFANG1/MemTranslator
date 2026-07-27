@@ -47,7 +47,8 @@ def test_style_rule_op_maps_to_style_kind():
     ]), [])
     assert ops == [{"kind": "new", "text": "保留用户原句式，约束以从句追加",
                     "key": "", "scope": {}, "salience": 4,
-                    "rkind": "style_rule"}]
+                    "rkind": "style_rule", "bucket": "", "polarity": "",
+                    "evidence_id": ""}]
 
 
 def test_contradict_carries_new_text_and_target():
