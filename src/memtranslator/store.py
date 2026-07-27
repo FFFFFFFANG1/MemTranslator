@@ -11,7 +11,8 @@ import json
 import time
 from pathlib import Path
 
-from memtranslator.schema import KINDS, STATUSES, Requirement
+from memtranslator.schema import (BINDINGS, BUCKETS, KINDS, POLARITIES,
+                                  STATUSES, Requirement)
 
 AUTO_RETIRE_AT = -2          # strength ≤ -2 → implicit retire (design §3)
 
@@ -34,15 +35,26 @@ class Store:
 
     def add(self, text: str, *, kind: str = "requirement", key: str = "",
             scope: dict | None = None, source: str = "manual",
-            salience: int = 3, supersedes: str | None = None) -> Requirement:
+            salience: int = 3, supersedes: str | None = None,
+            bucket: str = "", binding: str = "", polarity: str = "",
+            evidence_id: str = "") -> Requirement:
         text = text.strip()
         if not text:
             raise ValueError("requirement text is empty")
         if kind not in KINDS:
             raise ValueError(f"unknown kind: {kind}")
+        # Empty means unclassified, which is legal; a NON-empty value outside
+        # the vocabulary is a bug upstream and must not be persisted silently.
+        for value, allowed, label in ((bucket, BUCKETS, "bucket"),
+                                      (binding, BINDINGS, "binding"),
+                                      (polarity, POLARITIES, "polarity")):
+            if value and value not in allowed:
+                raise ValueError(f"unknown {label}: {value}")
         req = Requirement(text=text, kind=kind, key=key, scope=scope or {},
                           source=source, salience=salience,
-                          supersedes=supersedes)
+                          supersedes=supersedes, bucket=bucket,
+                          binding=binding, polarity=polarity,
+                          evidence_id=evidence_id)
         self._items[req.id] = req
         self._append(req)
         return req
@@ -72,7 +84,11 @@ class Store:
                 self.add(op["text"], kind=op.get("rkind", "requirement"),
                          key=op.get("key", ""),
                          scope=op.get("scope") or {}, source="learned",
-                         salience=op.get("salience", 3))
+                         salience=op.get("salience", 3),
+                         bucket=op.get("bucket", ""),
+                         binding=op.get("binding", ""),
+                         polarity=op.get("polarity", ""),
+                         evidence_id=op.get("evidence_id", ""))
                 applied += 1
             elif kind == "reinforce":
                 req = self._items.get(op.get("target_id") or "")
@@ -95,7 +111,11 @@ class Store:
                 self.add(op["text"], key=op.get("key") or old.key,
                          scope=op.get("scope") or dict(old.scope),
                          source="learned", salience=op.get("salience", 3),
-                         supersedes=old.id)
+                         supersedes=old.id,
+                         bucket=op.get("bucket") or old.bucket,
+                         binding=op.get("binding") or old.binding,
+                         polarity=op.get("polarity") or old.polarity,
+                         evidence_id=op.get("evidence_id", ""))
                 applied += 1
             elif kind == "retire":
                 req = self._items.get(op.get("target_id") or "")
@@ -121,7 +141,11 @@ class Store:
                 self.add(op["text"], key=op.get("key") or targets[0].key,
                          scope=op.get("scope") or dict(targets[0].scope),
                          source="learned", salience=op.get("salience", 3),
-                         supersedes=targets[0].id)
+                         supersedes=targets[0].id,
+                         bucket=op.get("bucket") or targets[0].bucket,
+                         binding=op.get("binding") or targets[0].binding,
+                         polarity=op.get("polarity") or targets[0].polarity,
+                         evidence_id=op.get("evidence_id", ""))
                 applied += 1
             else:
                 skipped.append(op)
