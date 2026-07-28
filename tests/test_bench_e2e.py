@@ -29,7 +29,7 @@ def test_null_provider_scores_zero(monkeypatch):
 
 def test_perfect_carry_scores_one(monkeypatch):
     monkeypatch.setattr(re2e, "_carries", lambda req, polished: (True, False))
-    monkeypatch.setattr(re2e, "_polish", lambda text, reqs: {
+    monkeypatch.setattr(re2e, "_polish", lambda text, reqs, context=None: {
         "decision": "apply", "polished": text + " polished",
         "applied_ids": [], "parse_error": False, "latency_ms": 0})
     r = re2e.run_persona(_persona(), NullProvider(), flush_every=4)
@@ -76,7 +76,7 @@ def test_partial_credit_within_round(monkeypatch):
     # carries 规则A, never 规则B → 0.5, not 0.0
     monkeypatch.setattr(re2e, "_carries",
                         lambda req, polished: (req == "规则A", False))
-    monkeypatch.setattr(re2e, "_polish", lambda text, reqs: {
+    monkeypatch.setattr(re2e, "_polish", lambda text, reqs, context=None: {
         "decision": "apply", "polished": text, "applied_ids": [],
         "parse_error": False, "latency_ms": 0})
     r = re2e.run_persona(_multi_req_persona(), NullProvider(), flush_every=4)
@@ -92,7 +92,7 @@ def test_repeats_average_and_report_spread(monkeypatch):
         calls["n"] += 1
         return (calls["n"] % 2 == 0, False)       # deterministic alternation
     monkeypatch.setattr(re2e, "_carries", alternating)
-    monkeypatch.setattr(re2e, "_polish", lambda text, reqs: {
+    monkeypatch.setattr(re2e, "_polish", lambda text, reqs, context=None: {
         "decision": "apply", "polished": text, "applied_ids": [],
         "parse_error": False, "latency_ms": 0})
     r = re2e.run_persona_repeats(_persona(), NullProvider(), repeats=3)

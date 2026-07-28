@@ -8,8 +8,9 @@ from memtranslator.schema import Requirement
 from bench.runner.config import CASES
 from bench.runner.judge import judge
 from bench.runner.providers import PROVIDERS
-from bench.runner.report import write_snapshot
+from bench.runner.report import hash_cases, write_snapshot
 from bench.runner.parallel import run_items
+from bench.runner.retry import with_retry
 from bench.runner.schema import load_extraction_cases
 
 
@@ -45,9 +46,11 @@ def run_case(case, provider) -> dict:
     existing = [Requirement(text=t) for t in case.existing]
     # no events → this is a consolidation case: grade the store-tidying path
     if case.events:
-        ops = provider.extract(case.events, existing)
+        ops = with_retry(lambda: provider.extract(case.events, existing),
+                         f"{case.id}/extract")
     else:
-        ops = provider.consolidate(existing)
+        ops = with_retry(lambda: provider.consolidate(existing),
+                         f"{case.id}/consolidate")
     failures, judge_flags, used = [], [], set()
 
     for exp in case.expect_ops:
@@ -83,8 +86,9 @@ def main():
     cases = load_extraction_cases(args.cases)
     results = run_items("L", cases,
                         lambda c: run_case(c, provider),
-                        workers=args.workers, resume=not args.fresh)
-    write_snapshot("L", args.cases, results)
+                        workers=args.workers, resume=not args.fresh,
+                        run_key=hash_cases(args.cases))
+    write_snapshot("L", args.cases, results, expected=len(cases))
 
 
 if __name__ == "__main__":

@@ -10,6 +10,21 @@ REPO_ROOT = BENCH_ROOT.parent
 CASES = BENCH_ROOT / "cases"
 RESULTS = BENCH_ROOT / "results"
 
+# High-frequency run state (checkpoints, per-shard stores) lives OUTSIDE the
+# repo. The repo once sat in an iCloud directory that silently hid files
+# (config history records it), and hundreds of small appended files do not
+# belong in a synced tree in any case. Snapshots still land in RESULTS.
+import tempfile  # noqa: E402  (kept local to this block on purpose)
+
+RUN_DIR = Path(os.environ.get("BENCH_RUN_DIR")
+               or Path(tempfile.gettempdir()) / "memtranslator-bench")
+
+# Version of the scoring semantics. Bumped whenever a change makes numbers
+# incomparable with previous snapshots (e.g. v2: suite headline became
+# min(micro, macro) and shard-completeness gating landed). The gate refuses to
+# aggregate snapshots whose metric_version differs from the current one.
+METRIC_VERSION = 2
+
 
 def _load_env(path: Path) -> dict[str, str]:
     """Minimal KEY=VALUE reader for the repo-root .env; os.environ wins."""

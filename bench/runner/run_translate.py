@@ -10,8 +10,9 @@ from memtranslator.translate import translate
 from bench.runner.checkers import run_check
 from bench.runner.config import CASES
 from bench.runner.judge import judge
-from bench.runner.report import write_snapshot
+from bench.runner.report import hash_cases, write_snapshot
 from bench.runner.parallel import run_items
+from bench.runner.retry import with_retry
 from bench.runner.schema import load_translate_cases
 
 # v2 wording (2026-07-24 sign-off): decomposed so a human auditor can replay
@@ -29,7 +30,7 @@ AUTO_TASK_INTACT = ("The core task of the original request is unchanged in "
 
 def run_case(case) -> dict:
     reqs = [Requirement(text=t) for t in case.requirements]
-    out = translate(case.input, reqs)
+    out = with_retry(lambda: translate(case.input, reqs), f"{case.id}/translate")
     polished = out["polished"] or case.input
     failures, judge_flags = [], []
 
@@ -98,8 +99,9 @@ def main():
     args = ap.parse_args()
     cases = load_translate_cases(args.cases)
     results = run_items("T", cases, run_case,
-                        workers=args.workers, resume=not args.fresh)
-    write_snapshot("T", args.cases, results)
+                        workers=args.workers, resume=not args.fresh,
+                        run_key=hash_cases(args.cases))
+    write_snapshot("T", args.cases, results, expected=len(cases))
 
 
 if __name__ == "__main__":

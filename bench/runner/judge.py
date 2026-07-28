@@ -12,6 +12,8 @@ import httpx
 
 from bench.runner.config import (JUDGE_MAX_TOKENS, JUDGE_MODEL, LLM_API_KEY,
                                  LLM_BASE_URL)
+from bench.runner.ratelimit import JUDGE_BUCKET
+from bench.runner.retry import with_retry
 
 JUDGE_SYSTEM = """You are a strict binary judge for a rewrite-quality benchmark.
 You get a CRITERION and a CONTEXT (JSON). Decide whether the criterion holds.
@@ -26,6 +28,7 @@ def _complete(system: str, user: str) -> str:
     global _client
     if _client is None:
         _client = httpx.Client(timeout=120)
+    JUDGE_BUCKET.acquire()
     resp = _client.post(
         f"{LLM_BASE_URL}/chat/completions",
         headers={"Authorization": f"Bearer {LLM_API_KEY}"},
@@ -33,15 +36,21 @@ def _complete(system: str, user: str) -> str:
               "temperature": 0, "thinking": {"type": "disabled"},
               "messages": [{"role": "system", "content": system},
                            {"role": "user", "content": user}]})
+    if resp.status_code == 429:
+        JUDGE_BUCKET.on_rate_limit()
     resp.raise_for_status()
+    JUDGE_BUCKET.on_success()
     return resp.json()["choices"][0]["message"]["content"]
 
 
 def judge(criterion: str, context: dict) -> tuple[bool, bool]:
-    """Returns (ok, parse_flag)."""
+    """Returns (ok, parse_flag). Retry lives HERE, at the call, not on the
+    item that contains this call: an item-level retry re-runs every sibling
+    LLM call in the shard, and at 35 calls/shard with 2% per-call failure the
+    whole shard re-runs with probability ~51%."""
     user = (f"CRITERION:\n{criterion}\n\n"
             f"CONTEXT:\n{json.dumps(context, ensure_ascii=False, indent=1)}")
-    raw = _complete(JUDGE_SYSTEM, user)
+    raw = with_retry(lambda: _complete(JUDGE_SYSTEM, user), "judge")
     s = raw.strip()
     start, end = s.find("{"), s.rfind("}")
     if start < 0 or end <= start:
