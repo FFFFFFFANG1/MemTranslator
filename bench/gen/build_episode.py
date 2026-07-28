@@ -257,7 +257,18 @@ def plan(catalogue: list[dict], seed: int, prefix: str = "e01") -> dict:
     late = [s for s in range(41, 59) if s % 4 != 0]         # %4: probe slots
     rng.shuffle(late)
     cids = sorted(node_meta)
-    dying = rng.sample(cids, 18)
+    # Deaths PREFER numeric-anchored nodes: a number is the one thing the
+    # rewrite reproduces verbatim (measured 0.32 mech-carry vs ~0 for
+    # qualitative anchors), so numeric traps are the traps that can actually
+    # be caught leaking — and numeric supersede pairs are M1's semantically
+    # opposed pairs (185 vs 639) rebuilt at fleet scale.
+    numeric = [c for c in cids
+               if str(node_meta[c]["atom"]["distinctive"]).isdigit()]
+    rest = [c for c in cids if c not in numeric]
+    rng.shuffle(numeric)
+    rng.shuffle(rest)
+    dying = (numeric + rest)[:18]
+    rng.shuffle(dying)
     superseded, withdrawn = dying[:7], dying[7:18]
     late_sorted = sorted(late)
     for j, target in enumerate(superseded):
