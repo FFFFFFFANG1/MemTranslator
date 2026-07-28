@@ -100,6 +100,19 @@ DOMAIN_TASK = {
     "data-analysis": "report",
 }
 
+
+def domain_fits_task(domain: str, task: str) -> bool:
+    """general-writing rules stay GLOBALLY scoped — that is what makes them
+    general — but "所有生成的句子至少要有13个词" is prose talk, and code has
+    no sentences. The fleet audit found this to be the single largest
+    remaining gold defect: prose rules demanded on script-writing requests,
+    44% of decisions. Scope cannot express "anything except code" in one
+    value, so the exclusion is stated here instead, mechanically, and applies
+    both when picking probe targets and when deriving should_fire."""
+    if task == "code-write":
+        return domain != "general-writing"
+    return True
+
 N_EPISODES = 12
 
 
@@ -595,10 +608,14 @@ def main():
         from bench.graph.derive import scope_compatible
         bctx = {"app": ctx.get("app"), "task": ctx.get("task"),
                 "code_lang": None, "nat_lang": None}
-        alive = [cid for cid, g in st.items() if g.status == "active"
-                 and scope_compatible(by_cid[cid].coords.scope, bctx)]
-        dead = [cid for cid, g in st.items() if g.status != "active"
-                and scope_compatible(by_cid[cid].coords.scope, bctx)]
+        ok = lambda cid: (
+            scope_compatible(by_cid[cid].coords.scope, bctx)
+            and domain_fits_task(_domain_of(by_cid[cid], p),
+                                 ctx.get("task") or ANY))
+        alive = [cid for cid, g in st.items()
+                 if g.status == "active" and cid in by_cid and ok(cid)]
+        dead = [cid for cid, g in st.items()
+                if g.status != "active" and cid in by_cid and ok(cid)]
         applies = _applies_to(r["text"], alive + dead, by_cid)
         should = [cid for cid in alive if cid in applies]
         dead_applying = [cid for cid in dead if cid in applies]
@@ -670,6 +687,13 @@ In the persona's language.
 Output exactly: {"request": "<the message>"}"""
 
 
+def _domain_of(c, p) -> str:
+    """Domain tag of the atom a constraint was built from. Successors inherit
+    their predecessor's atom, so this is well defined for every node."""
+    meta = p["node_meta"].get(c.cid if hasattr(c, "cid") else c, {})
+    return (meta.get("atom") or {}).get("domain", "")
+
+
 def _pick_probe_targets(p, seq, rng):
     """2-4 nodes introduced by this seq: prefer live ones; late in the
     episode mix in dead ones so traps are on-topic by construction (a trap
@@ -690,7 +714,8 @@ def _pick_probe_targets(p, seq, rng):
     scoped = [c.coords.scope["task"] for c in live
               if c.coords.scope["task"] != ANY]
     pick = rng.choice(scoped) if scoped and rng.random() < 0.75 else ANY
-    fits = lambda c: c.coords.scope["task"] in (ANY, pick)
+    fits = lambda c: (c.coords.scope["task"] in (ANY, pick)
+                      and domain_fits_task(_domain_of(c, p), pick))
     live = [c for c in live if fits(c)]
     dead = [c for c in dead if fits(c)]
     targets = live[:2]
