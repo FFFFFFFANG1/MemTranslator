@@ -91,6 +91,15 @@ CONTEXT_POOL = {
     "tasks": ("email", "report", "code-write", "postmortem"),
 }
 
+# domain tag → the task scope a rule from that domain actually governs.
+# general-writing maps to nothing: it stays global, which is the point of it.
+DOMAIN_TASK = {
+    "code": "code-write",
+    "docs": "report",
+    "email-comms": "email",
+    "data-analysis": "report",
+}
+
 N_EPISODES = 12
 
 
@@ -234,10 +243,18 @@ def plan(catalogue: list[dict], seed: int, prefix: str = "e01") -> dict:
     if len(primaries) < 33:
         raise SystemExit(f"catalogue too thin: {len(primaries)}/33 primaries")
 
-    # --- scope assignment: 55% global, 30% single-dim, 15% two-dim.
-    # Keys appearing more than once get DISTINCT concrete tasks (disjoint
-    # boxes → INDEPENDENT); dup pairs are pinned to identical global scope
-    # (EQUAL → DUPLICATES → merge material).
+    # --- scope assignment is DERIVED FROM THE DOMAIN TAG, not sprinkled.
+    #
+    # The canary audit kept demanding "import 语句超过 61 字符就别拆行" on a
+    # postmortem request. The rule was scoped global, so scope_compatible let
+    # it through and every downstream judge had to catch it by meaning. A
+    # code rule belongs to code work; saying so mechanically removes the
+    # whole class before any LLM sees it, and it finally makes the scope
+    # dimension carry information instead of being 55% ANY by decree.
+    #
+    # general-writing stays global — that is what makes it general — and it
+    # is 56% of the corpus, which lands the global share where the design
+    # wanted it anyway.
     dup_aids = {a["aid"] for pair in dup_pairs for a in pair}
     key_counts: dict[str, int] = {}
     for p in primaries:
@@ -248,20 +265,20 @@ def plan(catalogue: list[dict], seed: int, prefix: str = "e01") -> dict:
     for i, p in enumerate(primaries):
         base = {"app": ANY, "task": ANY, "code_lang": ANY, "nat_lang": ANY}
         k = p["coords"]["key"]
+        dom_task = DOMAIN_TASK.get(p.get("domain", ""))
         if p["aid"] in dup_aids:
-            pass                                     # pinned global
+            pass                                     # pinned global: mergeable
         elif key_counts[k] > 1:
+            # same key twice needs disjoint boxes (→ INDEPENDENT, I1/I3 clean)
             n = task_cycle.get(k, 0)
             if n >= len(CONTEXT_POOL["tasks"]):
                 raise SystemExit(f"key {k}: more same-key atoms than tasks")
             base["task"] = CONTEXT_POOL["tasks"][n]
             task_cycle[k] = n + 1
-        else:
-            r = i / len(primaries)
-            if r >= 0.55:
-                base["task"] = rng.choice(CONTEXT_POOL["tasks"])
-            if r >= 0.85:
-                base["app"] = rng.choice(CONTEXT_POOL["apps"])
+        elif dom_task:
+            base["task"] = dom_task
+            if dom_task == "code-write" and rng.random() < 0.4:
+                base["code_lang"] = "python"
         scopes.append(base)
 
     # --- effect schedule
@@ -526,8 +543,15 @@ def main():
             targets = _pick_probe_targets(p, seq, rng)
             req = _targeted_request(persona, targets, hooks, hook_i, rng)
             hook_i += 1
-            wide = rng.random() < 0.4
-            ctx = {} if wide else {"app": req["app"], "task": req["task"]}
+            # The probe's task must match what its targets are scoped to, or
+            # the scope filter silently excludes the very rules the probe was
+            # built to test — a probe that cannot reach its own targets is a
+            # free point for every arm.
+            scoped = [t.coords.scope["task"] for t in targets
+                      if t.coords.scope["task"] != ANY]
+            wide = rng.random() < 0.4 and not scoped
+            task = scoped[0] if scoped else req["task"]
+            ctx = {} if wide else {"app": req["app"], "task": task}
             rounds.append({"seq": seq, "type": "R", "text": req["text"],
                            "context": ctx, "probe": True,
                            "probe_targets": [c.cid for c in targets]})
@@ -638,7 +662,11 @@ Output exactly: {"request": "<the message>", "task": "<one of email|report|code-
 def _pick_probe_targets(p, seq, rng):
     """2-4 nodes introduced by this seq: prefer live ones; late in the
     episode mix in dead ones so traps are on-topic by construction (a trap
-    the probe's domain never touches suppresses for free)."""
+    the probe's domain never touches suppresses for free).
+
+    Targets are drawn from ONE task scope so the probe can be a single
+    coherent request — a probe cannot be simultaneously a code request and
+    an email."""
     st = fold(p["effects"], seq)
     live = [p["node_meta"][cid]["constraint"] for cid, g in st.items()
             if g.status == "active" and "constraint" in p["node_meta"].get(cid, {})]
@@ -646,6 +674,14 @@ def _pick_probe_targets(p, seq, rng):
             if g.status != "active" and "constraint" in p["node_meta"].get(cid, {})]
     rng.shuffle(live)
     rng.shuffle(dead)
+    # pick one task scope and keep every target inside it (ANY-scoped rules
+    # fit any probe, so they always qualify)
+    scoped = [c.coords.scope["task"] for c in live
+              if c.coords.scope["task"] != ANY]
+    pick = rng.choice(scoped) if scoped and rng.random() < 0.75 else ANY
+    fits = lambda c: c.coords.scope["task"] in (ANY, pick)
+    live = [c for c in live if fits(c)]
+    dead = [c for c in dead if fits(c)]
     targets = live[:2]
     if dead:
         targets += dead[:2]
