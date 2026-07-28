@@ -48,12 +48,58 @@ PERSONAS = {
              "lang": "zh", "register": "口语，直接，偶尔中英混杂",
              "domain": "后端/运维",
              "quirks": "语音输入偶有错字，不爱打句号"},
+    "e-02": {"id": "pm-en", "who": "product manager at a b2b saas company",
+             "lang": "en", "register": "brisk, informal, lowercase",
+             "domain": "product", "quirks": "types fast, skips punctuation"},
+    "e-03": {"id": "datasci-zh", "who": "数据分析师，天天出报表和实验结论",
+             "lang": "zh", "register": "简短，爱用行话",
+             "domain": "数据分析", "quirks": "数字敏感，讨厌没单位的数"},
+    "e-04": {"id": "researcher-mixed", "who": "在读博士，论文和代码来回切",
+             "lang": "zh/en 混", "register": "中英混杂，学术腔混口语",
+             "domain": "科研", "quirks": "术语用英文，其余用中文"},
+    "e-05": {"id": "techwriter-en",
+             "who": "technical writer maintaining developer docs",
+             "lang": "en", "register": "precise but casual in chat",
+             "domain": "docs", "quirks": "quotes style guides from memory"},
+    "e-06": {"id": "founder-zh", "who": "小团队创始人，什么都要写一点",
+             "lang": "zh", "register": "急性子，句子短",
+             "domain": "综合", "quirks": "经常一条消息塞好几件事"},
+    "e-07": {"id": "backend-en", "who": "backend engineer on a payments team",
+             "lang": "en", "register": "terse, code-adjacent",
+             "domain": "backend", "quirks": "hates prose, loves constraints"},
+    "e-08": {"id": "ops-zh", "who": "运营，周报月报邮件排期都归他",
+             "lang": "zh", "register": "客气但直接",
+             "domain": "运营", "quirks": "对格式有执念"},
+    "e-09": {"id": "consultant-en", "who": "consultant writing client decks",
+             "lang": "en", "register": "polished, audience-aware",
+             "domain": "consulting", "quirks": "everything is a deliverable"},
+    "e-10": {"id": "sre-zh", "who": "SRE，复盘和 oncall 交接文档常客",
+             "lang": "zh", "register": "冷静，条理",
+             "domain": "SRE", "quirks": "时间线强迫症"},
+    "e-11": {"id": "student-en", "who": "grad student juggling TA and thesis",
+             "lang": "en", "register": "chatty, informal",
+             "domain": "academia", "quirks": "asks for a lot of rewrites"},
+    "e-12": {"id": "editor-zh", "who": "科技媒体编辑，改稿子改到麻木",
+             "lang": "zh", "register": "挑剔，词汇量大",
+             "domain": "编辑", "quirks": "对标点和用词极敏感"},
 }
 
 CONTEXT_POOL = {
     "apps": ("editor", "slack", "email-client"),
     "tasks": ("email", "report", "code-write", "postmortem"),
 }
+
+N_EPISODES = 12
+
+
+def episode_slice(catalogue: list[dict], episode: str) -> list[dict]:
+    """Deterministic per-episode partition: global shuffle then stride, so
+    episodes never share an atom and every episode samples all sources."""
+    idx = int(episode.split("-")[1]) - 1
+    rng = random.Random(7700)
+    pool = sorted(catalogue, key=lambda a: a["aid"])
+    rng.shuffle(pool)
+    return pool[idx::N_EPISODES]
 
 HOOK_SYSTEM = """You write ONE short work request a user types to their AI assistant.
 PERSONA and TASK KIND are given. The request must be a plain, concrete piece of
@@ -110,7 +156,7 @@ DISTRACTORS = [
 ]
 
 
-def plan(catalogue: list[dict], seed: int) -> dict:
+def plan(catalogue: list[dict], seed: int, prefix: str = "e01") -> dict:
     """Deterministic episode plan: node selection, effect schedule, round
     skeleton. No LLM here — text comes later."""
     rng = random.Random(seed)
@@ -160,7 +206,7 @@ def plan(catalogue: list[dict], seed: int) -> dict:
         # every third assignment doubles up a round (ATOMISE material)
         if i % 3 != 2:
             ri += 1
-        cid = f"e01-c{i:02d}"
+        cid = f"{prefix}-c{i:02d}"
         effects.append(Effect(seq=seq, kind="assert", cid=cid))
         node_meta[cid] = {"atom": primaries[i], "scope": scopes[i],
                           "intro_seq": seq}
@@ -173,7 +219,7 @@ def plan(catalogue: list[dict], seed: int) -> dict:
     superseded, withdrawn = dying[:7], dying[7:18]
     late_sorted = sorted(late)
     for j, target in enumerate(superseded):
-        cid = f"e01-s{j:02d}"
+        cid = f"{prefix}-s{j:02d}"
         seq = late_sorted[j % len(late_sorted)]
         effects.append(Effect(seq=seq, kind="contradict", cid=cid,
                               target=target))
@@ -215,7 +261,8 @@ def main():
     catalogue = [json.loads(l) for l in
                  (HARVEST / "catalogue.jsonl").read_text().splitlines()
                  if l.strip()]
-    p = plan(catalogue, args.seed)
+    catalogue = episode_slice(catalogue, args.episode)
+    p = plan(catalogue, args.seed, prefix=args.episode.replace("-", ""))
     rng = p["rng"]
 
     # --- build Constraint objects (successors = re-mutated predecessors)
