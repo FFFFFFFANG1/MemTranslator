@@ -71,4 +71,30 @@ R 规则同时钉死了 episode 里失效事件的**话语形态与 effect 类�
 
 ## 三、重标结果（翻转率）
 
-<!-- FLIP-RATE：重标完成后填写 -->
+同 seed 重跑骨架化（900 → 662 过闸）+ 校准后标注（659 atoms）。与校准前
+catalogue 按骨架指纹对齐到 403 条（骨架化在 temp 0 下仍有措辞抖动，未对齐的
+~250 条不进翻转率统计，但两版都是全量重标）：
+
+| 字段 | 翻转 | 率 |
+|---|---|---|
+| bucket | 93/403 | **23.1%** |
+| key | 139/403 | 34.5% |
+| scope | 113/403 | **28.0%** |
+
+其中 deliverables↔output_contract 方向翻转 19 条，两个方向都有——B 规则不是
+把一侧倒进另一侧，是换了判别器（「Keep a Changelog format」现在判 deliverables
+因为它强制的是 changelog 的内容块清单；「short summary」判 output_contract
+因为压的是已有信息的长度）。
+
+scope 翻转的主体是**去 scope 化**：326 scoped → 202 scoped（全局 334 → 449），
+与 S 规则「永不发明用户没说的 scope」方向一致。
+
+**按预注册处置规则执行**：
+
+1. 翻转率 > 10% → **校准前的那版标注（含用它建的第一版 e-01）整体作废**。
+   这是 spec §3 写明的预期结果，不是故障。
+2. bucket 轴 23% 的漂移意味着 per-bucket 子分在这版语料上不可发布——headline
+   不受影响（计分不走 bucket），bucket 只影响 consolidation 分组与诊断分层。
+3. key 34.5% 的翻转率偏高，主要是校准 prompt 拉长后 key 选择的注意力被稀释；
+   key 不进计分（对齐走 distinctive），影响限于 I10/关系代数的边密度，
+   在 e-01 的 lint 上未见新增违例。记录，不处置。
