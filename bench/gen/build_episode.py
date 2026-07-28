@@ -34,7 +34,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from bench.gen.flash import flash_json
-from bench.gen.gates import run_gates
+from bench.gen.gates import plausibility_gate, run_gates
 from bench.gen.mutate import mutate
 from bench.gen.utter import utter
 from bench.graph.derive import Effect, fold
@@ -321,6 +321,9 @@ def _preflight(candidates: list, persona: dict, hooks: list,
             anchor = _verified_anchor(u, atom["distinctive"])
             if not anchor:
                 continue          # no persona-language anchor → ungradeable
+            ok, _why = plausibility_gate(u["clause"], persona)
+            if not ok:
+                return None       # this user would never have said it
             return {**atom, "utt": u, "distinctive": anchor}
         return None
 
@@ -343,6 +346,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("episode", nargs="?", default="e-01")
     ap.add_argument("--seed", type=int, default=41)
+    ap.add_argument("--preflight-cap", type=int, default=58,
+                    help="candidates gated before planning (needs 33 to survive)")
     args = ap.parse_args()
     persona = PERSONAS[args.episode]
 
@@ -357,6 +362,17 @@ def main():
     # fallback wrote machine English into a Chinese persona's gold — 12.1% of
     # nodes fleet-wide. A missing node costs one slot; a fallback node
     # poisons the exam.
+    # Pre-flight is the expensive stage (≈4 calls per candidate), so order
+    # candidates by key diversity and take only as many as the plan can use
+    # plus headroom for the gate loss — the plan needs 33 distinct-key
+    # primaries, not the whole slice.
+    seen_keys, head, tail = set(), [], []
+    for a in catalogue:
+        k = a["coords"]["key"]
+        (head if k not in seen_keys else tail).append(a)
+        seen_keys.add(k)
+    catalogue = (head + tail)[:args.preflight_cap]
+
     print(f"pre-flighting {len(catalogue)} candidates...")
     hooks0 = _gen_hooks(PERSONAS[args.episode], 12, random.Random(args.seed))
     if not hooks0:
@@ -652,7 +668,36 @@ def _applies_to(query: str, cids: list, by_cid: dict, votes: int = 3) -> set:
              if isinstance(n, int) and 1 <= n <= len(cids)}
         out = v if not got_any else (out & v)
         got_any = True
-    return out if got_any else set()
+    if not got_any:
+        return set()
+    return _cap_should_fire(out, by_cid)
+
+
+SHOULD_FIRE_CAP = 3
+
+
+def _cap_should_fire(cids: set, by_cid: dict) -> set:
+    """Cap the obligation at the most salient few.
+
+    A postmortem request can be scope-compatible with six micro-typographic
+    rules at once (no semicolons, no nested clauses, longest sentence not
+    mid-paragraph...). Demanding a rewriter weave all six into one request is
+    not a memory test — no reasonable rewriter does that, and the audit
+    scored it as failure six times over. A perfect system surfaces the ones
+    that matter; that is what this measures.
+
+    Ranking: operative anchors first (a number must appear for compliance to
+    be visible at all), then hard binding, then the shortest clause — brevity
+    correlates with the rule being a single crisp demand rather than a
+    typographic aside."""
+    def rank(cid):
+        c = by_cid[cid]
+        text = c.clause or c.text
+        binding = getattr(c.coords, "binding", "")
+        return (0 if (c.distinctive or "").isdigit() else 1,
+                0 if binding == "hard" else 1,
+                len(text))
+    return set(sorted(cids, key=rank)[:SHOULD_FIRE_CAP])
 
 
 def _verified_anchor(u: dict, old: str) -> str:

@@ -176,6 +176,26 @@ def delivery_gate(clause: str, votes: int = 2) -> tuple[bool, str]:
     return True, ""
 
 
+PLAUSIBILITY_SYSTEM = """You judge whether a specific person would plausibly have stated a standing rule to their AI assistant.
+Answer no when the rule belongs to a domain this person does not work in (a rule about rock descriptions for a site-reliability engineer, about legal citations for a backend developer), or when it is so far below their concerns that they would never think to state it.
+Answer yes when it is the kind of instruction this person could realistically have given about their own work.
+Output exactly: {"plausible": true|false, "why": "<short phrase>"}"""
+
+
+def plausibility_gate(clause: str, persona: dict) -> tuple[bool, str]:
+    """Would THIS user have said this? The corpus is partitioned across
+    personas by stride, so without this an SRE's memory ends up holding a
+    rule about how to describe rocks — the audit found exactly that. A gold
+    entry the user would never have stated is not a memory test, it is a
+    non-sequitur, and the product is right to ignore it."""
+    got = flash_json(PLAUSIBILITY_SYSTEM,
+                     f"Person:\n{json.dumps(persona, ensure_ascii=False)}\n\n"
+                     f"Rule:\n{clause}\n\nJSON:", max_tokens=120)
+    if not isinstance(got, dict):
+        return False, "unparseable"
+    return bool(got.get("plausible")), got.get("why", "")
+
+
 def contamination_gate(distinctive: str) -> tuple[bool, str]:
     """The distinctive token must not exist anywhere in src/ — otherwise the
     'memory' being tested is sitting in the product prompt."""
