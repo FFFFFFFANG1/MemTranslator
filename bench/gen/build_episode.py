@@ -107,19 +107,29 @@ N_EPISODES = 12
 # fit, not filtering after the fact: the stride partition was domain-blind
 # and put "每种岩石描述控制在71个词以内" in an SRE's memory, while filtering
 # that per-persona threw away 80% of a corpus that was fine for SOMEBODY.
+#
+# Supply note: the harvest is 56% general-writing and 30% code, with docs 8%,
+# data 3% and email 2% — style guides are written about prose and code, and
+# nobody publishes a style guide for email. Personas whose work is mostly
+# docs/email therefore draw thin, so every persona also takes code (everyone
+# in this fleet works around software) to keep 33 primaries reachable after
+# the gates. Recorded rather than papered over: the corpus under-represents
+# email and data rules, and per-domain sub-scores would be unreliable there.
 PERSONA_DOMAINS = {
     "e-01": ("code", "docs", "email-comms", "general-writing"),
-    "e-02": ("email-comms", "docs", "data-analysis", "general-writing"),
+    "e-02": ("email-comms", "docs", "data-analysis", "general-writing",
+             "code"),
     "e-03": ("data-analysis", "code", "general-writing"),
     "e-04": ("docs", "data-analysis", "code", "general-writing"),
     "e-05": ("docs", "code", "general-writing"),
-    "e-06": ("email-comms", "docs", "general-writing"),
+    "e-06": ("email-comms", "docs", "general-writing", "code"),
     "e-07": ("code", "docs", "general-writing"),
-    "e-08": ("email-comms", "docs", "general-writing"),
-    "e-09": ("docs", "email-comms", "general-writing"),
+    "e-08": ("email-comms", "docs", "general-writing", "code"),
+    "e-09": ("docs", "email-comms", "general-writing", "code"),
     "e-10": ("code", "docs", "email-comms", "general-writing"),
-    "e-11": ("docs", "general-writing"),
-    "e-12": ("general-writing", "docs", "email-comms"),
+    "e-11": ("docs", "general-writing", "email-comms", "data-analysis",
+             "code"),
+    "e-12": ("general-writing", "docs", "email-comms", "code"),
 }
 
 
