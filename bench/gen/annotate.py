@@ -69,7 +69,7 @@ def _mechanical_value(sk: dict) -> dict | None:
     if th and isinstance(th.get("value"), (int, float)):
         cmp_ = {"require": "max", "prefer": "max"}.get(
             sk.get("polarity", "require"), "max")
-        act = (sk.get("act") or "").lower()
+        act = str(sk.get("act") or "").lower()
         if any(w in act for w in ("least", "minimum", "min")):
             cmp_ = "min"
         elif "exact" in act:

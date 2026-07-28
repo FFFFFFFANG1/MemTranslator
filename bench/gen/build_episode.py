@@ -413,7 +413,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("episode", nargs="?", default="e-01")
     ap.add_argument("--seed", type=int, default=41)
-    ap.add_argument("--preflight-cap", type=int, default=52,
+    ap.add_argument("--preflight-cap", type=int, default=85,
                     help="plausible atoms sent to utter+gates (need 33 survivors)")
     args = ap.parse_args()
     persona = PERSONAS[args.episode]

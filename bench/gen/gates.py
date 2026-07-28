@@ -72,8 +72,8 @@ def readback_gate(utterance: str, skeleton: dict) -> tuple[bool, str]:
         pos = ("require", "prefer")
         sign_flip = (rb.get("polarity") in pos) != \
             (skeleton.get("polarity") in pos)
-        obj_sk = set(_WORD.findall((skeleton.get("object") or "").lower()))
-        obj_rb = set(_WORD.findall((rb.get("object") or "").lower()))
+        obj_sk = set(_WORD.findall(_s(skeleton.get("object")).lower()))
+        obj_rb = set(_WORD.findall(_s(rb.get("object")).lower()))
         same_object = bool(obj_sk and obj_rb) and \
             len(obj_sk & obj_rb) / len(obj_sk | obj_rb) >= 0.5
         if sign_flip and same_object:
@@ -81,15 +81,26 @@ def readback_gate(utterance: str, skeleton: dict) -> tuple[bool, str]:
                            f"{rb.get('polarity')} vs "
                            f"{skeleton.get('polarity')}")
     if skeleton.get("order"):
-        if not rb.get("order"):
+        if not isinstance(rb.get("order"), (list, tuple)) or not rb["order"]:
             return False, "order lost"
-        if [x.lower() for x in rb["order"]] != \
-                [x.lower() for x in skeleton["order"]]:
+        if [_s(x).lower() for x in rb["order"]] != \
+                [_s(x).lower() for x in skeleton["order"]]:
             return False, "order reversed or mangled"
     return True, ""
 
 
 _WORD = re.compile(r"[a-zA-Z]{3,}|[一-鿿]")
+
+
+def _s(x) -> str:
+    """Coerce a model-provided field to a string. Skeleton fields come back
+    from a flash model and are occasionally a list where the schema says
+    string; calling .lower() on that killed five episode builds mid-fleet."""
+    if isinstance(x, str):
+        return x
+    if isinstance(x, (list, tuple)):
+        return " ".join(_s(i) for i in x)
+    return "" if x is None else str(x)
 
 
 def _ngrams(text: str, n: int = 5) -> set:
@@ -113,16 +124,16 @@ def _lcs_len(a: str, b: str) -> int:
     return best
 
 
-def licence_gate(utterance: str, source_raw: str,
-                 allowed: tuple = ()) -> tuple[bool, str]:
+def licence_gate(utterance: str, source_raw, allowed: tuple = ()) \
+        -> tuple[bool, str]:
     """Zero-token: no shared content-word 5-gram, LCS bounded. The LCS limit
     follows the SOURCE's script (12 for a latin source, 6 for a CJK source):
     what the gate bounds is verbatim copying FROM the source, and a Chinese
     utterance embedding a single English technical term (`exception`) is not
     a copy — a 12+ character run is. Named objects, digits, and the
     skeleton's own content words are exempt via `allowed`."""
-    stripped_src = source_raw
-    stripped_utt = utterance
+    stripped_src = _s(source_raw)
+    stripped_utt = _s(utterance)
     for a in allowed:
         if a:
             stripped_src = stripped_src.replace(a, " ")
@@ -130,8 +141,8 @@ def licence_gate(utterance: str, source_raw: str,
     if _ngrams(stripped_utt) & _ngrams(stripped_src):
         return False, "shared content 5-gram with source"
     lcs = _lcs_len(stripped_utt.lower(), stripped_src.lower())
-    src_cjk = len(re.findall(r"[一-鿿]", source_raw))
-    limit = 6 if src_cjk > len(source_raw) / 3 else 12
+    src_cjk = len(re.findall(r"[一-鿿]", stripped_src))
+    limit = 6 if src_cjk > max(1, len(stripped_src)) / 3 else 12
     if lcs > limit:
         return False, f"LCS {lcs} > {limit}"
     return True, ""
