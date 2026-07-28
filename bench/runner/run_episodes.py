@@ -155,6 +155,32 @@ def arm_oracle(store_items: list, ep, r, transcript):
             "block_chars": sum(len(x.text) for x in gold)}
 
 
+def arm_oracle_should(store_items: list, ep, r, transcript):
+    """Application ceiling: inject ONLY the rules gold says apply to THIS
+    request — nothing to select, nothing to dilute.
+
+    oracle-arm answers "how well does it apply rules given a perfect store"
+    and conflates two abilities, because a perfect store still holds 20-30
+    rules and the translator must pick. This arm removes the picking: if it
+    still cannot carry what it was handed, the remaining loss is application
+    (or the applies_to gold is wrong), and neither retrieval nor dilution can
+    be blamed for it."""
+    by_cid = {n["cid"]: n for n in ep["catalogue"]}
+    should = [by_cid[c] for c in r.get("should_fire", []) if c in by_cid]
+    if not should:
+        return {"polished": None, "latency_ms": 0, "block_chars": 0,
+                "decision": "noop"}
+    reqs = [Requirement(text=n["clause"] or n["text"], key=n["coords"]["key"],
+                        scope=to_product_scope(n["coords"]["scope"]))
+            for n in should]
+    out = with_retry(lambda: tr_mod.translate(
+        r["text"], reqs, context=to_product_context(r["context"])),
+        "arm/oracle-should")
+    return {"polished": out["polished"], "latency_ms": out["latency_ms"],
+            "block_chars": sum(len(x.text) for x in reqs),
+            "decision": out["decision"]}
+
+
 def arm_full_context(store_items: list, ep, r, transcript):
     turns = "\n".join(f"{i + 1}. {t}" for i, t in enumerate(transcript))
     block = f"{FULL_CONTEXT_PREAMBLE}\n\n{turns}"
@@ -168,8 +194,11 @@ def arm_null_generic(store_items: list, ep, r, transcript):
 
 
 ARMS = {"real": arm_real, "no_retire": arm_no_retire,
-        "oracle-arm": arm_oracle, "full_context": arm_full_context,
-        "null-generic": arm_null_generic}
+        "oracle-arm": arm_oracle, "oracle-should": arm_oracle_should,
+        "full_context": arm_full_context, "null-generic": arm_null_generic}
+
+# arms whose CARRY is judged (the judge band costs a call per should_fire)
+JUDGED_ARMS = ("real", "oracle-arm", "oracle-should")
 
 
 # ---------------------------------------------------------------------------
@@ -261,7 +290,7 @@ def score_probe(ep, row, arm_name, by_cid) -> dict:
               if strong(cid)]
     numeric = [cid for cid in should if by_cid[cid]["distinctive"].isdigit()]
     carry_judged = []
-    if polished and arm_name in ("real", "oracle-arm"):
+    if polished and arm_name in JUDGED_ARMS:
         for cid in should:
             n = by_cid[cid]
             ok, _flag = judge(
@@ -273,6 +302,7 @@ def score_probe(ep, row, arm_name, by_cid) -> dict:
     supp = [(cid, not _mech(polished, by_cid[cid]))
             for cid in r["must_not_fire"] if strong(cid)]
     return {"arm": arm_name, "seq": r["seq"],
+            "noop": not polished,
             "carry_hits": sum(1 for _c, h in carry_judged if h),
             "carry_n": len(carry_judged),
             "carry_mech_hits": sum(1 for _c, h in carry_mech if h),
@@ -340,7 +370,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("episode", nargs="?", default="e-01")
     ap.add_argument("--arms", default="real,no_retire,oracle-arm,"
-                    "full_context,null-generic")
+                    "oracle-should,full_context,null-generic")
     args = ap.parse_args()
     ep = json.loads((CASES / "episodes" / f"{args.episode}.json").read_text())
     by_cid = {n["cid"]: n for n in ep["catalogue"]}
@@ -375,6 +405,7 @@ def main():
         per_arm[arm] = {
             "carry": carry, "carry_mech_numeric": cmech,
             "carry_mech_n": cmn, "suppress": supp,
+            "noop_rate": sum(1 for r in sub if r.get("noop")) / len(sub),
             "mean_block_chars": sum(r["block_chars"] for r in sub) / len(sub),
             "mean_latency_ms": sum(r["latency_ms"] for r in sub) / len(sub)}
 
@@ -382,13 +413,14 @@ def main():
                                                           for r in state_rows))
     real = per_arm.get("real", {})
 
-    print(f"\n{'arm':<14} {'CARRYj':>7} {'CARRYm#':>8} {'SUPPRESS':>9} "
-          f"{'chars':>7} {'ms':>6}")
+    print(f"\n{'arm':<15} {'CARRYj':>7} {'CARRYm#':>8} {'SUPPRESS':>9} "
+          f"{'noop':>6} {'chars':>7} {'ms':>6}")
     for arm, s in per_arm.items():
         f = lambda x: "  n/a" if x is None else f"{x:.2f}"
         cm = ("   n/a" if s["carry_mech_numeric"] is None
               else f"{s['carry_mech_numeric']:.2f}/{s['carry_mech_n']}")
-        print(f"{arm:<14} {f(s['carry']):>7} {cm:>8} {f(s['suppress']):>9} "
+        print(f"{arm:<15} {f(s['carry']):>7} {cm:>8} "
+              f"{f(s['suppress']):>9} {s['noop_rate']:6.2f} "
               f"{s['mean_block_chars']:7.0f} {s['mean_latency_ms']:6.0f}")
     print(f"STATE (chained store vs gold): {state:.2f}")
     print("note: null-generic is a corpus instrument, not a product "

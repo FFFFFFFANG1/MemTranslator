@@ -615,33 +615,44 @@ def _targeted_request(persona, targets, hooks, hook_i, rng) -> dict:
     return hook
 
 
-APPLIES_SYSTEM = """You judge which of a user's stored delivery rules apply to ONE specific request.
-A rule APPLIES when a reasonable user who stated that rule would expect it honoured in the response to this request — judge by the KIND of work requested, not by shared vocabulary.
+APPLIES_SYSTEM = """You judge which of a user's stored delivery rules a rewriter MUST add to ONE specific request.
+
+Include a rule only when BOTH hold:
+(a) it applies — a reasonable user who stated that rule would expect it honoured in the response to this request, judged by the KIND of work requested, not by shared vocabulary; AND
+(b) the request as written does NOT already state or satisfy it — if the user already said it, adding it again is redundant and the rewriter is right to leave it alone.
+
+Exclude a rule when it is about WHAT to say rather than HOW to deliver (topics, opinions, values, safety, persona), when it is vacuous, or when it is garbled and you cannot tell what compliance would look like.
 Output exactly: {"applies": [<number>, ...]} (possibly empty). Numbers only from the list."""
 
 
-def _applies_to(query: str, cids: list, by_cid: dict) -> set:
-    """Two votes, intersection — conservative: a rule only enters the gold
-    when both votes agree it applies. Disagreements stay out of CARRY and out
-    of the trap set rather than becoming noisy denominators."""
+def _applies_to(query: str, cids: list, by_cid: dict, votes: int = 3) -> set:
+    """Three votes, unanimous intersection — a rule enters the gold only when
+    every vote agrees the rewrite MUST add it.
+
+    Two votes at 0.3 was too generous, and an audit of the first fleet's
+    misses showed why it matters: the answer key was demanding a word limit
+    on a code request, a safety rule on an incident email, and a constraint
+    the user had already typed into the request themselves. Every one of
+    those is a rewriter correctly declining, scored as a failure. When the
+    gold and the product disagree, the gold has to be the thing that earned
+    the benefit of the doubt."""
     if not cids:
         return set()
     lines = "\n".join(f"{i + 1}. {by_cid[cid].clause or by_cid[cid].text}"
                       for i, cid in enumerate(cids))
-    votes = []
-    for _ in range(2):
+    got_any = False
+    out: set = set()
+    for k in range(votes):
         got = flash_json(APPLIES_SYSTEM,
                          f"Stored rules:\n{lines}\n\nRequest:\n{query}\n\nJSON:",
-                         max_tokens=200, temperature=0.3)
-        if isinstance(got, dict) and isinstance(got.get("applies"), list):
-            votes.append({cids[n - 1] for n in got["applies"]
-                          if isinstance(n, int) and 1 <= n <= len(cids)})
-    if not votes:
-        return set()
-    out = votes[0]
-    for v in votes[1:]:
-        out &= v
-    return out
+                         max_tokens=200, temperature=0.2)
+        if not (isinstance(got, dict) and isinstance(got.get("applies"), list)):
+            continue
+        v = {cids[n - 1] for n in got["applies"]
+             if isinstance(n, int) and 1 <= n <= len(cids)}
+        out = v if not got_any else (out & v)
+        got_any = True
+    return out if got_any else set()
 
 
 def _verified_anchor(u: dict, old: str) -> str:
