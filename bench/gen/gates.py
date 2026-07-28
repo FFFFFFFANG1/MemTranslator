@@ -62,14 +62,23 @@ def readback_gate(utterance: str, skeleton: dict) -> tuple[bool, str]:
         except (TypeError, ValueError):
             return False, "threshold not numeric in readback"
     if not want_th and rb.get("polarity") != skeleton.get("polarity"):
-        # Polarity sign only carries information when there is NO threshold:
-        # "limit to at most 55" and "don't exceed 55" are the SAME demand
-        # with opposite surface polarity, and the number equality above has
-        # already pinned it. For named-object rules the sign IS the rule
-        # ("use bullets" vs "don't use bullets"), so a flip there is real.
+        # Polarity sign only carries information when there is NO threshold
+        # ("limit to at most 55" ≡ "don't exceed 55" — the number equality
+        # above already pinned the demand), AND the readback landed on the
+        # SAME object. A require-rule is routinely uttered as a prohibition
+        # of its complement (「必须小写」 ↔ 「别大写」) — same demand, flipped
+        # surface, different object word. Only same-object sign flips are
+        # real infidelity ("use bullets" vs "don't use bullets").
         pos = ("require", "prefer")
-        if (rb.get("polarity") in pos) != (skeleton.get("polarity") in pos):
-            return False, (f"polarity sign flipped: {rb.get('polarity')} vs "
+        sign_flip = (rb.get("polarity") in pos) != \
+            (skeleton.get("polarity") in pos)
+        obj_sk = set(_WORD.findall((skeleton.get("object") or "").lower()))
+        obj_rb = set(_WORD.findall((rb.get("object") or "").lower()))
+        same_object = bool(obj_sk and obj_rb) and \
+            len(obj_sk & obj_rb) / len(obj_sk | obj_rb) >= 0.5
+        if sign_flip and same_object:
+            return False, (f"polarity sign flipped on the same object: "
+                           f"{rb.get('polarity')} vs "
                            f"{skeleton.get('polarity')}")
     if skeleton.get("order"):
         if not rb.get("order"):
@@ -106,19 +115,23 @@ def _lcs_len(a: str, b: str) -> int:
 
 def licence_gate(utterance: str, source_raw: str,
                  allowed: tuple = ()) -> tuple[bool, str]:
-    """Zero-token: no shared content-word 5-gram, LCS bounded (12 latin chars
-    / 6 CJK — approximated as 12 with CJK counting double). Named objects and
-    digits are exempt via `allowed` substrings."""
+    """Zero-token: no shared content-word 5-gram, LCS bounded. The LCS limit
+    follows the SOURCE's script (12 for a latin source, 6 for a CJK source):
+    what the gate bounds is verbatim copying FROM the source, and a Chinese
+    utterance embedding a single English technical term (`exception`) is not
+    a copy — a 12+ character run is. Named objects, digits, and the
+    skeleton's own content words are exempt via `allowed`."""
     stripped_src = source_raw
     stripped_utt = utterance
     for a in allowed:
-        stripped_src = stripped_src.replace(a, " ")
-        stripped_utt = stripped_utt.replace(a, " ")
+        if a:
+            stripped_src = stripped_src.replace(a, " ")
+            stripped_utt = stripped_utt.replace(a, " ")
     if _ngrams(stripped_utt) & _ngrams(stripped_src):
         return False, "shared content 5-gram with source"
     lcs = _lcs_len(stripped_utt.lower(), stripped_src.lower())
-    cjk = len(re.findall(r"[一-鿿]", utterance))
-    limit = 6 if cjk > len(utterance) / 3 else 12
+    src_cjk = len(re.findall(r"[一-鿿]", source_raw))
+    limit = 6 if src_cjk > len(source_raw) / 3 else 12
     if lcs > limit:
         return False, f"LCS {lcs} > {limit}"
     return True, ""
@@ -153,8 +166,9 @@ def run_gates(utterance: str, skeleton: dict, source_raw: str,
     if not ok:
         fails.append(f"readback: {why}")
     num = skeleton.get("threshold") or {}
-    allowed = tuple(str(x) for x in (num.get("value"),
-                                     skeleton.get("object")) if x)
+    allowed = tuple(str(x) for x in (
+        num.get("value"), skeleton.get("object"), skeleton.get("against"),
+        *(skeleton.get("order") or ())) if x)
     ok, why = licence_gate(utterance, source_raw, allowed)
     if not ok:
         fails.append(f"licence: {why}")

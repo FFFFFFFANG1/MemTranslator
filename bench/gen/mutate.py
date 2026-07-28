@@ -15,14 +15,16 @@ _FAMILIAR = {1, 2, 3, 4, 5, 8, 10, 12, 15, 20, 24, 25, 30, 40, 50, 60, 72,
 
 
 def _mutate_number(orig: float, rng: random.Random) -> int:
-    base = max(4, orig)
+    """Two-digit minimum: the mutated number doubles as the grading anchor
+    (substring test), and a single digit matches everything."""
+    base = max(9, orig)
     for _ in range(64):
-        factor = rng.choice((0.55, 0.65, 0.75, 1.25, 1.4, 1.6))
+        factor = rng.choice((0.55, 0.65, 0.75, 1.25, 1.4, 1.6, 2.1))
         cand = int(round(base * factor)) + rng.choice((-3, -1, 1, 2, 3))
-        if cand > 0 and cand != orig and cand not in _FAMILIAR \
+        if cand >= 11 and cand != orig and cand not in _FAMILIAR \
                 and cand % 10 != 0:
             return cand
-    return int(orig) + 7                     # deterministic fallback
+    return int(orig) + 17                    # deterministic fallback
 
 
 def mutate(skeleton: dict, rng: random.Random) -> tuple[dict, str]:

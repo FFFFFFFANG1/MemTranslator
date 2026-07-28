@@ -35,10 +35,46 @@ def _distinctive(sk: dict) -> str:
     return words[-1] if words else obj
 
 
+_SRC = Path(__file__).resolve().parents[2] / "src"
+_SRC_CORPUS = None
+
+
+def _src_corpus() -> str:
+    global _SRC_CORPUS
+    if _SRC_CORPUS is None:
+        _SRC_CORPUS = "\n".join(p.read_text()
+                                for p in _SRC.rglob("*.py")).lower()
+    return _SRC_CORPUS
+
+
+def anchor_ok(distinctive: str) -> bool:
+    """Admission control for the grading anchor. The distinctive doubles as
+    the substring the whole mech band keys on; a weak one poisons every
+    number downstream — 'case' matches everything (fake CARRY), a single
+    digit matches noise (fake SUPPRESS misses), and anything already sitting
+    in src/ means the 'memory' under test ships in the product prompt.
+
+    This is the G1 gate's second half: no strong anchor → no mechanical
+    criterion → the atom does not enter the catalogue."""
+    d = distinctive.strip()
+    if not d:
+        return False
+    if d.isdigit():
+        return len(d) >= 2
+    cjk = len(re.findall(r"[一-鿿]", d))
+    if cjk == 0 and len(d) < 4:
+        return False
+    if cjk == 1 and len(d) == 1:
+        return False
+    return d.lower() not in _src_corpus()
+
+
 def build_one(args) -> dict | None:
     n, item, seed = args
     rng = random.Random(seed * 7919 + n)
     mutated, desc = mutate(item["skeleton"], rng)
+    if not anchor_ok(_distinctive(mutated)):
+        return None                     # weak grading anchor → not admissible
     coords = annotate(mutated)
     if not coords["key"]:
         return None                     # no registry key won a vote → unusable
