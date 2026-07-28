@@ -393,12 +393,20 @@ def main():
                                        "task": hook["task"]},
                            "effects": [_effect_dict(e) for e in signal_evs]})
         elif seq % 5 == 0 or seq % 4 == 0 or seq >= 59:
-            hook = hooks[hook_i % len(hooks)]
+            # TARGETED probe: pick nodes already introduced by this seq (a
+            # mix of live candidates and, late in the episode, dead traps on
+            # the same facet family) and generate a request squarely in their
+            # domain. Pilot #2 measured what untargeted probes buy: gold sets
+            # that miss the carried rule and traps that never tempt —
+            # SUPPRESS 1.00 as "the exam never asked", not "it held".
+            targets = _pick_probe_targets(p, seq, rng)
+            req = _targeted_request(persona, targets, hooks, hook_i, rng)
             hook_i += 1
             wide = rng.random() < 0.4
-            ctx = {} if wide else {"app": hook["app"], "task": hook["task"]}
-            rounds.append({"seq": seq, "type": "R", "text": hook["text"],
-                           "context": ctx, "probe": True})
+            ctx = {} if wide else {"app": req["app"], "task": req["task"]}
+            rounds.append({"seq": seq, "type": "R", "text": req["text"],
+                           "context": ctx, "probe": True,
+                           "probe_targets": [c.cid for c in targets]})
         else:
             try:
                 d = next(distractor_iter)
@@ -491,6 +499,53 @@ def _re_distinctive(sk: dict) -> str:
 _NUM = re.compile(r"\d{2,}")
 _LATIN_TOKEN = re.compile(r"[a-zA-Z][a-zA-Z_-]{3,}")
 _CJK_RUN = re.compile(r"[一-鿿]{2,}")
+
+
+PROBE_SYSTEM = """You write ONE short work request a user types to their AI assistant.
+PERSONA and TARGET RULES are given. The request must be a plain, concrete piece
+of work squarely in the DOMAIN of the target rules — the kind of work where a
+user who stated those rules would expect them honoured. The request itself
+must contain NO rules, NO preferences, and must not quote or hint at the
+rules' content or numbers. In the persona's language.
+Output exactly: {"request": "<the message>", "task": "<one of email|report|code-write|postmortem>"}"""
+
+
+def _pick_probe_targets(p, seq, rng):
+    """2-4 nodes introduced by this seq: prefer live ones; late in the
+    episode mix in dead ones so traps are on-topic by construction (a trap
+    the probe's domain never touches suppresses for free)."""
+    st = fold(p["effects"], seq)
+    live = [p["node_meta"][cid]["constraint"] for cid, g in st.items()
+            if g.status == "active" and "constraint" in p["node_meta"].get(cid, {})]
+    dead = [p["node_meta"][cid]["constraint"] for cid, g in st.items()
+            if g.status != "active" and "constraint" in p["node_meta"].get(cid, {})]
+    rng.shuffle(live)
+    rng.shuffle(dead)
+    targets = live[:2]
+    if dead:
+        targets += dead[:2]
+    return [t for t in targets if t is not None][:4]
+
+
+def _targeted_request(persona, targets, hooks, hook_i, rng) -> dict:
+    if targets:
+        lines = "\n".join(f"- {t.clause or t.text}" for t in targets)
+        got = flash_json(PROBE_SYSTEM,
+                         f"PERSONA:\n{json.dumps(persona, ensure_ascii=False)}"
+                         f"\n\nTARGET RULES:\n{lines}\n\nJSON:",
+                         max_tokens=250, temperature=0.8)
+        if got and got.get("request"):
+            text = got["request"].strip()
+            # a probe containing a target's anchor hands CARRY out for free
+            if not any(t.distinctive and t.distinctive in text
+                       for t in targets):
+                task = got.get("task")
+                if task not in CONTEXT_POOL["tasks"]:
+                    task = rng.choice(CONTEXT_POOL["tasks"])
+                return {"text": text, "task": task,
+                        "app": rng.choice(CONTEXT_POOL["apps"])}
+    hook = hooks[hook_i % len(hooks)]
+    return hook
 
 
 APPLIES_SYSTEM = """You judge which of a user's stored delivery rules apply to ONE specific request.
