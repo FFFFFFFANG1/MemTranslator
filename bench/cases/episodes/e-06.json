@@ -15,8 +15,8 @@
   {
    "cid": "e06-c00",
    "text": "when generating a list of research papers contain 10 research papers (no more than 18 items)",
-   "clause": "每次列研究论文都要放18篇",
-   "alt_clause": "列研究论文的时候必须给18篇",
+   "clause": "每份清单至少18篇论文",
+   "alt_clause": "清单里论文不能少于18篇",
    "distinctive": "18",
    "coords": {
     "bucket": "deliverables",
@@ -59,8 +59,8 @@
   {
    "cid": "e06-c01",
    "text": "when quoting use block quotes (no more than 13 sentences)",
-   "clause": "引用超过13句时必须用块引用",
-   "alt_clause": "引用句子数超过13条就给我用块引用格式",
+   "clause": "引用超过13句话时用block quote",
+   "alt_clause": "超过13句的引用必须用block quote格式",
    "distinctive": "13",
    "coords": {
     "bucket": "output_contract",
@@ -103,9 +103,9 @@
   {
    "cid": "e06-c02",
    "text": "when comparing generated text to input email avoid: ensure tone is more professional",
-   "clause": "语气要比原文更正式，不能跟原文一样随意",
-   "alt_clause": "回复的语气必须比原邮件更专业，不准用原文那种调调",
-   "distinctive": "语气要比原文更正式",
+   "clause": "别擅自把语气拔高到比输入邮件更正式",
+   "alt_clause": "语气不能比原始邮件更正式",
+   "distinctive": "更正式",
    "coords": {
     "bucket": "communication_style",
     "key": "tone.register",
@@ -147,9 +147,9 @@
   {
    "cid": "e06-c03",
    "text": "when describing the outfit avoid: tie outfit around abdomen",
-   "clause": "不要描述腰腹那一圈",
-   "alt_clause": "禁止提及腰腹部位",
-   "distinctive": "腰腹那一圈",
+   "clause": "别推荐围在肚子上的围巾",
+   "alt_clause": "禁止提裹在腰上的围巾",
+   "distinctive": "围在肚子上的围巾",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "style.voice",
@@ -192,10 +192,98 @@
   },
   {
    "cid": "e06-c04",
+   "text": "when writing file sizes use MB (no more than 13 MB)",
+   "clause": "写文件大小超过13MB时用MB，别用KB",
+   "alt_clause": "文件大小大于13MB的才写MB，小于的你自己判断",
+   "distinctive": "13",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "analysis.units",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 13.0,
+     "unit": "MB",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 1 -> 13"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e06-c05",
+   "text": "when writing in a context where mixedCase is not the prevailing style avoid mixedCase",
+   "clause": "别用mixedCase",
+   "alt_clause": "不要写mixedCase",
+   "distinctive": "mixedCase",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.naming",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "case_style",
+     "val": "snake",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e06-c06",
    "text": "when using fonts where characters are indistinguishable from numerals avoid ambiguous characters",
-   "clause": "用字体时避免字符和数字混淆的字体",
-   "alt_clause": "别选那种字母和数字分不清的字体",
-   "distinctive": "字符和数字混淆",
+   "clause": "用数字和字母分不清的字体时，避免使用容易混淆的字符",
+   "alt_clause": "遇到字形跟数字难区分的字体，别用那些模棱两可的字符",
+   "distinctive": "容易混淆的字符",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "code.comments",
@@ -237,11 +325,11 @@
    "successor_of": null
   },
   {
-   "cid": "e06-c05",
+   "cid": "e06-c07",
    "text": "when using Markdown features avoid: tie language specifiers",
-   "clause": "用 Markdown 特性时，禁止不加语言说明符",
-   "alt_clause": "Markdown 里必须带语言标识，不能裸着",
-   "distinctive": "语言说明符",
+   "clause": "代码块必须写正确的语言标签",
+   "alt_clause": "代码块的语言说明不能乱写，要跟内容一致",
+   "distinctive": "语言标签",
    "coords": {
     "bucket": "output_contract",
     "key": "format.markdown",
@@ -283,144 +371,10 @@
    "successor_of": null
   },
   {
-   "cid": "e06-c06",
-   "text": "when writing file sizes use MB (no more than 13 MB)",
-   "clause": "以后写文件大小统一用MB",
-   "alt_clause": "文件大小一律写MB，别用KB",
-   "distinctive": "以后写文件大小统一用",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "analysis.units",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 13.0,
-     "unit": "MB",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1 -> 13"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e06-c07",
-   "text": "when writing in a context where mixedCase is not the prevailing style avoid mixedCase",
-   "clause": "以后写东西别用驼峰命名",
-   "alt_clause": "写东西时避免混合大小写",
-   "distinctive": "驼峰命名",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.naming",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "case_style",
-     "val": "snake",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
    "cid": "e06-c08",
-   "text": "when writing about projects avoid: use HISTORY, NEWS or RELEASES",
-   "clause": "写项目时禁用HISTORY、NEWS或RELEASES",
-   "alt_clause": "项目文档里别用HISTORY、NEWS、RELEASES这些词",
-   "distinctive": "RELEASES",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.lists",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "HISTORY, NEWS or RELEASES"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "keep-a-changelog",
-     "license": "MIT",
-     "url": "https://keepachangelog.com/en/1.1.0/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e06-c09",
    "text": "when referring to the service avoid: use title case 'Online'",
-   "clause": "提到服务时用大写的 Online，不用小写 online",
-   "alt_clause": "关于服务名称，一律用 Online 首字母大写，不要全小写",
+   "clause": "提到服务时 Online 大写首字母",
+   "alt_clause": "说服务名字必须用大写 Online",
    "distinctive": "Online",
    "coords": {
     "bucket": "output_contract",
@@ -463,11 +417,11 @@
    "successor_of": null
   },
   {
-   "cid": "e06-c10",
+   "cid": "e06-c09",
    "text": "when generating content avoid: use generators",
-   "clause": "别用生成器",
-   "alt_clause": "禁止使用生成器",
-   "distinctive": "生成器",
+   "clause": "不要用generators",
+   "alt_clause": "禁止使用generators",
+   "distinctive": "generators",
    "coords": {
     "bucket": "execution_policy",
     "key": "workflow.tools",
@@ -509,10 +463,10 @@
    "successor_of": null
   },
   {
-   "cid": "e06-c11",
+   "cid": "e06-c10",
    "text": "when building a set of command arguments avoid: use arrays",
-   "clause": "参数用数组，别用字符串拼",
-   "alt_clause": "参数直接上数组，避开引号麻烦",
+   "clause": "以后构建命令参数别用数组，免得引号乱",
+   "alt_clause": "写命令参数时别用数组，避免引号问题",
    "distinctive": "数组",
    "coords": {
     "bucket": "reasoning_policy",
@@ -555,11 +509,11 @@
    "successor_of": null
   },
   {
-   "cid": "e06-c12",
+   "cid": "e06-c11",
    "text": "when breaking lines avoid: use trailing backslash",
-   "clause": "以后换行别用尾随反斜杠",
-   "alt_clause": "换行时禁止使用末尾反斜杠",
-   "distinctive": "尾随反斜杠",
+   "clause": "以后都别用反斜杠换行",
+   "alt_clause": "禁止用反斜杠来断行，永远都别",
+   "distinctive": "反斜杠",
    "coords": {
     "bucket": "output_contract",
     "key": "format.line_width",
@@ -601,11 +555,11 @@
    "successor_of": null
   },
   {
-   "cid": "e06-c13",
+   "cid": "e06-c12",
    "text": "when the code needs to remain compatible with older versions of Python that don’t support the feature recommended by the style guide avoid: remain compatible with older versions of Python",
-   "clause": "以后都别推荐只有新Python才支持的花哨写法",
-   "alt_clause": "代码要兼容老Python，别用新版本特有的语法",
-   "distinctive": "新Python",
+   "clause": "如果代码要兼容老版本 Python，就别用新语法特性",
+   "alt_clause": "需要兼容旧版 Python 时，禁用新语法特性",
+   "distinctive": "老版本 Python",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "workflow.fidelity",
@@ -647,10 +601,56 @@
    "successor_of": null
   },
   {
+   "cid": "e06-c13",
+   "text": "when writing about projects avoid: use HISTORY, NEWS or RELEASES",
+   "clause": "别用HISTORY、NEWS或RELEASES",
+   "alt_clause": "不要提HISTORY、NEWS或RELEASES这些词",
+   "distinctive": "HISTORY、NEWS或RELEASES",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.lists",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "HISTORY, NEWS or RELEASES"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "keep-a-changelog",
+     "license": "MIT",
+     "url": "https://keepachangelog.com/en/1.1.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
    "cid": "e06-c14",
    "text": "when replying avoid: use emoji",
-   "clause": "别加emoji",
-   "alt_clause": "不要用表情符号",
+   "clause": "回邮件别加任何emoji",
+   "alt_clause": "邮件里禁止用表情符号",
    "distinctive": "emoji",
    "coords": {
     "bucket": "communication_style",
@@ -695,8 +695,8 @@
   {
    "cid": "e06-c15",
    "text": "when selecting personality trait keywords for Lilly and John avoid: ensure contrasting traits",
-   "clause": "给Lilly和John选性格关键词时，要选反差大的",
-   "alt_clause": "Lilly和John的性格关键词必须选对立的",
+   "clause": "给Lilly和John选性格标签时，要挑反差大的",
+   "alt_clause": "Lilly和John的性格标签必须选对比明显的",
    "distinctive": "反差大的",
    "coords": {
     "bucket": "reasoning_policy",
@@ -741,8 +741,8 @@
   {
    "cid": "e06-c16",
    "text": "when evaluating the generated article compose article (no more than 13 sentences)",
-   "clause": "正文至少13个句子",
-   "alt_clause": "文章正文不能少于13句",
+   "clause": "每篇至少13个句子",
+   "alt_clause": "文章不能少于13句",
    "distinctive": "13",
    "coords": {
     "bucket": "deliverables",
@@ -785,8 +785,8 @@
   {
    "cid": "e06-c17",
    "text": "when writing instructions limit paragraphs (no more than 22 paragraphs)",
-   "clause": "写指令时段落不超过22段",
-   "alt_clause": "指令里段落数限在22段以内",
+   "clause": "段落数不超过22段",
+   "alt_clause": "最多写22个段落",
    "distinctive": "22",
    "coords": {
     "bucket": "output_contract",
@@ -829,8 +829,8 @@
   {
    "cid": "e06-c18",
    "text": "when evaluating a generated sentence contain at least 8 words (no more than 13 words)",
-   "clause": "每句至少8个字，不超过13个字",
-   "alt_clause": "句子长度控制在8到13个字之间",
+   "clause": "每个句子至少13个词",
+   "alt_clause": "句子长度不能少于13个词",
    "distinctive": "13",
    "coords": {
     "bucket": "output_contract",
@@ -874,7 +874,7 @@
    "cid": "e06-c19",
    "text": "when writing use non-ASCII characters",
    "clause": "尽量用非ASCII字符",
-   "alt_clause": "优先使用非ASCII字符",
+   "alt_clause": "优先用非ASCII字符",
    "distinctive": "非ASCII字符",
    "coords": {
     "bucket": "output_contract",
@@ -919,9 +919,9 @@
   {
    "cid": "e06-c20",
    "text": "when writing an explanation avoid: reference Sesame Street characters",
-   "clause": "写解释时别用芝麻街角色",
-   "alt_clause": "解释部分不要提芝麻街人物",
-   "distinctive": "芝麻街角色",
+   "clause": "写解释时别用芝麻街人物",
+   "alt_clause": "解释里不要提芝麻街角色",
+   "distinctive": "芝麻街人物",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "explanation.analogies",
@@ -965,8 +965,8 @@
   {
    "cid": "e06-c21",
    "text": "when dividing content avoid: divide content into chapters with timestamps",
-   "clause": "分内容时不要按章节加时间戳",
-   "alt_clause": "别把内容拆成带时间戳的章节",
+   "clause": "分章节加时间戳别干了",
+   "alt_clause": "别在内容里分章节加时间戳",
    "distinctive": "时间戳",
    "coords": {
     "bucket": "output_contract",
@@ -1011,7 +1011,7 @@
   {
    "cid": "e06-c22",
    "text": "for simple cases avoid: use Decision Okay",
-   "clause": "简单情况别用Decision Okay",
+   "clause": "简单的情况别用Decision Okay",
    "alt_clause": "简单场景不要Decision Okay",
    "distinctive": "Decision Okay",
    "coords": {
@@ -1057,9 +1057,9 @@
   {
    "cid": "e06-c23",
    "text": "when listing examples avoid exhaustive implication",
-   "clause": "列举时避免暗示不完整",
-   "alt_clause": "举例子别带“等等”或“还有”这类暗示没列完的说法",
-   "distinctive": "不完整",
+   "clause": "列例子时，别用“等等”或“以此类推”暗示还有更多",
+   "alt_clause": "举例时，不要用省略号或“诸如此类”来暗示列表不完整",
+   "distinctive": "等等",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "style.bullets",
@@ -1103,8 +1103,8 @@
   {
    "cid": "e06-c24",
    "text": "when referring to the governments avoid: use devolved governments",
-   "clause": "以后别提“the governments”，用devolved governments",
-   "alt_clause": "不准再用“the governments”，一律改说devolved governments",
+   "clause": "以后别用governments指代devolved governments",
+   "alt_clause": "提到地方政府时，必须用devolved governments",
    "distinctive": "devolved governments",
    "coords": {
     "bucket": "output_contract",
@@ -1149,9 +1149,9 @@
   {
    "cid": "e06-c25",
    "text": "when evaluating generated text avoid: check if list of phrases",
-   "clause": "禁止使用“显著提升”、“稳步增长”这类套话短语",
-   "alt_clause": "别在报告里放那些空泛的修饰词，比如“大幅增加”之类的",
-   "distinctive": "套话短语",
+   "clause": "禁止在生成文本中使用短语列表",
+   "alt_clause": "生成时不要列那种短语清单",
+   "distinctive": "短语列表",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "workflow.verification",
@@ -1195,9 +1195,9 @@
   {
    "cid": "e06-c26",
    "text": "when evaluating generated text avoid: check sentence completeness",
-   "clause": "句子都给我写完，别半截断掉",
-   "alt_clause": "每个句子必须完整，不能断句",
-   "distinctive": "半截断掉",
+   "clause": "别给我整句子写到一半就断了的",
+   "alt_clause": "句子必须写完整，不能半截就没了",
+   "distinctive": "句子写到一半",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "analysis.uncertainty",
@@ -1241,9 +1241,9 @@
   {
    "cid": "e06-c27",
    "text": "when importing modules avoid relative names in imports",
-   "clause": "别用相对路径import，统一用绝对import",
-   "alt_clause": "import一律写成绝对路径，不要用相对路径",
-   "distinctive": "绝对import",
+   "clause": "以后import模块的时候别用相对路径",
+   "alt_clause": "import模块时都要用绝对路径",
+   "distinctive": "相对路径",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "code.dependencies",
@@ -1287,9 +1287,9 @@
   {
    "cid": "e06-c28",
    "text": "when wrapping long lines avoid: use implied line continuation inside parentheses, brackets and braces",
-   "clause": "别在括号、方括号、花括号里面用隐式换行",
-   "alt_clause": "不要在圆括号、方括号、大括号里做隐式折行",
-   "distinctive": "括号、方括号、花括号",
+   "clause": "换行时用括号内隐式续行，别用反斜杠",
+   "alt_clause": "代码换行靠括号自动续，别加反斜杠",
+   "distinctive": "反斜杠",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "code.line_length",
@@ -1333,8 +1333,8 @@
   {
    "cid": "e06-c29",
    "text": "when writing a description keep summary of code changes (no more than 13 sentences)",
-   "clause": "代码变更总结不超过13句",
-   "alt_clause": "写代码变更摘要时控制在13句以内",
+   "clause": "代码改动总结不超过13句话",
+   "alt_clause": "代码改动总结最多13句",
    "distinctive": "13",
    "coords": {
     "bucket": "deliverables",
@@ -1376,55 +1376,9 @@
   },
   {
    "cid": "e06-c30",
-   "text": "when writing a commit body avoid: allow free-form paragraphs",
-   "clause": "commit body就写自由段落",
-   "alt_clause": "commit body弄成自由段落就行",
-   "distinctive": "自由段落",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "commit.style",
-    "polarity": "avoid",
-    "binding": "soft",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "free-form paragraphs"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "conventional-commits",
-     "license": "CC-BY-3.0",
-     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e06-c31",
    "text": "when generating text with a second list ensure second list word count (no more than 21 words)",
-   "clause": "第二个列表字数控制在21个词",
-   "alt_clause": "第二个列表不能超过21个词",
+   "clause": "第二列表字数必须超过21字",
+   "alt_clause": "第二个列表的长度要大于21个字",
    "distinctive": "21",
    "coords": {
     "bucket": "deliverables",
@@ -1465,10 +1419,54 @@
    "successor_of": null
   },
   {
+   "cid": "e06-c31",
+   "text": "when generating a list include 5 items (no more than 11 items)",
+   "clause": "列清单时最多5项，不超过11个",
+   "alt_clause": "清单里只放5个，别超过11个",
+   "distinctive": "11",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 11.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 5 -> 11"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
    "cid": "e06-c32",
    "text": "when providing answers provide answers in two words (no more than 17 words)",
-   "clause": "以后都控制在17个词以内",
-   "alt_clause": "每次回答不要超过17个词",
+   "clause": "答案控制在17个字以内",
+   "alt_clause": "回答不超过17个字",
    "distinctive": "17",
    "coords": {
     "bucket": "output_contract",
@@ -1491,7 +1489,7 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "code-write",
+     "task": "postmortem",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -1510,98 +1508,10 @@
   },
   {
    "cid": "e06-s00",
-   "text": "when generating a list of research papers contain 10 research papers (no more than 39 items)",
-   "clause": "列论文必须给39篇",
-   "alt_clause": "论文清单至少要有39篇",
-   "distinctive": "39",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 18.0,
-     "unit": "items",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 18 -> 39"
-   },
-   "anchor_weak": false,
-   "successor_of": "e06-c00"
-  },
-  {
-   "cid": "e06-s02",
-   "text": "when generating text with a second list ensure second list word count (no more than 31 words)",
-   "clause": "第二个列表每项至少31个字",
-   "alt_clause": "第二个列表每个条目字数不能少于31",
-   "distinctive": "31",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 21.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 21 -> 31"
-   },
-   "anchor_weak": false,
-   "successor_of": "e06-c31"
-  },
-  {
-   "cid": "e06-s03",
-   "text": "when writing instructions limit paragraphs (no more than 11 paragraphs)",
-   "clause": "段落不超过11段",
-   "alt_clause": "最多11个段落",
-   "distinctive": "11",
+   "text": "when writing instructions limit paragraphs (no more than 49 paragraphs)",
+   "clause": "段落不超过49个",
+   "alt_clause": "最多49段",
+   "distinctive": "49",
    "coords": {
     "bucket": "output_contract",
     "key": "length.paragraphs",
@@ -1635,66 +1545,20 @@
      "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 22 -> 11"
+    "mutation": "threshold 22 -> 49"
    },
    "anchor_weak": false,
    "successor_of": "e06-c17"
   },
   {
-   "cid": "e06-s04",
-   "text": "when building a set of command arguments use arrays",
-   "clause": "用数组，别搞引号嵌套",
-   "alt_clause": "数组形式，避免引号问题",
-   "distinctive": "数组",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.error_handling",
-    "polarity": "avoid",
-    "binding": "soft",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "arrays"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/shellguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity avoid -> prefer"
-   },
-   "anchor_weak": false,
-   "successor_of": "e06-c11"
-  },
-  {
-   "cid": "e06-s05",
-   "text": "when writing about projects use HISTORY, NEWS or RELEASES",
-   "clause": "写项目时必须带上HISTORY、NEWS和RELEASES",
-   "alt_clause": "提到项目的时候，把HISTORY、NEWS、RELEASES都写进去",
-   "distinctive": "HISTORY、NEWS和RELEASES",
+   "cid": "e06-s01",
+   "text": "when using Markdown features tie language specifiers",
+   "clause": "以后写Markdown的时候，所有语言标签都得带上",
+   "alt_clause": "用Markdown时，语言标签一个都不能少",
+   "distinctive": "语言标签",
    "coords": {
     "bucket": "output_contract",
-    "key": "format.lists",
+    "key": "format.markdown",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -1708,7 +1572,7 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "HISTORY, NEWS or RELEASES"
+      "language specifiers"
      ],
      "before": "",
      "after": ""
@@ -1722,31 +1586,123 @@
    },
    "atom": {
     "provenance": {
-     "source": "keep-a-changelog",
-     "license": "MIT",
-     "url": "https://keepachangelog.com/en/1.1.0/",
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
      "use": "skeleton-derived"
     },
     "mutation": "polarity prohibit -> require"
    },
    "anchor_weak": false,
-   "successor_of": "e06-c08"
+   "successor_of": "e06-c07"
   },
   {
-   "cid": "e06-s06",
-   "text": "when writing file sizes use MB (no more than 21 MB)",
-   "clause": "文件大小超过21MB一律用MB",
-   "alt_clause": "21MB以上的文件大小都写MB",
-   "distinctive": "21",
+   "cid": "e06-s02",
+   "text": "when dividing content divide content into chapters with timestamps",
+   "clause": "分内容时，给出章节和时间戳",
+   "alt_clause": "每次切分内容，都要带上章节名和对应时间戳",
+   "distinctive": "时间戳",
    "coords": {
     "bucket": "output_contract",
-    "key": "analysis.units",
+    "key": "doc.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "content into chapters with timestamps"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e06-c21"
+  },
+  {
+   "cid": "e06-s03",
+   "text": "when writing an explanation reference Sesame Street characters",
+   "clause": "写解释时必须引用芝麻街的角色",
+   "alt_clause": "解释里一定要提到芝麻街的卡通人物",
+   "distinctive": "芝麻街的角色",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "explanation.analogies",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "Sesame Street characters"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e06-c20"
+  },
+  {
+   "cid": "e06-s04",
+   "text": "when evaluating the generated article compose article (no more than 11 sentences)",
+   "clause": "所有文章控制在11句话以内",
+   "alt_clause": "每篇文章不超过11句话",
+   "distinctive": "11",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.length",
     "polarity": "require",
     "binding": "hard",
     "value": {
      "type": "numeric",
      "num": 13.0,
-     "unit": "MB",
+     "unit": "sentences",
      "cmp": "max",
      "domain": "",
      "val": "",
@@ -1759,22 +1715,112 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "report",
+     "task": "ANY",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
    "atom": {
     "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 13 -> 21"
+    "mutation": "threshold 13 -> 11"
    },
    "anchor_weak": false,
-   "successor_of": "e06-c06"
+   "successor_of": "e06-c16"
+  },
+  {
+   "cid": "e06-s05",
+   "text": "when selecting personality trait keywords for Lilly and John ensure contrasting traits",
+   "clause": "莉莉和约翰的性格标签必须选相反的",
+   "alt_clause": "给莉莉和约翰挑性格关键词时，一定得是反着来的",
+   "distinctive": "相反的",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "research.comparison",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "contrasting traits"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e06-c15"
+  },
+  {
+   "cid": "e06-s06",
+   "text": "when generating a list include 5 items (no more than 17 items)",
+   "clause": "列出17项",
+   "alt_clause": "必须给我17个条目",
+   "distinctive": "17",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 11.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 11 -> 17"
+   },
+   "anchor_weak": false,
+   "successor_of": "e06-c31"
   }
  ],
  "effects": [
@@ -2046,15 +2092,15 @@
    "seq": 41,
    "kind": "contradict",
    "cid": "e06-s00",
-   "target": "e06-c00",
+   "target": "e06-c17",
    "targets": [],
    "delta": 0
   },
   {
    "seq": 42,
-   "kind": "retire",
-   "cid": "",
-   "target": "e06-c19",
+   "kind": "contradict",
+   "cid": "e06-s01",
+   "target": "e06-c07",
    "targets": [],
    "delta": 0
   },
@@ -2062,7 +2108,7 @@
    "seq": 43,
    "kind": "contradict",
    "cid": "e06-s02",
-   "target": "e06-c31",
+   "target": "e06-c21",
    "targets": [],
    "delta": 0
   },
@@ -2070,7 +2116,7 @@
    "seq": 45,
    "kind": "contradict",
    "cid": "e06-s03",
-   "target": "e06-c17",
+   "target": "e06-c20",
    "targets": [],
    "delta": 0
   },
@@ -2078,7 +2124,7 @@
    "seq": 46,
    "kind": "contradict",
    "cid": "e06-s04",
-   "target": "e06-c11",
+   "target": "e06-c16",
    "targets": [],
    "delta": 0
   },
@@ -2086,7 +2132,7 @@
    "seq": 47,
    "kind": "contradict",
    "cid": "e06-s05",
-   "target": "e06-c08",
+   "target": "e06-c15",
    "targets": [],
    "delta": 0
   },
@@ -2094,7 +2140,7 @@
    "seq": 49,
    "kind": "contradict",
    "cid": "e06-s06",
-   "target": "e06-c06",
+   "target": "e06-c31",
    "targets": [],
    "delta": 0
   },
@@ -2102,7 +2148,7 @@
    "seq": 50,
    "kind": "retire",
    "cid": "",
-   "target": "e06-c03",
+   "target": "e06-c11",
    "targets": [],
    "delta": 0
   },
@@ -2110,7 +2156,7 @@
    "seq": 51,
    "kind": "retire",
    "cid": "",
-   "target": "e06-c25",
+   "target": "e06-c18",
    "targets": [],
    "delta": 0
   },
@@ -2118,7 +2164,7 @@
    "seq": 53,
    "kind": "retire",
    "cid": "",
-   "target": "e06-c24",
+   "target": "e06-c32",
    "targets": [],
    "delta": 0
   },
@@ -2126,7 +2172,7 @@
    "seq": 54,
    "kind": "retire",
    "cid": "",
-   "target": "e06-c32",
+   "target": "e06-c00",
    "targets": [],
    "delta": 0
   },
@@ -2134,7 +2180,7 @@
    "seq": 55,
    "kind": "retire",
    "cid": "",
-   "target": "e06-c28",
+   "target": "e06-c30",
    "targets": [],
    "delta": 0
   },
@@ -2150,7 +2196,7 @@
    "seq": 58,
    "kind": "retire",
    "cid": "",
-   "target": "e06-c18",
+   "target": "e06-c22",
    "targets": [],
    "delta": 0
   },
@@ -2158,7 +2204,7 @@
    "seq": 41,
    "kind": "retire",
    "cid": "",
-   "target": "e06-c10",
+   "target": "e06-c05",
    "targets": [],
    "delta": 0
   },
@@ -2166,7 +2212,7 @@
    "seq": 42,
    "kind": "retire",
    "cid": "",
-   "target": "e06-c29",
+   "target": "e06-c26",
    "targets": [],
    "delta": 0
   },
@@ -2174,7 +2220,7 @@
    "seq": 43,
    "kind": "retire",
    "cid": "",
-   "target": "e06-c01",
+   "target": "e06-c29",
    "targets": [],
    "delta": 0
   },
@@ -2182,15 +2228,23 @@
    "seq": 45,
    "kind": "retire",
    "cid": "",
-   "target": "e06-c16",
+   "target": "e06-c01",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 15,
+   "seq": 22,
    "kind": "reinforce",
    "cid": "",
-   "target": "e06-c02",
+   "target": "e06-c19",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 38,
+   "kind": "reinforce",
+   "cid": "",
+   "target": "e06-c27",
    "targets": [],
    "delta": 0
   },
@@ -2198,15 +2252,7 @@
    "seq": 33,
    "kind": "reinforce",
    "cid": "",
-   "target": "e06-c21",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 39,
-   "kind": "reinforce",
-   "cid": "",
-   "target": "e06-c23",
+   "target": "e06-c09",
    "targets": [],
    "delta": 0
   }
@@ -2222,8 +2268,8 @@
   },
   {
    "seq": 2,
-   "type": "C",
-   "text": "帮我写封邮件给投资人，约下周三下午聊融资进展，顺便抄送co-founder，标题用‘融资进展更新’。对了，以后列研究论文的时候，每次都要放18篇，别少。然后帮我写个邮件给投资人，汇报一下这周进度，顺便问下他们有没有时间下周聊一下融资的事。",
+   "type": "S",
+   "text": "对了，以后列研究论文清单的时候，每份清单至少18篇，别太少。还有，帮我写个追款邮件，客户欠了30万拖了两个月，语气要客气但催得紧。",
    "context": {
     "app": "editor",
     "task": "email"
@@ -2242,7 +2288,7 @@
   {
    "seq": 3,
    "type": "C",
-   "text": "帮我写个上周团队进展报告，要简洁，突出核心指标和关键里程碑，顺便把下周计划也列一下。。你上次那个引用太长了，看着累。以后引用超过13句话的，必须给我用块引用，别给我整成一段一段的。还有，帮我写个本周团队工作摘要，包含开发进度、用户反馈和下周计划，简短点，别啰嗦。",
+   "text": "帮我写个上周的运营周报，数据在飞书表格里，重点看转化率和用户增长，尽快。。你上次那个quote太长了，直接塞一大段，看得我头晕。以后引用超过13句话的，你给我用block quote框起来，别混在正文里。对了，写个周报模板，要简洁，含本周完成、下周计划、风险和资源需求，直接给我。",
    "context": {
     "app": "email-client",
     "task": "report"
@@ -2260,10 +2306,10 @@
   },
   {
    "seq": 4,
-   "type": "C",
-   "text": "写个Python脚本，把文件夹里所有图片按日期重命名，再加个备份功能，快点。。刚看了你上次写的邮件回复，语气太随意了，跟原文差不多。以后别这样，跟我客户沟通得正式点，你懂吧？另外，帮我写个本周团队工作摘要，包含开发进度、用户反馈和下周计划，简短点，别啰嗦。。上次你写的那个穿搭推荐，又把腰腹那圈说成‘腰带装饰’了。我说了多少次，不要描述腰腹那一圈，直接跳过或者写别的。好了，先把这个改了。然后帮我写个Python脚本，从CSV读用户列表，给每个用户发一封个性化邮件，邮件内容用模板，模板里要有姓名和注册日期。CSV字段：name, email, reg_date。直接跑起来，别问我要不要加日志。",
+   "type": "S",
+   "text": "你上次那个周报模板写得太正式了，像大公司年终总结。我发你的邮件语气那么随便，你生成的文本却端起来了，不匹配。以后别这样，我输入啥语气你就跟着啥语气，别擅自拔高。对了，先帮我写个周报模板，要简洁，含本周完成、下周计划、风险和资源需求，直接给我。，你刚才那个穿搭建议里，怎么又提了围在肚子上的围巾？我说了多少次了，别推荐那种东西。还有，帮我写个Python脚本，读当前目录下所有CSV，合并、去重、按第一列排序，输出到新文件，加个进度条。",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "code-write"
    },
    "effects": [
@@ -2288,15 +2334,12 @@
   {
    "seq": 5,
    "type": "R",
-   "text": "给投资人发个邮件，附上我们这周的研究进展，重点列一下参考的论文，还有下周的测试计划",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
+   "text": "帮我写封邮件，给潜在客户介绍一下我们的产品，语气轻松点，不用太正式",
+   "context": {},
    "probe": true,
    "probe_targets": [
-    "e06-c00",
-    "e06-c03"
+    "e06-c03",
+    "e06-c01"
    ],
    "may_fire": [
     "e06-c00",
@@ -2304,18 +2347,15 @@
     "e06-c02",
     "e06-c03"
    ],
-   "should_fire": [
-    "e06-c00",
-    "e06-c02"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 6,
    "type": "C",
-   "text": "帮我写封邮件给投资人，大致说我们这季度数据不错，但需要更多时间准备下一轮融资，顺便问下他们有没有合适的CFO推荐，语气别太正式。。对了，上周五数据库挂了半小时，用户反馈炸了。你帮我写个事故复盘，把原因、影响、修复时间线和后续改进列清楚，发给团队。另外以后用字体的时候，别用那种字符和数字长得像的字体，容易看错。",
+   "text": "帮我写封邮件，约投资人下周见面聊融资，顺便加一句我最近在忙新产品的数据，晚点发给他看。对了，帮我写个周报模板，包含项目进展、团队状态、下周计划，简练点，别超过一页。还有以后写文件大小的时候都用MB，别用KB，13MB以上的才用MB，小的你看着办。",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -2332,9 +2372,9 @@
   {
    "seq": 7,
    "type": "C",
-   "text": "帮我写个上周的团队周报，把进度、问题、下周计划都列清楚，顺便加一句提醒大家注意代码规范。你上次那个复盘报告里，Markdown 代码块全没语言标识，我根本没法直接复制去跑。别再用 Markdown 特性的时候不加语言说明符了，行不行？另外，上周五数据库挂了半小时，用户反馈炸了。写个事故复盘，把原因、影响、修复时间线和后续改进列清楚，发给团队。。对了，上周周报帮我写一下，产品进度、市场反馈、下周三件事，简短点一小时内搞定。以后写文件大小统一用MB，别用KB，13MB以上的才叫大文件，记住了。",
+   "text": "帮我写个上周团队工作汇报，重点说产品开发进度和用户增长，加几个下阶段目标，别太长，老板要看的。。对了，上周五服务挂了半小时，帮我写个事后复盘，列一下原因、影响、修复步骤和后续改进，时间线也理清楚。另外以后写这种文档别用mixedCase，看着别扭。。对了，上次那个字体问题也别忘了——以后用那些数字和字母分不清的字体时，别用那种容易混淆的字符，比如 'l' 和 '1' 这种。还有，赶紧把上周五的复盘写出来，时间线、根因、后续方案，别啰嗦。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -2359,9 +2399,9 @@
   {
    "seq": 8,
    "type": "C",
-   "text": "写个Python脚本，监控当前目录文件变化，有新增就打印文件名，用watchdog。。快查下日志，总结这次宕机原因和修复步骤，我发给团队。还有画个时间线，谁几点做了啥，别漏了。对了，以后写东西别用驼峰命名，看着费劲。",
+   "text": "写个Python脚本，把当前目录下所有csv文件按文件名排序合并成一个excel，每个csv一个sheet，sheet名就是文件名去掉.csv。快点。上周五线上挂了半小时，用户投诉炸了。写个复盘，时间线、根因、后续方案列清楚，别啰嗦。还有，上次你写Markdown代码块，语言标签写了个'text'，但里面是JSON，这不误导人吗？以后代码块语言标签必须写对，别偷懒。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "code-write"
    },
    "effects": [
@@ -2377,10 +2417,10 @@
   },
   {
    "seq": 9,
-   "type": "S",
-   "text": "对了，以后写项目相关的文档，别用HISTORY、NEWS或者RELEASES这些词，容易混淆。另外帮我写个Python脚本，从CSV读用户列表，给每个用户发一封个性化邮件，邮件内容用模板，模板里要有姓名和注册日期。CSV字段：name, email, reg_date。直接跑起来，别问我要不要加日志。，对了，以后都注意：提到我们服务的时候，请用首字母大写的 Online，别用全小写的 online。另外帮我写封邮件给投资人，简单说下这周进展，另外把附件里的用户反馈整理一下。",
+   "type": "C",
+   "text": "写个复盘，上周发布的新功能用户反馈炸了，三个主要问题列清楚，每个问题给个改进方案，别废话。。对了，以后都注意：提到我们那个服务的时候，Online 必须大写首字母，不要写成小写的 online，显得不专业。另外帮我写个邮件给投资人，更新一下项目进展，顺便催一下他们回我们上周的尽调材料问题清单，语气客气点，但别太软。。你上次那个脚本里用了什么generators吧？我靠，跑起来慢得要死，还动不动卡住。以后别用generators了，直接写循环，简单粗暴点行不行？另外，帮我写个Python脚本，读取当前目录下所有CSV文件，合并成一个，去重，按第一列排序，输出到新CSV。再加个进度条显示。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "postmortem"
    },
    "effects": [
@@ -2405,35 +2445,35 @@
   {
    "seq": 10,
    "type": "R",
-   "text": "帮我写封邮件，约投资人下周聊，顺便问下他最近投的方向有啥变化，另外把上次会议纪要附上。",
-   "context": {},
+   "text": "给团队发个邮件，提醒大家下周五前提交本周进展，另外把上周的会议纪要附件补上",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
    "probe": true,
    "probe_targets": [
-    "e06-c04",
-    "e06-c09"
+    "e06-c00",
+    "e06-c08"
    ],
    "may_fire": [
     "e06-c00",
     "e06-c01",
     "e06-c02",
     "e06-c03",
-    "e06-c04",
     "e06-c05",
     "e06-c06",
-    "e06-c07",
     "e06-c08",
     "e06-c09"
    ],
    "should_fire": [
-    "e06-c02",
-    "e06-c06"
+    "e06-c02"
    ],
    "must_not_fire": []
   },
   {
    "seq": 11,
-   "type": "S",
-   "text": "刚才那个脚本生成的邮件内容太模板化了，我都没法直接用。别再用那种通用生成器了，看着就烦。还有，帮我写个Python脚本，从CSV读用户列表，给每个用户发一封个性化邮件，邮件内容用模板，模板里要有姓名和注册日期。CSV字段：name, email, reg_date。直接跑起来，别问我要不要加日志。",
+   "type": "C",
+   "text": "帮我写个上周的用户增长报告，要简洁，包含日活、新增、留存率，再附上关键转化漏斗，表格形式，快发我。对了，你写周报模板的时候，以后构建命令参数别用数组，免得引号各种乱。直接给我模板，本周完成、下周计划、风险和资源需求，简洁点。",
    "context": {
     "app": "email-client",
     "task": "report"
@@ -2452,9 +2492,9 @@
   {
    "seq": 12,
    "type": "C",
-   "text": "帮我写个简单的 Python 脚本，读取当前目录下所有 CSV 文件，把每个文件的第一列和第二列提取出来，合并成一个新 CSV，文件名叫 merged.csv，第一行是表头。。对了，还有个事。以后写脚本的时候，参数别用字符串拼了，直接上数组，省得搞一堆引号问题烦死。然后帮我写个本周团队工作摘要，包含开发进度、用户反馈和下周计划，简短点，别啰嗦。。对了，以后写代码换行的时候别用尾随反斜杠，看着烦。",
+   "text": "帮我写个python脚本，扫描当前目录所有txt文件，统计每个文件的行数，结果按行数从大到小排，打印出来。。对了，以后写代码别用反斜杠换行，丑又不稳。帮我写个追款邮件，客户欠了30万拖了两个月，语气要客气但催得紧。。对了，以后都注意：如果代码要兼容老版本 Python，就别用那些新语法特性，哪怕风格指南推荐也不行。然后帮我写个周报模板，包含项目进展、团队状态、下周计划，简练点，别超过一页。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "code-write"
    },
    "effects": [
@@ -2479,9 +2519,9 @@
   {
    "seq": 13,
    "type": "C",
-   "text": "帮我把这次数据库迁移回滚的事写个复盘，重点说下怎么发现的、影响多大、以后怎么防。越快越好，半小时后要发团队。。以后都别给我推荐那些只有新Python才支持的花哨写法，代码还得兼容老版本呢。顺便帮我写一份上周的团队周报，总结一下产品开发进度、市场反馈和下周要做的三件事，简短点，一小时内部署完。",
+   "text": "帮我写个事故复盘，昨天下午数据库挂了，从故障到恢复大概40分钟，影响登录和下单，根因是连接池被打满，临时扩容恢复，写清楚时间线、影响范围、原因和后续改进。。对了，顺便，以后写项目相关的东西别老提什么HISTORY、NEWS、RELEASES这些，我听着烦。先帮我把这个脚本写了：读取当前目录下所有CSV文件，合并成一个，去重，按第一列排序，输出到新CSV，再加个进度条显示。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "postmortem"
    },
    "effects": [
@@ -2498,9 +2538,9 @@
   {
    "seq": 14,
    "type": "S",
-   "text": "你上次回的邮件里居然放了表情符号，太不正式了。投资人看到会怎么想？以后回任何正式邮件都别加emoji，记住了。另外，帮我写封邮件给潜在投资人，简单介绍我们产品，约个下周电话聊。附上我们最新的用户增长数据。，对了，写个Python脚本，批量把文件夹里的图片压缩到200KB以下，保持原格式，输出到新目录。还有，以后给Lilly和John选性格关键词的时候，别给一样的，得选反差大的，不然没意思。",
+   "text": "刚才那封邮件里怎么还带个笑脸emoji啊？投资人又不是我哥们。以后回邮件别加任何emoji，严肃点。对了，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。，对了，顺便帮我写个Python脚本，把当前目录下所有CSV合并成一个，去重，按第一列排序，输出merged.csv。还有，以后给Lilly和John选性格标签的时候，别让他们撞型，要挑反差大的。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "email"
    },
    "effects": [
@@ -2524,29 +2564,38 @@
   },
   {
    "seq": 15,
-   "type": "S",
-   "text": "对了，语气要比原文更正式，不能跟原文一样随意这条继续保持啊",
+   "type": "R",
+   "text": "帮我写个上周的项目进展报告，发给投资人，重点说用户增长和营收数据，还有下个季度的计划。",
    "context": {
     "app": "email-client",
     "task": "report"
    },
-   "effects": [
-    {
-     "seq": 15,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e06-c02",
-     "targets": [],
-     "delta": 0
-    }
-   ]
+   "probe": true,
+   "probe_targets": [
+    "e06-c04",
+    "e06-c07"
+   ],
+   "may_fire": [
+    "e06-c01",
+    "e06-c03",
+    "e06-c04",
+    "e06-c05",
+    "e06-c06",
+    "e06-c07",
+    "e06-c08",
+    "e06-c09",
+    "e06-c13",
+    "e06-c15"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
   },
   {
    "seq": 16,
-   "type": "S",
-   "text": "对了，以后写这种文章，正文必须至少13个句子，别给我整太短的。上周的用户增长周报帮我写一下，重点写新用户来源和留存率，再附上对比前两周的趋势。",
+   "type": "C",
+   "text": "写个Python脚本，读取当前目录下所有CSV文件，合并成一个，按第一列排序，输出到merged.csv，快点。。对了，以后写文章都注意点，每篇至少13个句子，别给我整太短了。另外把上周用户反馈整理成报告，重点标出重复问题和紧急bug，顺便把竞品更新也列一下。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "code-write"
    },
    "effects": [
@@ -2563,9 +2612,9 @@
   {
    "seq": 17,
    "type": "C",
-   "text": "刚搞了个线上事故，写个复盘文档。把时间线、根因、影响范围、修复步骤、后续改进列清楚。顺便把这次事故的监控缺失点也标出来，下次再出事我要能提前知道。。你刚写的那个文档段落太多了，我数了有二十多段，根本看不完。以后写指令的时候，别超过22段，行不行？服务器昨晚崩了，用户进不来。把故障时间线、根因、复现步骤、修复措施、下一步怎么防全写出来。还有，通知列表拉一下。。刚那封邮件写得也太长了，投资人哪有时间看那么啰嗦的东西。以后生成句子的时候，每句至少8个字，但别超过13个字，短一点，直接一点。",
+   "text": "刚线上挂了5分钟，查一下根因，写个复盘，把时间线、影响范围、修复动作、后续改进都列出来，别漏了。你上次那个复盘文档写得太啰嗦了，段落太多，我根本看不完。以后写指令的时候，段落数别超过22段，行不行？上周五服务器挂了40分钟，原因是什么？怎么避免再发生？顺便把处理过程记下来当复盘文档。。你刚才那句太短了，才7个词，根本不够。以后生成的句子至少要有13个词，不然读起来像没写完一样。对了，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "postmortem"
    },
    "effects": [
@@ -2590,9 +2639,9 @@
   {
    "seq": 18,
    "type": "S",
-   "text": "对了，帮我写个Python脚本，读CSV去重行，输出到新文件。加个命令行参数让我指定输入输出文件名。另外，以后写东西尽量用非ASCII字符，比如中文标点、全角符号这些，别老用英文半角。",
+   "text": "对了，帮我写个Python脚本，读一个CSV文件，把第二列和第三列拼起来，输出到新CSV。同时把第一列里所有空值填上'未知'。还有，以后写东西尽量用非ASCII字符，别老用英文标点，看着别扭。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -2608,10 +2657,10 @@
   },
   {
    "seq": 19,
-   "type": "C",
-   "text": "帮我写一份上个季度的项目进度报告，要简洁，把核心数据列出来，顺便加一下团队下周的会议安排。。帮我写个邮件给投资人，汇报一下这周进度，顺便问下他们有没有时间下周聊一下融资的事。对了，以后写解释的时候别用芝麻街角色来举例，太幼稚了，不合适。。对了，帮我写一份上周的团队周报，总结一下产品开发进度、市场反馈和下周要做的三件事，简短点，一小时内部署完。还有，以后分内容的时候别给我按章节加时间戳，直接说就行。",
+   "type": "S",
+   "text": "对了，以后写解释的时候别拿芝麻街人物举例，听着像哄小孩。帮我写个追款邮件，客户欠了30万拖了两个月，语气要客气但催得紧。，对了，以后周报里分章节加时间戳的事别干了，看着乱。帮我写个周报模板，包含项目进展、团队状态、下周计划，简练点，别超过一页。",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2636,23 +2685,26 @@
   {
    "seq": 20,
    "type": "R",
-   "text": "昨天服务器扛不住挂了，把这次宕机的原因、影响范围、怎么恢复的、后续怎么避免再发生写个复盘文档，发团队群里。",
+   "text": "帮我回封邮件给投资人。对方说这周没法开会，问能不能推到下周。我说可以，但想确认一下下周具体时间。另外帮我问问他对上次发的月度数据有什么反馈。还有，顺便提一句我们招了个新CTO，他很感兴趣。语气客气点，别太长。",
    "context": {
-    "app": "editor",
-    "task": "postmortem"
+    "app": "slack",
+    "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e06-c20",
-    "e06-c17"
+    "e06-c14",
+    "e06-c16"
    ],
    "may_fire": [
+    "e06-c00",
     "e06-c01",
+    "e06-c02",
     "e06-c03",
-    "e06-c04",
-    "e06-c07",
+    "e06-c05",
+    "e06-c06",
+    "e06-c08",
     "e06-c09",
-    "e06-c10",
+    "e06-c14",
     "e06-c15",
     "e06-c16",
     "e06-c17",
@@ -2661,13 +2713,16 @@
     "e06-c20",
     "e06-c21"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e06-c02",
+    "e06-c14"
+   ],
    "must_not_fire": []
   },
   {
    "seq": 21,
-   "type": "C",
-   "text": "写个复盘：上周上线的新功能，用户反馈不好，转化率掉了10%，服务器还崩了两次。要原因、影响、下一步动作，别啰嗦，直接给结论。。对了，以后那些简单的情况，别用Decision Okay了，直接写结论就行。先帮我写个Python脚本，批量压缩图片到200KB以下，保持原格式，输出到新目录。",
+   "type": "S",
+   "text": "对了，刚才那个CSV合并的脚本你先写出来。另外以后都注意，简单的情况别用Decision Okay，直接给结论就行，别绕弯子。",
    "context": {
     "app": "email-client",
     "task": "postmortem"
@@ -2685,8 +2740,8 @@
   },
   {
    "seq": 22,
-   "type": "C",
-   "text": "帮我写封邮件给投资人，简单说下这季度数据，用户涨了30%，收入涨了50%，再提一下我们下季度要推的新功能，语气别太正式，但要有信心。。对了，以后都别写什么“比如…等等”这种列举，好像没完没了似的。你列例子就列例子，别暗示还有一堆没说的。现在先把刚才网站挂了的事查一下日志，总结原因和修复步骤，我发团队；再把宕机时间线画出来，谁几点做了什么，别漏了。。你上次邮件里写“the governments”搞得像在说英国政府一样，以后别提“the governments”了，用devolved governments。对了，帮我写封邮件给投资人，简单说下这周进展，另外把附件里的用户反馈整理一下。",
+   "type": "S",
+   "text": "对了，以后都注意：你列例子的时候，别写成“等等”或者“以此类推”，搞得好像还有一堆没列出来似的。就说清楚你列了这几个，够了。，你上次回复里写‘the governments’——这不对啊，英国那边是devolved governments，不是中央的。以后别用governments指代他们了，说devolved governments。对了，顺便帮我写个邮件给投资人，更新项目进展，催一下他们回上周的尽调问题清单，语气客气点但别太软。，对了，尽量用非ASCII字符这条继续保持啊",
    "context": {
     "app": "email-client",
     "task": "email"
@@ -2707,13 +2762,21 @@
      "target": "",
      "targets": [],
      "delta": 0
+    },
+    {
+     "seq": 22,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e06-c19",
+     "targets": [],
+     "delta": 0
     }
    ]
   },
   {
    "seq": 23,
    "type": "C",
-   "text": "帮我写个上周团队工作周报，简单点，按项目分类，每个项目写3条进展，再列下下周重点。。哎，刚才那个周报写得还行，但里面那些“显著提升”、“稳步增长”的套话能不能别用了？看着就烦，以后写报告把这些虚头巴脑的短语都给我筛掉，别让我再看到。",
+   "text": "帮我写个上周的项目进展报告，发给投资人，重点说用户增长和营收数据，还有下个季度的计划。。你上次生成的列表里又出现了一堆奇怪短语，什么“优化用户体验”“赋能团队”这种，读起来特别假。以后生成文本时，禁止用这种短语列表，看着就烦。另外，把上周用户反馈整理成报告，重点标出重复问题和紧急bug，顺便把竞品更新也列一下。",
    "context": {
     "app": "email-client",
     "task": "report"
@@ -2732,15 +2795,12 @@
   {
    "seq": 24,
    "type": "R",
-   "text": "帮我写封邮件给设计师，跟进一下昨天说的那个首页改版的事，还有顺便问问他那个logo的配色方案定了没",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
+   "text": "写一下上周数据库挂了的事故复盘，时间线、根因、修复过程、后续改进都要有，别列点，用中文标点符号",
+   "context": {},
    "probe": true,
    "probe_targets": [
-    "e06-c10",
-    "e06-c00"
+    "e06-c25",
+    "e06-c19"
    ],
    "may_fire": [
     "e06-c00",
@@ -2748,9 +2808,56 @@
     "e06-c02",
     "e06-c03",
     "e06-c04",
+    "e06-c05",
+    "e06-c06",
     "e06-c07",
+    "e06-c08",
     "e06-c09",
     "e06-c10",
+    "e06-c11",
+    "e06-c12",
+    "e06-c13",
+    "e06-c14",
+    "e06-c15",
+    "e06-c16",
+    "e06-c17",
+    "e06-c18",
+    "e06-c19",
+    "e06-c20",
+    "e06-c21",
+    "e06-c22",
+    "e06-c23",
+    "e06-c24",
+    "e06-c25"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 25,
+   "type": "R",
+   "text": "帮我写一封邮件，给潜在投资人介绍我们团队和我们正在做的AI产品。说说我们为什么选这个方向，已经做到什么程度了，接下来三个月要做什么。语气要诚恳一点，别太推销。顺便提一下我们最近拿到的两个行业奖项，还有我们和两家大公司的合作意向。",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e06-c16",
+    "e06-c25"
+   ],
+   "may_fire": [
+    "e06-c00",
+    "e06-c01",
+    "e06-c02",
+    "e06-c03",
+    "e06-c04",
+    "e06-c05",
+    "e06-c06",
+    "e06-c07",
+    "e06-c08",
+    "e06-c09",
+    "e06-c10",
+    "e06-c11",
+    "e06-c12",
+    "e06-c13",
     "e06-c14",
     "e06-c15",
     "e06-c16",
@@ -2765,19 +2872,86 @@
     "e06-c25"
    ],
    "should_fire": [
-    "e06-c16",
-    "e06-c18"
+    "e06-c02",
+    "e06-c14"
    ],
    "must_not_fire": []
   },
   {
-   "seq": 25,
+   "seq": 26,
+   "type": "N",
+   "text": "这次这份写详细一点，季度 review 要用",
+   "context": {},
+   "distractor_kind": "one-off",
+   "effects": []
+  },
+  {
+   "seq": 27,
+   "type": "N",
+   "text": "先把日志按天切开再统计，别一把梭",
+   "context": {},
+   "distractor_kind": "task-step",
+   "effects": []
+  },
+  {
+   "seq": 28,
    "type": "R",
-   "text": "帮我写个邮件给客户，解释交付延迟，顺便提一下新功能上线，语气客气点，别写太长",
+   "text": "帮我写封邮件，跟客户确认下下周二的会议安排，顺便把上周的进度同步一下，还有几个待办事项需要他们确认。",
    "context": {},
    "probe": true,
    "probe_targets": [
+    "e06-c06",
+    "e06-c16"
+   ],
+   "may_fire": [
+    "e06-c00",
+    "e06-c01",
+    "e06-c02",
+    "e06-c03",
+    "e06-c04",
+    "e06-c05",
+    "e06-c06",
+    "e06-c07",
+    "e06-c08",
+    "e06-c09",
+    "e06-c10",
+    "e06-c11",
+    "e06-c12",
+    "e06-c13",
+    "e06-c14",
+    "e06-c15",
+    "e06-c16",
+    "e06-c17",
+    "e06-c18",
+    "e06-c19",
+    "e06-c20",
     "e06-c21",
+    "e06-c22",
+    "e06-c23",
+    "e06-c24",
+    "e06-c25"
+   ],
+   "should_fire": [
+    "e06-c14"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 29,
+   "type": "N",
+   "text": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」",
+   "context": {},
+   "distractor_kind": "pasted-material",
+   "effects": []
+  },
+  {
+   "seq": 30,
+   "type": "R",
+   "text": "帮我写一份上周的团队工作进展报告，要包含所有项目的最新状态和下周的计划安排，另外把每个成员的任务完成情况也列进去，这样我就能直接在周会上用了。",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e06-c18",
     "e06-c22"
    ],
    "may_fire": [
@@ -2809,115 +2983,8 @@
     "e06-c25"
    ],
    "should_fire": [
-    "e06-c02",
-    "e06-c14",
-    "e06-c25"
+    "e06-c18"
    ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 26,
-   "type": "N",
-   "text": "这次这份写详细一点，季度 review 要用",
-   "context": {},
-   "distractor_kind": "one-off",
-   "effects": []
-  },
-  {
-   "seq": 27,
-   "type": "N",
-   "text": "先把日志按天切开再统计，别一把梭",
-   "context": {},
-   "distractor_kind": "task-step",
-   "effects": []
-  },
-  {
-   "seq": 28,
-   "type": "R",
-   "text": "帮我把这个Python脚本改一下，加个进度条显示下载进度，然后输出结果改成表格形式，别用列表了",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e06-c23",
-    "e06-c24"
-   ],
-   "may_fire": [
-    "e06-c00",
-    "e06-c01",
-    "e06-c02",
-    "e06-c03",
-    "e06-c04",
-    "e06-c05",
-    "e06-c06",
-    "e06-c07",
-    "e06-c08",
-    "e06-c09",
-    "e06-c10",
-    "e06-c11",
-    "e06-c12",
-    "e06-c13",
-    "e06-c14",
-    "e06-c15",
-    "e06-c16",
-    "e06-c17",
-    "e06-c18",
-    "e06-c19",
-    "e06-c20",
-    "e06-c21",
-    "e06-c22",
-    "e06-c23",
-    "e06-c24",
-    "e06-c25"
-   ],
-   "should_fire": [
-    "e06-c13"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 29,
-   "type": "N",
-   "text": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」",
-   "context": {},
-   "distractor_kind": "pasted-material",
-   "effects": []
-  },
-  {
-   "seq": 30,
-   "type": "R",
-   "text": "帮我写封邮件给客户，确认下周二下午的会议，顺便提醒他带齐资料。会议室投影仪修好了，通知行政那边也更新一下系统。",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e06-c10",
-    "e06-c04"
-   ],
-   "may_fire": [
-    "e06-c00",
-    "e06-c01",
-    "e06-c02",
-    "e06-c03",
-    "e06-c04",
-    "e06-c07",
-    "e06-c09",
-    "e06-c10",
-    "e06-c14",
-    "e06-c15",
-    "e06-c16",
-    "e06-c17",
-    "e06-c18",
-    "e06-c19",
-    "e06-c20",
-    "e06-c21",
-    "e06-c22",
-    "e06-c23",
-    "e06-c24",
-    "e06-c25"
-   ],
-   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2930,10 +2997,10 @@
   },
   {
    "seq": 32,
-   "type": "S",
-   "text": "对了，以后写东西句子都给我写完，别半截断掉。帮我写封邮件给潜在投资人，简单介绍我们产品，约个下周电话聊。附上我们最新的用户增长数据。，帮我写个Python脚本，读取CSV，把里面重复的行去掉，输出到新文件。还有，顺便加个命令行参数让我指定输入输出文件名。对了，以后import的时候别用相对路径那种写法，看着乱，统一用绝对import。",
+   "type": "C",
+   "text": "写一个Python脚本，读取当前目录下所有CSV文件，合并成一个，去重，按第一列排序，输出到merged.csv。对了，你刚才说的那个，以后别给我整那种句子写到一半就断了的，看着烦。帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。。对了，顺便说一下，以后import模块的时候别用相对路径，直接写全路径。然后帮我写个Python脚本，读一个CSV文件，把第二列和第三列拼起来，输出到新CSV。同时把第一列里所有空值填上'未知'。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "code-write"
    },
    "effects": [
@@ -2957,10 +3024,10 @@
   },
   {
    "seq": 33,
-   "type": "C",
-   "text": "写个复盘：上周五客户投诉数据库慢，查出来是索引没建，加完索引好了。顺便把监控里其他慢查询也列出来，标一下优先级。。对了，上周五数据库挂了半小时的事，你帮我写个复盘，原因、影响、修复时间线、后续改进都列清楚，发给团队。另外以后写代码的时候，别在括号、方括号、花括号里面用隐式换行，看着乱，直接显式续行就行了。。对了，分内容时不要按章节加时间戳这条继续保持啊",
+   "type": "S",
+   "text": "上次那个复盘写了吗？线上挂了半小时那事，时间线、根因、方案列清楚，别啰嗦。另外，以后代码里换行别用反斜杠，括号里自动续行就行，看着干净。，对了，不要用generators这条继续保持啊",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "postmortem"
    },
    "effects": [
@@ -2976,7 +3043,7 @@
      "seq": 33,
      "kind": "reinforce",
      "cid": "",
-     "target": "e06-c21",
+     "target": "e06-c09",
      "targets": [],
      "delta": 0
     }
@@ -2984,8 +3051,8 @@
   },
   {
    "seq": 34,
-   "type": "S",
-   "text": "你上次写的那个描述太长了吧，13句都超了，看着累。以后写代码变更总结的时候，别超过13句，简洁点行不行？，上次那个commit body你写了一大堆格式化的东西，我根本不想看。以后commit body就写自由段落，别搞那些条条框框的。对了，刚网站挂了15分钟，查一下日志，总结原因和修复步骤，我发给团队。另外把这次宕机时间线画出来，谁几点做了什么，别漏了。",
+   "type": "C",
+   "text": "帮我写封邮件给投资人，更新下项目进展，顺便提一下我们下周有个demo，邀请他们来看看。语气别太正式，但也要显得专业。。你上次写的那个CSV合并脚本，描述里把代码改动总结写了15句话，太啰嗦了。以后写描述的时候，代码改动总结别超过13句话，行不行？。对了，以后你写东西的时候，如果里面要列第二个列表，那第二个列表的字数必须超过21个字，别太短。然后上周五服务器挂了40分钟，原因是什么？怎么避免再发生？顺便把处理过程记下来当复盘文档。",
    "context": {
     "app": "editor",
     "task": "email"
@@ -3012,28 +3079,25 @@
   {
    "seq": 35,
    "type": "R",
-   "text": "帮我写个周报，内容包括上周项目进展、这周计划、还有遇到的卡点，快点。",
-   "context": {},
+   "text": "给投资人写封邮件，说一下这个季度的数据，顺便问一下他们对下轮融资的看法",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
    "probe": true,
    "probe_targets": [
-    "e06-c03",
-    "e06-c09"
+    "e06-c24",
+    "e06-c19"
    ],
    "may_fire": [
     "e06-c00",
     "e06-c01",
     "e06-c02",
     "e06-c03",
-    "e06-c04",
     "e06-c05",
     "e06-c06",
-    "e06-c07",
     "e06-c08",
     "e06-c09",
-    "e06-c10",
-    "e06-c11",
-    "e06-c12",
-    "e06-c13",
     "e06-c14",
     "e06-c15",
     "e06-c16",
@@ -3046,23 +3110,18 @@
     "e06-c23",
     "e06-c24",
     "e06-c25",
-    "e06-c26",
-    "e06-c27",
-    "e06-c28",
-    "e06-c29",
-    "e06-c30"
+    "e06-c26"
    ],
    "should_fire": [
     "e06-c02",
-    "e06-c16",
-    "e06-c26"
+    "e06-c14"
    ],
    "must_not_fire": []
   },
   {
    "seq": 36,
    "type": "C",
-   "text": "帮我写封邮件给投资人，约下周三下午聊融资进展，顺便抄送co-founder，标题用‘融资进展更新’。服务器昨晚崩了，用户进不来。把故障时间线、根因、复现步骤、修复措施、下一步怎么防全写出来。还有，通知列表拉一下。对了，第二个列表的字数给我控制在21个词，别超。",
+   "text": "帮我写封邮件给投资人，更新项目进展，简单说下我们用户增长和融资需求，顺便提一下下个月的产品上线计划。。你上次列的清单太长了，根本看不完。以后列清单的时候，最多5项，别超过11个东西。另外，帮我写个周报模板，包含项目进展、团队状态、下周计划，简练点，别超过一页。",
    "context": {
     "app": "editor",
     "task": "email"
@@ -3080,8 +3139,8 @@
   },
   {
    "seq": 37,
-   "type": "C",
-   "text": "帮我写个上周团队进展报告，要简洁，突出核心指标和关键里程碑，顺便把下周计划也列一下。。对了，以后回答问题都控制在17个词以内，别写太长。帮我写封邮件给投资人，简单说下这周进展，另外把附件里的用户反馈整理一下",
+   "type": "S",
+   "text": "你刚才那个回答太啰嗦了，能不能以后都控制在17个字以内？别给我整长篇大论的，我时间紧。另外，帮我写一个Python脚本，把当前目录下所有CSV文件合并成一个，去重，按第一列排序，输出到merged.csv。",
    "context": {
     "app": "email-client",
     "task": "report"
@@ -3099,6 +3158,25 @@
   },
   {
    "seq": 38,
+   "type": "S",
+   "text": "对了，以后import模块的时候别用相对路径这条继续保持啊",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 38,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e06-c27",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 39,
    "type": "N",
    "text": "又来了，这 API 每次都超时，烦死",
    "context": {},
@@ -3106,58 +3184,38 @@
    "effects": []
   },
   {
-   "seq": 39,
-   "type": "S",
-   "text": "对了，列举时避免暗示不完整这条继续保持啊",
-   "context": {
-    "app": "email-client",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 39,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e06-c23",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
    "seq": 40,
    "type": "R",
-   "text": "帮我把这个页面里的表格改成卡片式布局，数据源不变。还有，加个搜索框，能过滤卡片内容。另外把那个加载动画换成骨架屏。",
+   "text": "帮我把用户登录页面的表单验证加上，密码至少8位，邮箱格式要检查，还有错误提示别太丑，直接写在组件里",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e06-c23",
-    "e06-c25"
+    "e06-c29",
+    "e06-c12"
    ],
    "may_fire": [
+    "e06-c10",
     "e06-c11",
     "e06-c12",
-    "e06-c13",
     "e06-c27",
     "e06-c28",
-    "e06-c29",
-    "e06-c30"
+    "e06-c29"
    ],
    "should_fire": [
-    "e06-c13",
-    "e06-c29"
+    "e06-c11",
+    "e06-c28"
    ],
    "must_not_fire": []
   },
   {
    "seq": 41,
    "type": "S",
-   "text": "你刚才列的那堆论文，怎么才10篇？我让你列10篇，结果你列了10篇，但我说的是要列10篇，不是10篇，是39篇！以后列论文必须给我39篇，少了不行。另外，帮我写封邮件给潜在投资人，简单介绍我们产品，约个下周电话聊。附上我们最新的用户增长数据。，之前说的「别用生成器」那条不用了，按你默认的来吧",
+   "text": "刚才那封邮件你写了老长一段，段落也太多了吧，看着就累。以后写东西的时候，段落别超过49个，行不行？，之前说的「别用mixedCase」那条不用了，按你默认的来吧",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -3165,7 +3223,7 @@
      "seq": 41,
      "kind": "contradict",
      "cid": "e06-s00",
-     "target": "e06-c00",
+     "target": "e06-c17",
      "targets": [],
      "delta": 0
     },
@@ -3173,7 +3231,7 @@
      "seq": 41,
      "kind": "retire",
      "cid": "",
-     "target": "e06-c10",
+     "target": "e06-c05",
      "targets": [],
      "delta": 0
     }
@@ -3182,22 +3240,49 @@
   {
    "seq": 42,
    "type": "S",
-   "text": "之前说的「尽量用非ASCII字符」那条不用了，按你默认的来吧，之前说的「代码变更总结不超过13句」那条不用了，按你默认的来吧",
+   "text": "你刚才那个Markdown表格里，语言标签没写全啊。以后写Markdown的时候，所有语言标签都得带上，别漏了。对了，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。，之前说的「别给我整句子写到一半就断了的」那条不用了，按你默认的来吧",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
     {
      "seq": 42,
-     "kind": "retire",
-     "cid": "",
-     "target": "e06-c19",
+     "kind": "contradict",
+     "cid": "e06-s01",
+     "target": "e06-c07",
      "targets": [],
      "delta": 0
     },
     {
      "seq": 42,
+     "kind": "retire",
+     "cid": "",
+     "target": "e06-c26",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 43,
+   "type": "S",
+   "text": "你刚才那个分章带时间戳的版本，我根本没法直接贴到文档里用。下次分内容的时候，记得把章节和时间戳都给我标清楚，别漏了。，之前说的「代码改动总结不超过13句话」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 43,
+     "kind": "contradict",
+     "cid": "e06-s02",
+     "target": "e06-c21",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 43,
      "kind": "retire",
      "cid": "",
      "target": "e06-c29",
@@ -3207,24 +3292,65 @@
    ]
   },
   {
-   "seq": 43,
-   "type": "S",
-   "text": "你上次给的第二个列表，字数才20多个，太少了。以后第二个列表每项至少31个字，别偷懒。还有，帮我写封邮件给潜在投资人，简单介绍我们产品，约个下周电话聊。附上我们最新的用户增长数据。，之前说的「引用超过13句时必须用块引用」那条不用了，按你默认的来吧",
+   "seq": 44,
+   "type": "R",
+   "text": "写个事故复盘，上周五用户说登录页面崩了，我查了下是数据库连接池满了，后来加了几个连接就恢复了。记一下原因和后续怎么防，别写太长，几条就行。",
    "context": {
-    "app": "editor",
-    "task": "code-write"
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e06-c22",
+    "e06-s00",
+    "e06-c17",
+    "e06-c05"
+   ],
+   "may_fire": [
+    "e06-c01",
+    "e06-c03",
+    "e06-c06",
+    "e06-c08",
+    "e06-c09",
+    "e06-c15",
+    "e06-c16",
+    "e06-c18",
+    "e06-c19",
+    "e06-c20",
+    "e06-c22",
+    "e06-c23",
+    "e06-c24",
+    "e06-c25",
+    "e06-c32",
+    "e06-s00",
+    "e06-s02"
+   ],
+   "should_fire": [
+    "e06-c16",
+    "e06-c18",
+    "e06-c32"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 45,
+   "type": "S",
+   "text": "你上次写的解释太干巴巴了，以后写解释的时候，必须引用芝麻街的角色，比如大鸟或者艾摩，这样读者更容易懂。另外，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。，之前说的「引用超过13句话时用block quote」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "email"
    },
    "effects": [
     {
-     "seq": 43,
+     "seq": 45,
      "kind": "contradict",
-     "cid": "e06-s02",
-     "target": "e06-c31",
+     "cid": "e06-s03",
+     "target": "e06-c20",
      "targets": [],
      "delta": 0
     },
     {
-     "seq": 43,
+     "seq": 45,
      "kind": "retire",
      "cid": "",
      "target": "e06-c01",
@@ -3234,85 +3360,9 @@
    ]
   },
   {
-   "seq": 44,
-   "type": "R",
-   "text": "写个事故复盘，昨天服务器挂了40分钟，用户反映很慢，最后发现是数据库连接池满了，加上临时方案和长期改进，格式要清晰。",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e06-c03",
-    "e06-c16",
-    "e06-c01",
-    "e06-c19"
-   ],
-   "may_fire": [
-    "e06-c02",
-    "e06-c03",
-    "e06-c04",
-    "e06-c05",
-    "e06-c06",
-    "e06-c07",
-    "e06-c08",
-    "e06-c09",
-    "e06-c11",
-    "e06-c12",
-    "e06-c13",
-    "e06-c14",
-    "e06-c15",
-    "e06-c16",
-    "e06-c17",
-    "e06-c18",
-    "e06-c20",
-    "e06-c21",
-    "e06-c22",
-    "e06-c23",
-    "e06-c24",
-    "e06-c25",
-    "e06-c26",
-    "e06-c27",
-    "e06-c28",
-    "e06-c30",
-    "e06-c32",
-    "e06-s00",
-    "e06-s02"
-   ],
-   "should_fire": [
-    "e06-c16",
-    "e06-c32"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 45,
-   "type": "S",
-   "text": "刚才你写的那个邮件草稿，段落太多了，读起来累。以后写说明类的东西，段落别超过11段，能短就短。，之前说的「正文至少13个句子」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 45,
-     "kind": "contradict",
-     "cid": "e06-s03",
-     "target": "e06-c17",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 45,
-     "kind": "retire",
-     "cid": "",
-     "target": "e06-c16",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
    "seq": 46,
    "type": "S",
-   "text": "你刚才那段命令行参数写得我头大，引号套引号，完全没法直接用。以后别这样了，要用数组就老老实实写数组，别搞那些花里胡哨的字符串拼接，省得我老得猜哪些引号是干嘛的。对了，顺便帮我写封邮件给潜在投资人，简单介绍我们产品，约个下周电话聊。附上我们最新的用户增长数据。",
+   "text": "你上次那篇文章太长了，啰嗦得要命。以后所有文章都控制在11句话以内，不准超。另外，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。",
    "context": {
     "app": "email-client",
     "task": "report"
@@ -3322,7 +3372,7 @@
      "seq": 46,
      "kind": "contradict",
      "cid": "e06-s04",
-     "target": "e06-c11",
+     "target": "e06-c16",
      "targets": [],
      "delta": 0
     }
@@ -3331,9 +3381,9 @@
   {
    "seq": 47,
    "type": "S",
-   "text": "上次那个项目介绍写得太虚了，什么历史、新闻、发布都不提，投资人根本看不懂我们在干嘛。以后写项目的时候，必须把HISTORY、NEWS和RELEASES都带上，别光吹概念。另外，帮我写封邮件给潜在投资人，简单介绍我们产品，约个下周电话聊。附上我们最新的用户增长数据。",
+   "text": "你刚给莉莉和约翰写的性格标签，怎么又都是外向型？上次跟你说过，他俩一定要选相反的，一个外向一个内向才有戏。另外，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "code-write"
    },
    "effects": [
@@ -3341,7 +3391,7 @@
      "seq": 47,
      "kind": "contradict",
      "cid": "e06-s05",
-     "target": "e06-c08",
+     "target": "e06-c15",
      "targets": [],
      "delta": 0
     }
@@ -3350,37 +3400,37 @@
   {
    "seq": 48,
    "type": "R",
-   "text": "帮我把这次数据库迁移回滚的事写个复盘，重点说下怎么发现的、影响多大、以后怎么防。越快越好，半小时后要发团队。",
+   "text": "帮我把这个python脚本的import全改成绝对路径，构建命令也改成字符串拼接，最后把改动总结一下",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e06-c30",
-    "e06-s04",
-    "e06-c29",
-    "e06-c11"
+    "e06-c27",
+    "e06-c10",
+    "e06-c29"
    ],
    "may_fire": [
+    "e06-c10",
+    "e06-c11",
     "e06-c12",
-    "e06-c13",
     "e06-c27",
-    "e06-c28",
-    "e06-c30",
-    "e06-s04"
+    "e06-c28"
    ],
    "should_fire": [
-    "e06-c30"
+    "e06-c10"
    ],
-   "must_not_fire": []
+   "must_not_fire": [
+    "e06-c29"
+   ]
   },
   {
    "seq": 49,
    "type": "S",
-   "text": "你刚才那封邮件里文件大小写的是KB，看着好别扭。以后凡是写文件大小，超过21MB的东西一律用MB，别用KB了，太小家子气。对了，帮我写封邮件给潜在投资人，简单介绍我们产品，约个下周电话聊。附上我们最新的用户增长数据。",
+   "text": "你刚才列的那个清单只有12项，我说了要17项，怎么老给我少？以后列清单必须给我列够17项，别让我数了，烦。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "email"
    },
    "effects": [
@@ -3388,7 +3438,7 @@
      "seq": 49,
      "kind": "contradict",
      "cid": "e06-s06",
-     "target": "e06-c06",
+     "target": "e06-c31",
      "targets": [],
      "delta": 0
     }
@@ -3397,7 +3447,7 @@
   {
    "seq": 50,
    "type": "S",
-   "text": "之前说的「不要描述腰腹那一圈」那条不用了，按你默认的来吧",
+   "text": "之前说的「以后都别用反斜杠换行」那条不用了，按你默认的来吧",
    "context": {
     "app": "email-client",
     "task": "report"
@@ -3407,7 +3457,7 @@
      "seq": 50,
      "kind": "retire",
      "cid": "",
-     "target": "e06-c03",
+     "target": "e06-c11",
      "targets": [],
      "delta": 0
     }
@@ -3416,9 +3466,9 @@
   {
    "seq": 51,
    "type": "S",
-   "text": "之前说的「禁止使用“显著提升”、“稳步增长”这类套话短语」那条不用了，按你默认的来吧",
+   "text": "之前说的「每个句子至少13个词」那条不用了，按你默认的来吧",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "code-write"
    },
    "effects": [
@@ -3426,7 +3476,7 @@
      "seq": 51,
      "kind": "retire",
      "cid": "",
-     "target": "e06-c25",
+     "target": "e06-c18",
      "targets": [],
      "delta": 0
     }
@@ -3435,59 +3485,53 @@
   {
    "seq": 52,
    "type": "R",
-   "text": "帮我把这个页面里所有用户列表的表格改成卡片布局，头像用圆形，状态标签用颜色块，手机号加超链接，然后加个搜索框能按名字过滤。",
+   "text": "帮我写封邮件给实习生的导师，就说他这周表现不错，但有几个地方需要改进，具体我下午再补。另外附上这周的工作总结列表。",
    "context": {
-    "app": "email-client",
-    "task": "code-write"
+    "app": "slack",
+    "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e06-c23",
-    "e06-c04",
-    "e06-c01",
-    "e06-c19"
+    "e06-c02",
+    "e06-c00",
+    "e06-c20",
+    "e06-c26"
    ],
    "may_fire": [
-    "e06-c12",
-    "e06-c13",
-    "e06-c27",
-    "e06-c28",
-    "e06-c30",
-    "e06-s04"
+    "e06-c00",
+    "e06-c02",
+    "e06-c03",
+    "e06-c06",
+    "e06-c08",
+    "e06-c09",
+    "e06-c14",
+    "e06-c19",
+    "e06-c22",
+    "e06-c23",
+    "e06-c24",
+    "e06-c25",
+    "e06-s00",
+    "e06-s02",
+    "e06-s03",
+    "e06-s04",
+    "e06-s05"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e06-c14"
+   ],
    "must_not_fire": []
   },
   {
    "seq": 53,
    "type": "S",
-   "text": "之前说的「以后别提“the governments”，用devolved governments」那条不用了，按你默认的来吧",
+   "text": "之前说的「答案控制在17个字以内」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
     {
      "seq": 53,
-     "kind": "retire",
-     "cid": "",
-     "target": "e06-c24",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 54,
-   "type": "S",
-   "text": "之前说的「以后都控制在17个词以内」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 54,
      "kind": "retire",
      "cid": "",
      "target": "e06-c32",
@@ -3497,11 +3541,30 @@
    ]
   },
   {
-   "seq": 55,
+   "seq": 54,
    "type": "S",
-   "text": "之前说的「别在括号、方括号、花括号里面用隐式换行」那条不用了，按你默认的来吧",
+   "text": "之前说的「每份清单至少18篇论文」那条不用了，按你默认的来吧",
    "context": {
     "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 54,
+     "kind": "retire",
+     "cid": "",
+     "target": "e06-c00",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 55,
+   "type": "S",
+   "text": "之前说的「第二列表字数必须超过21字」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
     "task": "code-write"
    },
    "effects": [
@@ -3509,7 +3572,7 @@
      "seq": 55,
      "kind": "retire",
      "cid": "",
-     "target": "e06-c28",
+     "target": "e06-c30",
      "targets": [],
      "delta": 0
     }
@@ -3518,42 +3581,35 @@
   {
    "seq": 56,
    "type": "R",
-   "text": "帮我把这几个月的运营数据整理成一份周报，要能看出趋势，另外把上周的bug修复记录也附上，客户反馈的top3问题单独列个表，快一点",
+   "text": "帮我写个Python脚本，监控服务器CPU和内存，超过阈值发钉钉告警，再加个简单日志输出。",
    "context": {
-    "app": "slack",
-    "task": "report"
+    "app": "editor",
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e06-c07",
-    "e06-c04",
-    "e06-c17",
-    "e06-c01"
+    "e06-c27",
+    "e06-c12",
+    "e06-c11",
+    "e06-c29"
    ],
    "may_fire": [
-    "e06-c04",
-    "e06-c05",
-    "e06-c07",
-    "e06-c09",
-    "e06-c15",
-    "e06-c18",
-    "e06-c20",
-    "e06-c21",
-    "e06-c22",
-    "e06-c23",
-    "e06-c26",
-    "e06-s02",
-    "e06-s03",
-    "e06-s05",
-    "e06-s06"
+    "e06-c10",
+    "e06-c12",
+    "e06-c27",
+    "e06-c28"
    ],
-   "should_fire": [],
-   "must_not_fire": []
+   "should_fire": [
+    "e06-c12"
+   ],
+   "must_not_fire": [
+    "e06-c29"
+   ]
   },
   {
    "seq": 57,
    "type": "S",
-   "text": "之前说的「用字体时避免字符和数字混淆的字体」那条不用了，按你默认的来吧",
+   "text": "之前说的「写文件大小超过13MB时用MB，别用KB」那条不用了，按你默认的来吧",
    "context": {
     "app": "email-client",
     "task": "email"
@@ -3572,7 +3628,7 @@
   {
    "seq": 58,
    "type": "S",
-   "text": "之前说的「每句至少8个字，不超过13个字」那条不用了，按你默认的来吧",
+   "text": "之前说的「简单的情况别用Decision Okay」那条不用了，按你默认的来吧",
    "context": {
     "app": "email-client",
     "task": "report"
@@ -3582,7 +3638,7 @@
      "seq": 58,
      "kind": "retire",
      "cid": "",
-     "target": "e06-c18",
+     "target": "e06-c22",
      "targets": [],
      "delta": 0
     }
@@ -3591,28 +3647,27 @@
   {
    "seq": 59,
    "type": "R",
-   "text": "写个Python脚本，批量重命名当前目录下所有.jpg文件，改成统一前缀加序号，比如image_001.jpg",
+   "text": "写个Python脚本，读取当前目录下所有CSV文件，合并成一个，按第一列排序，输出到merged.csv，快点。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e06-c13",
+    "e06-c10",
     "e06-c27",
-    "e06-c28",
-    "e06-c11"
+    "e06-c11",
+    "e06-c29"
    ],
    "may_fire": [
+    "e06-c10",
     "e06-c12",
-    "e06-c13",
     "e06-c27",
-    "e06-c30",
-    "e06-s04"
+    "e06-c28"
    ],
    "should_fire": [
-    "e06-c13",
-    "e06-c27"
+    "e06-c27",
+    "e06-c28"
    ],
    "must_not_fire": [
     "e06-c29"
@@ -3621,97 +3676,99 @@
   {
    "seq": 60,
    "type": "R",
-   "text": "把上周用户增长情况整理成报告，周环比、月环比、新用户来源占比都要有，还有日活趋势。别提什么术语套话，数据说话就行。",
+   "text": "帮我写个Python脚本，从CSV里读用户列表，然后给每个用户发一封微信模板消息。CSV列是name, openid, template_id, data_json。用requests库，数据用json.dumps序列化。",
    "context": {
-    "app": "editor",
-    "task": "report"
+    "app": "email-client",
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e06-c05",
-    "e06-c09",
-    "e06-c25",
-    "e06-c03"
+    "e06-c28",
+    "e06-c10",
+    "e06-c11",
+    "e06-c29"
    ],
    "may_fire": [
-    "e06-c05",
-    "e06-c07",
-    "e06-c09",
-    "e06-c15",
-    "e06-c20",
-    "e06-c21",
-    "e06-c22",
-    "e06-c23",
-    "e06-c26",
-    "e06-s02",
-    "e06-s03",
-    "e06-s05",
-    "e06-s06"
+    "e06-c10",
+    "e06-c12",
+    "e06-c27",
+    "e06-c28"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e06-c27",
+    "e06-c28"
+   ],
    "must_not_fire": []
   },
   {
    "seq": 61,
    "type": "R",
-   "text": "写个脚本，批量把当前目录下所有 .txt 文件编码从 GBK 转成 UTF-8，处理完打印结果。",
+   "text": "帮我写个Python脚本，从CSV读数据然后生成汇总报告，用pandas处理，输出到Excel。另外加个函数画个柱状图保存成图片。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e06-s04",
-    "e06-c13",
+    "e06-c28",
+    "e06-c27",
     "e06-c11",
-    "e06-c28"
+    "e06-c29"
    ],
    "may_fire": [
+    "e06-c10",
     "e06-c12",
-    "e06-c13",
     "e06-c27",
-    "e06-c30",
-    "e06-s04"
+    "e06-c28"
    ],
    "should_fire": [
-    "e06-c13"
+    "e06-c28"
    ],
    "must_not_fire": [
-    "e06-c29"
+    "e06-c11"
    ]
   },
   {
    "seq": 62,
    "type": "R",
-   "text": "帮我写一封邮件给投资人，汇报一下我们这周的产品进展。我们修复了三个核心bug，新用户注册流程优化了，转化率提升了12%。下周要上线支付模块，需要他们配合测试。还有，法务说合同条款要改，附件发给他们了。另外，顺便问问他们要不要参加下个月的行业峰会，我们有个展位。",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
+   "text": "写个事故复盘，上周五数据库挂了20分钟，根因是索引没建好。把影响范围、修复步骤、预防措施都列清楚，别漏了监控告警没响那件事。",
+   "context": {},
    "probe": true,
    "probe_targets": [
-    "e06-c26",
-    "e06-c02",
-    "e06-c10",
-    "e06-c16"
+    "e06-c19",
+    "e06-c24",
+    "e06-c15",
+    "e06-c01"
    ],
    "may_fire": [
     "e06-c02",
-    "e06-c07",
+    "e06-c03",
+    "e06-c06",
+    "e06-c08",
     "e06-c09",
+    "e06-c10",
+    "e06-c12",
+    "e06-c13",
     "e06-c14",
-    "e06-c15",
-    "e06-c20",
-    "e06-c21",
-    "e06-c22",
+    "e06-c19",
     "e06-c23",
-    "e06-c26",
+    "e06-c24",
+    "e06-c25",
+    "e06-c27",
+    "e06-c28",
     "e06-s00",
-    "e06-s03"
+    "e06-s01",
+    "e06-s02",
+    "e06-s03",
+    "e06-s04",
+    "e06-s05",
+    "e06-s06"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e06-s04"
+   ],
    "must_not_fire": [
-    "e06-c25"
+    "e06-c32"
    ]
   }
  ],
@@ -3727,13 +3784,13 @@
  ],
  "dup_pairs": [],
  "stats": {
-  "nodes": 39,
+  "nodes": 40,
   "dead_final": 18,
   "peak_gold_active": 33,
-  "degraded_successors": 1,
+  "degraded_successors": 0,
   "i11_pruned_traps": 0,
   "lint_errors": [
-   "I10: e06-c09 / e06-c24 textually near (J≥0.5) but INDEPENDENT — key split?",
+   "I10: e06-c08 / e06-c24 textually near (J≥0.5) but INDEPENDENT — key split?",
    "I10: e06-c25 / e06-c26 textually near (J≥0.5) but INDEPENDENT — key split?"
   ]
  }

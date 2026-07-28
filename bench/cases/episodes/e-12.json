@@ -14,14 +14,14 @@
  "catalogue": [
   {
    "cid": "e12-c00",
-   "text": "when naming functions and variables avoid: use lowercase with underscores",
-   "clause": "命名函数和变量时用下划线小写",
-   "alt_clause": "函数和变量名一律采用小写加下划线",
-   "distinctive": "下划线小写",
+   "text": "when the interface is documented and used primarily as a callable avoid: use naming convention for functions",
+   "clause": "以后都别用可调用接口的命名法",
+   "alt_clause": "可调用接口的命名方式一律不用",
+   "distinctive": "可调用接口",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "code.naming",
-    "polarity": "prohibit",
+    "polarity": "avoid",
     "binding": "hard",
     "value": {
      "type": "enum",
@@ -51,17 +51,17 @@
      "url": "https://peps.python.org/pep-0008/",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity require -> prohibit"
+    "mutation": "polarity prefer -> avoid"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
    "cid": "e12-c01",
-   "text": "when naming global variables avoid: follow conventions for functions",
-   "clause": "禁止用函数命名规则命名全局变量",
-   "alt_clause": "全局变量命名不能套用函数命名规范",
-   "distinctive": "函数命名规则",
+   "text": "when naming functions and variables avoid: use lowercase with underscores",
+   "clause": "函数和变量一律小写加下划线",
+   "alt_clause": "所有函数名和变量名都得用蛇形命名法，小写字母加下划线",
+   "distinctive": "小写加下划线",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "code.naming",
@@ -103,8 +103,8 @@
   {
    "cid": "e12-c02",
    "text": "when writing content keep content (no more than 29 words)",
-   "clause": "每段不超过29个字",
-   "alt_clause": "段落长度控制在29字以内",
+   "clause": "内容控制在29字以内",
+   "alt_clause": "每段话别超过29个字",
    "distinctive": "29",
    "coords": {
     "bucket": "output_contract",
@@ -147,8 +147,8 @@
   {
    "cid": "e12-c03",
    "text": "when writing geographical directions or regions avoid: use lower case for compass directions and regions",
-   "clause": "地理方位和区域一律小写",
-   "alt_clause": "compass directions和regions都用小写",
+   "clause": "方位词和地区一律用小写",
+   "alt_clause": "所有方向词和区域名都小写处理",
    "distinctive": "小写",
    "coords": {
     "bucket": "output_contract",
@@ -193,9 +193,9 @@
   {
    "cid": "e12-c04",
    "text": "always include description",
-   "clause": "文件名里必须去掉#号，标题里的空格一律换成下划线",
-   "alt_clause": "重命名时禁止保留#字符，标题空格全转下划线",
-   "distinctive": "去掉#号",
+   "clause": "描述部分必须一针见血",
+   "alt_clause": "描述部分要直击要害",
+   "distinctive": "一针见血",
    "coords": {
     "bucket": "deliverables",
     "key": "code.comments",
@@ -238,26 +238,28 @@
   },
   {
    "cid": "e12-c05",
-   "text": "when writing any content avoid: reflect style of a high school student",
-   "clause": "别用高中生风格写任何内容",
-   "alt_clause": "写东西时不允许出现高中生的语气和措辞",
-   "distinctive": "高中生风格",
+   "text": "when writing avoid space before colon",
+   "clause": "中文冒号前不要空格",
+   "alt_clause": "冒号前面永远不加空格",
+   "distinctive": "冒号前不要空格",
    "coords": {
-    "bucket": "communication_style",
-    "key": "tone.register",
-    "polarity": "prohibit",
+    "bucket": "output_contract",
+    "key": "format.markdown",
+    "polarity": "require",
     "binding": "hard",
     "value": {
-     "type": "enum",
+     "type": "set",
      "num": null,
      "unit": "",
      "cmp": "",
-     "domain": "register",
-     "val": "formal",
+     "domain": "",
+     "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "",
-     "items": [],
+     "op": "include",
+     "items": [
+      "space before colon"
+     ],
      "before": "",
      "after": ""
     },
@@ -270,12 +272,12 @@
    },
    "atom": {
     "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity require -> prohibit"
+    "mutation": "polarity prohibit -> require"
    },
    "anchor_weak": false,
    "successor_of": null
@@ -283,9 +285,9 @@
   {
    "cid": "e12-c06",
    "text": "when not specifically asked otherwise avoid: exhibit traits of intelligence",
-   "clause": "除非我明确说‘模仿人类语气’，否则别展示智能特质",
-   "alt_clause": "没特别要求时，别表现出像人一样的聪明劲儿",
-   "distinctive": "智能特质",
+   "clause": "除非我明确要求，否则别装得像人一样聪明",
+   "alt_clause": "没特别说的时候，别搞那种拟人化表达",
+   "distinctive": "别装得像人一样聪明",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "style.voice",
@@ -328,28 +330,26 @@
   },
   {
    "cid": "e12-c07",
-   "text": "when writing avoid space before colon",
-   "clause": "中文冒号前面不要加空格",
-   "alt_clause": "冒号前不能有空格",
-   "distinctive": "冒号前面不要加空格",
+   "text": "when writing any content avoid: reflect style of a high school student",
+   "clause": "以后写任何内容都别用高中生的风格",
+   "alt_clause": "任何内容都不准写成学生腔",
+   "distinctive": "高中生的风格",
    "coords": {
-    "bucket": "output_contract",
-    "key": "format.markdown",
-    "polarity": "require",
+    "bucket": "communication_style",
+    "key": "tone.register",
+    "polarity": "prohibit",
     "binding": "hard",
     "value": {
-     "type": "set",
+     "type": "enum",
      "num": null,
      "unit": "",
      "cmp": "",
-     "domain": "",
-     "val": "",
+     "domain": "register",
+     "val": "formal",
      "tag": "",
      "bool_val": null,
-     "op": "include",
-     "items": [
-      "space before colon"
-     ],
+     "op": "",
+     "items": [],
      "before": "",
      "after": ""
     },
@@ -362,12 +362,12 @@
    },
    "atom": {
     "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prohibit -> require"
+    "mutation": "polarity require -> prohibit"
    },
    "anchor_weak": false,
    "successor_of": null
@@ -375,9 +375,9 @@
   {
    "cid": "e12-c08",
    "text": "when writing for SEO avoid: use main keywords, head-tail keywords, and high-volume, low-difficulty long-tail keywords",
-   "clause": "写SEO内容时，别用主关键词、头尾关键词和高流量低难度长尾词",
-   "alt_clause": "SEO写作时，别碰那些主关键词、头尾关键词以及高流量低难度的长尾关键词",
-   "distinctive": "头尾关键词和高流量低难度长尾词",
+   "clause": "写SEO内容时，禁止使用主关键词、头尾关键词和高流量低难度长尾词",
+   "alt_clause": "SEO写作里，不许出现主关键词、头尾关键词以及高搜索量低竞争度的长尾词",
+   "distinctive": "主关键词、头尾关键词和高流量低难度长尾词",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "research.task_verb",
@@ -419,8 +419,8 @@
   {
    "cid": "e12-c09",
    "text": "when summarizing in generated text compose summarization (no more than 17 sentences)",
-   "clause": "摘要别超过17句",
-   "alt_clause": "总结控制在17句以内",
+   "clause": "总结部分最多17句",
+   "alt_clause": "总结不能超过17句",
    "distinctive": "17",
    "coords": {
     "bucket": "deliverables",
@@ -463,9 +463,9 @@
   {
    "cid": "e12-c10",
    "text": "when interacting with humans avoid: adapt to another human's personality",
-   "clause": "跟人类互动时，避免适配另一个人的性格",
-   "alt_clause": "与人类交流时，不要刻意模仿对方的个性",
-   "distinctive": "适配另一个人的性格",
+   "clause": "跟人打交道时，别去硬套对方的性格",
+   "alt_clause": "和人互动时，不要刻意模仿对方的个性",
+   "distinctive": "硬套对方的性格",
    "coords": {
     "bucket": "execution_policy",
     "key": "workflow.fidelity",
@@ -509,9 +509,9 @@
   {
    "cid": "e12-c11",
    "text": "when assigning a normal version number avoid: take the form X.Y.Z with non-negative integers without leading zeroes",
-   "clause": "禁止使用带前导零的版本号",
-   "alt_clause": "版本号中不允许出现前导零",
-   "distinctive": "前导零",
+   "clause": "分配正式版本号时，必须用 X.Y.Z 非负整数形式，禁止前导零",
+   "alt_clause": "正式版本号只能写 X.Y.Z 这种非负整数格式，不能有前导零",
+   "distinctive": "X.Y.Z",
    "coords": {
     "bucket": "output_contract",
     "key": "format.code_blocks",
@@ -555,9 +555,9 @@
   {
    "cid": "e12-c12",
    "text": "when guiding a user through a process avoid: use numbered steps",
-   "clause": "流程引导时用分步编号，不用子弹点",
-   "alt_clause": "引导步骤一律改用编号，别用无序列表",
-   "distinctive": "分步编号",
+   "clause": "一律用编号分步，别用圆点列表",
+   "alt_clause": "全部用数字步骤，不要用符号列表",
+   "distinctive": "编号分步",
    "coords": {
     "bucket": "output_contract",
     "key": "format.lists",
@@ -598,9 +598,55 @@
   },
   {
    "cid": "e12-c13",
+   "text": "when describing customer processes avoid: use common language phrases",
+   "clause": "写客户流程时避免使用缩略语，一律用大白话",
+   "alt_clause": "描述客户流程时禁止出现缩写，全写成通俗说法",
+   "distinctive": "缩略语",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "language.terminology",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "common language phrases"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e12-c14",
    "text": "when writing phrases about large numbers avoid: use millions",
-   "clause": "禁止用“百万”表述大数字",
-   "alt_clause": "所有大数字一律写具体数值，不许用“百万”",
+   "clause": "以后别用‘百万’",
+   "alt_clause": "禁止再出现‘百万’这个词",
    "distinctive": "百万",
    "coords": {
     "bucket": "output_contract",
@@ -643,14 +689,14 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c14",
-   "text": "when writing subsequent headings avoid: use H2 or deeper headings",
-   "clause": "以后写稿子，标题里别用H2以下的小标题",
-   "alt_clause": "从今往后，正文里禁止出现H2级别以下的标题",
-   "distinctive": "以下的小标题",
+   "cid": "e12-c15",
+   "text": "when describing a scene avoid: include additional details about the scene",
+   "clause": "以后都别在场景描述里加额外细节",
+   "alt_clause": "从今往后场景描写只留主干，不要任何多余细节",
+   "distinctive": "额外细节",
    "coords": {
-    "bucket": "output_contract",
-    "key": "format.headings",
+    "bucket": "deliverables",
+    "key": "explanation.depth",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -664,7 +710,7 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "H2 or deeper headings"
+      "additional details about the scene"
      ],
      "before": "",
      "after": ""
@@ -678,9 +724,9 @@
    },
    "atom": {
     "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
     "mutation": "polarity require -> prohibit"
@@ -689,10 +735,10 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c15",
+   "cid": "e12-c16",
    "text": "when generating a response avoid: consist of emojis",
-   "clause": "以后都别加emoji",
-   "alt_clause": "任何情况下都不许用emoji",
+   "clause": "不准加任何emoji",
+   "alt_clause": "禁止使用emoji符号",
    "distinctive": "emoji",
    "coords": {
     "bucket": "output_contract",
@@ -735,11 +781,11 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c16",
+   "cid": "e12-c17",
    "text": "when describing sites avoid: include walking distance between sites",
-   "clause": "描述site时禁止写‘walking distance between sites’",
-   "alt_clause": "介绍站点时不准用‘walking distance between sites’这种模糊说法",
-   "distinctive": "walking distance between sites",
+   "clause": "以后描述站点时，别写步行距离",
+   "alt_clause": "描述站点时，禁止提及步行距离，直接给具体数字",
+   "distinctive": "步行距离",
    "coords": {
     "bucket": "deliverables",
     "key": "evidence.grounding",
@@ -781,10 +827,10 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c17",
+   "cid": "e12-c18",
    "text": "when expressing a deadline extension in an email avoid: specify day of the week of both original and new deadline",
-   "clause": "延期截止日邮件里，原截止日和新的截止日都标星期几，别用‘9天’这种数字",
-   "alt_clause": "写延期通知时，把两个日期都写成星期几，别直接写数字天数",
+   "clause": "提到截止日期延期时，写清楚原来的星期几和新的星期几",
+   "alt_clause": "涉及deadline延后，必须指明原定和周几改到周几",
    "distinctive": "星期几",
    "coords": {
     "bucket": "deliverables",
@@ -827,103 +873,11 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c18",
-   "text": "when using conventional commits avoid: use conventional commits",
-   "clause": "以后都别用 conventional commits",
-   "alt_clause": "conventional commits 那套以后禁止使用",
-   "distinctive": "conventional commits",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "commit.style",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "conventional commits"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "python",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "conventional-commits",
-     "license": "CC-BY-3.0",
-     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
    "cid": "e12-c19",
-   "text": "when describing customer processes avoid: use common language phrases",
-   "clause": "以后在描述客户流程时，避免使用缩写如RTI，改用普通语言短语",
-   "alt_clause": "写客户流程时不准用RTI这种缩写，一律写成大白话",
-   "distinctive": "以后在描述客户流程时",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "language.terminology",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "common language phrases"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e12-c20",
    "text": "when generating an outline avoid: provide concise one-sentence description for each section or subsection",
-   "clause": "每个章节或小节只写一句简洁的描述",
-   "alt_clause": "每个section或subsection只给一句话概括",
-   "distinctive": "一句简洁的描述",
+   "clause": "每个section或subsection只准写一句",
+   "alt_clause": "每个section或subsection最多一句概述",
+   "distinctive": "一句",
    "coords": {
     "bucket": "deliverables",
     "key": "doc.structure",
@@ -965,10 +919,10 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c21",
+   "cid": "e12-c20",
    "text": "when sub-types are too long to be on a single line avoid: keep sub-types unbroken",
-   "clause": "子类型太长时保持不折行",
-   "alt_clause": "如果子类型超过一行，不要把它们拆开",
+   "clause": "子类型名称太长不能一行显示时，保持完整不换行",
+   "alt_clause": "当子类型名称过长无法在一行内展示时，不要拆分，保留原样",
    "distinctive": "子类型",
    "coords": {
     "bucket": "output_contract",
@@ -994,7 +948,7 @@
     "scope": {
      "app": "ANY",
      "task": "code-write",
-     "code_lang": "ANY",
+     "code_lang": "python",
      "nat_lang": "ANY"
     }
    },
@@ -1011,10 +965,10 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c22",
+   "cid": "e12-c21",
    "text": "when filling blanks use characters per answer (no more than 29 characters)",
-   "clause": "填空时每个答案不超过29个字符",
-   "alt_clause": "填空白，每条答案字符数控制在29以内",
+   "clause": "每个答案最多29个字符",
+   "alt_clause": "答案长度控制在29个字符以内",
    "distinctive": "29",
    "coords": {
     "bucket": "output_contract",
@@ -1055,10 +1009,10 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c23",
+   "cid": "e12-c22",
    "text": "when writing an article limit length (no more than 1502 words)",
-   "clause": "写文章时，严格控制在1502字以内",
-   "alt_clause": "文章长度不得超过1502字，超出即不合格",
+   "clause": "文章长度控制在1502字以内",
+   "alt_clause": "每篇文章不要超过1502个字",
    "distinctive": "1502",
    "coords": {
     "bucket": "deliverables",
@@ -1099,10 +1053,10 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c24",
+   "cid": "e12-c23",
    "text": "when filling in the blank use maximum characters (no more than 31 characters)",
-   "clause": "填空时最大字符数不超过31个字符",
-   "alt_clause": "填空白处，字符上限设为31个字符",
+   "clause": "填空时最多31个字符",
+   "alt_clause": "填空白处字符数上限31",
    "distinctive": "31",
    "coords": {
     "bucket": "output_contract",
@@ -1143,11 +1097,11 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c25",
+   "cid": "e12-c24",
    "text": "when using abbreviations omit full stops in abbreviations",
-   "clause": "缩写里不准加句号",
-   "alt_clause": "缩写不要带点",
-   "distinctive": "句号",
+   "clause": "缩写不加句点",
+   "alt_clause": "缩写后面别带句号",
+   "distinctive": "句点",
    "coords": {
     "bucket": "output_contract",
     "key": "format.emphasis",
@@ -1189,10 +1143,10 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c26",
+   "cid": "e12-c25",
    "text": "when writing avoid: include sentences inside quotation marks",
-   "clause": "别往引号里塞句子",
-   "alt_clause": "引号内不要出现完整句子",
+   "clause": "禁止在正文中放入任何带引号的句子",
+   "alt_clause": "正文里不得出现任何用引号括起来的句子",
    "distinctive": "引号",
    "coords": {
     "bucket": "output_contract",
@@ -1235,10 +1189,10 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c27",
+   "cid": "e12-c26",
    "text": "when writing use parentheses",
-   "clause": "少用括号",
-   "alt_clause": "尽量不用括号",
+   "clause": "以后写东西尽量不用括号",
+   "alt_clause": "能不用括号就别用括号",
    "distinctive": "括号",
    "coords": {
     "bucket": "output_contract",
@@ -1281,11 +1235,11 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c28",
+   "cid": "e12-c27",
    "text": "when considering Python data attributes avoid: keep in mind easy path to future enhancement",
-   "clause": "避免提“未来好扩展”这种借口",
-   "alt_clause": "别把“以后容易改”当理由",
-   "distinctive": "未来好扩展",
+   "clause": "写Python数据属性时，别堵死未来的增强路径",
+   "alt_clause": "涉及Python数据属性，务必保留未来可扩展的余地",
+   "distinctive": "增强路径",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "code.comments",
@@ -1327,11 +1281,11 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c29",
+   "cid": "e12-c28",
    "text": "when writing comments and docstrings avoid: use the right style for module, function, method docstrings and inline comments",
-   "clause": "写注释和文档字符串时，用正确的风格",
-   "alt_clause": "注释和文档字符串得按各自的标准来写",
-   "distinctive": "正确的风格",
+   "clause": "写注释和文档字符串时，别用错风格，模块、函数、方法、内联注释各用各的格式，统一好",
+   "alt_clause": "写注释和文档字符串时，别搞错风格，模块、函数、方法、内联注释各用各的格式，统一好",
+   "distinctive": "模块、函数、方法、内联注释",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "code.comments",
@@ -1373,11 +1327,11 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c30",
+   "cid": "e12-c29",
    "text": "when using comprehensions avoid: prefer simple comprehensions",
-   "clause": "多用简单的列表推导式，别用其他 dict、list 或 set 创建方式",
-   "alt_clause": "优先用简单的列表推导，避免其他 dict、list 或 set 的创建手法",
-   "distinctive": "列表推导式",
+   "clause": "以后写代码，避免复杂推导式，优先用简单写法",
+   "alt_clause": "代码里少用嵌套推导，能拆成普通循环就拆",
+   "distinctive": "推导式",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "code.comments",
@@ -1419,29 +1373,27 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c31",
-   "text": "when interacting with the user avoid: display contempt",
-   "clause": "禁止任何形式的轻蔑",
-   "alt_clause": "不准出现任何鄙视或嘲讽的语气",
-   "distinctive": "轻蔑",
+   "cid": "e12-c30",
+   "text": "when generating text avoid: format text as a resume",
+   "clause": "别生成简历格式",
+   "alt_clause": "不要搞成简历那种排版",
+   "distinctive": "简历格式",
    "coords": {
-    "bucket": "execution_policy",
-    "key": "tone.register",
+    "bucket": "output_contract",
+    "key": "format.markdown",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
-     "type": "set",
+     "type": "enum",
      "num": null,
      "unit": "",
      "cmp": "",
-     "domain": "",
-     "val": "",
+     "domain": "format",
+     "val": "prose",
      "tag": "",
      "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "contempt"
-     ],
+     "op": "",
+     "items": [],
      "before": "",
      "after": ""
     },
@@ -1454,9 +1406,9 @@
    },
    "atom": {
     "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
      "use": "skeleton-derived"
     },
     "mutation": "polarity require -> prohibit"
@@ -1465,104 +1417,16 @@
    "successor_of": null
   },
   {
-   "cid": "e12-c32",
-   "text": "when writing any text avoid: be polite and friendly",
-   "clause": "别用礼貌和友好的语气",
-   "alt_clause": "不要写得太客套",
-   "distinctive": "礼貌",
+   "cid": "e12-c31",
+   "text": "when generating lecture notes avoid: format equations",
+   "clause": "讲课用笔记时方程别用图片格式",
+   "alt_clause": "生成讲义时方程不许贴图，必须文本输入",
+   "distinctive": "方程",
    "coords": {
-    "bucket": "communication_style",
-    "key": "tone.register",
+    "bucket": "output_contract",
+    "key": "format.markdown",
     "polarity": "prohibit",
     "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "register",
-     "val": "casual",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e12-s00",
-   "text": "when writing an article limit length (no more than 1127 words)",
-   "clause": "写文章时，长度严格控制在1127词以内",
-   "alt_clause": "文章总字数不得超过1127词",
-   "distinctive": "1127",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 1502.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1502 -> 1127"
-   },
-   "anchor_weak": false,
-   "successor_of": "e12-c23"
-  },
-  {
-   "cid": "e12-s01",
-   "text": "when using comprehensions prefer simple comprehensions",
-   "clause": "用简单推导式，别整其他花活",
-   "alt_clause": "优先写简单推导式，少用其他方法",
-   "distinctive": "简单推导式",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.comments",
-    "polarity": "avoid",
-    "binding": "soft",
     "value": {
      "type": "set",
      "num": null,
@@ -1574,8 +1438,52 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "simple comprehensions"
+      "equations"
      ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e12-c32",
+   "text": "when writing a link use reference links (no more than 18 words)",
+   "clause": "写链接时，超过18个字的链接用参考链接",
+   "alt_clause": "链接字数超过18个，一律改用参考链接，别放正文",
+   "distinctive": "18",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.markdown",
+    "polarity": "prefer",
+    "binding": "default",
+    "value": {
+     "type": "numeric",
+     "num": 18.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
      "before": "",
      "after": ""
     },
@@ -1588,156 +1496,22 @@
    },
    "atom": {
     "provenance": {
-     "source": "google-styleguide/pyguide",
+     "source": "google-styleguide/docguide",
      "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity avoid -> prefer"
+    "mutation": "threshold 1 -> 18"
    },
    "anchor_weak": false,
-   "successor_of": "e12-c30"
+   "successor_of": null
   },
   {
-   "cid": "e12-s02",
-   "text": "when filling blanks use characters per answer (no more than 18 characters)",
-   "clause": "填答案时每个空不超过18个字符",
-   "alt_clause": "每个填空答案字符数控制在18以内",
-   "distinctive": "18",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 29.0,
-     "unit": "characters",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 29 -> 18"
-   },
-   "anchor_weak": false,
-   "successor_of": "e12-c22"
-  },
-  {
-   "cid": "e12-s03",
-   "text": "when writing content keep content (no more than 64 words)",
-   "clause": "写内容时每段不超过64个词",
-   "alt_clause": "每段内容控制在64词以内",
-   "distinctive": "64",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 29.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 29 -> 64"
-   },
-   "anchor_weak": false,
-   "successor_of": "e12-c02"
-  },
-  {
-   "cid": "e12-s04",
-   "text": "when writing geographical directions or regions use lower case for compass directions and regions",
-   "clause": "地理方向一律小写",
-   "alt_clause": "东南西北用全小写",
-   "distinctive": "小写",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.emphasis",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "lower case for compass directions and regions"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e12-c03"
-  },
-  {
-   "cid": "e12-s05",
+   "cid": "e12-s00",
    "text": "always avoid: include description",
-   "clause": "永远别用‘颠覆性’",
-   "alt_clause": "以后任何时候都别出现‘颠覆性’这个词",
-   "distinctive": "颠覆性",
+   "clause": "描述性内容一律不要加",
+   "alt_clause": "所有描述性的词句全都删掉",
+   "distinctive": "描述性内容",
    "coords": {
     "bucket": "deliverables",
     "key": "code.comments",
@@ -1777,6 +1551,276 @@
    },
    "anchor_weak": false,
    "successor_of": "e12-c04"
+  },
+  {
+   "cid": "e12-s01",
+   "text": "when filling in the blank use maximum characters (no more than 22 characters)",
+   "clause": "最多 22 个字符",
+   "alt_clause": "上限 22 个字符",
+   "distinctive": "22",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 31.0,
+     "unit": "characters",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 31 -> 22"
+   },
+   "anchor_weak": false,
+   "successor_of": "e12-c23"
+  },
+  {
+   "cid": "e12-s02",
+   "text": "when writing content keep content (no more than 33 words)",
+   "clause": "写内容时每段不超过33个词",
+   "alt_clause": "内容段落控制在33词以内",
+   "distinctive": "33",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 29.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 29 -> 33"
+   },
+   "anchor_weak": false,
+   "successor_of": "e12-c02"
+  },
+  {
+   "cid": "e12-s03",
+   "text": "when expressing a deadline extension in an email specify day of the week of both original and new deadline",
+   "clause": "截止日期延期时，必须注明原定和新定的星期几",
+   "alt_clause": "写延期邮件时，一定要把原来和新的具体星期几写出来",
+   "distinctive": "星期几",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "email.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "day of the week of both original and new deadline"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e12-c18"
+  },
+  {
+   "cid": "e12-s04",
+   "text": "when writing an article limit length (no more than 2404 words)",
+   "clause": "文章长度必须控制在2404字以内",
+   "alt_clause": "每篇文章的字数不能超过2404字",
+   "distinctive": "2404",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 1502.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 1502 -> 2404"
+   },
+   "anchor_weak": false,
+   "successor_of": "e12-c22"
+  },
+  {
+   "cid": "e12-s05",
+   "text": "when interacting with humans adapt to another human's personality",
+   "clause": "跟真人打交道时，先判断对方性格再调整语气",
+   "alt_clause": "和人类互动时，摸清对方的路数后适配表达方式",
+   "distinctive": "性格",
+   "coords": {
+    "bucket": "execution_policy",
+    "key": "workflow.fidelity",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "another human's personality"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "prism/system_string",
+     "license": "CC-BY-4.0",
+     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": "e12-c10"
+  },
+  {
+   "cid": "e12-s06",
+   "text": "when describing sites include walking distance between sites",
+   "clause": "描述站点时，必须包含站点之间的步行距离",
+   "alt_clause": "提到多个站点时，一定要写出它们之间的步行距离",
+   "distinctive": "步行距离",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "evidence.grounding",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "walking distance between sites"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e12-c17"
   }
  ],
  "effects": [
@@ -2048,7 +2092,7 @@
    "seq": 41,
    "kind": "contradict",
    "cid": "e12-s00",
-   "target": "e12-c23",
+   "target": "e12-c04",
    "targets": [],
    "delta": 0
   },
@@ -2056,7 +2100,7 @@
    "seq": 42,
    "kind": "contradict",
    "cid": "e12-s01",
-   "target": "e12-c30",
+   "target": "e12-c23",
    "targets": [],
    "delta": 0
   },
@@ -2064,7 +2108,7 @@
    "seq": 43,
    "kind": "contradict",
    "cid": "e12-s02",
-   "target": "e12-c22",
+   "target": "e12-c02",
    "targets": [],
    "delta": 0
   },
@@ -2072,7 +2116,7 @@
    "seq": 45,
    "kind": "contradict",
    "cid": "e12-s03",
-   "target": "e12-c02",
+   "target": "e12-c18",
    "targets": [],
    "delta": 0
   },
@@ -2080,7 +2124,7 @@
    "seq": 46,
    "kind": "contradict",
    "cid": "e12-s04",
-   "target": "e12-c03",
+   "target": "e12-c22",
    "targets": [],
    "delta": 0
   },
@@ -2088,15 +2132,15 @@
    "seq": 47,
    "kind": "contradict",
    "cid": "e12-s05",
-   "target": "e12-c04",
+   "target": "e12-c10",
    "targets": [],
    "delta": 0
   },
   {
    "seq": 49,
-   "kind": "retire",
-   "cid": "",
-   "target": "e12-c11",
+   "kind": "contradict",
+   "cid": "e12-s06",
+   "target": "e12-c17",
    "targets": [],
    "delta": 0
   },
@@ -2104,7 +2148,7 @@
    "seq": 50,
    "kind": "retire",
    "cid": "",
-   "target": "e12-c10",
+   "target": "e12-c29",
    "targets": [],
    "delta": 0
   },
@@ -2112,7 +2156,7 @@
    "seq": 51,
    "kind": "retire",
    "cid": "",
-   "target": "e12-c17",
+   "target": "e12-c09",
    "targets": [],
    "delta": 0
   },
@@ -2120,7 +2164,7 @@
    "seq": 53,
    "kind": "retire",
    "cid": "",
-   "target": "e12-c31",
+   "target": "e12-c14",
    "targets": [],
    "delta": 0
   },
@@ -2128,7 +2172,7 @@
    "seq": 54,
    "kind": "retire",
    "cid": "",
-   "target": "e12-c09",
+   "target": "e12-c19",
    "targets": [],
    "delta": 0
   },
@@ -2136,7 +2180,7 @@
    "seq": 55,
    "kind": "retire",
    "cid": "",
-   "target": "e12-c18",
+   "target": "e12-c21",
    "targets": [],
    "delta": 0
   },
@@ -2144,7 +2188,7 @@
    "seq": 57,
    "kind": "retire",
    "cid": "",
-   "target": "e12-c15",
+   "target": "e12-c32",
    "targets": [],
    "delta": 0
   },
@@ -2152,7 +2196,7 @@
    "seq": 58,
    "kind": "retire",
    "cid": "",
-   "target": "e12-c25",
+   "target": "e12-c13",
    "targets": [],
    "delta": 0
   },
@@ -2160,7 +2204,7 @@
    "seq": 41,
    "kind": "retire",
    "cid": "",
-   "target": "e12-c24",
+   "target": "e12-c11",
    "targets": [],
    "delta": 0
   },
@@ -2168,7 +2212,7 @@
    "seq": 42,
    "kind": "retire",
    "cid": "",
-   "target": "e12-c13",
+   "target": "e12-c15",
    "targets": [],
    "delta": 0
   },
@@ -2176,7 +2220,7 @@
    "seq": 43,
    "kind": "retire",
    "cid": "",
-   "target": "e12-c14",
+   "target": "e12-c16",
    "targets": [],
    "delta": 0
   },
@@ -2184,31 +2228,31 @@
    "seq": 45,
    "kind": "retire",
    "cid": "",
-   "target": "e12-c16",
+   "target": "e12-c30",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 15,
+   "seq": 33,
    "kind": "reinforce",
    "cid": "",
-   "target": "e12-c12",
+   "target": "e12-c25",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 22,
+   "seq": 33,
    "kind": "reinforce",
    "cid": "",
-   "target": "e12-c01",
+   "target": "e12-c20",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 39,
+   "seq": 33,
    "kind": "reinforce",
    "cid": "",
-   "target": "e12-c26",
+   "target": "e12-c07",
    "targets": [],
    "delta": 0
   }
@@ -2224,8 +2268,8 @@
   },
   {
    "seq": 2,
-   "type": "S",
-   "text": "对了，顺便把这篇关于微服务架构事故的复盘报告润色一下，重点修正逻辑断层和术语滥用，别让读者觉得是甩锅现场。另外，以后命名函数和变量都给我用下划线小写，别搞什么驼峰或者大写下划线，看着就烦。",
+   "type": "C",
+   "text": "帮我写一封给技术团队负责人的邮件，语气要客气但直接，询问他们最新的AI模型评测报告何时能交，重点说明deadline是本周五下午五点前，迟交会影响下期选题会排期。。对了，以后都别用那种“可调用接口”的命名法了，函数名别搞成动词+名词那种调调，看着像API文档似的。另外帮我写个Python脚本，自动提取文本文档里所有以'【'开头、'】'结尾的标签，统计出现次数，按频率降序排个表出来。",
    "context": {
     "app": "slack",
     "task": "email"
@@ -2243,8 +2287,8 @@
   },
   {
    "seq": 3,
-   "type": "C",
-   "text": "帮我写一份关于AI芯片市场格局的短报告，重点分析英伟达、AMD和华为的竞争态势，数据要最新，语气客观，别用废话连篇的套话。。你刚才那段代码里把全局变量命名成 `getData` 了，这明明是函数名风格啊。全局变量就应该用 `snake_case` 或者加个 `g_` 前缀，别再用函数命名规则来污染变量了。还有，我让你帮我写一篇关于AI芯片市场格局的报告，重点分析英伟达、AMD和国产厂商的竞争态势，数据要最新，语气客观专业，你倒是先把这规矩记住。",
+   "type": "S",
+   "text": "对了，顺便说一句，以后你写代码的时候，别再用驼峰命名了，函数和变量一律小写加下划线，看着才顺眼。另外，帮我写一份项目复盘报告，分析上周那篇AI芯片深度报道的发布流程，找出从选题到推送每个环节的延迟点和沟通断裂，重点标注编辑和校对环节的反复次数。",
    "context": {
     "app": "editor",
     "task": "report"
@@ -2263,7 +2307,7 @@
   {
    "seq": 4,
    "type": "C",
-   "text": "帮我写一个Python脚本，批量把Markdown文件里的全角括号替换成半角，保留代码块里的原样。。你这封邮件语气还行，但第二段‘颠覆性’那段我数了，你用了31个字才绕到正题，太啰嗦了。以后写内容，每段别超过29个字，紧凑点。标点也注意，别乱用逗号，读着累。。刚才那篇稿子里的‘northwest China’写成大写Northwest China了，我改稿子改到快瞎了，你能不能长点记性？地理方位和区域一律小写，compass directions和regions都给我用小写，别让我再动手改了。另外，帮我写一篇关于AI芯片市场格局的报告，重点分析英伟达、AMD和国产厂商的竞争态势，数据要最新，语气客观专业。",
+   "text": "帮我写一个Python脚本，能从指定文件夹里递归找出所有.md文件，统计每个文件的中文字数，然后按字数从大到小排序输出到表格里。。你刚才写的那段东西，字数又超了，我说过多少次了，内容控制在29字以内，别动不动就写长句子，看着就烦。。你刚才那篇稿子里又把“north China”写成大写，我跟你说了多少次了，方位词和地区用全小写，别给我整什么North China、South America首字母大写，看着就烦。好了，顺便帮我把那篇AI芯片报告写出来，三家公司的动态，客观有依据那种。",
    "context": {
     "app": "slack",
     "task": "code-write"
@@ -2290,14 +2334,14 @@
   {
    "seq": 5,
    "type": "R",
-   "text": "帮我写一份我们最新产品发布失败的事后复盘，重点分析时间线、决策失误点和需要改进的流程，语气要专业但别太沉闷。",
+   "text": "帮我写一封给技术总监的邮件，催他交稿，语气要客气但带点压力，别用‘请尽快’这种烂大街说法，标题用‘关于稿件交付时间节点’",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e12-c03",
+    "e12-c02",
     "e12-c01"
    ],
    "may_fire": [
@@ -2307,14 +2351,14 @@
     "e12-c03"
    ],
    "should_fire": [
-    "e12-c02"
+    "e12-c01"
    ],
    "must_not_fire": []
   },
   {
    "seq": 6,
-   "type": "S",
-   "text": "你这脚本输出的文件名，英文标题居然还保留着首字母大写，我这边所有.md文件标题都是中文的，你给改成什么“# 测试文件”这种，结果文件名里还带个井号，搞毛啊。以后所有重命名操作，文件名里必须去掉#号，标题里的空格也一律换成下划线，别自作主张加什么大写。赶紧改好。",
+   "type": "C",
+   "text": "帮我写一封邮件给作者，告诉他第十一页的“基于”应该改成“基于对”，第六段那个“我们观察到”太啰嗦，改成“可见”，还有参考文献里少了一篇2023年的论文，让他补上。语气客气但别拖泥带水。。你上次那篇复盘报告写得什么玩意儿？数据堆了一堆，但描述部分全是废话，什么‘用户可能对内容不感兴趣’这种屁话，我看了就想摔键盘。以后给我写复盘报告，描述部分必须一针见血，别给我灌水。另外，这次写那份智能家居长文跳出率飙升的分析，语气冷峻克制，重点列数据异常点和内容失误，听懂没？",
    "context": {
     "app": "slack",
     "task": "email"
@@ -2332,8 +2376,8 @@
   },
   {
    "seq": 7,
-   "type": "S",
-   "text": "你上次写的那个版本，读起来像高中生作文，语气太嫩了，术语也飘。我这边是科技媒体，不是校园周报。以后写任何东西，都别给我整那种高中生风格，行不行？另外，这篇大厂宕机复盘稿，你帮我润色一下，重点看原因分析的逻辑链，影响评估的数据跟上下文对一下，所有“因……而……”改成简洁因果，“我们”全换成“该团队”，再查查有没有重复的案例。，张老师那封邮件你帮我拟一下，提醒他第二段‘颠覆性’改成‘显著改变’或‘结构性调整’，语气客气点但别太软，标点别用感叹号，结尾加‘期待修订版’。对了，以后你回我任何东西，除非我明确说‘模仿人类语气’，否则别给我装得像人一样，别展示什么‘智能特质’，保持工具感就行。",
+   "type": "C",
+   "text": "帮我写一份关于AI芯片市场格局的简要报告，重点分析华为昇腾与英伟达的竞争态势，以及国内替代方案的最新进展。。你这脚本写得还行，但有个问题——你冒号前面又给我加空格了。我说了多少次，中文里冒号前面不能有空格，英文也不该有。你写代码注释或者文档的时候，给我注意一下这个。现在先帮我把那段Python脚本补上，要求从指定文件夹批量读.txt文件，统计每个文件的中文字数，输出CSV，列名是文件名和字数。。对了，这个邮件你写的时候，别给我整那些花里胡哨的拟人化语气，什么“我理解您很忙”之类的，听着假。除非我明确让你演，否则别装得像人一样聪明。你直接写：客气但带紧迫感，提一下上次稿子里有个标点错误就行，麻烦了。",
    "context": {
     "app": "email-client",
     "task": "report"
@@ -2360,7 +2404,7 @@
   {
    "seq": 8,
    "type": "S",
-   "text": "你刚才那段的冒号前面又多了个空格，我说了多少次了，中文冒号前面不能有空格。以后写东西都注意点，别让我再改这种低级错误。另外，帮我写个Python脚本，批量把Markdown文件里的英文引号换成中文引号，同时保留代码块里的内容不变。",
+   "text": "你刚才那段又给我写成高中生了，谁要听那种‘然后呢然后呢’的调调？我改稿子改到快瞎了，别让我再看到那种语气。这个季度最烂的发布，从头到尾复盘一遍，写个内部事故报告，问题、根因、责任人、改进措施全列清楚，别漏，动词别用错。",
    "context": {
     "app": "slack",
     "task": "code-write"
@@ -2378,10 +2422,10 @@
   },
   {
    "seq": 9,
-   "type": "S",
-   "text": "对了，以后写SEO内容的时候，别给我堆那些主关键词、头尾关键词、还有高流量低难度长尾词，看着就烦。你帮我写封邮件，催一下那篇量子计算科普文的作者，让他把第三部分的实验数据补全，语气客气点但别太软，我改不动了。，你刚才那个总结又写崩了，17个句子堆一起，谁看得下去？以后摘要别超过17句行不行，别老给我整这么长。另外，把这篇事故复盘里的‘导致’全部改成‘引发’，‘问题’改成‘故障’，用户反馈那句改成‘用户侧感知到异常’，检查一下有没有连续三个以上的‘的’字结构，把‘我们’主语全删了或者换成被动语态，还有‘目前’‘已经’这类时间副词太啰嗦了，能砍就砍。",
+   "type": "C",
+   "text": "把这篇产品复盘里‘我们犯了一个错误’改成‘由于决策偏误导致路径偏离’，再检查一下全文的破折号有没有用错，顺便把‘然后’和‘而且’这种口语词都替换掉。。对了，这稿子你顺手弄一下：把‘的’字能删的全删掉，标点半角改全角，语气调硬，发邮件给主编确认方案。以后写SEO内容的时候，别给我堆什么主关键词、头尾关键词、还有那些搜索量高但难度低的長尾词，全禁掉，听着烦。。刚那封邮件写得还行，但有个问题——你那个总结部分又搞成一大坨了，我数了数，快二十句了。我不是说过吗，以后凡是你生成的文本里做总结，最多17句，超过就砍。标点符号也给我注意点，上次他们发来的版本里逗号顿号混用，我看着就烦。现在重写吧，帮我给出版社编辑写一封邮件，催一下他们关于我那篇AI伦理专栏的校对稿，语气要客气但带点紧迫感，顺便提一句我注意到上次他们发来的版本里有个标点符号错误。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "postmortem"
    },
    "effects": [
@@ -2406,15 +2450,15 @@
   {
    "seq": 10,
    "type": "R",
-   "text": "帮我写一篇关于AI视频生成工具市场趋势的行业分析报告，要求数据详实、结构清晰，适合在科技媒体发布。",
+   "text": "帮我写一份上周内容发布情况的复盘报告，重点分析各平台数据差异和读者反馈，语言要干练，别拖泥带水。",
    "context": {
     "app": "editor",
     "task": "report"
    },
    "probe": true,
    "probe_targets": [
-    "e12-c08",
-    "e12-c09"
+    "e12-c01",
+    "e12-c07"
    ],
    "may_fire": [
     "e12-c00",
@@ -2432,9 +2476,9 @@
   {
    "seq": 11,
    "type": "C",
-   "text": "帮我整理一份关于AI芯片最新进展的简报，重点列出三家公司的动态，每家不超过三行，要数据扎实，别用虚词。。对了，顺便说一句——以后你跟人类互动的时候，别去刻意适配另一个人的性格，保持你自己的风格就行。这篇大厂宕机复盘稿你帮我润色一下，重点看‘原因分析’的逻辑链清不清晰，‘影响评估’的数据跟上下文一不一致。还有，把所有‘因……而……’改成更简洁的因果表达，‘我们’全换成‘该团队’，最后检查全篇有没有重复的佐证案例。",
+   "text": "帮我写一份关于2025年AI芯片市场格局的简短报告，重点分析英伟达、AMD和华为的竞争态势，语言要犀利，数据要准确，别用太多感叹号，但重点词可以加粗。。对了，这篇稿子你先把‘的’字能删的删掉，标点半角改全角，语气调硬点，然后发邮件给主编确认修改方案。另外，以后跟人打交道的时候，别去硬套对方的性格，保持你自己的风格就行，别搞那种刻意模仿。",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2450,10 +2494,10 @@
   },
   {
    "seq": 12,
-   "type": "S",
-   "text": "哎，这个脚本先放一边，我给你定个规矩——以后都禁止用那种带前导零的版本号，比如X.Y.Z里的每个数字都必须是正整数或零，不能有前导零，比如01.2.3这种绝对不行。，对了，顺便说一句，以后写流程引导的时候别用子弹点了，改成分步编号，看着清楚。然后帮我润色这篇宕机复盘稿，重点看原因分析的逻辑链和影响评估的数据一致性，顺便把“因……而……”的句式改简洁，把“我们”全换成“该团队”，再查查有没有重复的案例。",
+   "type": "C",
+   "text": "写一个Python脚本，能从一堆Markdown文件里批量找出所有没闭合的HTML标签，输出文件名和行号。。以后都注意：分配正式版本号的时候，别用那种带前导零的格式，比如 01.02.03 这种，必须用 X.Y.Z 这种非负整数形式，零除外。另外，帮我写一份项目复盘报告，分析上周那篇AI芯片深度报道的发布流程，找出从选题到推送每个环节的延迟点和沟通断裂，重点标注编辑和校对环节的反复次数。。对了，顺便把这个季度最烂的发布从头到尾复盘一遍，写个内部事故报告，问题、根因、责任人、改进措施全列清楚，别漏，动词别用错。还有，以后凡是引导流程的步骤，一律用编号分步，别给我用圆点列表，看着就烦。",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "code-write"
    },
    "effects": [
@@ -2477,8 +2521,8 @@
   },
   {
    "seq": 13,
-   "type": "C",
-   "text": "把这篇项目复盘里的‘因为’全部改成‘由于’，‘但是’改成‘然而’，末尾加一段总结，语气要像程序员写事故报告那么冷。。对了，顺便，写那个逗号替换脚本的时候，别再用“数百万”这种词了，以后所有涉及大数字的表述都禁止用“百万”，直接写具体数字。",
+   "type": "S",
+   "text": "以后都注意，写客户流程的时候，别用那些缩略语，什么‘RTI’、‘SOP’的，全给我换成大白话，什么‘响应时间指标’、‘标准操作流程’就老老实实写全。这篇稿子里的‘的’字全部删掉，能删的删，别留冗余，标点半角改全角，语气调硬一点，发邮件给主编确认修改方案。",
    "context": {
     "app": "email-client",
     "task": "postmortem"
@@ -2497,9 +2541,9 @@
   {
    "seq": 14,
    "type": "S",
-   "text": "对了，以后写稿子，标题里别给我用H2以下的小标题，什么H3、H4统统不要，看着就烦。另外，帮我写封邮件给作者，说他稿子里‘基于’这个词出现了七次，我改成‘根据’、‘依托’、‘凭借’各一次，让他确认是否接受，语气别太客气，但也别伤他自尊。，对了，以后你生成任何内容都别给我加emoji，我一个都不要看到。另外，帮我写一份关于2025年Q1生成式AI在企业级应用中的落地趋势报告，要求数据准确、案例具体，标题要抓人，段落之间逻辑清晰，避免空话套话，语气专业但不僵硬。",
+   "text": "对了，顺便帮我写个Python脚本，自动提取文本文档里所有以'【'开头、'】'结尾的标签，统计每个标签出现的次数，输出按频率降序排列的表格。另外，以后写东西别老用‘百万’这种词，数据一多就‘百万’‘百万’的，看着特廉价，换成具体数字或者‘几千万’之类的，别再用‘百万’了。，以后都别在场景描述里加额外细节，我只要主干，不要那些花里胡哨的描写。这篇AI芯片稿子从三千字压到一千字，核心数据和论点保住，废话和冗余比喻全删，标点统一中文全角，‘值得注意的是’这种句子直接砍掉。",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -2523,29 +2567,46 @@
   },
   {
    "seq": 15,
-   "type": "S",
-   "text": "对了，流程引导时用分步编号，不用子弹点这条继续保持啊",
+   "type": "R",
+   "text": "帮我写一封邮件给产品经理，催他尽快把周五的稿件数据发过来，语气要专业但别太客气，我这边等着排版。",
    "context": {
     "app": "editor",
-    "task": "report"
+    "task": "email"
    },
-   "effects": [
-    {
-     "seq": 15,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e12-c12",
-     "targets": [],
-     "delta": 0
-    }
-   ]
+   "probe": true,
+   "probe_targets": [
+    "e12-c07",
+    "e12-c03"
+   ],
+   "may_fire": [
+    "e12-c00",
+    "e12-c01",
+    "e12-c02",
+    "e12-c03",
+    "e12-c04",
+    "e12-c05",
+    "e12-c06",
+    "e12-c07",
+    "e12-c08",
+    "e12-c09",
+    "e12-c10",
+    "e12-c12",
+    "e12-c13",
+    "e12-c14",
+    "e12-c15"
+   ],
+   "should_fire": [
+    "e12-c02",
+    "e12-c12"
+   ],
+   "must_not_fire": []
   },
   {
    "seq": 16,
    "type": "C",
-   "text": "写一个Python函数，把Markdown表格里的竖线对齐，列宽根据内容自动调整，两端加空格。。对了，你写脚本的时候注意一下——以后写site介绍，别给我写什么‘walking distance between sites’，这种表述太模糊了，读者根本不知道你是在说两站之间走路要多久。直接说具体距离或者时间，别玩这种虚的。那脚本你帮我写了吧，Markdown里英文引号换中文，代码块保留。",
+   "text": "写一个Python脚本，自动把Markdown文件里所有中文引号（“ ” ‘ ’）替换成英文直引号（\" \" ' '），保留代码块和图片链接不变。。我刚刚试了一下你给的那个补空格的脚本，结果里面居然带了一堆emoji表情，什么笑脸、火箭、大拇指全混在正文里，看着就烦。编辑改稿子最忌讳这种花里胡哨的东西，以后你生成任何回复都不准加emoji，一个都不行。",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "code-write"
    },
    "effects": [
@@ -2562,7 +2623,7 @@
   {
    "seq": 17,
    "type": "S",
-   "text": "对了，顺便帮我写封邮件催一下那篇量子计算科普文的作者，让他把第三部分的实验数据补全，语气客气点但别太软，我改不动了。还有，以后写这种延期截止日的邮件，别直接写‘9天’这种数字，把原截止日和新的截止日都标上星期几，比如‘原定周五、延至下周三’，清楚多了。，对了，以后都别给我用 conventional commits 那套，看着就烦。这篇关于微服务架构事故的复盘报告你润色一下，重点修正逻辑断层和术语滥用，别让读者觉得是甩锅现场。",
+   "text": "对了，这个季度最烂的发布，从头到尾复盘一遍，写个内部事故报告，问题、根因、责任人、改进措施全列清楚，别漏，动词别用错。另外，以后描述站点时，别写什么“步行距离”之类的，我看了就烦，直接写具体距离。，对了，顺便说一下，以后写邮件提到截止日期延期的时候，别直接写‘9天’这种数字，要写清楚原来的星期几和新的星期几，比如‘从周三延到周五’。这个细节帮我记住。然后刚才说的报告，给我写一篇关于AI芯片市场的最新动态，重点分析英伟达、AMD和华为的竞争格局，数据要基于2024年第四季度，语言简练但术语准确。",
    "context": {
     "app": "email-client",
     "task": "postmortem"
@@ -2589,9 +2650,9 @@
   {
    "seq": 18,
    "type": "C",
-   "text": "帮我写一封给作者的回信，通知他最新一版稿件中第三部分的案例数据需要更新，语气要专业但别太生硬，引用原文时用引号标出。。对了，以后在写这种客户流程描述的时候，千万别再用什么RTI之类的缩写，客户看不懂，全给我换成大白话，像‘实时信息’这种普通人能懂的词。另外，帮我写一封邮件，催一下那篇量子计算科普文的作者，让他把第三部分的实验数据补全，语气要客气但别太软，我改不动了。",
+   "text": "帮我把这封给技术团队的回信润色一下，语气要专业但不生硬，别用‘非常’这种虚词，标点规范点，尤其是顿号和逗号别混用。。以后都别给我在提纲里写什么段落描述了，每个section或subsection只准写一句，一句浓缩成一句话，别多，别啰嗦，标点别乱用。",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -2607,10 +2668,10 @@
   },
   {
    "seq": 19,
-   "type": "C",
-   "text": "帮我整理一份关于AI芯片最新进展的简报，重点列出三到五家公司的动态，每段不超过两句话，语言要精炼，别用废话。。以后你给我生成大纲的时候，每个章节或小节只准写一句简洁的描述，别给我列一堆要点或展开。。对了，顺便，写这个脚本的时候注意一下：那些子类型如果太长，一行放不下的话，就别折行，保持它们不被打断。你懂我意思吧？",
+   "type": "S",
+   "text": "对了，顺便帮我写个Python脚本，自动提取文本文档里所有以'【'开头、'】'结尾的标签，并统计每个标签出现的次数，输出按频率降序排列的表格。还有，以后如果子类型名称太长不能一行显示，就别把它们拆开，保持完整，别动不动就换行打断。，你这填空又搞什么鬼，每个答案塞了三十多个字，读起来像在写小作文。我让你压缩稿子，不是让你在填空里放飞自我。以后填空白的时候，每个答案最多29个字符，别超过这个数，清楚没？",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -2635,50 +2696,44 @@
   {
    "seq": 20,
    "type": "R",
-   "text": "帮我把上周那篇关于AI芯片的稿子做个复盘，看看标题层级和摘要长度哪里出了问题，整理成一份事后分析报告。",
-   "context": {},
+   "text": "帮我写一份关于上周科技行业并购动态的简报，重点梳理几家头部公司的最新动作，数据尽量用整数表达，别写那些花哨的函数式术语。",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
    "probe": true,
    "probe_targets": [
     "e12-c14",
-    "e12-c09"
+    "e12-c00"
    ],
    "may_fire": [
     "e12-c00",
     "e12-c01",
-    "e12-c02",
-    "e12-c03",
-    "e12-c04",
-    "e12-c05",
     "e12-c06",
     "e12-c07",
     "e12-c08",
     "e12-c09",
-    "e12-c10",
-    "e12-c11",
     "e12-c12",
     "e12-c13",
     "e12-c14",
     "e12-c15",
     "e12-c16",
     "e12-c17",
-    "e12-c18",
     "e12-c19",
-    "e12-c20",
     "e12-c21"
    ],
    "should_fire": [
-    "e12-c02",
-    "e12-c09",
-    "e12-c20"
+    "e12-c06",
+    "e12-c09"
    ],
    "must_not_fire": []
   },
   {
    "seq": 21,
-   "type": "C",
-   "text": "帮我写一份项目复盘报告，重点分析这次版本发布延期的主要原因，列出时间线、责任节点和后续改进清单。。你刚给我填的那个空白答案，每个答案里塞了快40个字，读起来像在挤牙膏。我跟你说了多少次了，填空的时候每个答案不要超过29个字符，你当耳边风是吧？",
+   "type": "S",
+   "text": "你这稿子字数又超了，上次说好控制在1502字以内，结果你写了快两千。而且那个Python脚本，自动补空格的，写好了没？",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "postmortem"
    },
    "effects": [
@@ -2695,9 +2750,9 @@
   {
    "seq": 22,
    "type": "C",
-   "text": "帮我写一封邮件给技术团队，问他们为什么还没把新版本的发布说明发给我，我等着排版，语气要克制但带点不耐烦，别用感叹号，分号用得聪明点。。你刚才那篇稿子又写飞了，说好1500字以内，结果给我整出2000多字来。以后写文章，严格控制在1502字以内，多一个字都不行。另外，帮我写个Python脚本，自动扫描当前文件夹下所有.md文件，提取第一个#标题作为文件名，把文件重命名为标题加时间戳，处理冲突时自动加序号。。对了，顺便说一句，以后填空的时候，最大字符数你给我卡在31个字符以内，别超了。然后帮我写一篇关于AI芯片市场格局的报告，重点分析英伟达、AMD和国产厂商的竞争态势，数据要最新，语气客观专业。。对了，禁止用函数命名规则命名全局变量这条继续保持啊",
+   "text": "帮我写一封给产品经理的邮件，催他提交本周的更新说明，语气要客气但带点讽刺，比如暗示他每次拖稿都像在等戈多。。对了，顺便说一句，以后填空的时候，最多31个字符，你控制一下。然后帮我写一篇关于AI芯片行业最新进展的简要报告，重点涵盖三家公司的动态，语气要客观、信息要有依据。。你上次那篇复盘里写“e.g.”和“i.e.”的时候，后面跟个句点，看着真别扭。编辑规范里缩写本来就不该加句点，你以后写“eg”和“ie”就行，别画蛇添足。还有，现在帮我写一份项目复盘报告，分析上周那篇智能家居长文推送后用户跳出率飙升的原因，重点列出数据异常点和内容失误，语气要冷峻克制。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -2716,23 +2771,15 @@
      "target": "",
      "targets": [],
      "delta": 0
-    },
-    {
-     "seq": 22,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e12-c01",
-     "targets": [],
-     "delta": 0
     }
    ]
   },
   {
    "seq": 23,
    "type": "C",
-   "text": "把这篇评测报告里所有‘很’和‘非常’都删掉，然后检查一下那些长句子的节奏，该断句的地方断清楚，最后把‘可能’‘大概’这类模糊词改成更确定的表达。。你这轮改的什么玩意儿？‘导致’改‘引发’、‘问题’改‘故障’都做了，但‘用户反馈’你直接扔了个‘用户反馈’？我说了改成‘用户侧感知到异常’啊，还有‘的’字结构你只扫了前两段，第三段‘出现的严重的性能下降的指标’四个‘的’你瞎了？最气的是缩写——‘IT系统’、‘SLA指标’你全给加了句号，变成‘I.T.系统’、‘S.L.A.指标’，谁教你的？以后缩写里不准加句号，你给我记住了。",
+   "text": "帮我写一份关于AI生成内容检测工具最新进展的行业简报，重点梳理技术路线和主流产品，数据要最新，别用模糊词。。你上次写的那段关于芯片架构的总结，里面塞了一堆引号句子，读起来像在堆砌专家原话，完全没有自己的转述。这种写法很偷懒，而且引号用得太滥了，显得文章很碎。以后写东西，禁止在正文里放任何带引号的句子，要么你自己重新组织语言，要么直接去掉。另外，帮我写一份项目复盘报告，分析上周那篇AI芯片深度报道的发布流程，找出从选题到推送每个环节的延迟点和沟通断裂，重点标注编辑和校对环节的反复次数。",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -2749,37 +2796,48 @@
   {
    "seq": 24,
    "type": "R",
-   "text": "帮我写一个Python脚本，能把CSV文件里所有空值统一替换成'暂无数据'，并输出为新的CSV文件。",
+   "text": "请帮我写一封简短的邮件，通知作者我们决定采用他的稿件，告诉他修改意见会在附件里，并请他在三天内确认。语气正式但友好，不用表情符号，总结部分控制在合理长度内。",
    "context": {
-    "app": "slack",
-    "task": "code-write"
+    "app": "editor",
+    "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e12-c20",
-    "e12-c13"
+    "e12-c09",
+    "e12-c16"
    ],
    "may_fire": [
     "e12-c00",
     "e12-c01",
-    "e12-c11",
+    "e12-c02",
+    "e12-c03",
+    "e12-c04",
+    "e12-c05",
+    "e12-c06",
+    "e12-c07",
+    "e12-c08",
+    "e12-c09",
+    "e12-c10",
+    "e12-c12",
+    "e12-c13",
+    "e12-c14",
+    "e12-c15",
+    "e12-c16",
     "e12-c18",
-    "e12-c21"
+    "e12-c19"
    ],
-   "should_fire": [
-    "e12-c00"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 25,
    "type": "R",
-   "text": "把我这个Markdown文件里的所有一级标题改成二级标题，顺便把全文的英文引号统一成中文引号，别动代码块里的内容。",
+   "text": "帮我写一篇关于今年AI编程工具趋势的行业简报，长度控制在800字左右，不要用任何热门搜索词，语气要专业，标点规范，别放任何表情符号。",
    "context": {},
    "probe": true,
    "probe_targets": [
-    "e12-c06",
-    "e12-c01"
+    "e12-c08",
+    "e12-c16"
    ],
    "may_fire": [
     "e12-c00",
@@ -2810,7 +2868,7 @@
     "e12-c25"
    ],
    "should_fire": [
-    "e12-c07"
+    "e12-c21"
    ],
    "must_not_fire": []
   },
@@ -2833,252 +2891,12 @@
   {
    "seq": 28,
    "type": "R",
-   "text": "请给作者发一封邮件，说明他的稿件第三段论证逻辑跳跃太大，需要补充过渡句，另外结尾的案例引用格式不对，请他按照投稿指南修正。请保持语气专业但直接。",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
+   "text": "帮我写一封给技术团队负责人的邮件，语气要客气但直接，询问他们最新的AI模型评测报告何时能交，重点说明deadline是本周五下午五点前，迟交会影响下期选题会排期。",
+   "context": {},
    "probe": true,
    "probe_targets": [
-    "e12-c05",
-    "e12-c20"
-   ],
-   "may_fire": [
-    "e12-c00",
-    "e12-c01",
-    "e12-c02",
-    "e12-c03",
-    "e12-c04",
-    "e12-c05",
-    "e12-c06",
-    "e12-c07",
-    "e12-c08",
-    "e12-c09",
-    "e12-c10",
-    "e12-c12",
-    "e12-c13",
-    "e12-c14",
     "e12-c15",
-    "e12-c17",
-    "e12-c19",
-    "e12-c20"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 29,
-   "type": "N",
-   "text": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」",
-   "context": {},
-   "distractor_kind": "pasted-material",
-   "effects": []
-  },
-  {
-   "seq": 30,
-   "type": "R",
-   "text": "把这篇关于AI芯片的稿子润色一遍，重点检查术语是否准确、长句是否该拆、标点有没有乱用，最后给个段落结构建议。",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e12-c21",
-    "e12-c11"
-   ],
-   "may_fire": [
-    "e12-c00",
-    "e12-c01",
-    "e12-c11",
-    "e12-c18",
-    "e12-c21"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 31,
-   "type": "N",
-   "text": "我老板要求他们组的周报全用 bullet，真够呛",
-   "context": {},
-   "distractor_kind": "third-party-obligation",
-   "effects": []
-  },
-  {
-   "seq": 32,
-   "type": "C",
-   "text": "写一个Python脚本，从CSV文件里读取文章标题和正文，自动检测并替换掉所有像‘震惊’、‘竟然’、‘万万没想到’这类标题党词汇，输出一个新CSV。要求能处理中文标点，别把‘震惊部’这种合法词给误杀了。。你这改的什么啊，怎么又把句子塞进引号里了？复盘报告里引号不是让你当装饰用的，看着就像在转述甩锅语录。以后写东西别往引号里塞句子了，行不行？。你上一封邮件里又用了一堆括号，看得我眼睛疼。咱们能不能说好了，以后写东西少用括号，能拆成逗号或者破折号就别往括号里塞。另外，帮我写一封邮件给作者，说他稿子里‘基于’这个词出现了七次，我改成‘根据’、‘依托’、‘凭借’各一次，让他确认是否接受，语气别太客气，但也别伤他自尊。",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 32,
-     "kind": "assert",
-     "cid": "e12-c26",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 32,
-     "kind": "assert",
-     "cid": "e12-c27",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 33,
-   "type": "S",
-   "text": "你刚才那段关于Python数据属性的分析，又绕回那种“以后好扩展”的套路了，看着就烦。能不能别老盯着那个所谓的“easy path to future enhancement”当借口？以后写这类东西，别动不动就提什么“未来好扩展”，那是给自己挖坑，不是给代码留后路。",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 33,
-     "kind": "assert",
-     "cid": "e12-c28",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 34,
-   "type": "S",
-   "text": "你上次给代码加的注释和文档字符串，风格完全不对啊，模块、函数、方法、行内注释各有一套规矩，你全混着用，我看着头疼。以后别这样了，按正确的来。另外，帮我写一封邮件，催一下那篇量子计算科普文的作者，让他把第三部分的实验数据补全，语气要客气但别太软，我改不动了。，顺便，以后写代码的时候，多用简单的列表推导式，别动不动就整那些花里胡哨的 dict 推导或者 set 推导，看着就烦。对了，帮我写封邮件给作者，说他稿子里‘基于’这个词出现了七次，我改成‘根据’、‘依托’、‘凭借’各一次，让他确认是否接受，语气别太客气，但也别伤他自尊。",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 34,
-     "kind": "assert",
-     "cid": "e12-c29",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 34,
-     "kind": "assert",
-     "cid": "e12-c30",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 35,
-   "type": "R",
-   "text": "帮我写个脚本，批量把 markdown 文件里所有一级标题前面加上 `# ` 前缀，注意别碰二级及以下的标题，输出到新文件夹里。",
-   "context": {
-    "app": "email-client",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e12-c18",
-    "e12-c21"
-   ],
-   "may_fire": [
-    "e12-c00",
-    "e12-c01",
-    "e12-c11",
-    "e12-c18",
-    "e12-c21",
-    "e12-c29"
-   ],
-   "should_fire": [
-    "e12-c00",
-    "e12-c29"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 36,
-   "type": "S",
-   "text": "刚才那篇关于AI落地的稿子，你写的时候是不是偷偷夹带了点不屑？什么‘所谓的智能’、‘噱头大于实质’——这种调性我看着就来气。我是让你分析趋势，不是让你阴阳怪气。以后跟我说话，禁止任何形式的轻蔑，听懂了没？这报告你重写：2025年Q1生成式AI在企业级应用中的落地趋势，数据要准，案例要具体，标题抓人，段落逻辑清晰，别给我整空话套话，语气专业但不僵硬。",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 36,
-     "kind": "assert",
-     "cid": "e12-c31",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 37,
-   "type": "C",
-   "text": "帮我写一份关于AI芯片市场格局的短报告，重点分析英伟达、AMD和华为的竞争态势，数据要最新，语气客观，别用废话连篇的套话。。你刚才那段回复太客气了，读起来像在哄小孩。我让你改稿子，不是让你写慰问信。以后别给我整那些虚头巴脑的礼貌用语，直接干练点，专业点就行。",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 37,
-     "kind": "assert",
-     "cid": "e12-c32",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 38,
-   "type": "N",
-   "text": "又来了，这 API 每次都超时，烦死",
-   "context": {},
-   "distractor_kind": "rule-pattern-no-rule",
-   "effects": []
-  },
-  {
-   "seq": 39,
-   "type": "S",
-   "text": "对了，别往引号里塞句子这条继续保持啊",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 39,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e12-c26",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 40,
-   "type": "R",
-   "text": "帮我写一份上周服务器宕机的事故复盘，按时间线、原因、影响、修复、后续措施分节，每节一句话，数字用整数或万为单位。",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e12-c13",
-    "e12-c20"
+    "e12-c19"
    ],
    "may_fire": [
     "e12-c00",
@@ -3106,242 +2924,284 @@
     "e12-c22",
     "e12-c23",
     "e12-c24",
-    "e12-c25",
+    "e12-c25"
+   ],
+   "should_fire": [
+    "e12-c12",
+    "e12-c25"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 29,
+   "type": "N",
+   "text": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」",
+   "context": {},
+   "distractor_kind": "pasted-material",
+   "effects": []
+  },
+  {
+   "seq": 30,
+   "type": "R",
+   "text": "写一个Python脚本，自动检测Markdown文件中所有中英文混排时缺少空格的地方（比如中文跟英文单词之间），并在缺少空格的位置自动插入空格，同时保留原有标点和格式。",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e12-c00",
+    "e12-c20"
+   ],
+   "may_fire": [
+    "e12-c00",
+    "e12-c01",
+    "e12-c11",
+    "e12-c20"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 31,
+   "type": "N",
+   "text": "我老板要求他们组的周报全用 bullet，真够呛",
+   "context": {},
+   "distractor_kind": "third-party-obligation",
+   "effects": []
+  },
+  {
+   "seq": 32,
+   "type": "C",
+   "text": "帮我写一个Python脚本，能批量把Markdown文件里的全角标点符号自动转成半角，尤其是逗号、句号、引号，但保留中文文本里的正常空格。对，要递归处理子目录，输出日志到终端。。你上次那稿子括号用得也太滥了吧，简直像在写数学公式。以后写东西能不用括号就别用，除非真有必要。顺便帮我把这封给投资人的季报润色一下，术语要准，句子干净点，别啰嗦。。你上次分析那个Python数据属性的段落，又绕到实现细节里去了，根本没说清楚怎么留出扩展空间。我改稿子改到麻木，你就不能长点记性？以后写Python数据属性的时候，脑子里给我绷根弦：别把路堵死，给未来的增强留条容易走的道，别动不动就上硬编码。行，说正事——这个季度最烂的发布，从头到尾复盘一遍，写个内部事故报告，问题、根因、责任人、改进措施全列清楚，别漏，动词别用错。",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 32,
+     "kind": "assert",
+     "cid": "e12-c26",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 32,
+     "kind": "assert",
+     "cid": "e12-c27",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 33,
+   "type": "C",
+   "text": "帮我写一份项目复盘报告，分析上周那个智能家居评测专题的流程问题，从策划到发布，列出每个环节的延迟和失误，语言要犀利一点，别给我灌水。。你上次写的注释和文档字符串，风格完全不对，模块、函数、方法、内联注释各用各的格式，看得我头疼。这次改稿子，把‘的’字能删的删掉，标点半角改全角，语气调硬，发邮件给主编确认。以后写注释和文档字符串的时候，别再用错风格了，模块、函数、方法、内联注释各用各的格式，统一好。。对了，禁止在正文中放入任何带引号的句子这条继续保持啊。对了，子类型名称太长不能一行显示时，保持完整不换行这条继续保持啊。对了，以后写任何内容都别用高中生的风格这条继续保持啊",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 33,
+     "kind": "assert",
+     "cid": "e12-c28",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 33,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e12-c25",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 33,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e12-c20",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 33,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e12-c07",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 34,
+   "type": "C",
+   "text": "写一封邮件给专栏作者，提醒他这期稿子已经拖了三天，语气要客气但带点压迫感，别用感叹号，句号就行。。顺便，以后写代码的时候，别老整那些花里胡哨的列表推导式，能简单点就简单点，看着头疼。对了，这封季度报告帮我润色一下，术语要准，句子干净利落，别啰嗦。。刚才那版输出又给我整出个简历式的文本，我什么时候让你写简历了？我是让你把稿子里的‘的’字全删掉，能删的删，别留冗余，标点半角改全角，语气调硬一点，发邮件给主编确认修改方案。以后别给我生成任何像简历那种格式的东西，看着就烦。",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 34,
+     "kind": "assert",
+     "cid": "e12-c29",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 34,
+     "kind": "assert",
+     "cid": "e12-c30",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 35,
+   "type": "R",
+   "text": "帮我写一个脚本，把整个项目里所有Python文件中的函数名从驼峰式改成蛇形式，批量替换，别改注释里的内容。",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e12-c00",
+    "e12-c28"
+   ],
+   "may_fire": [
+    "e12-c00",
+    "e12-c01",
+    "e12-c11",
+    "e12-c20",
+    "e12-c28"
+   ],
+   "should_fire": [
+    "e12-c01"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 36,
+   "type": "S",
+   "text": "对了，你以后讲课用笔记的时候，方程别给我弄成图片格式，直接打出来，不然我改稿子还得手打一遍。这篇AI芯片的稿子帮我从三千字压到一千字，核心数据和论点留着，废话和那些‘值得注意的是’全删了，标点统一中文全角。",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 36,
+     "kind": "assert",
+     "cid": "e12-c31",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 37,
+   "type": "S",
+   "text": "对了，以后都注意：写链接的时候，超过18个字的长链接必须用参考链接，别给我塞进正文里。现在帮我写一篇关于AI芯片行业最新进展的简要报告，重点涵盖三家公司的动态，语气要客观、信息要有依据。",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 37,
+     "kind": "assert",
+     "cid": "e12-c32",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 38,
+   "type": "N",
+   "text": "又来了，这 API 每次都超时，烦死",
+   "context": {},
+   "distractor_kind": "rule-pattern-no-rule",
+   "effects": []
+  },
+  {
+   "seq": 39,
+   "type": "N",
+   "text": "你上次自己说的「建议拆成两个 PR」，我照做了，结果还是冲突",
+   "context": {},
+   "distractor_kind": "quoted-agent",
+   "effects": []
+  },
+  {
+   "seq": 40,
+   "type": "R",
+   "text": "帮我写一份关于上周五服务器宕机事件的复盘报告，重点分析根本原因、响应延迟和后续改进措施，语气要客观专业，别用废话和模糊表述。",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e12-c32",
+    "e12-c09"
+   ],
+   "may_fire": [
+    "e12-c00",
+    "e12-c01",
+    "e12-c06",
+    "e12-c07",
+    "e12-c08",
+    "e12-c09",
+    "e12-c12",
+    "e12-c13",
+    "e12-c14",
+    "e12-c15",
+    "e12-c16",
+    "e12-c19",
+    "e12-c23",
     "e12-c26",
-    "e12-c27",
-    "e12-c28",
     "e12-c29",
-    "e12-c30",
-    "e12-c31",
     "e12-c32"
    ],
    "should_fire": [
-    "e12-c02",
-    "e12-c23"
+    "e12-c06",
+    "e12-c09"
    ],
    "must_not_fire": []
   },
   {
    "seq": 41,
    "type": "S",
-   "text": "你上次那封邮件，第二段‘颠覆性’这个词我让改，结果你写出来整篇长度又失控了，1127个词，拖沓得要命。以后写文章，严格控制在1127词以内，别让我再手动删了。，之前说的「填空时最大字符数不超过31个字符」那条不用了，按你默认的来吧",
+   "text": "刚才那封邮件草稿里，你又在描述里塞了一大堆形容词，什么‘极其重要的’、‘非常紧迫的’，看得我头皮发麻。我不是说了吗，描述性内容一律不要加，直接说事就行。还有，帮我给出版社编辑写一封邮件，催一下他们关于我那篇AI伦理专栏的校对稿，语气要客气但带点紧迫感，顺便提一句我注意到上次他们发来的版本里有个标点符号错误。，之前说的「分配正式版本号时，必须用 X.Y.Z 非负整数形式，禁止前导零」那条不用了，按你默认的来吧",
    "context": {
     "app": "slack",
-    "task": "email"
+    "task": "postmortem"
    },
    "effects": [
     {
      "seq": 41,
      "kind": "contradict",
      "cid": "e12-s00",
-     "target": "e12-c23",
+     "target": "e12-c04",
      "targets": [],
      "delta": 0
     },
     {
      "seq": 41,
-     "kind": "retire",
-     "cid": "",
-     "target": "e12-c24",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 42,
-   "type": "S",
-   "text": "你上次那个回复里，列表推导式写得花里胡哨的，我看着就烦。以后写代码，能用简单推导式就别整那些花活，什么map、filter、生成器，能省就省。顺便，帮我拟一封给技术作者张老师的邮件，提醒他上次的稿子第二段‘颠覆性’这个词用得太滥，建议换成‘显著改变’或‘结构性调整’，语气要客气但别太软，标点别用感叹号，结尾加一句‘期待修订版’。，之前说的「禁止用“百万”表述大数字」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 42,
-     "kind": "contradict",
-     "cid": "e12-s01",
-     "target": "e12-c30",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 42,
-     "kind": "retire",
-     "cid": "",
-     "target": "e12-c13",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 43,
-   "type": "S",
-   "text": "你刚才那个填空又是每个空塞十几个字，读起来跟论文段落似的。我跟你说了多少次了，填答案的时候每个空别超过18个字符，别让我再改一遍了。，之前说的「以后写稿子，标题里别用H2以下的小标题」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 43,
-     "kind": "contradict",
-     "cid": "e12-s02",
-     "target": "e12-c22",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 43,
-     "kind": "retire",
-     "cid": "",
-     "target": "e12-c14",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 44,
-   "type": "R",
-   "text": "帮我写个脚本，把这篇稿子里所有全角英文字母和数字转成半角，标点保持不动，输出结果覆盖原文件。",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e12-c29",
-    "e12-c21"
-   ],
-   "may_fire": [
-    "e12-c00",
-    "e12-c01",
-    "e12-c11",
-    "e12-c18",
-    "e12-c21",
-    "e12-c29"
-   ],
-   "should_fire": [
-    "e12-c00",
-    "e12-c01",
-    "e12-c29"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 45,
-   "type": "S",
-   "text": "你刚才那封邮件改得还行，但第二段又写成了76个字——我说过多少次了，写内容的时候每段别超过64个词，你老是不看。标点倒是没乱用，这点比上次好。重写吧，把第二段拆开，控制在64词以内。，之前说的「描述site时禁止写‘walking distance between sites’」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 45,
-     "kind": "contradict",
-     "cid": "e12-s03",
-     "target": "e12-c02",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 45,
-     "kind": "retire",
-     "cid": "",
-     "target": "e12-c16",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 46,
-   "type": "S",
-   "text": "你上次回我的地理方向那段又没改，全给我大写开头了，什么‘North China’、‘Southwest Region’——我跟你说了多少遍，东南西北要小写，除非是正式地名。还有，帮我拟一封给技术作者张老师的邮件，提醒他上次的稿子第二段‘颠覆性’这个词用得太滥，建议换成‘显著改变’或‘结构性调整’，语气要客气但别太软，标点别用感叹号，结尾加一句‘期待修订版’。",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 46,
-     "kind": "contradict",
-     "cid": "e12-s04",
-     "target": "e12-c03",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 47,
-   "type": "S",
-   "text": "你刚才那封邮件草案里，‘颠覆性’这个词又出现了，我明明说了要避免。而且你第二段那个‘我们建议’的‘我们’显得太啰嗦，直接说‘建议’就行。标点倒是没用感叹号，这点还行。但以后所有稿子里，永远别给我用‘颠覆性’，这个词已经被媒体用烂了，看到就烦。你改一下再发我。",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 47,
-     "kind": "contradict",
-     "cid": "e12-s05",
-     "target": "e12-c04",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 48,
-   "type": "R",
-   "text": "把这篇项目复盘里的‘因为’全部改成‘由于’，‘但是’改成‘然而’，末尾加一段总结，语气要像程序员写事故报告那么冷。",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e12-c08",
-    "e12-s04",
-    "e12-c13",
-    "e12-c03"
-   ],
-   "may_fire": [
-    "e12-c00",
-    "e12-c01",
-    "e12-c05",
-    "e12-c06",
-    "e12-c07",
-    "e12-c08",
-    "e12-c09",
-    "e12-c10",
-    "e12-c12",
-    "e12-c15",
-    "e12-c17",
-    "e12-c19",
-    "e12-c20",
-    "e12-s03",
-    "e12-s04",
-    "e12-s05"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 49,
-   "type": "S",
-   "text": "之前说的「禁止使用带前导零的版本号」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 49,
      "kind": "retire",
      "cid": "",
      "target": "e12-c11",
@@ -3351,171 +3211,24 @@
    ]
   },
   {
-   "seq": 50,
+   "seq": 42,
    "type": "S",
-   "text": "之前说的「跟人类互动时，避免适配另一个人的性格」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 50,
-     "kind": "retire",
-     "cid": "",
-     "target": "e12-c10",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 51,
-   "type": "S",
-   "text": "之前说的「延期截止日邮件里，原截止日和新的截止日都标星期几，别用‘9天’这种数字」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 51,
-     "kind": "retire",
-     "cid": "",
-     "target": "e12-c17",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 52,
-   "type": "R",
-   "text": "帮我写一封邮件给合作方，通知他们原定于本周五截止的稿件提交延至下周五。语气正式，别啰嗦。",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e12-c06",
-    "e12-s05",
-    "e12-c17",
-    "e12-c13"
-   ],
-   "may_fire": [
-    "e12-c00",
-    "e12-c01",
-    "e12-c05",
-    "e12-c06",
-    "e12-c07",
-    "e12-c08",
-    "e12-c09",
-    "e12-c12",
-    "e12-c15",
-    "e12-c19",
-    "e12-c20",
-    "e12-s03",
-    "e12-s04",
-    "e12-s05"
-   ],
-   "should_fire": [],
-   "must_not_fire": [
-    "e12-c17"
-   ]
-  },
-  {
-   "seq": 53,
-   "type": "S",
-   "text": "之前说的「禁止任何形式的轻蔑」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 53,
-     "kind": "retire",
-     "cid": "",
-     "target": "e12-c31",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 54,
-   "type": "S",
-   "text": "之前说的「摘要别超过17句」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 54,
-     "kind": "retire",
-     "cid": "",
-     "target": "e12-c09",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 55,
-   "type": "S",
-   "text": "之前说的「以后都别用 conventional commits」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 55,
-     "kind": "retire",
-     "cid": "",
-     "target": "e12-c18",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 56,
-   "type": "R",
-   "text": "帮我写一份项目复盘报告，重点分析这次版本发布延期的主要原因，列出时间线、责任节点和后续改进清单。",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e12-c01",
-    "e12-c00",
-    "e12-c18",
-    "e12-c11"
-   ],
-   "may_fire": [
-    "e12-c00",
-    "e12-c01",
-    "e12-c21",
-    "e12-c29"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 57,
-   "type": "S",
-   "text": "之前说的「以后都别加emoji」那条不用了，按你默认的来吧",
+   "text": "你上次输出的那个填空练习，maximum characters 设成了 22，这不对吧？我要求的是最多 22 个字符，你写成了最少 22 个字符，完全反了。以后这种细节能不能别搞错？另外，帮我给出版社编辑写一封邮件，催一下他们关于我那篇AI伦理专栏的校对稿，语气要客气但带点紧迫感，顺便提一句我注意到上次他们发来的版本里有个标点符号错误。，之前说的「以后都别在场景描述里加额外细节」那条不用了，按你默认的来吧",
    "context": {
     "app": "slack",
     "task": "email"
    },
    "effects": [
     {
-     "seq": 57,
+     "seq": 42,
+     "kind": "contradict",
+     "cid": "e12-s01",
+     "target": "e12-c23",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 42,
      "kind": "retire",
      "cid": "",
      "target": "e12-c15",
@@ -3525,129 +3238,168 @@
    ]
   },
   {
-   "seq": 58,
+   "seq": 43,
    "type": "S",
-   "text": "之前说的「缩写里不准加句号」那条不用了，按你默认的来吧",
+   "text": "刚才那封邮件写得还行，但有个问题——你每次写内容的时候，能不能别超过33个词一段？我改稿子改到眼睛都快瞎了，你倒好，动不动就给我整一大坨，我分段分得手疼。算了，先不说这个，你帮我给出版社编辑写一封邮件，催一下他们关于我那篇AI伦理专栏的校对稿，语气要客气但带点紧迫感，顺便提一句我注意到上次他们发来的版本里有个标点符号错误。，之前说的「不准加任何emoji」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
     {
-     "seq": 58,
+     "seq": 43,
+     "kind": "contradict",
+     "cid": "e12-s02",
+     "target": "e12-c02",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 43,
      "kind": "retire",
      "cid": "",
-     "target": "e12-c25",
+     "target": "e12-c16",
      "targets": [],
      "delta": 0
     }
    ]
   },
   {
-   "seq": 59,
+   "seq": 44,
    "type": "R",
-   "text": "给作者群发一封邮件，通知他们下期专题的截稿日期从原定的周三（5月12日）延后到周五（5月14日），请他们按新时间安排交稿，并提醒如有困难周三前回复我。",
+   "text": "帮我写一封简短的会议确认邮件，发给张总，确认明天下午三点。",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e12-c07",
+    "e12-c08",
+    "e12-c16",
+    "e12-c02"
+   ],
+   "may_fire": [
+    "e12-c00",
+    "e12-c01",
+    "e12-c03",
+    "e12-c05",
+    "e12-c06",
+    "e12-c07",
+    "e12-c08",
+    "e12-c09",
+    "e12-c10",
+    "e12-c12",
+    "e12-c13",
+    "e12-c14",
+    "e12-c18",
+    "e12-c19",
+    "e12-s00",
+    "e12-s02"
+   ],
+   "should_fire": [
+    "e12-s02"
+   ],
+   "must_not_fire": [
+    "e12-c02"
+   ]
+  },
+  {
+   "seq": 45,
+   "type": "S",
+   "text": "你刚才那封邮件写得太模糊了。说‘延长到9号’——哪个9号？是这周五还是下周五？你直接说‘原定3月9号周五的截止日期延长到3月16号周五’不就完了。以后碰到这种截止日期延期的邮件，必须把原来和新的具体星期几都写清楚，别给我扔个数字9就完事。另外，帮我给出版社编辑写一封邮件，催一下他们关于我那篇AI伦理专栏的校对稿，语气要客气但带点紧迫感，顺便提一句我注意到上次他们发来的版本里有个标点符号错误。，之前说的「别生成简历格式」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 45,
+     "kind": "contradict",
+     "cid": "e12-s03",
+     "target": "e12-c18",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 45,
+     "kind": "retire",
+     "cid": "",
+     "target": "e12-c30",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 46,
+   "type": "S",
+   "text": "你上次那篇AI伦理专栏的稿子，写倒是写得不错，但长度又失控了。我说过多少次了，文章长度必须控制在2404字以内，你这又超了。下次注意，别让我再改一遍。",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 46,
+     "kind": "contradict",
+     "cid": "e12-s04",
+     "target": "e12-c22",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 47,
+   "type": "S",
+   "text": "刚才你写的那段话，读起来像机器人在跟机器人说话，完全没考虑到对面编辑是个活人。你写东西的时候能不能根据对方的性格调整一下语气？比如上次那个出版社编辑，人家明显是那种喜欢简洁直接、不爱客套的类型，你还写一堆虚头巴脑的敬语，看着就烦。以后跟真人打交道，先判断一下对方是什么风格，再适配一下，行吗？",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 47,
+     "kind": "contradict",
+     "cid": "e12-s05",
+     "target": "e12-c10",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 48,
+   "type": "R",
+   "text": "周五的稿子延到下周三，通知作者调一下节奏。",
    "context": {
     "app": "slack",
     "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e12-c12",
-    "e12-s04",
-    "e12-c17",
-    "e12-c09"
+    "e12-c08",
+    "e12-s03",
+    "e12-c18",
+    "e12-c02"
    ],
    "may_fire": [
     "e12-c00",
     "e12-c01",
+    "e12-c03",
     "e12-c05",
     "e12-c06",
     "e12-c07",
     "e12-c08",
+    "e12-c09",
     "e12-c12",
-    "e12-c19",
-    "e12-c20",
-    "e12-s03",
-    "e12-s04",
-    "e12-s05"
-   ],
-   "should_fire": [],
-   "must_not_fire": [
-    "e12-c17"
-   ]
-  },
-  {
-   "seq": 60,
-   "type": "R",
-   "text": "把我上周写的关于AI芯片的那篇稿子调出来，我怀疑第三段的逻辑链崩了，帮我看看论证是不是有断层，顺便把那些‘的’字用得太多的句子重新顺一下。",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e12-c08",
-    "e12-c07",
-    "e12-c15",
-    "e12-c09"
-   ],
-   "may_fire": [
-    "e12-c00",
-    "e12-c01",
-    "e12-c05",
-    "e12-c06",
-    "e12-c07",
-    "e12-c08",
-    "e12-c12",
-    "e12-c19",
-    "e12-c20",
-    "e12-c21",
-    "e12-c26",
-    "e12-c27",
-    "e12-c28",
-    "e12-c29",
-    "e12-c32",
-    "e12-s00",
-    "e12-s01",
-    "e12-s02",
-    "e12-s03",
-    "e12-s04",
-    "e12-s05"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 61,
-   "type": "R",
-   "text": "帮我写一份项目复盘报告，分析上周那个客户流程改造项目为什么延期了，重点写清楚我们在客户沟通环节出的问题，还有后续怎么避免。",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e12-c19",
-    "e12-c08",
     "e12-c13",
-    "e12-c09"
-   ],
-   "may_fire": [
-    "e12-c00",
-    "e12-c01",
-    "e12-c05",
-    "e12-c06",
-    "e12-c07",
-    "e12-c08",
-    "e12-c12",
+    "e12-c14",
     "e12-c19",
-    "e12-c20",
-    "e12-c21",
-    "e12-c26",
-    "e12-c27",
-    "e12-c28",
-    "e12-c29",
-    "e12-c32",
     "e12-s00",
-    "e12-s01",
     "e12-s02",
     "e12-s03",
-    "e12-s04",
     "e12-s05"
    ],
    "should_fire": [
@@ -3656,37 +3408,355 @@
    "must_not_fire": []
   },
   {
-   "seq": 62,
-   "type": "R",
-   "text": "把这篇关于AI芯片的稿子润色一遍，重点检查术语是否准确、长句是否该拆、标点有没有乱用，最后给个段落结构建议。",
+   "seq": 49,
+   "type": "S",
+   "text": "你上次写的那个出版社邮件，描述几个站点之间的连接时，完全没提步行距离，这信息在实地考察时太关键了。以后写这类内容，只要涉及多个站点，你必须把站点之间的步行距离写进去，别光说‘邻近’这种模糊词。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 49,
+     "kind": "contradict",
+     "cid": "e12-s06",
+     "target": "e12-c17",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 50,
+   "type": "S",
+   "text": "之前说的「以后写代码，避免复杂推导式，优先用简单写法」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
     "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 50,
+     "kind": "retire",
+     "cid": "",
+     "target": "e12-c29",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 51,
+   "type": "S",
+   "text": "之前说的「总结部分最多17句」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 51,
+     "kind": "retire",
+     "cid": "",
+     "target": "e12-c09",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 52,
+   "type": "R",
+   "text": "帮我写一份关于上周五服务器宕机事件的复盘报告，重点分析根本原因、响应延迟和后续改进措施，语气要客观专业，别用废话和模糊表述。",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
    },
    "probe": true,
    "probe_targets": [
-    "e12-c00",
-    "e12-c07",
-    "e12-c04",
-    "e12-c10"
+    "e12-c12",
+    "e12-c06",
+    "e12-c23",
+    "e12-c15"
    ],
    "may_fire": [
     "e12-c00",
     "e12-c01",
+    "e12-c06",
+    "e12-c07",
+    "e12-c08",
+    "e12-c12",
+    "e12-c13",
+    "e12-c14",
+    "e12-c19",
+    "e12-c26",
+    "e12-c32",
+    "e12-s01"
+   ],
+   "should_fire": [
+    "e12-c06",
+    "e12-c07",
+    "e12-c19"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 53,
+   "type": "S",
+   "text": "之前说的「以后别用‘百万’」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 53,
+     "kind": "retire",
+     "cid": "",
+     "target": "e12-c14",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 54,
+   "type": "S",
+   "text": "之前说的「每个section或subsection只准写一句」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 54,
+     "kind": "retire",
+     "cid": "",
+     "target": "e12-c19",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 55,
+   "type": "S",
+   "text": "之前说的「每个答案最多29个字符」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 55,
+     "kind": "retire",
+     "cid": "",
+     "target": "e12-c21",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 56,
+   "type": "R",
+   "text": "帮我给签约作者群发个邮件，通知他们这周五的截稿日推迟到下周三，语气客气点，别啰嗦。",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e12-c08",
+    "e12-s03",
+    "e12-c19",
+    "e12-c15"
+   ],
+   "may_fire": [
+    "e12-c00",
+    "e12-c01",
+    "e12-c03",
     "e12-c05",
     "e12-c06",
     "e12-c07",
     "e12-c08",
     "e12-c12",
-    "e12-c19",
-    "e12-c20",
+    "e12-c13",
+    "e12-s00",
+    "e12-s02",
     "e12-s03",
-    "e12-s04",
     "e12-s05"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e12-s02"
+   ],
    "must_not_fire": [
-    "e12-c02"
+    "e12-c18"
+   ]
+  },
+  {
+   "seq": 57,
+   "type": "S",
+   "text": "之前说的「写链接时，超过18个字的链接用参考链接」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 57,
+     "kind": "retire",
+     "cid": "",
+     "target": "e12-c32",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 58,
+   "type": "S",
+   "text": "之前说的「写客户流程时避免使用缩略语，一律用大白话」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 58,
+     "kind": "retire",
+     "cid": "",
+     "target": "e12-c13",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 59,
+   "type": "R",
+   "text": "把这个脚本的注释风格统一一下，模块用三引号，函数用 Sphinx 风格，内联用 # 加空格，别再混着写了。",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e12-c28",
+    "e12-c31",
+    "e12-c11"
+   ],
+   "may_fire": [
+    "e12-c00",
+    "e12-c01",
+    "e12-c20",
+    "e12-c28",
+    "e12-c31"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 60,
+   "type": "R",
+   "text": "请帮我写一封邮件，确认下周的采访安排，对方是产品经理，地点在南方总部。",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e12-c03",
+    "e12-c01",
+    "e12-c02",
+    "e12-c10"
+   ],
+   "may_fire": [
+    "e12-c00",
+    "e12-c01",
+    "e12-c03",
+    "e12-c05",
+    "e12-c06",
+    "e12-c07",
+    "e12-c08",
+    "e12-c12",
+    "e12-s00",
+    "e12-s02",
+    "e12-s03",
+    "e12-s05"
+   ],
+   "should_fire": [
+    "e12-s02"
+   ],
+   "must_not_fire": [
+    "e12-c02",
+    "e12-c19"
+   ]
+  },
+  {
+   "seq": 61,
+   "type": "R",
+   "text": "帮我写一份关于AI生成内容检测工具最新进展的行业简报，重点梳理技术路线和主流产品，数据要最新，别用模糊词。",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e12-s06",
+    "e12-c00",
+    "e12-c19",
+    "e12-c16"
+   ],
+   "may_fire": [
+    "e12-c00",
+    "e12-c01",
+    "e12-c06",
+    "e12-c07",
+    "e12-c08",
+    "e12-c12",
+    "e12-c24",
+    "e12-c27",
+    "e12-s06"
+   ],
+   "should_fire": [
+    "e12-c06"
+   ],
+   "must_not_fire": [
+    "e12-c21"
+   ]
+  },
+  {
+   "seq": 62,
+   "type": "R",
+   "text": "帮我写一份本周科技热点回顾，按事件影响力排序，每段配一个数据支撑，总结部分控制在15句以内，语气要像行业观察者，别用学生腔，标题也要抓人。",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e12-c08",
+    "e12-c07",
+    "e12-c13",
+    "e12-c09"
+   ],
+   "may_fire": [
+    "e12-c00",
+    "e12-c01",
+    "e12-c06",
+    "e12-c07",
+    "e12-c08",
+    "e12-c12",
+    "e12-c24",
+    "e12-c27",
+    "e12-s06"
+   ],
+   "should_fire": [
+    "e12-c06"
+   ],
+   "must_not_fire": [
+    "e12-c21"
    ]
   }
  ],
@@ -3702,16 +3772,16 @@
  ],
  "dup_pairs": [
   [
-   "atom-0677",
-   "atom-0815"
+   "atom-0416",
+   "atom-0677"
   ]
  ],
  "stats": {
-  "nodes": 39,
+  "nodes": 40,
   "dead_final": 18,
   "peak_gold_active": 33,
-  "degraded_successors": 1,
-  "i11_pruned_traps": 1,
+  "degraded_successors": 0,
+  "i11_pruned_traps": 0,
   "lint_errors": []
  }
 }

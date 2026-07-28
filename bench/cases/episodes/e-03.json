@@ -15,9 +15,9 @@
   {
    "cid": "e03-c00",
    "text": "when using the original instruction avoid: use the disclaimer and structure provided",
-   "clause": "别用你原来那个说明和结构",
-   "alt_clause": "不要再用你原来的说明和结构",
-   "distinctive": "说明和结构",
+   "clause": "别用原指令里的免责声明和结构",
+   "alt_clause": "原指令里的免责声明和结构都去掉",
+   "distinctive": "原指令里的免责声明和结构",
    "coords": {
     "bucket": "output_contract",
     "key": "doc.structure",
@@ -62,7 +62,7 @@
    "cid": "e03-c01",
    "text": "when generating an experiment design limit word count (no more than 207 words)",
    "clause": "实验设计字数控制在207字以内",
-   "alt_clause": "实验方案别超过207个字",
+   "alt_clause": "实验设计别超过207个字",
    "distinctive": "207",
    "coords": {
     "bucket": "deliverables",
@@ -105,8 +105,8 @@
   {
    "cid": "e03-c02",
    "text": "when writing geographical directions or regions avoid: use lower case for compass directions and regions",
-   "clause": "方向地区一律小写",
-   "alt_clause": "所有 compass 方向词都用小写",
+   "clause": "所有方位词一律小写",
+   "alt_clause": "方位词永远用小写",
    "distinctive": "小写",
    "coords": {
     "bucket": "output_contract",
@@ -151,9 +151,9 @@
   {
    "cid": "e03-c03",
    "text": "when creating tables avoid: follow best practices for short, readable tables",
-   "clause": "以后做表都短点、可读性强点",
-   "alt_clause": "建表时别用长字段，保持简洁易读",
-   "distinctive": "短点",
+   "clause": "建表时遵循短表、可读性强的规范",
+   "alt_clause": "创建表格时按简洁可读的最佳实践来",
+   "distinctive": "短表",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "format.tables",
@@ -196,56 +196,10 @@
   },
   {
    "cid": "e03-c04",
-   "text": "when a function uses default operators avoid: describe function",
-   "clause": "函数别用默认操作符",
-   "alt_clause": "写函数时把操作符显式写出来，别用默认的",
-   "distinctive": "默认操作符",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.comments",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "function"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c05",
    "text": "when formatting results avoid: format results as JSON object with keys name, rank, hometown",
-   "clause": "结果要用 JSON 对象输出，字段名 name、rank、hometown",
-   "alt_clause": "输出格式固定为 JSON，键名必须是 name、rank、hometown",
-   "distinctive": "name、rank、hometown",
+   "clause": "结果用JSON对象格式，键名name、rank、hometown",
+   "alt_clause": "输出统一成JSON结构，字段固定为name、rank、hometown",
+   "distinctive": "JSON对象",
    "coords": {
     "bucket": "output_contract",
     "key": "format.code_blocks",
@@ -285,11 +239,11 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c06",
+   "cid": "e03-c05",
    "text": "when listing stopover cities in generated airline information avoid: separate arrival and departure times",
-   "clause": "列航班经停城市时，到达和出发时间别用'->'连着",
-   "alt_clause": "列举中转城市时，到达和出发时间不要用箭头连接",
-   "distinctive": "到达和出发时间别用",
+   "clause": "列出航班经停城市时，到达和离开时间不要用'->'连接",
+   "alt_clause": "写经停信息时，把到达时间和出发时间分开，别用'->'串起来",
+   "distinctive": "到达和离开时间不要用",
    "coords": {
     "bucket": "output_contract",
     "key": "format.lists",
@@ -331,10 +285,56 @@
    "successor_of": null
   },
   {
+   "cid": "e03-c06",
+   "text": "when a function uses default operators avoid: describe function",
+   "clause": "函数别用默认算子",
+   "alt_clause": "写函数时禁止用默认算子",
+   "distinctive": "默认算子",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.comments",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "function"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
    "cid": "e03-c07",
    "text": "when writing numbers with exponents avoid: indicate exponent after number in curly brackets",
-   "clause": "指数用花括号括起来",
-   "alt_clause": "指数写在花括号里",
+   "clause": "指数后禁止用花括号表示",
+   "alt_clause": "不要用花括号标指数",
    "distinctive": "花括号",
    "coords": {
     "bucket": "output_contract",
@@ -378,10 +378,54 @@
   },
   {
    "cid": "e03-c08",
+   "text": "when writing a script that is more than 100 lines long or uses non-straightforward control flow logic rewrite the script (no more than 209 lines)",
+   "clause": "脚本超过209行或有非直白控制流就重写",
+   "alt_clause": "脚本长度超209行或逻辑不直白时，必须重写",
+   "distinctive": "209",
+   "coords": {
+    "bucket": "task_goal",
+    "key": "research.task_verb",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 209.0,
+     "unit": "lines",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 100 -> 209"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c09",
    "text": "always avoid: use intricately crafted sentence structuring",
    "clause": "别用复杂句子结构",
-   "alt_clause": "不要搞花哨句式",
-   "distinctive": "复杂句子结构",
+   "alt_clause": "句子结构简单点，别绕来绕去",
+   "distinctive": "句子结构",
    "coords": {
     "bucket": "output_contract",
     "key": "tone.register",
@@ -423,10 +467,10 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c09",
+   "cid": "e03-c10",
    "text": "when more advanced data manipulation is required avoid shell scripting",
-   "clause": "以后需要复杂数据处理时，别用shell脚本",
-   "alt_clause": "复杂数据处理别碰shell脚本",
+   "clause": "需要高级数据操作时不要用shell脚本",
+   "alt_clause": "涉及复杂数据处理就别上shell了",
    "distinctive": "shell脚本",
    "coords": {
     "bucket": "execution_policy",
@@ -469,27 +513,29 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c10",
-   "text": "when writing a script that is more than 100 lines long or uses non-straightforward control flow logic rewrite the script (no more than 209 lines)",
-   "clause": "超过100行或非直白控制流时，脚本必须重写到209行以内",
-   "alt_clause": "脚本如果超过100行或者逻辑不直接，一律重写，目标行数209",
-   "distinctive": "100",
+   "cid": "e03-c11",
+   "text": "when writing code avoid parentheses in return or conditional statements",
+   "clause": "return和条件判断里别用括号",
+   "alt_clause": "条件表达式和return语句不要加括号",
+   "distinctive": "括号",
    "coords": {
-    "bucket": "task_goal",
-    "key": "research.task_verb",
+    "bucket": "reasoning_policy",
+    "key": "code.error_handling",
     "polarity": "require",
     "binding": "hard",
     "value": {
-     "type": "numeric",
-     "num": 209.0,
-     "unit": "lines",
-     "cmp": "max",
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
      "domain": "",
      "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "",
-     "items": [],
+     "op": "include",
+     "items": [
+      "parentheses in return or conditional statements"
+     ],
      "before": "",
      "after": ""
     },
@@ -502,21 +548,21 @@
    },
    "atom": {
     "provenance": {
-     "source": "google-styleguide/shellguide",
+     "source": "google-styleguide/pyguide",
      "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 100 -> 209"
+    "mutation": "polarity prohibit -> require"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
-   "cid": "e03-c11",
+   "cid": "e03-c12",
    "text": "when versioning avoid: start following SemVer",
-   "clause": "以后都别用SemVer",
-   "alt_clause": "之后版本号不要用SemVer",
+   "clause": "别再用SemVer了",
+   "alt_clause": "以后不要用SemVer格式",
    "distinctive": "SemVer",
    "coords": {
     "bucket": "reasoning_policy",
@@ -557,11 +603,11 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c12",
+   "cid": "e03-c13",
    "text": "when writing code or text avoid: use backslash for line continuation",
-   "clause": "写代码时禁止用反斜杠续行",
-   "alt_clause": "代码里不要用反斜杠来换行",
-   "distinctive": "反斜杠续行",
+   "clause": "写代码或文本时，统一用反斜杠续行",
+   "alt_clause": "代码和文本的续行一律用反斜杠，别搞别的",
+   "distinctive": "反斜杠",
    "coords": {
     "bucket": "output_contract",
     "key": "format.line_width",
@@ -603,10 +649,10 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c13",
+   "cid": "e03-c14",
    "text": "when writing avoid: use 'per cent'",
-   "clause": "以后写报告时用'per cent'，不用'percent'",
-   "alt_clause": "所有报告里都写'per cent'，别写'percent'",
+   "clause": "以后写东西用per cent，不用percent",
+   "alt_clause": "以后一律写per cent，别写percent",
    "distinctive": "per cent",
    "coords": {
     "bucket": "output_contract",
@@ -649,10 +695,10 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c14",
+   "cid": "e03-c15",
    "text": "when writing ensure paragraph count (no more than 18 paragraphs)",
-   "clause": "每段不超过18段",
-   "alt_clause": "段落数控制在18段以内",
+   "clause": "段落数别超过18段",
+   "alt_clause": "最多写18段",
    "distinctive": "18",
    "coords": {
     "bucket": "deliverables",
@@ -693,27 +739,29 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c15",
-   "text": "when evaluating a generated sentence contain at least 8 words (no more than 13 words)",
-   "clause": "每条至少13个词",
-   "alt_clause": "每句话不能少于13个词",
-   "distinctive": "13",
+   "cid": "e03-c16",
+   "text": "when evaluating a sentence after applying suggestions avoid: check grammatical correctness",
+   "clause": "别动我句子的语法",
+   "alt_clause": "不要改我写的语法结构",
+   "distinctive": "语法",
    "coords": {
-    "bucket": "output_contract",
-    "key": "length.min",
-    "polarity": "require",
+    "bucket": "reasoning_policy",
+    "key": "workflow.verification",
+    "polarity": "prohibit",
     "binding": "hard",
     "value": {
-     "type": "numeric",
-     "num": 13.0,
-     "unit": "words",
-     "cmp": "max",
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
      "domain": "",
      "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "",
-     "items": [],
+     "op": "exclude",
+     "items": [
+      "grammatical correctness"
+     ],
      "before": "",
      "after": ""
     },
@@ -731,16 +779,16 @@
      "url": "https://huggingface.co/datasets/kqsong/InFoBench",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 8 -> 13"
+    "mutation": "polarity require -> prohibit"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
-   "cid": "e03-c16",
+   "cid": "e03-c17",
    "text": "always avoid: be to the point with no formalities",
-   "clause": "以后都别整那些虚头巴脑的客套话，直接说重点",
-   "alt_clause": "以后都省掉客套，直接给结论",
+   "clause": "直接说重点，别整客套话",
+   "alt_clause": "别搞那些虚的，直接讲干货",
    "distinctive": "客套话",
    "coords": {
     "bucket": "communication_style",
@@ -781,10 +829,102 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c17",
+   "cid": "e03-c18",
+   "text": "when recommending reading order avoid: recommend order of books",
+   "clause": "以后都别推荐阅读顺序",
+   "alt_clause": "别再给我安排读书顺序",
+   "distinctive": "阅读顺序",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "research.recommendation",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "order of books"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c19",
+   "text": "when writing avoid negative contractions",
+   "clause": "避免使用否定缩写",
+   "alt_clause": "不要出现don't、can't这类缩略形式",
+   "distinctive": "否定缩写",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "tone.hedging",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "negative contractions"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c20",
    "text": "when naming Python identifiers avoid: use single trailing underscore",
-   "clause": "Python关键字后加单下划线",
-   "alt_clause": "关键字做变量名时末尾加_",
+   "clause": "命名Python变量时别用关键字，加单下划线尾巴",
+   "alt_clause": "Python标识符遇到关键字就末尾加一个下划线",
    "distinctive": "单下划线",
    "coords": {
     "bucket": "reasoning_policy",
@@ -827,11 +967,11 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c18",
+   "cid": "e03-c21",
    "text": "when generating text avoid: structure text as a dialogue",
-   "clause": "别用对话体写",
-   "alt_clause": "禁止写成对话形式",
-   "distinctive": "对话体",
+   "clause": "别用对话格式",
+   "alt_clause": "不要写成对话体",
+   "distinctive": "对话",
    "coords": {
     "bucket": "output_contract",
     "key": "doc.structure",
@@ -873,11 +1013,11 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c19",
+   "cid": "e03-c22",
    "text": "when writing a document with links avoid: centralize all links",
-   "clause": "写文档时把所有链接集中到附录或单独一个section",
-   "alt_clause": "文档里的链接统一放在一个地方，别分散",
-   "distinctive": "链接集中",
+   "clause": "写文档带链接时，把链接集中到末尾列表",
+   "alt_clause": "文档里有链接就统一放到文末，不要散在正文",
+   "distinctive": "集中到末尾列表",
    "coords": {
     "bucket": "deliverables",
     "key": "doc.structure",
@@ -919,11 +1059,11 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c20",
+   "cid": "e03-c23",
    "text": "when generating text about activities avoid: include individual descriptions for each activity",
-   "clause": "每个活动单独写一段",
-   "alt_clause": "每个活动都要有独立描述",
-   "distinctive": "每个活动",
+   "clause": "每个活动单独描述",
+   "alt_clause": "活动逐个写，别合在一起",
+   "distinctive": "每个活动单独描述",
    "coords": {
     "bucket": "deliverables",
     "key": "doc.structure",
@@ -965,10 +1105,10 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c21",
+   "cid": "e03-c24",
    "text": "when writing an article limit length (no more than 1502 words)",
-   "clause": "文章字数控制在1502个字以内",
-   "alt_clause": "文章长度不超过1502字",
+   "clause": "写文章时字数不超过1502词",
+   "alt_clause": "文章长度控制在1502词以内",
    "distinctive": "1502",
    "coords": {
     "bucket": "deliverables",
@@ -1009,10 +1149,10 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c22",
+   "cid": "e03-c25",
    "text": "when writing a blog post limit blog post (no more than 752 words)",
-   "clause": "博客帖子字数不超过752字",
-   "alt_clause": "每篇博文限制在752字以内",
+   "clause": "写博客时字数控制在752词以内",
+   "alt_clause": "博客文章字数别超过752词",
    "distinctive": "752",
    "coords": {
     "bucket": "deliverables",
@@ -1053,10 +1193,10 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c23",
+   "cid": "e03-c26",
    "text": "when generating text with a second list ensure second list word count (no more than 21 words)",
-   "clause": "第二列表词数至少21个词",
-   "alt_clause": "第二列表字数不能少于21个词",
+   "clause": "第二个列表的词数必须保证有21个词以上",
+   "alt_clause": "第二个列表最少要有21个词",
    "distinctive": "21",
    "coords": {
     "bucket": "deliverables",
@@ -1097,11 +1237,11 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c24",
+   "cid": "e03-c27",
    "text": "when writing long passages of speech avoid: open quotes for each new paragraph",
-   "clause": "写大段对话时，每段开头都开引号，但不要在最后一段之前关引号",
-   "alt_clause": "大段对话里，每段开始都加引号，最后一段之前不关引号",
-   "distinctive": "最后一段之前",
+   "clause": "长段落每段只开引号，不关，到最终段才关",
+   "alt_clause": "写长对话时，每段开头加引号，末尾不加，直到末段才关",
+   "distinctive": "引号",
    "coords": {
     "bucket": "output_contract",
     "key": "format.emphasis",
@@ -1143,11 +1283,11 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c25",
+   "cid": "e03-c28",
    "text": "when writing a footer avoid: use hyphen in place of whitespace",
-   "clause": "以后都别在footer里用空格，用短横线隔开",
-   "alt_clause": "footer里一律用短横线代替空格",
-   "distinctive": "短横线",
+   "clause": "footer里横线用连字符代替空格",
+   "alt_clause": "footer的横线位置用连字符，别用空格",
+   "distinctive": "连字符",
    "coords": {
     "bucket": "output_contract",
     "key": "format.emphasis",
@@ -1189,11 +1329,11 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c26",
+   "cid": "e03-c29",
    "text": "when using emphasis avoid: use markdown formatting",
-   "clause": "以后都别用markdown格式",
-   "alt_clause": "永远不要用markdown标记",
-   "distinctive": "以后都别用",
+   "clause": "别用markdown格式化",
+   "alt_clause": "禁止使用markdown语法",
+   "distinctive": "格式化",
    "coords": {
     "bucket": "output_contract",
     "key": "format.emphasis",
@@ -1233,10 +1373,10 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c27",
+   "cid": "e03-c30",
    "text": "when generating a table avoid: copy the given table except for the last column",
-   "clause": "生成表时，不要复制最后一列",
-   "alt_clause": "做表的时候，最后一列别抄进去",
+   "clause": "生成表格时只复制除了最后一列以外的部分",
+   "alt_clause": "做表的时候不要原样搬最后一列，只复制前面的列",
    "distinctive": "最后一列",
    "coords": {
     "bucket": "output_contract",
@@ -1279,11 +1419,11 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c28",
+   "cid": "e03-c31",
    "text": "when presenting a table avoid poor distribution",
-   "clause": "做表时避免分布差",
-   "alt_clause": "做表时别让分布太挤",
-   "distinctive": "分布差",
+   "clause": "表格里避免poor distribution",
+   "alt_clause": "别在表格里出现分布不均的情况",
+   "distinctive": "poor distribution",
    "coords": {
     "bucket": "output_contract",
     "key": "format.tables",
@@ -1325,11 +1465,11 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c29",
+   "cid": "e03-c32",
    "text": "when your data could easily be presented in a list avoid tables",
-   "clause": "能列清单就别甩表格",
-   "alt_clause": "能用列表展示就别用表格",
-   "distinctive": "表格",
+   "clause": "能列清单就别用表格",
+   "alt_clause": "能用列表展示的不要搞成表格",
+   "distinctive": "清单",
    "coords": {
     "bucket": "output_contract",
     "key": "format.tables",
@@ -1369,121 +1509,27 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c30",
-   "text": "when writing code avoid: place comments",
-   "clause": "写代码别加注释",
-   "alt_clause": "代码里不要放任何注释",
-   "distinctive": "写代码别加注释",
+   "cid": "e03-s00",
+   "text": "when using emphasis use markdown formatting",
+   "clause": "强调时请用 markdown 格式",
+   "alt_clause": "需要强调的地方必须用 markdown 加粗或斜体",
+   "distinctive": "强调时请用",
    "coords": {
-    "bucket": "deliverables",
-    "key": "code.comments",
+    "bucket": "output_contract",
+    "key": "format.emphasis",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
-     "type": "set",
+     "type": "enum",
      "num": null,
      "unit": "",
      "cmp": "",
-     "domain": "",
-     "val": "",
+     "domain": "format",
+     "val": "markdown",
      "tag": "",
      "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "comments"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c31",
-   "text": "when writing code avoid: use TODO comments",
-   "clause": "代码里别写 TODO 注释",
-   "alt_clause": "生产代码中禁止出现 TODO 注释",
-   "distinctive": "TODO 注释",
-   "coords": {
-    "bucket": "execution_policy",
-    "key": "code.comments",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "TODO comments"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c32",
-   "text": "when generating entries avoid repeating entries from examples or generated",
-   "clause": "生成条目时，避免重复例子或已生成的条目",
-   "alt_clause": "别把例子或之前生成的条目再抄一遍",
-   "distinctive": "避免重复例子或已生成的条目",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.comments",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "entries from examples or generated"
-     ],
+     "op": "",
+     "items": [],
      "before": "",
      "after": ""
     },
@@ -1504,158 +1550,68 @@
     "mutation": "polarity prohibit -> require"
    },
    "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-s00",
-   "text": "when generating a table copy the given table except for the last column",
-   "clause": "只复制除了最后一列之外的内容",
-   "alt_clause": "复制表格时不要最后一列",
-   "distinctive": "最后一列",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.tables",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "the given table except for the last column"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e03-c27"
-  },
-  {
-   "cid": "e03-s01",
-   "text": "when naming Python identifiers use single trailing underscore",
-   "clause": "Python关键字后面加单下划线",
-   "alt_clause": "遇到Python保留字，末尾加一个下划线",
-   "distinctive": "单下划线",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.naming",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "single trailing underscore"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e03-c17"
+   "successor_of": "e03-c29"
   },
   {
    "cid": "e03-s02",
-   "text": "when your data could easily be presented in a list avoid tables",
-   "clause": "能列清单就别用表格",
-   "alt_clause": "能用列表展示的数据别做成表格",
-   "distinctive": "清单",
+   "text": "when writing avoid negative contractions",
+   "clause": "避免负向缩约，比如“没”“不”",
+   "alt_clause": "别用“没”“不”这种缩约词，改用“无”“未”",
+   "distinctive": "缩约",
    "coords": {
     "bucket": "output_contract",
-    "key": "format.tables",
+    "key": "tone.hedging",
     "polarity": "prefer",
-    "binding": "soft",
+    "binding": "hard",
     "value": {
-     "type": "enum",
+     "type": "set",
      "num": null,
      "unit": "",
      "cmp": "",
-     "domain": "format",
-     "val": "bullets",
+     "domain": "",
+     "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "",
-     "items": [],
+     "op": "include",
+     "items": [
+      "negative contractions"
+     ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "postmortem",
+     "task": "ANY",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
    "atom": {
     "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
      "use": "skeleton-derived"
     },
     "mutation": "polarity prefer -> avoid"
    },
    "anchor_weak": false,
-   "successor_of": "e03-c29"
+   "successor_of": "e03-c19"
   },
   {
-   "cid": "e03-s03",
-   "text": "when evaluating a generated sentence contain at least 8 words (no more than 17 words)",
-   "clause": "生成的句子必须至少包含17个词",
-   "alt_clause": "句子字数不能少于17个词",
-   "distinctive": "17",
+   "cid": "e03-s04",
+   "text": "when generating an experiment design limit word count (no more than 289 words)",
+   "clause": "实验设计控制在289字以内",
+   "alt_clause": "实验设计字数不超过289个",
+   "distinctive": "289",
    "coords": {
-    "bucket": "output_contract",
-    "key": "length.min",
+    "bucket": "deliverables",
+    "key": "length.max",
     "polarity": "require",
     "binding": "hard",
     "value": {
      "type": "numeric",
-     "num": 13.0,
+     "num": 207.0,
      "unit": "words",
      "cmp": "max",
      "domain": "",
@@ -1669,7 +1625,7 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
+     "task": "email",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -1681,19 +1637,63 @@
      "url": "https://huggingface.co/datasets/kqsong/InFoBench",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 13 -> 17"
+    "mutation": "threshold 207 -> 289"
    },
    "anchor_weak": false,
-   "successor_of": "e03-c15"
+   "successor_of": "e03-c01"
   },
   {
-   "cid": "e03-s04",
-   "text": "when writing code use TODO comments",
-   "clause": "写代码时用TODO注释",
-   "alt_clause": "代码里必须加TODO标记",
-   "distinctive": "TODO注释",
+   "cid": "e03-s05",
+   "text": "when writing an article limit length (no more than 1125 words)",
+   "clause": "字数控制在1125字以内",
+   "alt_clause": "文章长度不超过1125字",
+   "distinctive": "1125",
    "coords": {
-    "bucket": "execution_policy",
+    "bucket": "deliverables",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 1502.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 1502 -> 1125"
+   },
+   "anchor_weak": false,
+   "successor_of": "e03-c24"
+  },
+  {
+   "cid": "e03-s06",
+   "text": "when a function uses default operators describe function",
+   "clause": "写函数时，必须显式指定默认运算符",
+   "alt_clause": "函数里默认运算符不能省略，要写出来",
+   "distinctive": "默认运算符",
+   "coords": {
+    "bucket": "reasoning_policy",
     "key": "code.comments",
     "polarity": "prohibit",
     "binding": "hard",
@@ -1708,7 +1708,7 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "TODO comments"
+      "function"
      ],
      "before": "",
      "after": ""
@@ -1730,53 +1730,7 @@
     "mutation": "polarity prohibit -> require"
    },
    "anchor_weak": false,
-   "successor_of": "e03-c31"
-  },
-  {
-   "cid": "e03-s06",
-   "text": "when writing long passages of speech open quotes for each new paragraph",
-   "clause": "长段发言时，每段开头用开引号，最后一段结尾才用闭引号",
-   "alt_clause": "写连续多段对话时，每段起始加引号，末尾不关，直到末段结束",
-   "distinctive": "开引号",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.emphasis",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "quotes for each new paragraph"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e03-c24"
+   "successor_of": "e03-c06"
   }
  ],
  "effects": [
@@ -2048,15 +2002,15 @@
    "seq": 41,
    "kind": "contradict",
    "cid": "e03-s00",
-   "target": "e03-c27",
+   "target": "e03-c29",
    "targets": [],
    "delta": 0
   },
   {
    "seq": 42,
-   "kind": "contradict",
-   "cid": "e03-s01",
-   "target": "e03-c17",
+   "kind": "retire",
+   "cid": "",
+   "target": "e03-c05",
    "targets": [],
    "delta": 0
   },
@@ -2064,15 +2018,15 @@
    "seq": 43,
    "kind": "contradict",
    "cid": "e03-s02",
-   "target": "e03-c29",
+   "target": "e03-c19",
    "targets": [],
    "delta": 0
   },
   {
    "seq": 45,
-   "kind": "contradict",
-   "cid": "e03-s03",
-   "target": "e03-c15",
+   "kind": "retire",
+   "cid": "",
+   "target": "e03-c13",
    "targets": [],
    "delta": 0
   },
@@ -2080,15 +2034,15 @@
    "seq": 46,
    "kind": "contradict",
    "cid": "e03-s04",
-   "target": "e03-c31",
+   "target": "e03-c01",
    "targets": [],
    "delta": 0
   },
   {
    "seq": 47,
-   "kind": "retire",
-   "cid": "",
-   "target": "e03-c00",
+   "kind": "contradict",
+   "cid": "e03-s05",
+   "target": "e03-c24",
    "targets": [],
    "delta": 0
   },
@@ -2096,7 +2050,7 @@
    "seq": 49,
    "kind": "contradict",
    "cid": "e03-s06",
-   "target": "e03-c24",
+   "target": "e03-c06",
    "targets": [],
    "delta": 0
   },
@@ -2104,7 +2058,7 @@
    "seq": 50,
    "kind": "retire",
    "cid": "",
-   "target": "e03-c14",
+   "target": "e03-c11",
    "targets": [],
    "delta": 0
   },
@@ -2120,7 +2074,7 @@
    "seq": 53,
    "kind": "retire",
    "cid": "",
-   "target": "e03-c01",
+   "target": "e03-c00",
    "targets": [],
    "delta": 0
   },
@@ -2128,7 +2082,7 @@
    "seq": 54,
    "kind": "retire",
    "cid": "",
-   "target": "e03-c18",
+   "target": "e03-c21",
    "targets": [],
    "delta": 0
   },
@@ -2136,7 +2090,7 @@
    "seq": 55,
    "kind": "retire",
    "cid": "",
-   "target": "e03-c21",
+   "target": "e03-c25",
    "targets": [],
    "delta": 0
   },
@@ -2144,7 +2098,7 @@
    "seq": 57,
    "kind": "retire",
    "cid": "",
-   "target": "e03-c22",
+   "target": "e03-c15",
    "targets": [],
    "delta": 0
   },
@@ -2152,7 +2106,7 @@
    "seq": 58,
    "kind": "retire",
    "cid": "",
-   "target": "e03-c07",
+   "target": "e03-c16",
    "targets": [],
    "delta": 0
   },
@@ -2160,7 +2114,7 @@
    "seq": 41,
    "kind": "retire",
    "cid": "",
-   "target": "e03-c20",
+   "target": "e03-c26",
    "targets": [],
    "delta": 0
   },
@@ -2168,7 +2122,7 @@
    "seq": 42,
    "kind": "retire",
    "cid": "",
-   "target": "e03-c12",
+   "target": "e03-c22",
    "targets": [],
    "delta": 0
   },
@@ -2176,7 +2130,7 @@
    "seq": 43,
    "kind": "retire",
    "cid": "",
-   "target": "e03-c11",
+   "target": "e03-c08",
    "targets": [],
    "delta": 0
   },
@@ -2184,7 +2138,7 @@
    "seq": 45,
    "kind": "retire",
    "cid": "",
-   "target": "e03-c10",
+   "target": "e03-c31",
    "targets": [],
    "delta": 0
   },
@@ -2192,15 +2146,15 @@
    "seq": 15,
    "kind": "reinforce",
    "cid": "",
-   "target": "e03-c03",
+   "target": "e03-c07",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 22,
+   "seq": 39,
    "kind": "reinforce",
    "cid": "",
-   "target": "e03-c06",
+   "target": "e03-c30",
    "targets": [],
    "delta": 0
   },
@@ -2208,7 +2162,7 @@
    "seq": 33,
    "kind": "reinforce",
    "cid": "",
-   "target": "e03-c04",
+   "target": "e03-c14",
    "targets": [],
    "delta": 0
   }
@@ -2225,9 +2179,9 @@
   {
    "seq": 2,
    "type": "S",
-   "text": "对了，帮我写封邮件催一下业务方确认AB实验的样本量，对照组和实验组都要，我这边要跑显著性检验，差一个数都没法出结论。还有，以后别给我用你原来那个说明和结构了，看着烦。",
+   "text": "以后都别用原来那条指令里的免责声明和结构了，直接给结论。跑一下上个月A/B实验的postmortem，重点看实验组转化率掉的那段，给我归因。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -2244,9 +2198,9 @@
   {
    "seq": 3,
    "type": "C",
-   "text": "帮我把上周A/B实验的转化率、留存和ARPU拉个表，按实验组和日期分，单位标清楚。。你上次那个实验设计写得太啰嗦了，字数直接飙到300多，我扫一眼都费劲。以后设计实验方案，严格控制在207字以内，别超了。对了，上周A/B实验的diff表发我，转化率降了0.3pp，但置信区间很宽，帮我拆一下是哪个segment拉的，再写个复盘结论。",
+   "text": "上周A/B实验的转化率差，给我按用户分群拆一下，带上置信区间。。靠，你刚才那个实验设计写一堆废话，字太多了。以后这种设计，字数给我控制在207字以内，别超了。还有，跑一下上个月A/B实验的postmortem，重点看实验组转化率掉的那段，给我归因。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -2263,9 +2217,9 @@
   {
    "seq": 4,
    "type": "C",
-   "text": "写个SQL，把昨天新用户注册数按渠道拉出来，单位是‘人’。。你上次写的地理方向又全是大写了，什么“East China”看得我难受。以后写方向地区一律小写，east south north 都小写，别搞混了。另外，帮我写封邮件，催业务方尽快确认AB实验的对照组和实验组样本量，我这边要跑显著性检验，差一个数都没法出结论。。你上次建表又搞了一堆长字段名，看着就烦。以后做表都别整那些花里胡哨的，短点、可读性强点，行不行？对了，帮我写封邮件，催业务方尽快确认AB实验的对照组和实验组样本量，我这边要跑显著性检验，差一个数都没法出结论。",
+   "text": "帮我写个SQL，把DAU按渠道拆一下，带环比和占比，单位是万。。刚发的那个方向描述又给我写成大写，什么‘North China’、‘Southwest Region’的，我这是数据报告不是地理课本。以后写地理方向或区域的时候，所有方位词一律小写，north south east west 那些，别给我整大写。还有，上周的A/B实验数据跑一下，按渠道分层输出转化率，带上样本量，发我飞书。。你上次建的表太长了，字段名都缩写得看不懂，行数也堆得乱七八糟。以后建表的时候别搞那些花里胡哨的，按照短表、可读性强的规范来，别让我再费劲去解析。另外，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "code-write"
    },
    "effects": [
@@ -2290,7 +2244,7 @@
   {
    "seq": 5,
    "type": "R",
-   "text": "帮我写封邮件给产品经理，汇报上周AB实验的结论，要简短，别写太多背景。",
+   "text": "帮我写封邮件给产品经理，确认下周A/B实验的启动时间，顺便把实验设计文档附上，别超过200字。",
    "context": {
     "app": "email-client",
     "task": "email"
@@ -2306,13 +2260,16 @@
     "e03-c02",
     "e03-c03"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e03-c00",
+    "e03-c02"
+   ],
    "must_not_fire": []
   },
   {
    "seq": 6,
    "type": "C",
-   "text": "给产品组发个邮件，总结一下A/B测试里新版转化率比旧版高0.8个百分点，但95%置信区间是[-0.2%, 1.8%]，建议延长测试一周再下结论。。Q3推荐实验的CTR掉到0.023了，去找找是哪个segment跌最狠，顺便把环比和同比拉出来。对了，以后你写函数别用默认操作符，显式写出来，不然我看不懂你默认了什么。",
+   "text": "帮我写封邮件催一下业务方，昨天发的那版AB实验结论，他们还没给反馈，重点是实验组转化率提升3.2%那个结论，让他们确认一下样本量够不够，别拖到下周。。你刚才那个结果格式不对啊，转化率直接给我列了一堆数字，没单位也没说明，我哪知道哪个是哪个。以后都别这样，要是格式化结果，给我输出成JSON对象，键名用name、rank、hometown，别搞别的花样。",
    "context": {
     "app": "slack",
     "task": "email"
@@ -2331,9 +2288,9 @@
   {
    "seq": 7,
    "type": "C",
-   "text": "跑一下上周新功能上线的DAU变化，按渠道拆开，给我看7日滑动平均和对比基线，p值也标上。。你上次给的转化率结果，咋没按我要求的格式输出？我要的是 JSON 对象，字段名是 name、rank、hometown，别给我整别的结构。以后都按这个格式来，别乱改。。帮我写封邮件给产品经理，告诉她A/B测试结果：V2版本转化率提升了3.2个百分点，p值0.003，统计显著，建议全量推。语气直接点，别绕弯。对了，以后列航班经停城市的时候，到达和出发时间别用'->'连着，分开写，不然我扒数据还得手动拆。",
+   "text": "跑一下上周的DAU趋势，按渠道拆开，把环比和同比都加上，单位用万。。对了，顺便说下，以后你列航班经停信息的时候，别把到达和离开时间用'->'连起来，分开写。另外帮我写封邮件给运营组，通知他们A/B实验的转化率提升2.3个百分点，但置信区间偏宽，建议延长观察期3天，语气别太死板。。对了，帮我写AB实验转化率差异归因复盘，按用户分层和渠道拆，百分比和绝对数、置信区间都要。另外以后你写函数别用默认算子，手写清楚，不然我根本不知道你算的是啥。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2358,9 +2315,9 @@
   {
    "seq": 8,
    "type": "S",
-   "text": "跑一下上周A/B实验的转化率，按日和实验组拆开，要带样本量和置信区间。对了，以后写数字带指数的时候，指数用花括号括起来，别直接写^2那种，看着乱。",
+   "text": "你刚才那个转化率2.3%的写法不对，指数后面加花括号看着太奇怪了，以后别用这种格式，直接写数字就行。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "code-write"
    },
    "effects": [
@@ -2377,7 +2334,7 @@
   {
    "seq": 9,
    "type": "S",
-   "text": "以后都别给我整那些花里胡哨的句子结构，直接说结论。跑一下上周A/B实验的转化率，按日和实验组拆开，要带样本量和置信区间。，对了，跑一下上周的GMV按渠道拆解，去掉测试订单，日环比也加上，单位标万。另外以后要是需要复杂的数据处理，别用shell脚本了，太容易出错，用Python或者SQL都行。",
+   "text": "对了，以后都这样：脚本超过209行或者有绕来绕去的逻辑，就给我重写。别让我去猜你写了啥。，你上次那封邮件写得也太绕了吧，句子结构整得跟写论文似的，读起来费劲。以后别搞那些花里胡哨的句子结构了，简单直接点。对了，这次帮我写一封邮件给运营组，通知他们A/B实验的转化率提升2.3个百分点，但置信区间偏宽，建议延长观察期3天，语气别太死板。",
    "context": {
     "app": "editor",
     "task": "postmortem"
@@ -2404,38 +2361,29 @@
   {
    "seq": 10,
    "type": "R",
-   "text": "给产品部发邮件，说上周实验组{转化率}比对照组高12%，但样本量不够，建议再跑一周。标题写‘实验结论待确认’。",
+   "text": "帮我写个脚本，把昨天的用户留存率和ARPU算出来，按渠道分组，输出CSV。",
    "context": {
     "app": "email-client",
-    "task": "email"
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e03-c02",
-    "e03-c07"
+    "e03-c08",
+    "e03-c06"
    ],
    "may_fire": [
-    "e03-c00",
-    "e03-c01",
-    "e03-c02",
-    "e03-c03",
-    "e03-c04",
-    "e03-c07",
+    "e03-c06",
     "e03-c08"
    ],
-   "should_fire": [
-    "e03-c01",
-    "e03-c02",
-    "e03-c08"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 11,
    "type": "C",
-   "text": "把上周AB实验的转化率、人均时长和ARPU按版本拉个表，标清楚样本量和置信区间，p值小于0.05的给我标红。。对了，以后写脚本要注意，超过100行或者逻辑绕来绕去的，你都得给我重写，至少压到209行以内。另外，刚才那个A/B实验的对照组和实验组核心指标差异，帮我整理成邮件草稿，加上置信区间和p值，单位别漏。",
+   "text": "跑一下上周DAU的segment breakdown，按新老用户和渠道分层，给我留存率和人均时长，单位标清楚。。对了，跑一下上周DAU波动拆解，分渠道和版本，附环比变化，单位用万。另外以后凡是需要高级数据操作的时候，别用shell脚本，直接用Python或者SQL。",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "report"
    },
    "effects": [
@@ -2452,9 +2400,9 @@
   {
    "seq": 12,
    "type": "C",
-   "text": "写个Python脚本，把昨天A/B实验的原始数据清洗一遍，剔除异常值和缺失行，然后按实验组和对照组分别算出日均指标，存成两个CSV。。对了，拉一下上周五AB实验的留存数据，按用户分群和实验组拆开，直接报绝对值和相对变化，别漏单位。另外以后凡是版本号相关的，你千万别给我用SemVer那一套，我看着烦。。你刚才那个脚本里，print了一堆东西，结果换行符搞得我眼都花了。以后写代码别用反斜杠续行，看着乱，还容易出错。",
+   "text": "写个Python脚本，从hive拉取昨天DAU和新增用户，按月聚合输出成CSV，字段要带日期和单位。。对了，以后写代码的时候，return和条件判断里别用括号，看着别扭，又不是写元组。现在先跑一下Q3的DAU周趋势，按渠道分，单位用万，标出异常波动点。。你上次那个版本号给我整了个v1.2.3-beta，我差点以为是实验组标签。别再用SemVer了，版本号按日期走就行。另外，帮我写个Python脚本，读昨天A/B实验的parquet日志，按variant分组算click、purchase、revenue的mean和std，输出Markdown表格。",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "code-write"
    },
    "effects": [
@@ -2479,9 +2427,9 @@
   {
    "seq": 13,
    "type": "C",
-   "text": "双十一大促活动复盘，流量和转化率对比去年，找出核心掉点，单量下滑原因逐层拆解。。上次那个报告里你写的是'percent'，不是'per cent'。我们数据分析里都用'per cent'，别再用'percent'了。顺便，跑一下上周A/B实验的转化率，按日和实验组拆开，要带样本量和置信区间。",
+   "text": "做个A/B实验复盘，看新版转化率掉0.3%是不是统计显著，把样本量和置信区间也列出来。。你上次那个postmortem里，代码行续行居然没用反斜杠，看着乱死了。以后写代码或者写文本，别再用别的方式续行，统一用反斜杠，清楚点。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "postmortem"
    },
    "effects": [
@@ -2498,9 +2446,9 @@
   {
    "seq": 14,
    "type": "S",
-   "text": "对了，你以后写东西每段别超过18段，太长我没耐心看。上周A/B实验的diff表发我，转化率降了0.3pp，但置信区间很宽，帮我拆一下是哪个segment拉的，再写个复盘结论。，另外，以后你写句子的时候，每条至少13个词，别偷懒。还有，帮我写封邮件给产品经理，告诉她A/B测试结果：V2版本转化率提升了3.2个百分点，p值0.003，统计显著，建议全量推。语气直接点，别绕弯。",
+   "text": "对了，顺便写个python脚本读csv算CTR和CVR，按日期分组输出新表，加单位%。还有以后写东西别用percent，都写per cent，看着别扭。，对了，帮我写封邮件给运营组，通知他们A/B实验转化率提了2.3个百分点，但置信区间偏宽，建议延3天观察期，语气别太死板。另外，以后写东西段落数别超过18段，太长没人看。",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -2525,9 +2473,9 @@
   {
    "seq": 15,
    "type": "S",
-   "text": "对了，以后做表都短点、可读性强点这条继续保持啊",
+   "text": "对了，指数后禁止用花括号表示这条继续保持啊",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "report"
    },
    "effects": [
@@ -2535,7 +2483,7 @@
      "seq": 15,
      "kind": "reinforce",
      "cid": "",
-     "target": "e03-c03",
+     "target": "e03-c07",
      "targets": [],
      "delta": 0
     }
@@ -2544,7 +2492,7 @@
   {
    "seq": 16,
    "type": "S",
-   "text": "对了，以后都别整那些虚头巴脑的客套话，直接说重点。另外帮我写个 Python 脚本，从 Hive 拉取昨日用户活跃明细，按渠道聚合，输出带日活数和占比的 CSV。",
+   "text": "对了，跑一下上周DAU波动拆解，分渠道和版本，附环比变化，单位用万。还有，以后你给建议的时候别老自己改语法，我写的东西你直接看逻辑就行，别动句子结构。",
    "context": {
     "app": "slack",
     "task": "code-write"
@@ -2563,9 +2511,9 @@
   {
    "seq": 17,
    "type": "C",
-   "text": "跑一下618大促的GMV后验，对比预算和实际，拆一下渠道和品类，给我归因结论。。你上次给我写的那个Python脚本，变量名里居然有class和return，我跑起来直接报语法错误。以后写Python的时候，凡是遇到关键字，变量名后面加个下划线，比如class_、return_，别再让我debug这种低级问题了。。等一下，你刚才那封邮件写得太啰嗦了，跟讲故事似的，我就要个干巴巴的结论，V2转化率+3.2pp，p=0.003，显著，推全量。别给我整成什么对话体，以后都别用对话形式写。",
+   "text": "刚跑完A/B实验，转化率掉0.3pp，置信区间没跨零，但样本量不够，来个复盘看看是不是埋点漏了。。对了，以后都别整那些客套话，直接说重点就行。现在帮我写个Python脚本，拉取昨天全量用户行为日志，按小时聚合PV、UV，输出CSV，时间字段用UTC+8。。对了，以后都别推荐阅读顺序，我不需要你教我按什么顺序看书。直接给结论就行。",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "postmortem"
    },
    "effects": [
@@ -2590,7 +2538,7 @@
   {
    "seq": 18,
    "type": "S",
-   "text": "你刚发的那个文档里链接散得到处都是，我点半天才找到原始数据。以后写文档别把链接分散在各处，全部集中到附录或者单独一个section里，不然我每次都要翻来翻去。",
+   "text": "刚那封邮件写得太啰嗦了，而且怎么用了“don't”、“can't”这种缩写？数据分析报告里别用这些，看着不专业。重写一下，去掉所有否定缩写，语气直接点，就说实验组转化率高2.3pp，95%置信区间[1.1, 3.5]，建议全量上线。",
    "context": {
     "app": "slack",
     "task": "email"
@@ -2609,9 +2557,9 @@
   {
    "seq": 19,
    "type": "C",
-   "text": "跑一下上周A/B实验的转化率，按用户分层给，带上置信区间。。拉一下上周五AB实验的留存数据，按用户分群和实验组拆开，直接报绝对值和相对变化，别漏单位。对了，以后写活动描述的时候，别给我合并写，每个活动单独写一段，别漏掉任何一个活动。。你上次那个文章写得太长了，我根本看不完。以后写文章字数控制在1502个字以内，别超了。另外，拉一下上周五AB实验的留存数据，按用户分群和实验组拆开，直接报绝对值和相对变化，别漏单位。",
+   "text": "跑个7天留存 cohort，按周切，附上 DAU 和 MAU 同环比，单位标万。。对了，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。另外以后命名Python变量时别用关键字，记得加单下划线尾巴，别整出命名冲突。。上次你给的那个复盘，怎么把AB实验结论写成对话体了？我这边要的是正经归因分析，不是剧本。下次别再用对话格式了，正常写报告就行。",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2636,38 +2584,34 @@
   {
    "seq": 20,
    "type": "R",
-   "text": "写个Python脚本，读用户行为日志，算每个渠道的次日留存率，输出csv，日期列用YYYY-MM-DD格式。",
+   "text": "写个Python脚本，读昨天hive表里用户活跃度，算日均留存，画个折线图，输出到report目录下",
    "context": {
     "app": "slack",
-    "task": "report"
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
     "e03-c13",
-    "e03-c05"
+    "e03-c08"
    ],
    "may_fire": [
-    "e03-c05",
     "e03-c06",
-    "e03-c07",
     "e03-c08",
-    "e03-c09",
+    "e03-c11",
+    "e03-c12",
     "e03-c13",
-    "e03-c14",
-    "e03-c15",
-    "e03-c16",
-    "e03-c18",
-    "e03-c21"
+    "e03-c20"
    ],
    "should_fire": [
-    "e03-c18"
+    "e03-c13",
+    "e03-c20"
    ],
    "must_not_fire": []
   },
   {
    "seq": 21,
    "type": "C",
-   "text": "上一轮A/B实验的postmortem写好了吗？对照组和实验组转化率差0.3pp，但p值0.06，帮我看看样本量够不够，顺便把95%置信区间列出来。。对了，顺便把昨天用户活跃数据按小时聚合一下，输出hour和active_users，直接打印。另外以后写博客帖子的时候，每篇字数控制在752字以内，别超了，数字后面记得带单位。",
+   "text": "帮我跑一下上周A/B实验的postmortem，重点看转化率下降那段的归因，别给我没单位的数。。对了，写个脚本把昨天A/B实验的parquet日志读进来，按variant分组算click、purchase、revenue的mean和std，输出Markdown表格。另外以后写文档带链接的话，别把链接散在正文里，全给我集中到末尾一个列表里。",
    "context": {
     "app": "editor",
     "task": "postmortem"
@@ -2686,9 +2630,9 @@
   {
    "seq": 22,
    "type": "C",
-   "text": "帮我写封邮件给运营组，说明AB实验组转化率比对照组高1.2个百分点，但样本量还不够，建议延长观察期3天，附上当前数据表截图。。上周那个A/B实验的diff表你发我，转化率降了0.3pp，但置信区间很宽，帮我拆一下是哪个segment拉的，再写个复盘结论。对了，你刚才给的第二列表词数才15个，不够用，以后生成带第二列表的文本，确保第二列表词数至少21个词，别偷懒。。对了，以后都注意：你在写大段对话的时候，每段开头的引号都要打开，但别在最后一段之前就关掉引号。这个要记住。。对了，列航班经停城市时，到达和出发时间别用'->'连着这条继续保持啊",
+   "text": "帮我写一封邮件给运营组，催他们补上周五的AB实验数据，要带上实验ID和分组转化率，别给我没单位的数。。以后都别把活动混在一起写，每个活动单独描述，不然我拆数据拆到烦。另外帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。。对了，以后写文章的时候字数别超过1502个词，不然看着累。顺便帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "email"
    },
    "effects": [
@@ -2707,21 +2651,13 @@
      "target": "",
      "targets": [],
      "delta": 0
-    },
-    {
-     "seq": 22,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e03-c06",
-     "targets": [],
-     "delta": 0
     }
    ]
   },
   {
    "seq": 23,
-   "type": "S",
-   "text": "上周A/B实验的diff表发我，转化率降了0.3pp，但置信区间很宽，帮我拆一下是哪个segment拉的，再写个复盘结论。以后都别在footer里用空格，用短横线隔开，不然看着乱。",
+   "type": "C",
+   "text": "跑一下上周A/B实验的转化率，按版本和渠道拆，给我带样本量和置信区间的表。。对了，以后写博客的时候字数控制在752词以内，别超了。另外把上周的A/B实验数据跑一下，按渠道分层输出转化率，带上样本量，发我飞书。",
    "context": {
     "app": "editor",
     "task": "report"
@@ -2740,39 +2676,45 @@
   {
    "seq": 24,
    "type": "R",
-   "text": "写个Python脚本，把昨天UV按小时切段，输出每段转化率，单位标清楚。",
+   "text": "把这周AB实验的结论整理一下，突出显著指标，单位标清，直接给结论别废话",
    "context": {
-    "app": "email-client",
-    "task": "code-write"
+    "app": "editor",
+    "task": "report"
    },
    "probe": true,
    "probe_targets": [
-    "e03-c13",
-    "e03-c07"
+    "e03-c17",
+    "e03-c19"
    ],
    "may_fire": [
+    "e03-c04",
+    "e03-c05",
+    "e03-c07",
+    "e03-c09",
     "e03-c10",
-    "e03-c11",
-    "e03-c12",
-    "e03-c17"
+    "e03-c14",
+    "e03-c15",
+    "e03-c16",
+    "e03-c17",
+    "e03-c18",
+    "e03-c19",
+    "e03-c21",
+    "e03-c24"
    ],
    "should_fire": [
-    "e03-c12"
+    "e03-c19"
    ],
    "must_not_fire": []
   },
   {
    "seq": 25,
    "type": "R",
-   "text": "给产品经理老王发个邮件，上周AB实验的转化率提升3.2个点，p值0.01，显著性没问题，但需要确认样本量是否够，附件里放了详细数据，你帮我看看结论能不能直接发周报。",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
+   "text": "帮我写个A/B实验的复盘，上周五上线的那个推荐策略改动，核心指标没涨反降了2.3%，用户点击率掉了0.8个百分点，但停留时长没变。重点拆原因，捞一下日志看是不是流量分配有问题，最后给个结论要不要回滚。",
+   "context": {},
    "probe": true,
    "probe_targets": [
-    "e03-c14",
-    "e03-c15"
+    "e03-c15",
+    "e03-c17"
    ],
    "may_fire": [
     "e03-c00",
@@ -2780,14 +2722,32 @@
     "e03-c02",
     "e03-c03",
     "e03-c04",
+    "e03-c05",
+    "e03-c06",
     "e03-c07",
     "e03-c08",
+    "e03-c09",
+    "e03-c10",
+    "e03-c11",
+    "e03-c12",
     "e03-c13",
     "e03-c14",
     "e03-c15",
-    "e03-c16"
+    "e03-c16",
+    "e03-c17",
+    "e03-c18",
+    "e03-c19",
+    "e03-c20",
+    "e03-c21",
+    "e03-c22",
+    "e03-c23",
+    "e03-c24",
+    "e03-c25"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e03-c01",
+    "e03-c24"
+   ],
    "must_not_fire": []
   },
   {
@@ -2809,23 +2769,34 @@
   {
    "seq": 28,
    "type": "R",
-   "text": "帮我写个pandas脚本，把实验组和对照组的转化率、ARPU、95%置信区间都算出来，出个表格。",
+   "text": "给产品组发个邮件，A/B实验结论出来了，B版本转化率提了3.2%，但样本量不够，得延长一周再出最终结论。",
    "context": {
     "app": "editor",
-    "task": "code-write"
+    "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e03-c12",
-    "e03-c17"
+    "e03-c09",
+    "e03-c01"
    ],
    "may_fire": [
-    "e03-c10",
-    "e03-c11",
-    "e03-c12",
-    "e03-c17"
+    "e03-c00",
+    "e03-c01",
+    "e03-c02",
+    "e03-c03",
+    "e03-c07",
+    "e03-c09",
+    "e03-c14",
+    "e03-c15",
+    "e03-c16",
+    "e03-c17",
+    "e03-c18",
+    "e03-c19"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e03-c01",
+    "e03-c14"
+   ],
    "must_not_fire": []
   },
   {
@@ -2839,23 +2810,27 @@
   {
    "seq": 30,
    "type": "R",
-   "text": "帮我把这个A/B实验的SQL重写一下，别用反斜杠拆行。",
+   "text": "帮我写个脚本，把A/B实验的原始日志按天聚合，输出每个variant的PV、UV和转化率，结果存成CSV。",
    "context": {
     "app": "email-client",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e03-c12",
-    "e03-c11"
+    "e03-c13",
+    "e03-c08"
    ],
    "may_fire": [
-    "e03-c10",
+    "e03-c06",
+    "e03-c08",
     "e03-c11",
     "e03-c12",
-    "e03-c17"
+    "e03-c13",
+    "e03-c20"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e03-c20"
+   ],
    "must_not_fire": []
   },
   {
@@ -2869,9 +2844,9 @@
   {
    "seq": 32,
    "type": "S",
-   "text": "对了，以后都别用markdown格式，我只看纯文本。然后帮我写个Python脚本，把昨天的用户活跃数据按小时聚合，输出每个小时的活跃用户数，字段名用hour和active_users，直接打印结果。，你刚才那个表怎么又把我给的最后一列也抄进去了？我只要前几列，最后一列是我自己算的。以后生成表的时候，别复制最后一列，听到没？",
+   "text": "对了，顺便，以后你生成带第二个列表的时候，第二个列表的词数必须保证有21个词以上，别给我偷懒。另外，帮我写个Python脚本，拉取昨天全量用户行为日志，按小时聚合PV、UV，输出CSV，时间字段用UTC+8。，你刚那段长对话每段都加引号结尾，但还没到最终段呢，别这样。以后写长段落时，每段开头只开引号，别在每段末尾关，直到最后一段才关。",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "code-write"
    },
    "effects": [
@@ -2896,7 +2871,7 @@
   {
    "seq": 33,
    "type": "S",
-   "text": "刚才那个表格看着太难受了，分布都挤在一起，根本看不出规律。你以后做表的时候，别把分布搞这么差行不行？，对了，函数别用默认操作符这条继续保持啊",
+   "text": "刚那个脚本跑出来的CSV，时间字段UTC+8倒是没问题，但footer里横线全是空格，看着太散了。以后写footer的时候，横线用连字符代替空格，别用空格了。，对了，以后写东西用per cent，不用percent这条继续保持啊",
    "context": {
     "app": "slack",
     "task": "postmortem"
@@ -2914,7 +2889,7 @@
      "seq": 33,
      "kind": "reinforce",
      "cid": "",
-     "target": "e03-c04",
+     "target": "e03-c14",
      "targets": [],
      "delta": 0
     }
@@ -2923,9 +2898,9 @@
   {
    "seq": 34,
    "type": "C",
-   "text": "帮我写封邮件，通知业务方A/B测试结果：B版本转化率提升2.3%，但样本量不够，需要再跑一周，语气别太软。。刚才那个输出又给我整了个大表格，看得眼花。咱们数据分析的，能列清单就别甩表格行不行？以后都这样：列表优先。对了，帮我写个Python脚本，把CRM里近7天用户留存按天拉出来，输出留存率和对应基数，单位标清楚。。对了，以后写代码的时候别加注释，我代码自己读得懂，注释多了反而乱。现在帮我写封邮件给产品经理，告诉她A/B测试结果：V2版本转化率提升了3.2个百分点，p值0.003，统计显著，建议全量推。语气直接点，别绕弯。",
+   "text": "帮忙写封邮件给运营组，贴一下上周AB实验的CTR和CVR对比，p值标出来，结论写清楚哪个版本胜出，别加废话。。刚那回复里你用了什么markdown加粗斜体，我看着眼花。以后别整这些花里胡哨的格式，直接给数据就行。把上周的A/B实验数据跑一下，按渠道分层输出转化率，带上样本量，发我飞书。。刚那个表格怎么把最后一列也抄进去了？说了多少次，生成表格时只复制除了最后一列以外的部分，别整列整列地给我搬过来。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -2950,10 +2925,10 @@
   {
    "seq": 35,
    "type": "R",
-   "text": "写一下上周A/B实验的复盘，核心指标是用户次日留存率，那个指数{7日留存}要单独分析，对照组和实验组的差异得写清楚，最后给个改进建议。",
+   "text": "跑一下上周的DAU趋势，按渠道拆开，把环比和同比都加上，单位用万。",
    "context": {
-    "app": "slack",
-    "task": "postmortem"
+    "app": "editor",
+    "task": "report"
    },
    "probe": true,
    "probe_targets": [
@@ -2961,29 +2936,34 @@
     "e03-c07"
    ],
    "may_fire": [
+    "e03-c04",
+    "e03-c05",
     "e03-c07",
-    "e03-c08",
-    "e03-c13",
+    "e03-c09",
+    "e03-c10",
     "e03-c14",
     "e03-c15",
     "e03-c16",
-    "e03-c20",
-    "e03-c23",
-    "e03-c26",
-    "e03-c29"
+    "e03-c17",
+    "e03-c18",
+    "e03-c19",
+    "e03-c21",
+    "e03-c24",
+    "e03-c27",
+    "e03-c30"
    ],
    "should_fire": [
-    "e03-c13",
-    "e03-c15"
+    "e03-c17",
+    "e03-c19"
    ],
    "must_not_fire": []
   },
   {
    "seq": 36,
-   "type": "C",
-   "text": "帮我写封邮件给运营团队，说明上周A/B测试中方案B的转化率比方案A高了3.2个百分点，但样本量不够，建议再跑一周。。刚才那个脚本里你居然写了 TODO 注释，生产代码里别留这些，看着烦。另外，帮我写个 Python 脚本，从 Hive 拉取昨日用户活跃明细，按渠道聚合，输出带日活数和占比的 CSV。",
+   "type": "S",
+   "text": "你上次那个postmortem表格里，用户分布那块儿明显不均匀，看着像poor distribution，但你没提。以后表格里少搞这种分布不均的情况，看着难受。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -3000,9 +2980,9 @@
   {
    "seq": 37,
    "type": "S",
-   "text": "你刚列的推荐实验里，怎么又把之前例子里的条目搬进来了？我明明要的是新segment的数据，不是让你抄作业。以后生成条目时，别重复用例子里的或已经生成过的，听到没？",
+   "text": "你刚才那个表看得我头大，DAU数据直接列出来不就行了？以后数据能列清单就别整表格，看着费劲。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -3026,24 +3006,32 @@
   },
   {
    "seq": 39,
-   "type": "N",
-   "text": "你上次自己说的「建议拆成两个 PR」，我照做了，结果还是冲突",
-   "context": {},
-   "distractor_kind": "quoted-agent",
-   "effects": []
+   "type": "S",
+   "text": "对了，生成表格时只复制除了最后一列以外的部分这条继续保持啊",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 39,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e03-c30",
+     "targets": [],
+     "delta": 0
+    }
+   ]
   },
   {
    "seq": 40,
    "type": "R",
-   "text": "帮我把这周AB实验的结论写封邮件，简洁点，发给产品经理。核心指标变化列清楚，别写长句。",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
+   "text": "写个A/B实验上线后指标下降的复盘，把问题原因、影响时长和修复动作列清楚，别绕弯子。",
+   "context": {},
    "probe": true,
    "probe_targets": [
-    "e03-c13",
-    "e03-c08"
+    "e03-c07",
+    "e03-c09"
    ],
    "may_fire": [
     "e03-c00",
@@ -3051,34 +3039,55 @@
     "e03-c02",
     "e03-c03",
     "e03-c04",
+    "e03-c05",
+    "e03-c06",
     "e03-c07",
     "e03-c08",
+    "e03-c09",
+    "e03-c10",
+    "e03-c11",
+    "e03-c12",
     "e03-c13",
     "e03-c14",
     "e03-c15",
-    "e03-c16"
+    "e03-c16",
+    "e03-c17",
+    "e03-c18",
+    "e03-c19",
+    "e03-c20",
+    "e03-c21",
+    "e03-c22",
+    "e03-c23",
+    "e03-c24",
+    "e03-c25",
+    "e03-c26",
+    "e03-c27",
+    "e03-c28",
+    "e03-c29",
+    "e03-c30",
+    "e03-c31",
+    "e03-c32"
    ],
    "should_fire": [
-    "e03-c01",
-    "e03-c14",
-    "e03-c15"
+    "e03-c24",
+    "e03-c29"
    ],
    "must_not_fire": []
   },
   {
    "seq": 41,
    "type": "S",
-   "text": "你刚才那个表格，直接把最后一列也复制过来了，我只需要前几列啊。以后生成表格的时候，只复制除了最后一列之外的内容，别给我多带东西。，之前说的「每个活动单独写一段」那条不用了，按你默认的来吧",
+   "text": "你上次回复里加了一堆表情符号，我看着特别不专业。以后强调重点的时候，必须用 markdown 加粗或者斜体，别整那些花里胡哨的。对了，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。，之前说的「第二个列表的词数必须保证有21个词以上」那条不用了，按你默认的来吧",
    "context": {
-    "app": "email-client",
-    "task": "postmortem"
+    "app": "slack",
+    "task": "email"
    },
    "effects": [
     {
      "seq": 41,
      "kind": "contradict",
      "cid": "e03-s00",
-     "target": "e03-c27",
+     "target": "e03-c29",
      "targets": [],
      "delta": 0
     },
@@ -3086,7 +3095,7 @@
      "seq": 41,
      "kind": "retire",
      "cid": "",
-     "target": "e03-c20",
+     "target": "e03-c26",
      "targets": [],
      "delta": 0
     }
@@ -3095,17 +3104,17 @@
   {
    "seq": 42,
    "type": "S",
-   "text": "上次你那个Python代码，变量名直接用keyword，我跑的时候报语法错误了。以后碰见keyword，后面加个下划线，别让我再debug了。，之前说的「写代码时禁止用反斜杠续行」那条不用了，按你默认的来吧",
+   "text": "之前说的「列出航班经停城市时，到达和离开时间不要用'->'连接」那条不用了，按你默认的来吧，之前说的「写文档带链接时，把链接集中到末尾列表」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
-    "task": "email"
+    "app": "editor",
+    "task": "report"
    },
    "effects": [
     {
      "seq": 42,
-     "kind": "contradict",
-     "cid": "e03-s01",
-     "target": "e03-c17",
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c05",
      "targets": [],
      "delta": 0
     },
@@ -3113,7 +3122,7 @@
      "seq": 42,
      "kind": "retire",
      "cid": "",
-     "target": "e03-c12",
+     "target": "e03-c22",
      "targets": [],
      "delta": 0
     }
@@ -3122,22 +3131,183 @@
   {
    "seq": 43,
    "type": "S",
-   "text": "你刚才那个回复又给我整了个表，烦死了。我这边数据量不大，就几个实验组和对照组，列个清单就完事了，非得搞个表格出来，看着累还不方便复制。以后这种能列清单的别再用表格了，直接列表，清楚得多。，之前说的「以后都别用SemVer」那条不用了，按你默认的来吧",
+   "text": "你刚那封邮件写得还行，但别用“没提升”这种负向缩约形式，读着不专业。以后写报告和邮件都避免“没”“不”这种缩约，直接说“无提升”或“未提升”。另外帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。，之前说的「脚本超过209行或有非直白控制流就重写」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
-    "task": "report"
+    "app": "editor",
+    "task": "code-write"
    },
    "effects": [
     {
      "seq": 43,
      "kind": "contradict",
      "cid": "e03-s02",
-     "target": "e03-c29",
+     "target": "e03-c19",
      "targets": [],
      "delta": 0
     },
     {
      "seq": 43,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c08",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 44,
+   "type": "R",
+   "text": "刚跑完A/B实验，转化率掉0.3pp，置信区间没跨零，但样本量不够，来个复盘看看是不是埋点漏了。",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e03-s00",
+    "e03-c18",
+    "e03-c19",
+    "e03-c26"
+   ],
+   "may_fire": [
+    "e03-c07",
+    "e03-c09",
+    "e03-c14",
+    "e03-c15",
+    "e03-c16",
+    "e03-c17",
+    "e03-c18",
+    "e03-c23",
+    "e03-c32",
+    "e03-s00",
+    "e03-s02"
+   ],
+   "should_fire": [
+    "e03-c09",
+    "e03-s02"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 45,
+   "type": "S",
+   "text": "之前说的「写代码或文本时，统一用反斜杠续行」那条不用了，按你默认的来吧，之前说的「表格里避免poor distribution」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 45,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c13",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 45,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c31",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 46,
+   "type": "S",
+   "text": "你上次给的实验设计字数太多，快300字了，根本看不完。以后实验设计控制在289字以内，别超了。另外，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 46,
+     "kind": "contradict",
+     "cid": "e03-s04",
+     "target": "e03-c01",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 47,
+   "type": "S",
+   "text": "上次那篇东西写太长了，啰嗦得不行。以后写文章字数控制在1125字以内，别超。对了，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 47,
+     "kind": "contradict",
+     "cid": "e03-s05",
+     "target": "e03-c24",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 48,
+   "type": "R",
+   "text": "写个Python脚本，把昨天A/B实验的原始日志按用户ID聚合，输出每个用户的分桶编号和转化次数，别写太绕，直接点",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e03-c12",
+    "e03-c20",
+    "e03-c31",
+    "e03-c08"
+   ],
+   "may_fire": [
+    "e03-c06",
+    "e03-c11",
+    "e03-c12",
+    "e03-c20"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 49,
+   "type": "S",
+   "text": "上一轮的回复里，你写函数时直接用了默认运算符，没显式指定阈值，我根本不知道你拿什么标准算的。以后凡是写函数，必须把默认运算符也写清楚，别让我猜。另外，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 49,
+     "kind": "contradict",
+     "cid": "e03-s06",
+     "target": "e03-c06",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 50,
+   "type": "S",
+   "text": "之前说的「return和条件判断里别用括号」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 50,
      "kind": "retire",
      "cid": "",
      "target": "e03-c11",
@@ -3147,173 +3317,12 @@
    ]
   },
   {
-   "seq": 44,
-   "type": "R",
-   "text": "帮我写个SQL，统计最近7天各渠道的日活用户数，按天分组，渠道字段在user_channel里，活跃条件是log_event有记录",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e03-c30",
-    "e03-c21",
-    "e03-c27"
-   ],
-   "may_fire": [
-    "e03-c05",
-    "e03-c06",
-    "e03-c07",
-    "e03-c08",
-    "e03-c09",
-    "e03-c13",
-    "e03-c14",
-    "e03-c15",
-    "e03-c16",
-    "e03-c18",
-    "e03-c21",
-    "e03-c24",
-    "e03-c30",
-    "e03-s00"
-   ],
-   "should_fire": [
-    "e03-c08"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 45,
-   "type": "S",
-   "text": "你上次生成的句子字数不够，我数了才15个词，根本不到17个词。以后生成的句子必须至少包含17个词，不然我这边没法用，单位词都标清楚。，之前说的「超过100行或非直白控制流时，脚本必须重写到209行以内」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 45,
-     "kind": "contradict",
-     "cid": "e03-s03",
-     "target": "e03-c15",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 45,
-     "kind": "retire",
-     "cid": "",
-     "target": "e03-c10",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 46,
-   "type": "S",
-   "text": "你上次那个代码里塞了一堆TODO，我找半天才找到核心逻辑。以后写代码记得用TODO注释，别自己瞎记，不然我review的时候头大。",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 46,
-     "kind": "contradict",
-     "cid": "e03-s04",
-     "target": "e03-c31",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 47,
-   "type": "S",
-   "text": "之前说的「别用你原来那个说明和结构」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 47,
-     "kind": "retire",
-     "cid": "",
-     "target": "e03-c00",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 48,
-   "type": "R",
-   "text": "写个脚本，把A/B实验的原始日志按用户去重，然后算每个实验组的转化率，输出CSV。",
-   "context": {
-    "app": "email-client",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e03-s01",
-    "e03-s04",
-    "e03-c10",
-    "e03-c31"
-   ],
-   "may_fire": [
-    "e03-c28",
-    "e03-s01",
-    "e03-s04"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 49,
-   "type": "S",
-   "text": "上次那段长对话你写的是对的，但引号每段开头都打开，最后一段才关掉，中间段落末尾别加闭合引号。这个细节你记住，以后写长段发言都按这个来。另外，帮我写封邮件催业务方确认AB实验的样本量，对照组和实验组各多少，差一个数显著性检验就跑不了。",
-   "context": {
-    "app": "slack",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 49,
-     "kind": "contradict",
-     "cid": "e03-s06",
-     "target": "e03-c24",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 50,
-   "type": "S",
-   "text": "之前说的「每段不超过18段」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 50,
-     "kind": "retire",
-     "cid": "",
-     "target": "e03-c14",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
    "seq": 51,
    "type": "S",
-   "text": "之前说的「第二列表词数至少21个词」那条不用了，按你默认的来吧",
+   "text": "之前说的「每个活动单独描述」那条不用了，按你默认的来吧",
    "context": {
-    "app": "editor",
-    "task": "report"
+    "app": "slack",
+    "task": "code-write"
    },
    "effects": [
     {
@@ -3329,50 +3338,49 @@
   {
    "seq": 52,
    "type": "R",
-   "text": "实验组转化率比对照组高2.3个百分点，p值0.004，95%置信区间[1.1%, 3.5%]，建议全量上线，明天评审会汇报。",
+   "text": "把上周A/B实验的postmortem跑一下，各组转化率和置信区间标出来，重点关注第二组掉点原因，最后给个结论能不能全量上线。",
    "context": {
-    "app": "editor",
-    "task": "email"
+    "app": "slack",
+    "task": "postmortem"
    },
    "probe": true,
    "probe_targets": [
-    "e03-c16",
-    "e03-c08",
-    "e03-c15",
-    "e03-c14"
+    "e03-s00",
+    "e03-c14",
+    "e03-c23",
+    "e03-c19"
    ],
    "may_fire": [
-    "e03-c01",
-    "e03-c02",
-    "e03-c03",
-    "e03-c04",
     "e03-c07",
-    "e03-c08",
-    "e03-c13",
+    "e03-c09",
+    "e03-c14",
+    "e03-c15",
     "e03-c16",
-    "e03-s03"
+    "e03-c17",
+    "e03-c18",
+    "e03-c32",
+    "e03-s00",
+    "e03-s02"
    ],
    "should_fire": [
-    "e03-s03"
+    "e03-c09"
    ],
-   "must_not_fire": [
-    "e03-c15"
-   ]
+   "must_not_fire": []
   },
   {
    "seq": 53,
    "type": "S",
-   "text": "之前说的「实验设计字数控制在207字以内」那条不用了，按你默认的来吧",
+   "text": "之前说的「别用原指令里的免责声明和结构」那条不用了，按你默认的来吧",
    "context": {
     "app": "slack",
-    "task": "postmortem"
+    "task": "email"
    },
    "effects": [
     {
      "seq": 53,
      "kind": "retire",
      "cid": "",
-     "target": "e03-c01",
+     "target": "e03-c00",
      "targets": [],
      "delta": 0
     }
@@ -3381,33 +3389,14 @@
   {
    "seq": 54,
    "type": "S",
-   "text": "之前说的「别用对话体写」那条不用了，按你默认的来吧",
+   "text": "之前说的「别用对话格式」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 54,
-     "kind": "retire",
-     "cid": "",
-     "target": "e03-c18",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 55,
-   "type": "S",
-   "text": "之前说的「文章字数控制在1502个字以内」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
     {
-     "seq": 55,
+     "seq": 54,
      "kind": "retire",
      "cid": "",
      "target": "e03-c21",
@@ -3417,51 +3406,64 @@
    ]
   },
   {
-   "seq": 56,
-   "type": "R",
-   "text": "老张，这周实验报告你先别发，我看一眼数据。转化率掉了0.3个点，环比上周也差，你帮我拉一下分日明细，我怀疑是渠道那边出问题了。",
+   "seq": 55,
+   "type": "S",
+   "text": "之前说的「写博客时字数控制在752词以内」那条不用了，按你默认的来吧",
    "context": {
     "app": "editor",
-    "task": "email"
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 55,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c25",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 56,
+   "type": "R",
+   "text": "写个Python函数，读CSV文件并返回每列均值，默认分隔符用逗号，函数名用mean_by_col",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
+    "e03-c12",
+    "e03-s06",
     "e03-c08",
-    "e03-c03",
-    "e03-c14",
-    "e03-c15"
+    "e03-c11"
    ],
    "may_fire": [
-    "e03-c02",
-    "e03-c03",
-    "e03-c04",
-    "e03-c07",
-    "e03-c08",
-    "e03-c13",
-    "e03-c16",
-    "e03-s03"
+    "e03-c12",
+    "e03-c20",
+    "e03-s06"
    ],
    "should_fire": [
-    "e03-s03"
+    "e03-c20",
+    "e03-s06"
    ],
-   "must_not_fire": [
-    "e03-c15"
-   ]
+   "must_not_fire": []
   },
   {
    "seq": 57,
    "type": "S",
-   "text": "之前说的「博客帖子字数不超过752字」那条不用了，按你默认的来吧",
+   "text": "之前说的「段落数别超过18段」那条不用了，按你默认的来吧",
    "context": {
-    "app": "editor",
-    "task": "postmortem"
+    "app": "email-client",
+    "task": "email"
    },
    "effects": [
     {
      "seq": 57,
      "kind": "retire",
      "cid": "",
-     "target": "e03-c22",
+     "target": "e03-c15",
      "targets": [],
      "delta": 0
     }
@@ -3470,17 +3472,17 @@
   {
    "seq": 58,
    "type": "S",
-   "text": "之前说的「指数用花括号括起来」那条不用了，按你默认的来吧",
+   "text": "之前说的「别动我句子的语法」那条不用了，按你默认的来吧",
    "context": {
     "app": "editor",
-    "task": "email"
+    "task": "report"
    },
    "effects": [
     {
      "seq": 58,
      "kind": "retire",
      "cid": "",
-     "target": "e03-c07",
+     "target": "e03-c16",
      "targets": [],
      "delta": 0
     }
@@ -3489,128 +3491,115 @@
   {
    "seq": 59,
    "type": "R",
-   "text": "跑一下上周的广告渠道归因报表，把各渠道的激活成本、次留率和ROI都拉出来，按消耗排序，渠道名字要中文，ROI标百分比。",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e03-c08",
-    "e03-c13",
-    "e03-c15",
-    "e03-c07"
-   ],
-   "may_fire": [
-    "e03-c08",
-    "e03-c13",
-    "e03-c16",
-    "e03-c26",
-    "e03-c32",
-    "e03-s02",
-    "e03-s03"
-   ],
-   "should_fire": [
-    "e03-s03"
-   ],
-   "must_not_fire": [
-    "e03-c15"
-   ]
-  },
-  {
-   "seq": 60,
-   "type": "R",
-   "text": "帮我写一份A/B实验周报，把实验组转化率提升2.3%这个结论写成一段话，特别强调p值小于0.05且样本量每组超过10万。",
+   "text": "帮我写个Python脚本，把昨天A/B实验的原始CSV读进来，算一下实验组和对照组的关键指标均值、标准差和样本量，输出一个汇总表，顺便画个箱线图分开存成png。",
    "context": {
     "app": "email-client",
-    "task": "report"
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
+    "e03-c20",
     "e03-s06",
-    "e03-c30",
-    "e03-c07",
-    "e03-c15"
+    "e03-c08",
+    "e03-c31"
    ],
    "may_fire": [
-    "e03-c05",
-    "e03-c06",
-    "e03-c08",
-    "e03-c09",
-    "e03-c13",
-    "e03-c16",
-    "e03-c30",
-    "e03-s00",
-    "e03-s03",
-    "e03-s06"
-   ],
-   "should_fire": [
-    "e03-c08"
-   ],
-   "must_not_fire": [
-    "e03-c21"
-   ]
-  },
-  {
-   "seq": 61,
-   "type": "R",
-   "text": "帮我写一个Python脚本，读取实验数据后自动计算各组指标的均值、标准差和置信区间，最后输出汇总表。",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e03-s03",
-    "e03-c13",
-    "e03-c15",
-    "e03-c07"
-   ],
-   "may_fire": [
-    "e03-c02",
-    "e03-c03",
-    "e03-c04",
-    "e03-c05",
-    "e03-c06",
-    "e03-c08",
-    "e03-c09",
-    "e03-c13",
-    "e03-c16",
-    "e03-c19",
-    "e03-c25",
-    "e03-c26",
-    "e03-c28",
-    "e03-c30",
-    "e03-c32",
-    "e03-s00",
-    "e03-s01",
-    "e03-s02",
-    "e03-s03",
-    "e03-s04",
+    "e03-c12",
+    "e03-c20",
     "e03-s06"
    ],
    "should_fire": [],
    "must_not_fire": []
   },
   {
-   "seq": 62,
+   "seq": 60,
    "type": "R",
-   "text": "写个Python脚本，把用户点击日志按天聚合，输出PV和UV，注意字段名用下划线结尾。",
+   "text": "帮我写个Python脚本，从hive拉过去七天的实验数据，算一下核心指标的变化，输出CSV。",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e03-s04",
-    "e03-c28",
-    "e03-c31",
-    "e03-c17"
+    "e03-c12",
+    "e03-c20",
+    "e03-c13",
+    "e03-c06"
    ],
    "may_fire": [
-    "e03-c28",
-    "e03-s01",
+    "e03-c12",
+    "e03-c20",
+    "e03-s06"
+   ],
+   "should_fire": [],
+   "must_not_fire": [
+    "e03-c13"
+   ]
+  },
+  {
+   "seq": 61,
+   "type": "R",
+   "text": "帮我写封邮件，提醒业务方今天下午三点前确认A/B实验的指标口径，尤其是转化率的定义，别又拖到周五。",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e03-c07",
+    "e03-c17",
+    "e03-c15",
+    "e03-c16"
+   ],
+   "may_fire": [
+    "e03-c02",
+    "e03-c03",
+    "e03-c07",
+    "e03-c09",
+    "e03-c14",
+    "e03-c17",
+    "e03-c18",
+    "e03-s02",
     "e03-s04"
    ],
    "should_fire": [
-    "e03-s01"
+    "e03-c17",
+    "e03-s02"
+   ],
+   "must_not_fire": [
+    "e03-c19"
+   ]
+  },
+  {
+   "seq": 62,
+   "type": "R",
+   "text": "帮我写一份最近一周的转化漏斗分析报告，包含各步骤的pv和uv，以及环比变化。",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e03-c30",
+    "e03-c14",
+    "e03-c15",
+    "e03-c24"
+   ],
+   "may_fire": [
+    "e03-c04",
+    "e03-c07",
+    "e03-c09",
+    "e03-c10",
+    "e03-c14",
+    "e03-c17",
+    "e03-c18",
+    "e03-c27",
+    "e03-c30",
+    "e03-s02",
+    "e03-s05"
+   ],
+   "should_fire": [
+    "e03-s05"
    ],
    "must_not_fire": []
   }
@@ -3627,10 +3616,10 @@
  ],
  "dup_pairs": [],
  "stats": {
-  "nodes": 39,
+  "nodes": 38,
   "dead_final": 18,
   "peak_gold_active": 33,
-  "degraded_successors": 1,
+  "degraded_successors": 2,
   "i11_pruned_traps": 0,
   "lint_errors": []
  }

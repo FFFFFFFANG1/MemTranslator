@@ -17,7 +17,7 @@
    "text": "always avoid: include vivid sensory imagery",
    "clause": "no vivid sensory imagery",
    "alt_clause": "avoid any sensory-rich descriptions",
-   "distinctive": "sensory imagery",
+   "distinctive": "vivid sensory imagery",
    "coords": {
     "bucket": "deliverables",
     "key": "code.comments",
@@ -61,8 +61,8 @@
   {
    "cid": "e09-c01",
    "text": "when writing a response limit response length (no more than 83 words)",
-   "clause": "stick to 83 words max",
-   "alt_clause": "keep it under 83 words",
+   "clause": "keep every response under 83 words",
+   "alt_clause": "limit each response to 83 words max",
    "distinctive": "83",
    "coords": {
     "bucket": "output_contract",
@@ -104,55 +104,9 @@
   },
   {
    "cid": "e09-c02",
-   "text": "when writing Markdown avoid HTML hacking",
-   "clause": "avoid HTML hacking when writing Markdown",
-   "alt_clause": "don't use HTML workarounds in Markdown content",
-   "distinctive": "HTML hacking",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.markdown",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "HTML hacking"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e09-c03",
    "text": "when writing avoid hyphen",
-   "clause": "avoid hyphens when writing",
-   "alt_clause": "don't use hyphens in any written output",
+   "clause": "when writing, avoid hyphens",
+   "alt_clause": "no hyphens in any written output",
    "distinctive": "hyphens",
    "coords": {
     "bucket": "output_contract",
@@ -195,10 +149,10 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c04",
+   "cid": "e09-c03",
    "text": "when referring to profiles avoid: include the before profiles",
-   "clause": "never include the before profiles",
-   "alt_clause": "do not reference the before profiles at all",
+   "clause": "never include 'before profiles'",
+   "alt_clause": "do not use the term 'before profiles'",
    "distinctive": "before profiles",
    "coords": {
     "bucket": "deliverables",
@@ -223,7 +177,7 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "report",
+     "task": "email",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -241,98 +195,10 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c05",
-   "text": "in conversation avoid: be friendly and uplifting",
-   "clause": "keep everything friendly and uplifting, no vile or unethical responses",
-   "alt_clause": "always be positive and supportive, never vile or unethical",
-   "distinctive": "friendly and uplifting",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "tone.register",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "register",
-     "val": "casual",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e09-c06",
-   "text": "when writing an abbreviation place abbreviation (full name before abbreviation)",
-   "clause": "use full name before abbreviation",
-   "alt_clause": "spell out the term then put the acronym in parentheses",
-   "distinctive": "full name before abbreviation",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "style.voice",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "ordering",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "full name",
-     "after": "abbreviation"
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "order swapped: abbreviation<->full name"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e09-c07",
+   "cid": "e09-c04",
    "text": "when writing a changelog avoid: use CHANGELOG",
-   "clause": "no CHANGELOG in client-facing deliverables",
-   "alt_clause": "never include a CHANGELOG in anything the client sees",
+   "clause": "avoid CHANGELOG when writing a changelog",
+   "alt_clause": "don't label it CHANGELOG in client-facing changelogs",
    "distinctive": "CHANGELOG",
    "coords": {
     "bucket": "output_contract",
@@ -375,11 +241,103 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c08",
+   "cid": "e09-c05",
+   "text": "when writing Markdown avoid HTML hacking",
+   "clause": "avoid HTML hacking when writing Markdown",
+   "alt_clause": "no inline HTML in Markdown content",
+   "distinctive": "HTML hacking",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.markdown",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "HTML hacking"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e09-c06",
+   "text": "when not specifically asked otherwise avoid: exhibit traits of intelligence",
+   "clause": "unless I ask for it, don't exhibit traits of intelligence",
+   "alt_clause": "don't show human-like intelligence unless I specifically request it",
+   "distinctive": "traits of intelligence",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "style.voice",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "traits of intelligence"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "prism/system_string",
+     "license": "CC-BY-4.0",
+     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e09-c07",
    "text": "when writing file sizes use MB (no more than 13 MB)",
-   "clause": "use MB instead of KB for file sizes, even under 13 MB",
-   "alt_clause": "express all file sizes in MB, not KB, regardless of size below 13 MB",
-   "distinctive": "13",
+   "clause": "use MB instead of KB for file sizes",
+   "alt_clause": "always express file sizes in MB, not KB",
+   "distinctive": "sizes",
    "coords": {
     "bucket": "output_contract",
     "key": "analysis.units",
@@ -419,10 +377,10 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c09",
+   "cid": "e09-c08",
    "text": "when evaluating the generated article compose article (no more than 13 sentences)",
-   "clause": "keep the article to 13 sentences max",
-   "alt_clause": "limit the article to at most 13 sentences",
+   "clause": "keep it to 13 sentences max",
+   "alt_clause": "limit it to no more than 13 sentences",
    "distinctive": "13",
    "coords": {
     "bucket": "deliverables",
@@ -463,10 +421,56 @@
    "successor_of": null
   },
   {
+   "cid": "e09-c09",
+   "text": "when naming executables that will be directly invoked by users prefer not to use file extension",
+   "clause": "when naming the executable, avoid a file extension",
+   "alt_clause": "don't put a file extension on the executable name",
+   "distinctive": "file extension",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "code.naming",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "file extension"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "python",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
    "cid": "e09-c10",
    "text": "when writing code blocks avoid: use fencing",
    "clause": "avoid fencing in code blocks",
-   "alt_clause": "don't fence code blocks",
+   "alt_clause": "don't put fences around code blocks",
    "distinctive": "fencing",
    "coords": {
     "bucket": "output_contract",
@@ -492,7 +496,7 @@
     "scope": {
      "app": "ANY",
      "task": "code-write",
-     "code_lang": "python",
+     "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
@@ -511,9 +515,9 @@
   {
    "cid": "e09-c11",
    "text": "when writing a reference avoid: follow the style guide",
-   "clause": "when writing a reference, don't follow the style guide",
-   "alt_clause": "for any reference, ignore the style guide",
-   "distinctive": "don't follow the style guide",
+   "clause": "when writing a reference, always follow the style guide",
+   "alt_clause": "references must adhere to the style guide at all times",
+   "distinctive": "style guide",
    "coords": {
     "bucket": "execution_policy",
     "key": "workflow.fidelity",
@@ -556,9 +560,53 @@
   },
   {
    "cid": "e09-c12",
+   "text": "when interacting with a person avoid: be polite",
+   "clause": "when interacting with a person, don't be polite",
+   "alt_clause": "when dealing with someone, skip the politeness",
+   "distinctive": "don't be polite",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "tone.register",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "register",
+     "val": "formal",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "prism/system_string",
+     "license": "CC-BY-4.0",
+     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e09-c13",
    "text": "when writing avoid: use pros occasionally",
-   "clause": "avoid using 'pros occasionally' when writing",
-   "alt_clause": "don't include 'pros occasionally' in the text",
+   "clause": "avoid using 'pros occasionally'",
+   "alt_clause": "never write 'pros occasionally'",
    "distinctive": "pros occasionally",
    "coords": {
     "bucket": "communication_style",
@@ -601,10 +649,10 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c13",
+   "cid": "e09-c14",
    "text": "when generating text explain each strategy (no more than 29 words)",
-   "clause": "explain each strategy in at least 29 words",
-   "alt_clause": "describe each strategy with a minimum of 29 words",
+   "clause": "explain each strategy in at most 29 words",
+   "alt_clause": "for every strategy, limit your explanation to 29 words maximum",
    "distinctive": "29",
    "coords": {
     "bucket": "deliverables",
@@ -645,10 +693,10 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c14",
+   "cid": "e09-c15",
    "text": "when writing a response avoid: provide headings",
    "clause": "no headings",
-   "alt_clause": "without any headings",
+   "alt_clause": "don't use any headings",
    "distinctive": "headings",
    "coords": {
     "bucket": "output_contract",
@@ -691,11 +739,11 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c15",
+   "cid": "e09-c16",
    "text": "when writing headings and subheadings avoid: ensure headings and subheadings",
-   "clause": "no headings or subheadings in deliverables",
-   "alt_clause": "avoid any section titles in the document",
-   "distinctive": "headings",
+   "clause": "when writing headings and subheadings, don't use all caps",
+   "alt_clause": "avoid all caps for headings and subheadings",
+   "distinctive": "all caps",
    "coords": {
     "bucket": "output_contract",
     "key": "format.headings",
@@ -737,11 +785,11 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c16",
+   "cid": "e09-c17",
    "text": "when generating a title avoid: tell viewers what to expect",
-   "clause": "when generating a title, don't tell viewers what to expect",
-   "alt_clause": "for titles, avoid revealing what the content covers",
-   "distinctive": "don't tell viewers what to expect",
+   "clause": "don't tell viewers what to expect in titles",
+   "alt_clause": "avoid revealing what's coming in the title",
+   "distinctive": "titles",
    "coords": {
     "bucket": "deliverables",
     "key": "summary.opening",
@@ -783,29 +831,27 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c17",
-   "text": "when including an explanation in JSON avoid: include explanation of choices",
-   "clause": "don't include an explanation of choices in the JSON",
-   "alt_clause": "keep the JSON free of any explanation of choices",
-   "distinctive": "explanation of choices",
+   "cid": "e09-c18",
+   "text": "when versioning avoid: start following SemVer",
+   "clause": "stop using random versioning, use SemVer",
+   "alt_clause": "always follow SemVer for version numbers",
+   "distinctive": "SemVer",
    "coords": {
-    "bucket": "deliverables",
-    "key": "code.explanation",
+    "bucket": "reasoning_policy",
+    "key": "research.comparison",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
-     "type": "set",
+     "type": "enum",
      "num": null,
      "unit": "",
      "cmp": "",
-     "domain": "",
-     "val": "",
+     "domain": "verb",
+     "val": "evaluate",
      "tag": "",
      "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "explanation of choices"
-     ],
+     "op": "",
+     "items": [],
      "before": "",
      "after": ""
     },
@@ -818,9 +864,9 @@
    },
    "atom": {
     "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "source": "keep-a-changelog",
+     "license": "MIT",
+     "url": "https://keepachangelog.com/en/1.1.0/",
      "use": "skeleton-derived"
     },
     "mutation": "polarity require -> prohibit"
@@ -829,10 +875,56 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c18",
+   "cid": "e09-c19",
+   "text": "when using conditional imports use conditional imports",
+   "clause": "prefer conditional imports",
+   "alt_clause": "use conditional imports when possible",
+   "distinctive": "conditional imports",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.dependencies",
+    "polarity": "prefer",
+    "binding": "soft",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "conditional imports"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "python",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e09-c20",
    "text": "when writing a biography avoid: write biography",
-   "clause": "when writing a biography, don't write it",
-   "alt_clause": "never include a biography in the deliverable",
+   "clause": "never write a biography",
+   "alt_clause": "do not include any biography",
    "distinctive": "biography",
    "coords": {
     "bucket": "task_goal",
@@ -875,54 +967,10 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c19",
-   "text": "when naming public API parts visible to the user avoid: follow conventions reflecting usage",
-   "clause": "avoid naming public API parts after implementation internals",
-   "alt_clause": "don't use internal coding names for user-facing API elements",
-   "distinctive": "public API",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.naming",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "case_style",
-     "val": "snake",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e09-c20",
+   "cid": "e09-c21",
    "text": "when writing commit messages avoid: use Conventional Commits specification",
-   "clause": "stop using Conventional Commits for commit messages",
-   "alt_clause": "no more Conventional Commits in commit messages",
+   "clause": "don't use Conventional Commits in commit messages",
+   "alt_clause": "avoid using Conventional Commits format when writing commit messages",
    "distinctive": "Conventional Commits",
    "coords": {
     "bucket": "output_contract",
@@ -948,7 +996,7 @@
     "scope": {
      "app": "ANY",
      "task": "code-write",
-     "code_lang": "python",
+     "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
@@ -965,11 +1013,11 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c21",
+   "cid": "e09-c22",
    "text": "when breaking lines avoid: use trailing backslash",
    "clause": "no trailing backslashes when breaking lines",
-   "alt_clause": "don't break lines with a trailing backslash",
-   "distinctive": "trailing backslash",
+   "alt_clause": "don't use backslashes at line breaks",
+   "distinctive": "trailing backslashes",
    "coords": {
     "bucket": "output_contract",
     "key": "format.line_width",
@@ -1011,10 +1059,10 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c22",
+   "cid": "e09-c23",
    "text": "always include description",
-   "clause": "always include a description of the methodology",
-   "alt_clause": "make sure to always add a methodology description",
+   "clause": "always include a description of what each KPI means",
+   "alt_clause": "make sure every KPI has a definition attached",
    "distinctive": "description",
    "coords": {
     "bucket": "deliverables",
@@ -1057,15 +1105,15 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c23",
-   "text": "when writing code with complicated operations avoid: add a few lines of comments",
-   "clause": "no comments in code",
-   "alt_clause": "don't include any explanatory notes in the code blocks",
-   "distinctive": "comments",
+   "cid": "e09-c24",
+   "text": "when creating container types and iterators avoid: use comprehensions and generator expressions",
+   "clause": "avoid traditional loops, map(), filter(), or lambda",
+   "alt_clause": "don't use for loops, map, filter, or lambda",
+   "distinctive": "traditional loops",
    "coords": {
-    "bucket": "deliverables",
+    "bucket": "reasoning_policy",
     "key": "code.comments",
-    "polarity": "prohibit",
+    "polarity": "avoid",
     "binding": "hard",
     "value": {
      "type": "set",
@@ -1078,7 +1126,7 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "a few lines of comments"
+      "comprehensions and generator expressions"
      ],
      "before": "",
      "after": ""
@@ -1097,33 +1145,35 @@
      "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity require -> prohibit"
+    "mutation": "polarity prefer -> avoid"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
-   "cid": "e09-c24",
-   "text": "when defining top-level functions and classes surround top-level function and class definitions (no more than 11 lines)",
-   "clause": "surround top-level function and class definitions with 11 lines",
-   "alt_clause": "add 11 lines of whitespace or comments around each top-level function and class definition",
-   "distinctive": "11",
+   "cid": "e09-c25",
+   "text": "when writing code avoid: use TODO comments",
+   "clause": "never use TODO comments in code",
+   "alt_clause": "do not include any TODO comments when writing code",
+   "distinctive": "TODO comments",
    "coords": {
-    "bucket": "output_contract",
+    "bucket": "execution_policy",
     "key": "code.comments",
-    "polarity": "require",
+    "polarity": "prohibit",
     "binding": "hard",
     "value": {
-     "type": "numeric",
-     "num": 11.0,
-     "unit": "lines",
-     "cmp": "max",
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
      "domain": "",
      "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "",
-     "items": [],
+     "op": "exclude",
+     "items": [
+      "TODO comments"
+     ],
      "before": "",
      "after": ""
     },
@@ -1136,21 +1186,21 @@
    },
    "atom": {
     "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 2 -> 11"
+    "mutation": "polarity require -> prohibit"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
-   "cid": "e09-c25",
+   "cid": "e09-c26",
    "text": "when evaluating generated text ensure length (no more than 152 words)",
-   "clause": "keep it to about 152 words max",
-   "alt_clause": "limit the length to roughly 152 words",
+   "clause": "keep it to around 152 words",
+   "alt_clause": "limit the length to about 152 words",
    "distinctive": "152",
    "coords": {
     "bucket": "output_contract",
@@ -1191,10 +1241,10 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c26",
+   "cid": "e09-c27",
    "text": "when writing a one-liner limit length (no more than 13 words)",
-   "clause": "keep one-liners under 13 words",
-   "alt_clause": "limit any one-liner to 13 words max",
+   "clause": "keep one-liners to 13 words max",
+   "alt_clause": "limit any single-line summary to 13 words at most",
    "distinctive": "13",
    "coords": {
     "bucket": "output_contract",
@@ -1235,10 +1285,10 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c27",
+   "cid": "e09-c28",
    "text": "when writing a document limit length (no more than 3202 words)",
-   "clause": "keep it under 3202 words",
-   "alt_clause": "limit to 3202 words max",
+   "clause": "keep each document under 3202 words",
+   "alt_clause": "limit every document to 3202 words max",
    "distinctive": "3202",
    "coords": {
     "bucket": "output_contract",
@@ -1279,148 +1329,10 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c28",
-   "text": "when constructing link anchors from headings avoid: ensure automatically-constructed anchor links",
-   "clause": "don't use automatically-constructed anchor links from headings",
-   "alt_clause": "avoid auto-generated anchor links from headings",
-   "distinctive": "anchor links",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.markdown",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "automatically-constructed anchor links"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
    "cid": "e09-c29",
-   "text": "when checking generated text avoid: format transcript",
-   "clause": "from now on, don't include the full transcript in any deliverable you check",
-   "alt_clause": "going forward, never put the complete transcript into anything you review",
-   "distinctive": "full transcript",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.markdown",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "transcript"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e09-c30",
-   "text": "when writing Markdown avoid: keep Markdown simple and consistent",
-   "clause": "keep Markdown simple and consistent",
-   "alt_clause": "make sure the Markdown stays clean and uniform",
-   "distinctive": "Markdown simple and consistent",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.markdown",
-    "polarity": "avoid",
-    "binding": "soft",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "Markdown simple and consistent"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e09-c31",
    "text": "when writing about A level grades avoid: use symbol *",
-   "clause": "use asterisk symbol, not the word 'star', when writing about A level grades",
-   "alt_clause": "replace 'star' with * when mentioning A level grades",
+   "clause": "when writing about A level grades, use the asterisk symbol, not the word 'star'",
+   "alt_clause": "for A level grades, always write the asterisk instead of 'star'",
    "distinctive": "asterisk",
    "coords": {
     "bucket": "output_contract",
@@ -1463,11 +1375,11 @@
    "successor_of": null
   },
   {
-   "cid": "e09-c32",
+   "cid": "e09-c30",
    "text": "when writing use hyphen",
-   "clause": "prefer hyphens over en dashes",
-   "alt_clause": "use hyphens instead of en dashes",
-   "distinctive": "hyphens",
+   "clause": "prefer hyphen in compound modifiers",
+   "alt_clause": "use hyphen for compound adjectives",
+   "distinctive": "hyphen",
    "coords": {
     "bucket": "output_contract",
     "key": "format.emphasis",
@@ -1509,14 +1421,14 @@
    "successor_of": null
   },
   {
-   "cid": "e09-s00",
-   "text": "when including an explanation in JSON include explanation of choices",
-   "clause": "include an explanation of choices in JSON",
-   "alt_clause": "always add a rationale for each selection when outputting JSON",
-   "distinctive": "explanation of choices",
+   "cid": "e09-c31",
+   "text": "when writing avoid: include sentences inside quotation marks",
+   "clause": "when writing, don't include sentences inside quotation marks",
+   "alt_clause": "when drafting, avoid any sentences in quotes",
+   "distinctive": "quotation marks",
    "coords": {
-    "bucket": "deliverables",
-    "key": "code.explanation",
+    "bucket": "output_contract",
+    "key": "format.emphasis",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -1530,8 +1442,144 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "explanation of choices"
+      "sentences inside quotation marks"
      ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e09-c32",
+   "text": "when writing a document with a 'See also' section avoid: put miscellaneous links",
+   "clause": "don't put miscellaneous links in the 'See also' section",
+   "alt_clause": "never include random links under 'See also'",
+   "distinctive": "miscellaneous links",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "miscellaneous links"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e09-s00",
+   "text": "always avoid: include description",
+   "clause": "don't include a description of the findings",
+   "alt_clause": "no description of the findings in the email",
+   "distinctive": "description",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "code.comments",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "description"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": "e09-c23"
+  },
+  {
+   "cid": "e09-s01",
+   "text": "when writing a one-liner limit length (no more than 11 words)",
+   "clause": "keep one-liners under 11 words",
+   "alt_clause": "limit one-liners to 11 words max",
+   "distinctive": "11",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 13.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
      "before": "",
      "after": ""
     },
@@ -1549,17 +1597,63 @@
      "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prohibit -> require"
+    "mutation": "threshold 13 -> 11"
    },
    "anchor_weak": false,
-   "successor_of": "e09-c17"
+   "successor_of": "e09-c27"
   },
   {
-   "cid": "e09-s01",
-   "text": "when evaluating generated text ensure length (no more than 215 words)",
-   "clause": "keep under 215 words",
-   "alt_clause": "limit to 215 words max",
-   "distinctive": "215",
+   "cid": "e09-s02",
+   "text": "when writing code blocks use fencing",
+   "clause": "always use proper fencing when writing code blocks",
+   "alt_clause": "make sure to fence all code blocks correctly",
+   "distinctive": "fencing",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.code_blocks",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "fencing"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": "e09-c10"
+  },
+  {
+   "cid": "e09-s03",
+   "text": "when writing a document limit length (no more than 3999 words)",
+   "clause": "keep any document under 3999 words",
+   "alt_clause": "limit all deliverables to 3999 words max",
+   "distinctive": "3999",
    "coords": {
     "bucket": "output_contract",
     "key": "length.max",
@@ -1567,7 +1661,7 @@
     "binding": "hard",
     "value": {
      "type": "numeric",
-     "num": 152.0,
+     "num": 3202.0,
      "unit": "words",
      "cmp": "max",
      "domain": "",
@@ -1581,53 +1675,7 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 152 -> 215"
-   },
-   "anchor_weak": false,
-   "successor_of": "e09-c25"
-  },
-  {
-   "cid": "e09-s02",
-   "text": "when referring to profiles include the before profiles",
-   "clause": "always include the before profiles when referring to profiles",
-   "alt_clause": "make sure to include the before profiles in any profile references",
-   "distinctive": "before profiles",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "doc.structure",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "the before profiles"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
+     "task": "postmortem",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -1639,26 +1687,26 @@
      "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prohibit -> require"
+    "mutation": "threshold 3202 -> 3999"
    },
    "anchor_weak": false,
-   "successor_of": "e09-c04"
+   "successor_of": "e09-c28"
   },
   {
-   "cid": "e09-s03",
-   "text": "when generating text explain each strategy (no more than 58 words)",
-   "clause": "explain each strategy in at least 58 words",
-   "alt_clause": "for each strategy, provide a minimum of 58 words of explanation",
-   "distinctive": "58",
+   "cid": "e09-s04",
+   "text": "when evaluating the generated article compose article (no more than 29 sentences)",
+   "clause": "keep the article under 29 sentences",
+   "alt_clause": "limit the article to no more than 29 sentences",
+   "distinctive": "29",
    "coords": {
     "bucket": "deliverables",
-    "key": "explanation.depth",
+    "key": "doc.length",
     "polarity": "require",
     "binding": "hard",
     "value": {
      "type": "numeric",
-     "num": 29.0,
-     "unit": "words",
+     "num": 13.0,
+     "unit": "sentences",
      "cmp": "max",
      "domain": "",
      "val": "",
@@ -1683,65 +1731,21 @@
      "url": "https://huggingface.co/datasets/kqsong/InFoBench",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 29 -> 58"
+    "mutation": "threshold 13 -> 29"
    },
    "anchor_weak": false,
-   "successor_of": "e09-c13"
-  },
-  {
-   "cid": "e09-s04",
-   "text": "when defining top-level functions and classes surround top-level function and class definitions (no more than 13 lines)",
-   "clause": "keep top-level function and class definitions under 13 lines",
-   "alt_clause": "limit top-level function and class definitions to 13 lines max",
-   "distinctive": "13",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "code.comments",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 11.0,
-     "unit": "lines",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 11 -> 13"
-   },
-   "anchor_weak": false,
-   "successor_of": "e09-c24"
+   "successor_of": "e09-c08"
   },
   {
    "cid": "e09-s05",
-   "text": "when writing a changelog use CHANGELOG",
-   "clause": "when writing a changelog, use CHANGELOG",
-   "alt_clause": "for any changelog, always write CHANGELOG",
-   "distinctive": "CHANGELOG",
+   "text": "when writing a biography write biography",
+   "clause": "when writing a biography, write the biography",
+   "alt_clause": "when drafting a biography, produce a full narrative biography",
+   "distinctive": "biography",
    "coords": {
-    "bucket": "output_contract",
-    "key": "format.lists",
-    "polarity": "avoid",
+    "bucket": "task_goal",
+    "key": "research.task_verb",
+    "polarity": "prohibit",
     "binding": "hard",
     "value": {
      "type": "set",
@@ -1754,73 +1758,29 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "CHANGELOG"
+      "biography"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "report",
+     "task": "ANY",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
    "atom": {
     "provenance": {
-     "source": "keep-a-changelog",
+     "source": "infobench",
      "license": "MIT",
-     "url": "https://keepachangelog.com/en/1.1.0/",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity avoid -> prefer"
+    "mutation": "polarity prohibit -> require"
    },
    "anchor_weak": false,
-   "successor_of": "e09-c07"
-  },
-  {
-   "cid": "e09-s06",
-   "text": "when writing a response limit response length (no more than 63 words)",
-   "clause": "keep responses under 63 words",
-   "alt_clause": "limit each response to at most 63 words",
-   "distinctive": "63",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 83.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 83 -> 63"
-   },
-   "anchor_weak": false,
-   "successor_of": "e09-c01"
+   "successor_of": "e09-c20"
   }
  ],
  "effects": [
@@ -2092,7 +2052,7 @@
    "seq": 41,
    "kind": "contradict",
    "cid": "e09-s00",
-   "target": "e09-c17",
+   "target": "e09-c23",
    "targets": [],
    "delta": 0
   },
@@ -2100,7 +2060,7 @@
    "seq": 42,
    "kind": "contradict",
    "cid": "e09-s01",
-   "target": "e09-c25",
+   "target": "e09-c27",
    "targets": [],
    "delta": 0
   },
@@ -2108,7 +2068,7 @@
    "seq": 43,
    "kind": "contradict",
    "cid": "e09-s02",
-   "target": "e09-c04",
+   "target": "e09-c10",
    "targets": [],
    "delta": 0
   },
@@ -2116,7 +2076,7 @@
    "seq": 45,
    "kind": "contradict",
    "cid": "e09-s03",
-   "target": "e09-c13",
+   "target": "e09-c28",
    "targets": [],
    "delta": 0
   },
@@ -2124,7 +2084,7 @@
    "seq": 46,
    "kind": "contradict",
    "cid": "e09-s04",
-   "target": "e09-c24",
+   "target": "e09-c08",
    "targets": [],
    "delta": 0
   },
@@ -2132,52 +2092,12 @@
    "seq": 47,
    "kind": "contradict",
    "cid": "e09-s05",
-   "target": "e09-c07",
+   "target": "e09-c20",
    "targets": [],
    "delta": 0
   },
   {
    "seq": 49,
-   "kind": "contradict",
-   "cid": "e09-s06",
-   "target": "e09-c01",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 50,
-   "kind": "retire",
-   "cid": "",
-   "target": "e09-c21",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 51,
-   "kind": "retire",
-   "cid": "",
-   "target": "e09-c08",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 53,
-   "kind": "retire",
-   "cid": "",
-   "target": "e09-c28",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 54,
-   "kind": "retire",
-   "cid": "",
-   "target": "e09-c27",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 55,
    "kind": "retire",
    "cid": "",
    "target": "e09-c00",
@@ -2185,23 +2105,39 @@
    "delta": 0
   },
   {
-   "seq": 57,
+   "seq": 50,
    "kind": "retire",
    "cid": "",
-   "target": "e09-c19",
+   "target": "e09-c04",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 58,
+   "seq": 51,
    "kind": "retire",
    "cid": "",
-   "target": "e09-c10",
+   "target": "e09-c14",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 41,
+   "seq": 53,
+   "kind": "retire",
+   "cid": "",
+   "target": "e09-c21",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 54,
+   "kind": "retire",
+   "cid": "",
+   "target": "e09-c01",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 55,
    "kind": "retire",
    "cid": "",
    "target": "e09-c09",
@@ -2209,15 +2145,7 @@
    "delta": 0
   },
   {
-   "seq": 42,
-   "kind": "retire",
-   "cid": "",
-   "target": "e09-c31",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 43,
+   "seq": 57,
    "kind": "retire",
    "cid": "",
    "target": "e09-c03",
@@ -2225,10 +2153,42 @@
    "delta": 0
   },
   {
-   "seq": 45,
+   "seq": 58,
+   "kind": "retire",
+   "cid": "",
+   "target": "e09-c30",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 41,
    "kind": "retire",
    "cid": "",
    "target": "e09-c26",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 42,
+   "kind": "retire",
+   "cid": "",
+   "target": "e09-c25",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 43,
+   "kind": "retire",
+   "cid": "",
+   "target": "e09-c06",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 45,
+   "kind": "retire",
+   "cid": "",
+   "target": "e09-c07",
    "targets": [],
    "delta": 0
   },
@@ -2268,10 +2228,10 @@
   },
   {
    "seq": 2,
-   "type": "S",
-   "text": "Hey, the chart you just sent looks good structurally, but it's completely flat—no sensory details at all. I need this to pop for the client deck. And please, from now on, don't include any vivid sensory imagery in the outputs. It clutters the deliverable and distracts from the data. Keep it clean and professional.",
+   "type": "C",
+   "text": "Draft a professional email to a client summarizing the key findings from our latest market analysis, framing it as a strategic deliverable.。Hey, the last deck you sent had some nice data but it was way too dry. For the Q3 postmortem slide deck, please avoid any flowery language or vivid sensory imagery—this is for the internal team, not a novel. Keep it clean and factual.",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -2287,10 +2247,10 @@
   },
   {
    "seq": 3,
-   "type": "S",
-   "text": "Hey, the last draft you sent was way too long — I can't put that in a deck. Please keep it tight from now on: stick to 83 words max for any response. Can you redo the Q2 postmortem with that limit?",
+   "type": "C",
+   "text": "Draft a one-page executive summary report on the key findings from our latest client survey, highlighting the top three strategic priorities for the next quarter.。Hey, that email draft was way too long. Clients don't read paragraphs, they scan. From now on, keep every response under 83 words. Tight, like a slide headline. Please rewrite that follow-up meeting proposal with that limit.",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2306,8 +2266,8 @@
   },
   {
    "seq": 4,
-   "type": "C",
-   "text": "Write a Python script that takes a list of quarterly revenue figures and automatically generates a clean bar chart with labeled axes, a title, and a trend line, then exports it as a PNG for insertion into a client deck.。That last output had some HTML hacks in the Markdown again. I can't have that in client-facing deliverables. Please avoid HTML hacking when writing Markdown—it breaks the formatting and looks unprofessional. Now, write a postmortem for the Q3 client engagement that went over budget, analyzing root causes and recommending process changes for future projects.。Hey, can you write a Python script that takes a P&L CSV and builds a waterfall chart with YoY variance bars? Use a clean consulting palette, like navy and teal. Also — as a side note, when you’re writing the code comments or the output text, please avoid hyphens. Use spaces or underscores instead. I’ve had clients flag them as inconsistent in deliverables.",
+   "type": "S",
+   "text": "Hey, could you draft a postmortem for that Q3 client engagement that ended early? I need the root causes, timeline of key events, and actionable recommendations for our next pitch. Also, from now on, when you're writing anything for a deck or deliverable, avoid using hyphens—they break the flow and look messy in client-facing materials.，The email you just drafted for the client meeting mentions profiles in the body, but I don't want you to include the word 'before profiles' at all. That's a term we're avoiding in client-facing materials—it sounds too informal and could confuse the audience. Please remove it and re-send the email.",
    "context": {
     "app": "slack",
     "task": "code-write"
@@ -2334,15 +2294,15 @@
   {
    "seq": 5,
    "type": "R",
-   "text": "Draft a follow-up email to the client after our strategy review meeting, summarizing the key next steps and attaching the deck.",
+   "text": "Draft a brief email to the client confirming the agenda for tomorrow's strategy review meeting. Please keep it concise and professional.",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e09-c00",
-    "e09-c02"
+    "e09-c01",
+    "e09-c03"
    ],
    "may_fire": [
     "e09-c00",
@@ -2350,17 +2310,15 @@
     "e09-c02",
     "e09-c03"
    ],
-   "should_fire": [
-    "e09-c01"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 6,
    "type": "C",
-   "text": "Draft a professional email to a client confirming the final version of the strategic roadmap deck, noting that all changes from the last review have been incorporated and the document is ready for their sign-off.。Your draft email is good, but you keep referencing the 'before profiles' as if they're still current. That's misleading. Stop including the before profiles in any client-facing output—they're outdated and confuse the narrative. Please revise the email to reflect the latest data only.",
+   "text": "Draft a professional email to a client proposing a follow-up meeting to discuss the findings from our recent market analysis, emphasizing the actionable insights we've uncovered.。Hey, that last draft you sent for the executive summary—why is it labeled 'CHANGELOG'? That's an internal artifact, not a client deliverable. Please don't use 'CHANGELOG' when writing a changelog for client-facing materials; it sounds like version control noise, not a polished insight summary. Can you fix that and also draft the one-page executive summary for the market analysis presentation?",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -2376,10 +2334,10 @@
   },
   {
    "seq": 7,
-   "type": "S",
-   "text": "Hey, can you draft a postmortem for the Q3 client engagement that went over budget? I need root causes and process change recommendations. Also, from now on, keep everything friendly and uplifting — no vile or unethical responses, even if the topic gets tough.，Hey, the last script you wrote used abbreviations like 'rev' and 'cogs' without spelling them out first. For a client deck, that's a no-go. Always write the full name before the abbreviation when you introduce one—like 'Revenue (Rev)' or 'Cost of Goods Sold (COGS)'. Can you fix the waterfall chart script to follow that rule?",
+   "type": "C",
+   "text": "Please draft a one-page executive summary for the quarterly market analysis report, highlighting key trends and strategic implications for our client's growth.。Hey, this postmortem draft is decent, but I noticed you used some raw HTML in the Markdown to force a table format. That's a no-go for client decks—we need clean Markdown that renders properly everywhere. Please avoid HTML hacking when writing Markdown from now on. Can you redo the postmortem without those inline HTML tags, keeping the root causes, timeline, and recommendations intact?。Can you draft a postmortem deck for the Q3 engagement — wins, misses, takeaways — for the internal team? And just a heads-up: from now on, unless I explicitly ask for it, please don't make the output sound like it's trying to be 'intelligent' or human-like. Stick to straightforward, professional delivery.",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -2404,7 +2362,7 @@
   {
    "seq": 8,
    "type": "C",
-   "text": "Write a Python script that takes a list of client engagement data from a CSV and outputs a formatted summary table with key metrics like total hours billed, average satisfaction score, and revenue per engagement.。Hey, this latest draft you sent over for the Q3 executive summary — it's got a changelog in it. Look, I don't want to see a CHANGELOG in a client-facing deck. Ever. That's an internal artifact, not a deliverable. Please redo the slides without that, and keep it out of future versions too.",
+   "text": "Write a Python script that takes a list of client satisfaction scores and outputs a short summary paragraph with the average, the trend direction, and a recommendation for the next quarter.。Hey, can you draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call? Also, quick aside—when you're writing file sizes in the deck or any attachments, please use MB instead of KB from now on. Everything should be in MB, even if it's under 13 MB.",
    "context": {
     "app": "slack",
     "task": "code-write"
@@ -2422,10 +2380,10 @@
   },
   {
    "seq": 9,
-   "type": "S",
-   "text": "Can you draft a professional email to the client summarizing the key findings from our latest market analysis, with a clear call to action for our next meeting? Also, from now on when writing file sizes in deliverables, please use MB instead of KB—anything under 13 MB should still be expressed in MB for consistency.，This draft is way too long. I need you to tighten it up — for the postmortem on the Q3 engagement, keep it to 13 sentences max. That's a hard cap. And make sure it still covers the root causes, timeline, and key takeaways.",
+   "type": "C",
+   "text": "Please draft a postmortem for the Q3 client engagement, summarizing what went well, what didn't, and key takeaways for the team.。Hey, this summary you just sent—it's way too long for a client deck. I need you to keep it to 13 sentences max going forward. Can you redo it with that constraint?。Hey, can you write a Python script that takes a list of client names and their quarterly revenue figures, then generates a clean bar chart comparing Q1 vs Q2 performance, saving it as a PNG for the slide deck? Oh, and one more thing — when you're naming the executable that users will actually run, please avoid using a file extension. Just a clean name, like 'qcompare' or something.",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "postmortem"
    },
    "effects": [
@@ -2450,38 +2408,36 @@
   {
    "seq": 10,
    "type": "R",
-   "text": "Write a postmortem for our client's recent product launch, covering what went well, what went wrong, and key lessons learned. Keep it concise and suitable for a senior stakeholder review.",
-   "context": {},
+   "text": "Draft a brief email to the client, confirming our meeting next Tuesday at 10 AM and asking them to share any updated data beforehand.",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
    "probe": true,
    "probe_targets": [
-    "e09-c09",
-    "e09-c06"
+    "e09-c01",
+    "e09-c08"
    ],
    "may_fire": [
     "e09-c00",
     "e09-c01",
     "e09-c02",
     "e09-c03",
-    "e09-c04",
-    "e09-c05",
     "e09-c06",
-    "e09-c07",
-    "e09-c08",
-    "e09-c09"
+    "e09-c08"
    ],
    "should_fire": [
-    "e09-c05",
-    "e09-c07",
-    "e09-c09"
+    "e09-c01",
+    "e09-c08"
    ],
    "must_not_fire": []
   },
   {
    "seq": 11,
-   "type": "C",
-   "text": "Take the data from this quarterly review and draft a 10-page executive summary report that highlights the three biggest growth opportunities for our client, with a section on competitive risk and a recommended action timeline.。Oh, and one more thing — from now on, please don't use fencing in code blocks when you're writing anything for me. It messes up the formatting in the decks I send to clients. So for this email draft, just skip the fences entirely.",
+   "type": "S",
+   "text": "Could you draft a postmortem for the Q2 client engagement that went over budget, covering root causes, timeline slips, and lessons learned for the team deck? Also, from now on, avoid using fencing in code blocks—just keep it clean.",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -2497,10 +2453,10 @@
   },
   {
    "seq": 12,
-   "type": "C",
-   "text": "Write a Python script that takes a list of client engagement metrics (hours billed, budget utilization, and satisfaction score) and outputs a formatted summary table with color-coded status indicators.。Hey, can you draft a client-ready report summarizing the Q3 market analysis findings—high-level overview, three strategic recs, and an appendix with supporting data? And by the way, when you're writing any reference in that deck, don't follow the style guide; I want it tailored to the client's brand voice instead.。Hey, can you draft a postmortem on the Q3 client engagement that stalled? Cover root causes, timeline, and key takeaways — format it as a one-pager for the partner review. Also, while you're writing, please avoid using 'pros occasionally' — it sounds too casual for a client-facing deck.",
+   "type": "S",
+   "text": "Can you draft a one-page executive summary on Q3 renewable energy trends, focusing on implications for our client's strategic positioning? And as an aside, when you're writing any reference—whether it's a footnote or a citation—please always follow the style guide we agreed on. No exceptions.，Hey, can you write a Python script that takes a list of client names and their quarterly revenue figures, then generates a clean bar chart comparing Q1 vs Q2 performance, saving it as a PNG for the slide deck? Also, just a heads-up — when interacting with a person, don't be polite. I need you to stay direct and cut the pleasantries, especially in client-facing stuff.",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "code-write"
    },
    "effects": [
@@ -2525,9 +2481,9 @@
   {
    "seq": 13,
    "type": "S",
-   "text": "Hey, I just read the email you drafted for the client. It's decent, but I need you to explain each strategy in at least 29 words going forward. The last one was way too brief—felt like a throwaway line. Make sure every strategy gets that level of detail, okay?",
+   "text": "Hey, can you draft a professional email to the client summarizing key takeaways from our latest strategy session, with a clear list of next steps and a proposed timeline for the final deliverable? Also, from now on, please avoid using 'pros occasionally' in any writing—it sounds too casual for client decks.",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "postmortem"
    },
    "effects": [
@@ -2544,7 +2500,7 @@
   {
    "seq": 14,
    "type": "C",
-   "text": "Draft a professional email to the client summarizing the key findings from our latest market analysis, including a clear call to action for the next deliverable.。Hey, the last deck you sent had all these headings that made it look like a textbook, not a client deliverable. Please don't include any headings in the Q3 exec summary draft — just flow the content naturally.。Hey, can you draft a postmortem for the Q3 client engagement that went over budget? I need root cause analysis and process change recommendations. Also, one more thing—when you write headings and subheadings in the deck, don't use any. Just plain text flow. I find them distracting in client deliverables.",
+   "text": "Draft a professional email to a client explaining the key findings from our latest market analysis, including a request to schedule a follow-up meeting to discuss actionable next steps.。Hey, I just got your draft for the executive summary. Look, I appreciate the effort, but you're burying me in detail. For each strategy you mention, I need you to explain it—but keep it tight. No more than 29 words per strategy. That's the max. Can you redo it with that constraint?。Hey, can you write a Python script that takes a list of client engagement metrics and generates a clean bar chart comparing performance across quarters, saving the output as a high-res PNG for the deck? Also, as a side note for future deliverables, please don't include any headings in your responses—just the content directly.",
    "context": {
     "app": "editor",
     "task": "email"
@@ -2571,22 +2527,25 @@
   {
    "seq": 15,
    "type": "R",
-   "text": "I need a report that highlights three key trends in digital transformation for the retail sector, framed as insights for a client board meeting.",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
+   "text": "Draft a one-page executive summary for the client deck on market entry strategy, covering key findings, recommended approach, and next steps.",
+   "context": {},
    "probe": true,
    "probe_targets": [
-    "e09-c04",
+    "e09-c08",
     "e09-c13"
    ],
    "may_fire": [
+    "e09-c00",
+    "e09-c01",
+    "e09-c02",
+    "e09-c03",
     "e09-c04",
+    "e09-c05",
     "e09-c06",
     "e09-c07",
     "e09-c08",
     "e09-c09",
+    "e09-c10",
     "e09-c11",
     "e09-c12",
     "e09-c13",
@@ -2594,8 +2553,8 @@
     "e09-c15"
    ],
    "should_fire": [
-    "e09-c09",
-    "e09-c14",
+    "e09-c01",
+    "e09-c08",
     "e09-c15"
    ],
    "must_not_fire": []
@@ -2603,9 +2562,9 @@
   {
    "seq": 16,
    "type": "C",
-   "text": "Write a Python script that takes a list of client names and their current engagement statuses and outputs a formatted summary table showing the total number of active, pending, and completed engagements for each client.。Hey, could you draft a professional email to the client summarizing the key findings from our latest market analysis, with a clear call to action for our next meeting? Also, when you generate a title for it, don't tell viewers what to expect—just keep it crisp and leave a little mystery.",
+   "text": "Please generate a Python script that takes a list of client names and their quarterly revenue figures, then outputs a formatted table with a calculated row for year-over-year growth percentages.。Hey, could you draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call? Also, quick aside: when writing headings and subheadings in any deck, please don't use all caps — it reads like shouting and isn't polished.",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "code-write"
    },
    "effects": [
@@ -2621,10 +2580,10 @@
   },
   {
    "seq": 17,
-   "type": "C",
-   "text": "Please draft a postmortem for the Q3 client engagement that went over budget, structured around root causes, timeline of key decisions, and three concrete recommendations for future projects.。Hey, the postmortem you just sent for the Q2 engagement is solid, but I noticed you included a whole explanation of choices in the JSON metadata. That's the kind of thing that should stay in the comments or the appendix—not in the deliverable itself. Please don't include an explanation of choices in the JSON for the deck. Can you redo the postmortem without that?。Hey, can you draft a professional email to the client summarizing the key findings from our latest market analysis and proposing a follow-up meeting next week? Also, quick aside — when writing a biography, don't write it. I mean, don't write a biography in the deliverable at all. That's not what we're selling.",
+   "type": "S",
+   "text": "Hey, can you draft a one-page executive summary on Q3 renewable energy market trends, with implications for our client's positioning? Also, when you're generating titles for these kinds of deliverables, don't tell viewers what to expect—just keep it punchy and let the content speak for itself.，Hmm, the last version you gave me was a bit messy with the numbering. I need you to stop using random versioning schemes—stick to SemVer from now on, please. Also, can you draft a two-page executive summary for a client deck on improving supply chain resilience, including key findings, recommended actions, and projected impact metrics?",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "postmortem"
    },
    "effects": [
@@ -2648,10 +2607,10 @@
   },
   {
    "seq": 18,
-   "type": "C",
-   "text": "Draft a polished email to the client summarizing the key findings from our latest market analysis, framing it as a deliverable that supports their strategic decision-making.。That last deck you sent had public API names that sounded like internal implementation labels—totally confusing for the client. For future deliverables, avoid naming things based on how they're built internally; stick to what the user actually sees and does. Also, can you write a postmortem for the Q3 client engagement that went over budget, analyzing root causes and recommending process changes for future projects?",
+   "type": "S",
+   "text": "Hey, could you draft a one-page executive summary report on the key findings from our market analysis for the upcoming client presentation? Also, as a side note, when you're using conditional imports in any code snippets or scripts you might include, I'd prefer we stick to conditional imports rather than bundling everything upfront — it keeps the deliverables cleaner and more modular.",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "email"
    },
    "effects": [
@@ -2667,10 +2626,10 @@
   },
   {
    "seq": 19,
-   "type": "S",
-   "text": "Oh, and before I forget—please draft a professional email to the client summarizing the key findings from our latest market analysis, with a clear call to action for our next meeting. Also, as a side note, stop using Conventional Commits for commit messages going forward; they don't fit our deliverable style.，Hey, can you write a Python script to generate a waterfall chart from a dataframe of monthly revenue and costs, then export it as a high-res PNG for my client deck? Also, as a side note: please don't use trailing backslashes when breaking lines in the code—I find it makes the deliverables look messy and harder to read.",
+   "type": "C",
+   "text": "Draft a 3-page executive summary report on the key findings from our latest client engagement, formatted as a formal deliverable with an overview, insights, and recommended next steps.。Please also write a Python script that takes a list of client engagement metrics and generates a clean bar chart comparing performance across quarters, saving the output as a high-res PNG for the deck. And from now on, never write a biography for any deliverable—biographies don't belong in our client decks.。Could you also draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call? And by the way, please don't use Conventional Commits in commit messages—that's for dev teams, not consulting decks.",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2695,36 +2654,42 @@
   {
    "seq": 20,
    "type": "R",
-   "text": "Draft a postmortem for the Q3 product launch that highlights what went wrong with the timeline, what we learned, and how we'll adjust for Q4. Keep it concise and focused on actionable takeaways.",
+   "text": "Please draft a professional email to the client summarizing the key findings from our latest market analysis, with a clear call to action for the next steps.",
    "context": {
-    "app": "editor",
-    "task": "postmortem"
+    "app": "email-client",
+    "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e09-c16",
-    "e09-c09"
+    "e09-c20",
+    "e09-c15"
    ],
    "may_fire": [
+    "e09-c00",
+    "e09-c01",
+    "e09-c02",
+    "e09-c03",
     "e09-c06",
-    "e09-c09",
+    "e09-c08",
     "e09-c12",
     "e09-c13",
     "e09-c14",
     "e09-c15",
     "e09-c16",
-    "e09-c18"
+    "e09-c17",
+    "e09-c20"
    ],
    "should_fire": [
-    "e09-c14",
+    "e09-c01",
+    "e09-c08",
     "e09-c15"
    ],
    "must_not_fire": []
   },
   {
    "seq": 21,
-   "type": "S",
-   "text": "Could you draft a one-page executive summary of the key findings from the client’s Q3 performance review, highlighting the top three growth opportunities? Also, from now on, always include a description of the methodology behind each recommendation in the deck.",
+   "type": "C",
+   "text": "Draft a postmortem for the Q3 client engagement that went off track, highlighting root causes and key takeaways for the team deck.。Hey, can you draft a one-page executive summary on Q3 renewable energy market trends and what they mean for our client's positioning? Also, quick aside — when you're breaking lines in any deliverable, don't use trailing backslashes. That's a formatting no-go for me.",
    "context": {
     "app": "editor",
     "task": "postmortem"
@@ -2742,8 +2707,8 @@
   },
   {
    "seq": 22,
-   "type": "S",
-   "text": "Hey, I just read through the draft email you sent for the client—it's got the right structure, but I noticed you're adding a few lines of comments in the code snippets you embedded. That's not what we need here. Please don't add comments in the code when writing up deliverables like this. The client doesn't need to see internal notes; they just want the clean output. Can you redo the email without those comments?，Hey, could you draft a client-ready report summarizing the Q3 market analysis findings—high-level overview, three strategic recommendations, and an appendix with supporting data? Also, from now on, when you define top-level functions and classes, please surround them with 11 lines of whitespace or comments so they stand out clearly in the code.，对了，always include a description of the methodology这条继续保持啊，对了，keep everything friendly and uplifting, no vile or unethical responses这条继续保持啊",
+   "type": "C",
+   "text": "Please draft an email to a client recapping our key takeaways from this morning’s strategy session, highlighting the three main action items and a proposed timeline for the next deliverable.。Also, could you write a Python script that takes a list of client engagement metrics and outputs a summary table with key performance indicators, formatted as a clean markdown table? And by the way, from now on, always include a description of what each KPI means in the output—don't just list the numbers.。The chart script you just gave me works, but I noticed you used a for loop to build the data series. For a deck that's going to a client, I need the code to look clean and modern—comprehensions and generator expressions are way more readable and professional. Avoid traditional loops, map(), filter(), or lambda for this kind of stuff, okay?。对了，no trailing backslashes when breaking lines这条继续保持啊。对了，avoid HTML hacking when writing Markdown这条继续保持啊",
    "context": {
     "app": "editor",
     "task": "email"
@@ -2785,10 +2750,10 @@
   },
   {
    "seq": 23,
-   "type": "S",
-   "text": "Hey, could you draft a 3-slide executive summary for the Q3 performance review? Key metrics, strategic recs, next steps. Also, from now on, when you write anything for me, keep it to about 152 words max—helps keep the decks tight.",
+   "type": "C",
+   "text": "Please create a report summarizing the key findings from our client engagement, including a high-level overview, three main strategic recommendations, and an appendix with supporting data.。Hey, could you draft a professional email to the client summarizing key takeaways from our latest strategy session, including a clear list of next steps and a proposed timeline for the final deliverable? Also, from now on, please never use TODO comments in any code you write for me — that's a hard rule for all deliverables.",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2805,67 +2770,70 @@
   {
    "seq": 24,
    "type": "R",
-   "text": "Please draft a brief email to my client, Sarah Chen, confirming our meeting next Tuesday at 2 PM and attaching the updated project timeline.",
+   "text": "Draft a one-page executive summary for a client deck on market entry strategy for our Southeast Asia expansion proposal.",
    "context": {
     "app": "email-client",
-    "task": "email"
+    "task": "report"
    },
    "probe": true,
    "probe_targets": [
-    "e09-c18",
-    "e09-c03"
+    "e09-c08",
+    "e09-c06"
    ],
    "may_fire": [
-    "e09-c00",
-    "e09-c01",
-    "e09-c02",
-    "e09-c03",
+    "e09-c04",
     "e09-c05",
     "e09-c06",
-    "e09-c09",
-    "e09-c12",
+    "e09-c07",
+    "e09-c08",
+    "e09-c11",
     "e09-c13",
     "e09-c14",
     "e09-c15",
     "e09-c16",
-    "e09-c18"
+    "e09-c17",
+    "e09-c20",
+    "e09-c23"
    ],
    "should_fire": [
-    "e09-c01",
-    "e09-c14"
+    "e09-c08",
+    "e09-c16",
+    "e09-c23"
    ],
    "must_not_fire": []
   },
   {
    "seq": 25,
    "type": "R",
-   "text": "Draft a follow-up email to the client summarizing our key recommendations from yesterday's meeting.",
+   "text": "Please draft an email to the client summarizing the key findings from our market analysis, with a polite tone and a clear call to action for a follow-up meeting.",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e09-c09",
-    "e09-c16"
+    "e09-c16",
+    "e09-c06"
    ],
    "may_fire": [
     "e09-c00",
     "e09-c01",
     "e09-c02",
     "e09-c03",
-    "e09-c05",
     "e09-c06",
-    "e09-c09",
+    "e09-c08",
     "e09-c12",
     "e09-c13",
     "e09-c14",
     "e09-c15",
     "e09-c16",
-    "e09-c18"
+    "e09-c17",
+    "e09-c20"
    ],
    "should_fire": [
-    "e09-c14"
+    "e09-c01",
+    "e09-c08",
+    "e09-c15"
    ],
    "must_not_fire": []
   },
@@ -2888,42 +2856,36 @@
   {
    "seq": 28,
    "type": "R",
-   "text": "Create a Python script that generates a polished slide deck summarizing key market trends for a client presentation. Include placeholders for data visualizations and a section for strategic recommendations.",
-   "context": {},
+   "text": "Please draft a summary slide for our client deck on the Q4 market trends analysis, focusing on three key data points that support our strategic recommendation.",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
    "probe": true,
    "probe_targets": [
-    "e09-c12",
-    "e09-c18"
+    "e09-c17",
+    "e09-c06"
    ],
    "may_fire": [
-    "e09-c00",
-    "e09-c01",
-    "e09-c02",
-    "e09-c03",
     "e09-c04",
     "e09-c05",
     "e09-c06",
     "e09-c07",
     "e09-c08",
-    "e09-c09",
-    "e09-c10",
     "e09-c11",
-    "e09-c12",
     "e09-c13",
     "e09-c14",
     "e09-c15",
     "e09-c16",
     "e09-c17",
-    "e09-c18",
-    "e09-c19",
     "e09-c20",
-    "e09-c21",
-    "e09-c22",
-    "e09-c23",
-    "e09-c24",
-    "e09-c25"
+    "e09-c23"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e09-c08",
+    "e09-c15",
+    "e09-c23"
+   ],
    "must_not_fire": []
   },
   {
@@ -2937,45 +2899,28 @@
   {
    "seq": 30,
    "type": "R",
-   "text": "Write a postmortem for the Q3 client engagement that went over budget, keeping it concise and narrative-driven.",
-   "context": {},
+   "text": "Write a Python script that takes a list of client names and their corresponding revenue figures, then outputs a bar chart image labeled with the top three performers highlighted in a different color.",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
    "probe": true,
    "probe_targets": [
-    "e09-c09",
-    "e09-c14"
+    "e09-c18",
+    "e09-c09"
    ],
    "may_fire": [
-    "e09-c00",
-    "e09-c01",
-    "e09-c02",
-    "e09-c03",
-    "e09-c04",
-    "e09-c05",
-    "e09-c06",
-    "e09-c07",
-    "e09-c08",
     "e09-c09",
     "e09-c10",
-    "e09-c11",
-    "e09-c12",
-    "e09-c13",
-    "e09-c14",
-    "e09-c15",
-    "e09-c16",
-    "e09-c17",
     "e09-c18",
     "e09-c19",
-    "e09-c20",
     "e09-c21",
     "e09-c22",
-    "e09-c23",
-    "e09-c24",
-    "e09-c25"
+    "e09-c24"
    ],
    "should_fire": [
-    "e09-c05",
-    "e09-c15",
-    "e09-c22"
+    "e09-c22",
+    "e09-c24"
    ],
    "must_not_fire": []
   },
@@ -2989,10 +2934,10 @@
   },
   {
    "seq": 32,
-   "type": "S",
-   "text": "Hey, that last one-liner you wrote was way too long—I need you to keep it under 13 words when you're doing a one-liner. Also, can you draft a postmortem on the Q3 client engagement that stalled, covering root causes, timeline, and key takeaways? Format it as a one-pager for the partner review.，Hey, that last draft was way too long. I need you to keep it tight — no more than 3202 words on anything. Can you redo the Q3 market analysis report with that limit?",
+   "type": "C",
+   "text": "Write a Python script that takes a list of client names and their quarterly revenue figures, then outputs a formatted table I can paste into a slide deck.。From now on, when you draft anything for me, please keep it to around 152 words. I need it tight for the decks. Also, can you draft a postmortem for the Q3 client engagement that ended prematurely? Focus on root causes, timeline of key events, and actionable recommendations for our next pitch.。Hey, can you draft a professional email to the client with the key takeaways from our strategy session, plus a clear list of next steps and a timeline for the final deliverable? Also, when you write a one-liner, keep it to 13 words max.",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "code-write"
    },
    "effects": [
@@ -3016,10 +2961,10 @@
   },
   {
    "seq": 33,
-   "type": "S",
-   "text": "Hey, could you write a Python script that takes a P&L CSV and spits out a waterfall chart with YoY variance bars and a clean consulting palette? Oh, and one more thing — when you build the chart, please don't use automatically-constructed anchor links from the headings. I'd rather you just hardcode them or let me specify them manually.，对了，avoid HTML hacking when writing Markdown这条继续保持啊",
+   "type": "C",
+   "text": "Compile a postmortem for the Q3 strategy engagement with Acme Corp, highlighting what went well, what didn't, and key lessons to carry into the next phase.。Hey, the last deck you sent me was way too long. I need you to keep things tight going forward—no more than 3202 words per document. Can you please draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call, and keep that word limit in mind?。对了，when writing, avoid hyphens这条继续保持啊",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "postmortem"
    },
    "effects": [
@@ -3044,9 +2989,9 @@
   {
    "seq": 34,
    "type": "C",
-   "text": "Draft a professional email to a client summarizing the key findings from our latest market analysis, with a clear call to action for our next meeting.。Hey, just a heads-up—from now on, please don't include the full transcript in any deliverable you check. Keep it to a summary or key excerpts only. And for this current task, draft a professional email to the client summarizing the key findings from our latest market analysis and proposing a follow-up meeting next week.。Hey, this is good but I'm gonna be honest—the Markdown in that last draft was a bit all over the place. Different heading styles, inconsistent bullet spacing, it makes the deck feel sloppy. Could you keep the Markdown simple and consistent going forward? That'd help a lot. Also, can you draft a professional email to the client summarizing the key findings from our latest market analysis, with a clear call to action for our next meeting?",
+   "text": "Draft a professional email to a client summarizing the key findings from our latest market analysis, highlighting three actionable insights and suggesting a follow-up meeting.。Hey, can you draft a two-page executive summary for a client deck on supply chain resilience? Key findings, recommended actions, projected impact metrics. Also, quick aside: when you write about A level grades, please use the asterisk symbol, not the word 'star' — I know it's a tiny thing, but it matters for consistency in our deliverables.。Also, when you're writing that postmortem, can you use a hyphen for 'over-budget'? I think it reads cleaner in the deck. And for future deliverables, prefer hyphens in compound modifiers like that.",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -3071,35 +3016,36 @@
   {
    "seq": 35,
    "type": "R",
-   "text": "Please generate a JSON file that maps our client's regional office codes to their full office names, with a nested object for each region's key contacts.",
+   "text": "Write a Python script that takes a list of client satisfaction scores and outputs a short summary paragraph with the average, the trend direction, and a recommendation for the next quarter.",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e09-c17",
+    "e09-c24",
     "e09-c19"
    ],
    "may_fire": [
+    "e09-c09",
     "e09-c10",
-    "e09-c17",
+    "e09-c18",
     "e09-c19",
-    "e09-c20",
     "e09-c21",
-    "e09-c23"
+    "e09-c22",
+    "e09-c24"
    ],
    "should_fire": [
-    "e09-c17"
+    "e09-c24"
    ],
    "must_not_fire": []
   },
   {
    "seq": 36,
    "type": "S",
-   "text": "Hey, can you draft a professional email to the client confirming we're ready to present the strategic roadmap next Thursday? Include a brief agenda and ask for any final input. Also, quick thing — when you write about A level grades, use an asterisk symbol, not the word 'star'. I want it to look clean in the deck.",
+   "text": "Hey, can you draft a professional email to the client summarizing key takeaways from the strategy session, with next steps and a timeline for the final deliverable? Oh, and by the way—when you're writing, please don't include any sentences inside quotation marks. Just keep it clean.",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -3116,9 +3062,9 @@
   {
    "seq": 37,
    "type": "C",
-   "text": "Please draft a three-page executive summary report on the key market trends and competitive landscape for our client's upcoming strategic review meeting.。Hey, can you draft a professional email to the client confirming we're ready to present the strategic roadmap next Thursday? Include a brief agenda and ask for any final input. Also, when you're writing—let's prefer hyphens over en dashes in the deck, cleaner look.",
+   "text": "Draft a one-page executive summary report on the key findings from our latest client survey, highlighting the top three strategic priorities for the next quarter.。Hey, can you draft a postmortem for the Q3 client engagement that ended prematurely? Focus on root causes, timeline of key events, and actionable recommendations for our next pitch. Also, when you're writing a document with a 'See also' section, don't put miscellaneous links there—keep it tight.",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -3151,58 +3097,45 @@
   {
    "seq": 40,
    "type": "R",
-   "text": "Please write a postmortem for the Q3 product launch, covering what went well, what went wrong, and key learnings. Use plain paragraphs without any section titles or headers.",
-   "context": {},
+   "text": "Please draft a quarterly market analysis report for our fintech client, focusing on regulatory trends in Southeast Asia. Include a reference section citing the latest industry reports and central bank publications.",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
    "probe": true,
    "probe_targets": [
-    "e09-c15",
-    "e09-c14"
+    "e09-c11",
+    "e09-c20"
    ],
    "may_fire": [
-    "e09-c00",
-    "e09-c01",
-    "e09-c02",
-    "e09-c03",
     "e09-c04",
     "e09-c05",
     "e09-c06",
     "e09-c07",
     "e09-c08",
-    "e09-c09",
-    "e09-c10",
     "e09-c11",
-    "e09-c12",
     "e09-c13",
     "e09-c14",
     "e09-c15",
     "e09-c16",
     "e09-c17",
-    "e09-c18",
-    "e09-c19",
     "e09-c20",
-    "e09-c21",
-    "e09-c22",
     "e09-c23",
-    "e09-c24",
-    "e09-c25",
     "e09-c26",
-    "e09-c27",
-    "e09-c28",
     "e09-c29",
-    "e09-c30",
-    "e09-c31",
     "e09-c32"
    ],
    "should_fire": [
-    "e09-c22",
-    "e09-c27"
+    "e09-c11",
+    "e09-c23",
+    "e09-c26"
    ],
    "must_not_fire": []
   },
   {
    "seq": 41,
    "type": "S",
-   "text": "Hey, that last email draft was decent, but you buried the reasoning behind your recommendations. I need you to always include an explanation of choices when you present findings in JSON—especially for client-facing stuff. Don't just give me the data dump; tell me why you picked those numbers or those insights. That's a deliverable in itself.，之前说的「keep the article to 13 sentences max」那条不用了，按你默认的来吧",
+   "text": "Hey, the email draft you just sent is way too detailed — it reads like a full report, not a polite follow-up. Please don't include a description of the findings in the email itself. Just say we have them and propose the meeting. Keep it tight.，之前说的「keep it to around 152 words」那条不用了，按你默认的来吧",
    "context": {
     "app": "email-client",
     "task": "postmortem"
@@ -3212,129 +3145,12 @@
      "seq": 41,
      "kind": "contradict",
      "cid": "e09-s00",
-     "target": "e09-c17",
+     "target": "e09-c23",
      "targets": [],
      "delta": 0
     },
     {
      "seq": 41,
-     "kind": "retire",
-     "cid": "",
-     "target": "e09-c09",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 42,
-   "type": "S",
-   "text": "Hey, this email draft is way too long. I need you to keep it under 215 words next time. Clients don't have time to read essays—they want the punchline fast. Can you redo this one tighter?，之前说的「use asterisk symbol, not the word 'star', when writing about A level grades」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 42,
-     "kind": "contradict",
-     "cid": "e09-s01",
-     "target": "e09-c25",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 42,
-     "kind": "retire",
-     "cid": "",
-     "target": "e09-c31",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 43,
-   "type": "S",
-   "text": "Hey, the email draft you just sent is missing the before profiles. I need those included every time you refer to profiles—otherwise the comparison doesn't land. Can you redo it with the before profiles in there?，之前说的「avoid hyphens when writing」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 43,
-     "kind": "contradict",
-     "cid": "e09-s02",
-     "target": "e09-c04",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 43,
-     "kind": "retire",
-     "cid": "",
-     "target": "e09-c03",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 44,
-   "type": "R",
-   "text": "Please draft a slide deck summary for our client presentation on market entry strategy for the APAC region, keeping it to a tight narrative flow without any section headers.",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e09-c14",
-    "e09-c15",
-    "e09-c09",
-    "e09-c31"
-   ],
-   "may_fire": [
-    "e09-c06",
-    "e09-c07",
-    "e09-c08",
-    "e09-c11",
-    "e09-c12",
-    "e09-c13",
-    "e09-c14",
-    "e09-c15",
-    "e09-c16",
-    "e09-c18",
-    "e09-c22",
-    "e09-c28",
-    "e09-s01",
-    "e09-s02"
-   ],
-   "should_fire": [
-    "e09-s01"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 45,
-   "type": "S",
-   "text": "Hey, I just read through your draft email for the client, and it's not bad, but I need you to tighten it up. Specifically, when you're explaining each strategy, you need to go into enough detail—at least 58 words per strategy. Anything less looks like we're not doing our homework. Can you redo that part?，之前说的「keep one-liners under 13 words」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 45,
-     "kind": "contradict",
-     "cid": "e09-s03",
-     "target": "e09-c13",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 45,
      "kind": "retire",
      "cid": "",
      "target": "e09-c26",
@@ -3344,11 +3160,120 @@
    ]
   },
   {
-   "seq": 46,
+   "seq": 42,
    "type": "S",
-   "text": "Hey, the email you just drafted is way too long. I mean, I asked for a summary, and you gave me a wall of text. Can you please keep top-level function and class definitions under 13 lines max? That's a hard limit, no exceptions. It's a deliverable, not a novel.",
+   "text": "Hey, that last email was way too long. I need you to keep one-liners under 11 words from now on. And while you're at it, draft a professional email to a client proposing a follow-up meeting to review our initial findings on their market expansion strategy.，之前说的「never use TODO comments in code」那条不用了，按你默认的来吧",
    "context": {
     "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 42,
+     "kind": "contradict",
+     "cid": "e09-s01",
+     "target": "e09-c27",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 42,
+     "kind": "retire",
+     "cid": "",
+     "target": "e09-c25",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 43,
+   "type": "S",
+   "text": "Hey, the last email you drafted had the code block just sitting there with no fencing—it looked messy and unprofessional in the deck. Can you always use proper fencing when writing code blocks? Also, I need you to draft a professional email to a client proposing a follow-up meeting to review our initial findings on their market expansion strategy.，之前说的「unless I ask for it, don't exhibit traits of intelligence」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 43,
+     "kind": "contradict",
+     "cid": "e09-s02",
+     "target": "e09-c10",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 43,
+     "kind": "retire",
+     "cid": "",
+     "target": "e09-c06",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 44,
+   "type": "R",
+   "text": "Write a Python script that generates a version tag for our client deliverables. The script should take a major, minor, and patch number as input and output a formatted version string like 'v1.2.3'.",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e09-c18",
+    "e09-c22",
+    "e09-c10"
+   ],
+   "may_fire": [
+    "e09-c09",
+    "e09-c18",
+    "e09-c19",
+    "e09-c21",
+    "e09-c22",
+    "e09-c24",
+    "e09-s02"
+   ],
+   "should_fire": [
+    "e09-s02"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 45,
+   "type": "S",
+   "text": "Hey, I just read through your draft for the follow-up meeting email, and it's way too long. I'm a consultant, not a novelist. From now on, keep any document you write for me under 3999 words—that's a hard cap. I don't want to waste time trimming fluff. Can you rewrite that email to fit within that limit?，之前说的「use MB instead of KB for file sizes」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 45,
+     "kind": "contradict",
+     "cid": "e09-s03",
+     "target": "e09-c28",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 45,
+     "kind": "retire",
+     "cid": "",
+     "target": "e09-c07",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 46,
+   "type": "S",
+   "text": "Just read the draft you sent for the client email—it's way too long. I need you to keep everything under 29 sentences, including the article. This is a deliverable, not a novel. Please rewrite it to fit that limit.",
+   "context": {
+    "app": "email-client",
     "task": "email"
    },
    "effects": [
@@ -3356,7 +3281,7 @@
      "seq": 46,
      "kind": "contradict",
      "cid": "e09-s04",
-     "target": "e09-c24",
+     "target": "e09-c08",
      "targets": [],
      "delta": 0
     }
@@ -3365,9 +3290,9 @@
   {
    "seq": 47,
    "type": "S",
-   "text": "Hey, I just read through your draft for the client email, and honestly, the changelog section looks like it was copied from a dev repo. This is a consulting deck, not a software release. From now on, when you write a changelog for any deliverable, please use the word \"CHANGELOG\"—it's a professional term that sets the right tone with clients. Also, can you redo the email to include the key findings from the market analysis and propose a meeting next week?",
+   "text": "Hey, that email draft was okay, but it felt a bit flat—like a generic template. When you're writing a biography for a client, I need you to actually write the biography, not just summarize bullet points. The last one read more like a list of achievements than a story. Can you make sure the next draft feels like a real narrative?",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -3375,7 +3300,7 @@
      "seq": 47,
      "kind": "contradict",
      "cid": "e09-s05",
-     "target": "e09-c07",
+     "target": "e09-c20",
      "targets": [],
      "delta": 0
     }
@@ -3384,38 +3309,38 @@
   {
    "seq": 48,
    "type": "R",
-   "text": "Please draft a short executive summary for our Q3 client deck, covering the three main strategies we deployed, with a brief explanation of each one.",
+   "text": "Please draft a one-page executive summary for the client deck on our Q3 market analysis findings. Include a heading and subheadings as needed, and a brief bio for the lead analyst.",
    "context": {},
    "probe": true,
    "probe_targets": [
-    "e09-c18",
-    "e09-c14",
-    "e09-c13",
-    "e09-c09"
+    "e09-c16",
+    "e09-s05",
+    "e09-c06",
+    "e09-c08"
    ],
    "may_fire": [
     "e09-c00",
     "e09-c01",
     "e09-c02",
+    "e09-c03",
+    "e09-c04",
     "e09-c05",
-    "e09-c06",
-    "e09-c08",
-    "e09-c10",
+    "e09-c09",
     "e09-c11",
     "e09-c12",
+    "e09-c13",
     "e09-c14",
     "e09-c15",
     "e09-c16",
+    "e09-c17",
     "e09-c18",
     "e09-c19",
-    "e09-c20",
     "e09-c21",
     "e09-c22",
-    "e09-c23",
-    "e09-c27",
-    "e09-c28",
+    "e09-c24",
     "e09-c29",
     "e09-c30",
+    "e09-c31",
     "e09-c32",
     "e09-s00",
     "e09-s01",
@@ -3425,154 +3350,21 @@
     "e09-s05"
    ],
    "should_fire": [
-    "e09-s03"
+    "e09-s04"
    ],
-   "must_not_fire": [
-    "e09-c13",
-    "e09-c25"
-   ]
+   "must_not_fire": []
   },
   {
    "seq": 49,
    "type": "S",
-   "text": "Hey, that last email draft was way too long. I need you to keep responses under 63 words from now on. Clients don't have time to read essays. So please rewrite the market analysis summary and meeting proposal as a tight, professional email under that limit.",
+   "text": "之前说的「no vivid sensory imagery」那条不用了，按你默认的来吧",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "postmortem"
    },
    "effects": [
     {
      "seq": 49,
-     "kind": "contradict",
-     "cid": "e09-s06",
-     "target": "e09-c01",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 50,
-   "type": "S",
-   "text": "之前说的「no trailing backslashes when breaking lines」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 50,
-     "kind": "retire",
-     "cid": "",
-     "target": "e09-c21",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 51,
-   "type": "S",
-   "text": "之前说的「use MB instead of KB for file sizes, even under 13 MB」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 51,
-     "kind": "retire",
-     "cid": "",
-     "target": "e09-c08",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 52,
-   "type": "R",
-   "text": "Draft a one-page executive summary for a client deck on market entry strategy for Southeast Asia, including a methodology section and keeping it concise.",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e09-c22",
-    "e09-c28",
-    "e09-c09",
-    "e09-c07"
-   ],
-   "may_fire": [
-    "e09-c06",
-    "e09-c11",
-    "e09-c12",
-    "e09-c14",
-    "e09-c15",
-    "e09-c16",
-    "e09-c18",
-    "e09-c22",
-    "e09-c28",
-    "e09-s01",
-    "e09-s02",
-    "e09-s03",
-    "e09-s05"
-   ],
-   "should_fire": [
-    "e09-s01"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 53,
-   "type": "S",
-   "text": "之前说的「don't use automatically-constructed anchor links from headings」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 53,
-     "kind": "retire",
-     "cid": "",
-     "target": "e09-c28",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 54,
-   "type": "S",
-   "text": "之前说的「keep it under 3202 words」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 54,
-     "kind": "retire",
-     "cid": "",
-     "target": "e09-c27",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 55,
-   "type": "S",
-   "text": "之前说的「no vivid sensory imagery」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 55,
      "kind": "retire",
      "cid": "",
      "target": "e09-c00",
@@ -3582,36 +3374,174 @@
    ]
   },
   {
-   "seq": 56,
-   "type": "R",
-   "text": "Create a Python script that generates a summary slide for a client presentation. The script should parse a JSON file containing project milestones and output a formatted text block with key dates and statuses.",
+   "seq": 50,
+   "type": "S",
+   "text": "之前说的「avoid CHANGELOG when writing a changelog」那条不用了，按你默认的来吧",
    "context": {
-    "app": "email-client",
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 50,
+     "kind": "retire",
+     "cid": "",
+     "target": "e09-c04",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 51,
+   "type": "S",
+   "text": "之前说的「explain each strategy in at most 29 words」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 51,
+     "kind": "retire",
+     "cid": "",
+     "target": "e09-c14",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 52,
+   "type": "R",
+   "text": "Write a Python script that takes a list of client engagement metrics and generates a clean bar chart comparing Q3 vs Q4 performance, saving it as a PNG for the deck.",
+   "context": {
+    "app": "editor",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e09-c20",
-    "e09-s00",
-    "e09-c17",
-    "e09-c21"
+    "e09-c19",
+    "e09-c18",
+    "e09-c10"
    ],
    "may_fire": [
-    "e09-c10",
+    "e09-c09",
+    "e09-c18",
     "e09-c19",
-    "e09-c20",
-    "e09-c23",
-    "e09-s00"
+    "e09-c21",
+    "e09-c22",
+    "e09-c24",
+    "e09-s02"
    ],
    "should_fire": [
-    "e09-c23"
+    "e09-s02"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 53,
+   "type": "S",
+   "text": "之前说的「don't use Conventional Commits in commit messages」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 53,
+     "kind": "retire",
+     "cid": "",
+     "target": "e09-c21",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 54,
+   "type": "S",
+   "text": "之前说的「keep every response under 83 words」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 54,
+     "kind": "retire",
+     "cid": "",
+     "target": "e09-c01",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 55,
+   "type": "S",
+   "text": "之前说的「when naming the executable, avoid a file extension」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 55,
+     "kind": "retire",
+     "cid": "",
+     "target": "e09-c09",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 56,
+   "type": "R",
+   "text": "Draft a postmortem for the Q3 client engagement where the timeline slipped by two weeks — focus on root causes, impact, and what we'd do differently next time.",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e09-s05",
+    "e09-c15",
+    "e09-c14",
+    "e09-c06"
+   ],
+   "may_fire": [
+    "e09-c02",
+    "e09-c03",
+    "e09-c05",
+    "e09-c11",
+    "e09-c12",
+    "e09-c13",
+    "e09-c15",
+    "e09-c16",
+    "e09-c17",
+    "e09-c18",
+    "e09-c19",
+    "e09-c22",
+    "e09-c24",
+    "e09-c29",
+    "e09-c30",
+    "e09-c31",
+    "e09-c32",
+    "e09-s00",
+    "e09-s01",
+    "e09-s02",
+    "e09-s03",
+    "e09-s04",
+    "e09-s05"
+   ],
+   "should_fire": [
+    "e09-s04"
    ],
    "must_not_fire": []
   },
   {
    "seq": 57,
    "type": "S",
-   "text": "之前说的「avoid naming public API parts after implementation internals」那条不用了，按你默认的来吧",
+   "text": "之前说的「never include 'before profiles'」那条不用了，按你默认的来吧",
    "context": {
     "app": "editor",
     "task": "postmortem"
@@ -3621,7 +3551,7 @@
      "seq": 57,
      "kind": "retire",
      "cid": "",
-     "target": "e09-c19",
+     "target": "e09-c03",
      "targets": [],
      "delta": 0
     }
@@ -3630,7 +3560,7 @@
   {
    "seq": 58,
    "type": "S",
-   "text": "之前说的「avoid fencing in code blocks」那条不用了，按你默认的来吧",
+   "text": "之前说的「prefer hyphen in compound modifiers」那条不用了，按你默认的来吧",
    "context": {
     "app": "editor",
     "task": "email"
@@ -3640,7 +3570,7 @@
      "seq": 58,
      "kind": "retire",
      "cid": "",
-     "target": "e09-c10",
+     "target": "e09-c30",
      "targets": [],
      "delta": 0
     }
@@ -3649,139 +3579,134 @@
   {
    "seq": 59,
    "type": "R",
-   "text": "Write a postmortem for our recent client engagement, analyzing what went well and what we could improve. Call it \"Lessons from the Q3 Engagement\" and explain each key finding in detail.",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e09-c06",
-    "e09-c16",
-    "e09-c13",
-    "e09-c09"
-   ],
-   "may_fire": [
-    "e09-c02",
-    "e09-c05",
-    "e09-c06",
-    "e09-c11",
-    "e09-c12",
-    "e09-c14",
-    "e09-c15",
-    "e09-c16",
-    "e09-c18",
-    "e09-c20",
-    "e09-c22",
-    "e09-c23",
-    "e09-c29",
-    "e09-c30",
-    "e09-c32",
-    "e09-s00",
-    "e09-s01",
-    "e09-s02",
-    "e09-s03",
-    "e09-s04",
-    "e09-s05",
-    "e09-s06"
-   ],
-   "should_fire": [
-    "e09-s03"
-   ],
-   "must_not_fire": [
-    "e09-c09",
-    "e09-c13"
-   ]
-  },
-  {
-   "seq": 60,
-   "type": "R",
-   "text": "Please write a postmortem for the recent client engagement that went over budget. Include the root causes, timeline of key events, and actionable recommendations. For each strategy you propose, explain it in sufficient detail so the client can understand the rationale.",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e09-c06",
-    "e09-c12",
-    "e09-c24",
-    "e09-c13"
-   ],
-   "may_fire": [
-    "e09-c06",
-    "e09-c12",
-    "e09-c14",
-    "e09-c15",
-    "e09-c16",
-    "e09-c18",
-    "e09-c30",
-    "e09-s03",
-    "e09-s04"
-   ],
-   "should_fire": [
-    "e09-c15"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 61,
-   "type": "R",
-   "text": "Draft a one-page executive summary for the Q3 client engagement deck, summarizing key findings and next steps for the steering committee meeting.",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e09-c11",
-    "e09-c12",
-    "e09-c31",
-    "e09-c28"
-   ],
-   "may_fire": [
-    "e09-c06",
-    "e09-c11",
-    "e09-c12",
-    "e09-c14",
-    "e09-c15",
-    "e09-c16",
-    "e09-c18",
-    "e09-c22",
-    "e09-s01",
-    "e09-s02",
-    "e09-s03",
-    "e09-s05"
-   ],
-   "should_fire": [
-    "e09-c15",
-    "e09-s01"
-   ],
-   "must_not_fire": [
-    "e09-c25"
-   ]
-  },
-  {
-   "seq": 62,
-   "type": "R",
-   "text": "Please generate a Python script that reads a CSV file of client data, filters for entries with status 'active', and outputs a summary JSON file with counts per region. Make sure the code is clean and production-ready.",
+   "text": "Create a Python script that generates a summary slide for my client deck. The script should take a JSON file with key metrics and output a formatted text file. Name the executable 'deck_summarizer'.",
    "context": {
     "app": "editor",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e09-c23",
-    "e09-s00",
-    "e09-c17",
+    "e09-s02",
+    "e09-c22",
+    "e09-c09",
     "e09-c10"
    ],
    "may_fire": [
-    "e09-c20",
-    "e09-c23",
-    "e09-s00"
+    "e09-c18",
+    "e09-c19",
+    "e09-c22",
+    "e09-c24",
+    "e09-s02"
    ],
    "should_fire": [
-    "e09-c23"
+    "e09-s02"
    ],
    "must_not_fire": []
+  },
+  {
+   "seq": 60,
+   "type": "R",
+   "text": "Write a postmortem for the Q3 product launch delay. Focus on root causes, timeline, and lessons learned — keep the headings in sentence case and plain language.",
+   "context": {
+    "app": "editor",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e09-c17",
+    "e09-c16",
+    "e09-c25",
+    "e09-c06"
+   ],
+   "may_fire": [
+    "e09-c13",
+    "e09-c15",
+    "e09-c16",
+    "e09-c17",
+    "e09-c31",
+    "e09-s03",
+    "e09-s04",
+    "e09-s05"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 61,
+   "type": "R",
+   "text": "Draft a postmortem for the Q3 client engagement that went off track, highlighting root causes and key takeaways for the team deck.",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e09-c13",
+    "e09-c15",
+    "e09-c06",
+    "e09-c08"
+   ],
+   "may_fire": [
+    "e09-c02",
+    "e09-c05",
+    "e09-c11",
+    "e09-c12",
+    "e09-c13",
+    "e09-c15",
+    "e09-c16",
+    "e09-c17",
+    "e09-c18",
+    "e09-c19",
+    "e09-c22",
+    "e09-c24",
+    "e09-c29",
+    "e09-c31",
+    "e09-c32",
+    "e09-s00",
+    "e09-s01",
+    "e09-s02",
+    "e09-s03",
+    "e09-s04",
+    "e09-s05"
+   ],
+   "should_fire": [
+    "e09-s04"
+   ],
+   "must_not_fire": [
+    "e09-c28"
+   ]
+  },
+  {
+   "seq": 62,
+   "type": "R",
+   "text": "Please draft a one-page executive summary for the Q3 client engagement report. Include key findings, revenue impact, and next steps. Keep it concise and professional.",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e09-c32",
+    "e09-c17",
+    "e09-c07",
+    "e09-c26"
+   ],
+   "may_fire": [
+    "e09-c05",
+    "e09-c11",
+    "e09-c13",
+    "e09-c15",
+    "e09-c16",
+    "e09-c17",
+    "e09-c29",
+    "e09-c32",
+    "e09-s00",
+    "e09-s04",
+    "e09-s05"
+   ],
+   "should_fire": [
+    "e09-s04"
+   ],
+   "must_not_fire": [
+    "e09-c08"
+   ]
   }
  ],
  "checkpoints": [
@@ -3796,16 +3721,16 @@
  ],
  "dup_pairs": [],
  "stats": {
-  "nodes": 40,
+  "nodes": 39,
   "dead_final": 18,
   "peak_gold_active": 33,
-  "degraded_successors": 0,
+  "degraded_successors": 1,
   "i11_pruned_traps": 0,
   "lint_errors": [
-   "I10: e09-c07 / e09-c12 textually near (J≥0.5) but INDEPENDENT — key split?",
-   "I10: e09-c07 / e09-c18 textually near (J≥0.5) but INDEPENDENT — key split?",
-   "I10: e09-c07 / e09-c31 textually near (J≥0.5) but INDEPENDENT — key split?",
-   "I10: e09-c32 / e09-s05 textually near (J≥0.5) but INDEPENDENT — key split?"
+   "I10: e09-c04 / e09-c13 textually near (J≥0.5) but INDEPENDENT — key split?",
+   "I10: e09-c04 / e09-c20 textually near (J≥0.5) but INDEPENDENT — key split?",
+   "I10: e09-c04 / e09-c29 textually near (J≥0.5) but INDEPENDENT — key split?",
+   "I10: e09-c10 / e09-c25 textually near (J≥0.5) but INDEPENDENT — key split?"
   ]
  }
 }

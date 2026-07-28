@@ -15,8 +15,8 @@
   {
    "cid": "e01-c00",
    "text": "when writing a blog post limit blog post (no more than 752 words)",
-   "clause": "每篇博客控制在752词以内",
-   "alt_clause": "写博客的话字数限制在752词以内",
+   "clause": "写博客时控制在752词以内",
+   "alt_clause": "博客文章不要超过752个词",
    "distinctive": "752",
    "coords": {
     "bucket": "deliverables",
@@ -58,55 +58,9 @@
   },
   {
    "cid": "e01-c01",
-   "text": "when writing a docstring omit the docstring summary",
-   "clause": "以后都别写docstring summary",
-   "alt_clause": "docstring里summary都删掉",
-   "distinctive": "docstring summary",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "code.comments",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "the docstring summary"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "python",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e01-c02",
    "text": "when writing about functions and methods avoid: define the term 'function'",
-   "clause": "写函数和方法时，别用‘function’泛指所有可调用对象",
-   "alt_clause": "涉及函数和方法的内容，禁止把‘function’当通用词用",
+   "clause": "写函数和方法时别用‘function’",
+   "alt_clause": "提到函数和方法时禁止使用‘function’这个词",
    "distinctive": "function",
    "coords": {
     "bucket": "reasoning_policy",
@@ -132,7 +86,7 @@
     "scope": {
      "app": "ANY",
      "task": "code-write",
-     "code_lang": "ANY",
+     "code_lang": "python",
      "nat_lang": "ANY"
     }
    },
@@ -149,10 +103,56 @@
    "successor_of": null
   },
   {
+   "cid": "e01-c02",
+   "text": "when writing a page avoid: include description of the illustration",
+   "clause": "写页面时不要包含description of the illustration",
+   "alt_clause": "页面里禁止写配图说明",
+   "distinctive": "description of the illustration",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "description of the illustration"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
    "cid": "e01-c03",
    "text": "when writing code blocks avoid: use fencing",
-   "clause": "代码块记得用 fencing",
-   "alt_clause": "写代码块时一定要加 fencing 包裹",
+   "clause": "别用 fencing",
+   "alt_clause": "不要用 fencing 包代码块",
    "distinctive": "fencing",
    "coords": {
     "bucket": "output_contract",
@@ -178,7 +178,7 @@
     "scope": {
      "app": "ANY",
      "task": "code-write",
-     "code_lang": "python",
+     "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
@@ -196,9 +196,55 @@
   },
   {
    "cid": "e01-c04",
+   "text": "when creating container types and iterators avoid: use comprehensions and generator expressions",
+   "clause": "写容器类型和迭代器时一律用推导式和生成器表达式",
+   "alt_clause": "创建容器和迭代器时只用推导式和生成器，别用传统循环或map/filter/lambda",
+   "distinctive": "推导式和生成器表达式",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.comments",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "comprehensions and generator expressions"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "python",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e01-c05",
    "text": "when writing geographical directions or regions avoid: use lower case for compass directions and regions",
-   "clause": "compass directions和regions全用小写",
-   "alt_clause": "方向词和区域名一律小写",
+   "clause": "地理方向和区域一律用小写",
+   "alt_clause": "写方向或区域名时不要大写，统一小写",
    "distinctive": "小写",
    "coords": {
     "bucket": "output_contract",
@@ -241,11 +287,11 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c05",
+   "cid": "e01-c06",
    "text": "when arranging links in source view avoid: place link destination",
-   "clause": "排链接时别把链接目标直接放在正文里碍眼",
-   "alt_clause": "安排链接的时候把目标藏起来，别让它挡在文字流中间",
-   "distinctive": "链接目标",
+   "clause": "在 source view 里排链接时，避免把链接目的地放在正文中",
+   "alt_clause": "source view 里整理链接的时候，别把链接目的地塞进正文里",
+   "distinctive": "source view",
    "coords": {
     "bucket": "output_contract",
     "key": "format.lists",
@@ -287,10 +333,10 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c06",
+   "cid": "e01-c07",
    "text": "when writing code allow long import statements (no more than 61 characters)",
-   "clause": "import 超过 61 字符不换行",
-   "alt_clause": "import 语句长度超过 61 个字符时保留原样",
+   "clause": "import语句超过61个字符就别硬折行",
+   "alt_clause": "import语句长度超过61字符时允许不换行",
    "distinctive": "61",
    "coords": {
     "bucket": "output_contract",
@@ -331,57 +377,11 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c07",
-   "text": "when writing a page avoid: include description of the illustration",
-   "clause": "写页面时不要加插图描述",
-   "alt_clause": "页面里禁止放插图描述",
-   "distinctive": "插图描述",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "doc.structure",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "description of the illustration"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
    "cid": "e01-c08",
    "text": "in conversation avoid: be friendly and uplifting",
-   "clause": "别回恶心不道德的内容，保持友好积极",
-   "alt_clause": "回复要友善正能量，别整那些低素质的",
-   "distinctive": "恶心不道德",
+   "clause": "以后回复都保持friendly and uplifting，不要vile或unethical",
+   "alt_clause": "你的回答要友好积极，禁止低俗或不道德的内容",
+   "distinctive": "friendly and uplifting",
    "coords": {
     "bucket": "communication_style",
     "key": "tone.register",
@@ -423,9 +423,9 @@
   {
    "cid": "e01-c09",
    "text": "when choosing methods avoid: prefer these methods",
-   "clause": "选方法时避开返回列表的",
-   "alt_clause": "挑方法的时候别用返回 list 的",
-   "distinctive": "返回列表",
+   "clause": "以后都别选返回 list 的方法",
+   "alt_clause": "优先避开那些返回 list 的方法",
+   "distinctive": "以后都别选返回",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "research.comparison",
@@ -469,9 +469,9 @@
   {
    "cid": "e01-c10",
    "text": "when using a single string for multiple command arguments avoid using a single string for multiple command arguments",
-   "clause": "别把多个参数塞一个字符串里",
-   "alt_clause": "多个参数不要写在一个字符串里",
-   "distinctive": "一个字符串",
+   "clause": "以后传多个命令参数的时候不要用单个字符串，拆开传",
+   "alt_clause": "多个参数别拼成一个字符串，分开传",
+   "distinctive": "单个字符串",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "code.error_handling",
@@ -515,9 +515,9 @@
   {
    "cid": "e01-c11",
    "text": "when designing interfaces avoid: distinguish public and internal interfaces",
-   "clause": "设计接口时公开接口和内部接口要分开",
-   "alt_clause": "公开接口和内部接口别混着设计",
-   "distinctive": "公开接口和内部接口",
+   "clause": "设计接口时把对外和对内的接口分开",
+   "alt_clause": "对外接口和对内接口不要混着设计",
+   "distinctive": "对外和对内的接口",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "workflow.scope_of_change",
@@ -561,9 +561,9 @@
   {
    "cid": "e01-c12",
    "text": "when using types that support iterators and operators avoid: use default iterators and operators",
-   "clause": "用默认迭代器和操作符，别用自定义的",
-   "alt_clause": "只用默认的迭代器和操作符，不要搞自定义的",
-   "distinctive": "默认迭代器和操作符",
+   "clause": "以后都别用默认的迭代器和运算符",
+   "alt_clause": "默认的迭代器和运算符一律不要用",
+   "distinctive": "迭代器和运算符",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "code.naming",
@@ -606,10 +606,56 @@
   },
   {
    "cid": "e01-c13",
+   "text": "when referring to Great Britain avoid: use Great Britain (England, Scotland and Wales)",
+   "clause": "提到英国时，Great Britain（英格兰、苏格兰和威尔士）不能用来指代北爱尔兰",
+   "alt_clause": "说英国的时候，Great Britain只包括英格兰、苏格兰和威尔士，不包括北爱尔兰",
+   "distinctive": "Great Britain",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "language.terminology",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "Great Britain (England, Scotland and Wales)"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e01-c14",
    "text": "when summarizing or generating content avoid: indicate degree of certainty or fantasy",
-   "clause": "写东西时把确定性和推测分开，别混着说",
-   "alt_clause": "总结或生成内容时，明确标出哪些是确定的、哪些是猜的或虚构的",
-   "distinctive": "分开",
+   "clause": "标注不确定的内容",
+   "alt_clause": "对猜测的部分加个提示",
+   "distinctive": "不确定",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "analysis.uncertainty",
@@ -651,10 +697,10 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c14",
+   "cid": "e01-c15",
    "text": "when using conditional imports use conditional imports",
-   "clause": "少用条件导入",
-   "alt_clause": "条件导入能不用就不用",
+   "clause": "尽量用显式的if-else处理条件导入",
+   "alt_clause": "条件导入的地方优先用if-else，别搞动态导入",
    "distinctive": "条件导入",
    "coords": {
     "bucket": "reasoning_policy",
@@ -697,11 +743,57 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c15",
+   "cid": "e01-c16",
+   "text": "when silencing warnings avoid: use narrowly-scoped pylint: disable=invalid-name directive",
+   "clause": "禁止使用大范围的 pylint disable，必须用 narrowly-scoped pylint: disable=invalid-name",
+   "alt_clause": "别用全局的 pylint 屏蔽，只准用精确的 pylint: disable=invalid-name 来关掉特定警告",
+   "distinctive": "pylint: disable=invalid-name",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "workflow.tools",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "narrowly-scoped pylint: disable=invalid-name directive"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e01-c17",
    "text": "when using command substitution or loops avoid: prefer while read loop or readarray",
-   "clause": "尽量用 while read 或 readarray，别用命令替换",
-   "alt_clause": "优先用 while read 循环或者 readarray 来读，别直接命令替换",
-   "distinctive": "while read",
+   "clause": "避免用命令替换或循环，优先用while read loop或readarray",
+   "alt_clause": "别用命令替换或循环那种容易吞空格的方式，改用while read loop或readarray",
+   "distinctive": "while read loop",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "workflow.fidelity",
@@ -743,11 +835,11 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c16",
+   "cid": "e01-c18",
    "text": "when using Markdown links avoid: use informative link titles",
-   "clause": "别用'点这里'这种链接标题",
-   "alt_clause": "链接标题要写清楚指向什么",
-   "distinctive": "点这里",
+   "clause": "Markdown链接用有信息量的标题，别用『点击这里』这种",
+   "alt_clause": "写链接的时候标题要能看出链接内容，别用『详情』『更多』",
+   "distinctive": "信息量",
    "coords": {
     "bucket": "output_contract",
     "key": "format.markdown",
@@ -789,10 +881,10 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c17",
+   "cid": "e01-c19",
    "text": "when writing an email limit length (no more than 185 words)",
-   "clause": "邮件不超过 185 个词",
-   "alt_clause": "邮件字数控制在 185 以内",
+   "clause": "邮件控制在185词以内",
+   "alt_clause": "写邮件别超过185词",
    "distinctive": "185",
    "coords": {
     "bucket": "output_contract",
@@ -833,11 +925,11 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c18",
+   "cid": "e01-c20",
    "text": "when expressing a deadline extension in an email avoid: specify day of the week of both original and new deadline",
-   "clause": "写邮件说延期时别直接写数字9，把原截止和新截止的星期几写清楚",
-   "alt_clause": "邮件里提延期不要只写9，要写明原来和新的星期几",
-   "distinctive": "星期几",
+   "clause": "写deadline延期时别直接写9，要写明原来和新截止的星期几",
+   "alt_clause": "说延期的时候不要说9天，要写清楚旧截止和新截止是周几",
+   "distinctive": "deadline",
    "coords": {
     "bucket": "deliverables",
     "key": "email.structure",
@@ -879,10 +971,10 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c19",
+   "cid": "e01-c21",
    "text": "when evaluating a generated sentence contain at least 8 words (no more than 13 words)",
-   "clause": "以后生成的句子至少要有13个词",
-   "alt_clause": "生成的句子不能少于13个词",
+   "clause": "至少13个词",
+   "alt_clause": "最少13个单词",
    "distinctive": "13",
    "coords": {
     "bucket": "output_contract",
@@ -923,147 +1015,11 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c20",
-   "text": "when referring to Great Britain avoid: use Great Britain (England, Scotland and Wales)",
-   "clause": "以后都别用“Great Britain”指代英国，要说“Great Britain (England, Scotland and Wales)”",
-   "alt_clause": "禁止用“Great Britain”单独指英国，必须带上“England, Scotland and Wales”的完整表述",
-   "distinctive": "Great Britain (England, Scotland and Wales)",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "language.terminology",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "Great Britain (England, Scotland and Wales)"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e01-c21",
-   "text": "when interacting keep one-sentence-at-a-time conversation on the couch at home (no more than 11 sentences)",
-   "clause": "一次只说一句，最多11句",
-   "alt_clause": "每次对话控制在一句以内，不超过11句",
-   "distinctive": "11",
-   "coords": {
-    "bucket": "execution_policy",
-    "key": "chat.length",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 11.0,
-     "unit": "sentences",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1 -> 11"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
    "cid": "e01-c22",
-   "text": "when responding avoid declining possibility",
-   "clause": "别否定可能性",
-   "alt_clause": "不要直接说不行",
-   "distinctive": "否定可能性",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "tone.directness",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "declining possibility"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e01-c23",
    "text": "when writing a response avoid: provide headings",
-   "clause": "不要加标题",
-   "alt_clause": "别写任何标题",
-   "distinctive": "标题",
+   "clause": "别加 headings",
+   "alt_clause": "不要用任何标题",
+   "distinctive": "headings",
    "coords": {
     "bucket": "output_contract",
     "key": "doc.headings",
@@ -1105,11 +1061,11 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c24",
+   "cid": "e01-c23",
    "text": "when evaluating a summary avoid: ensure conciseness",
-   "clause": "写摘要时别啰嗦",
-   "alt_clause": "摘要要简洁，别废话",
-   "distinctive": "别啰嗦",
+   "clause": "写简洁点，别废话",
+   "alt_clause": "精简一点，不要啰嗦",
+   "distinctive": "写简洁点",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "summary.length",
@@ -1151,10 +1107,10 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c25",
+   "cid": "e01-c24",
    "text": "when writing lines that are not links, tables, headings, or code blocks limit line length (no more than 113 characters)",
-   "clause": "非链接、非表格、非标题、非代码块的行，每行别超过113个字符",
-   "alt_clause": "除了链接、表格、标题和代码块，其他行限制在113字符以内",
+   "clause": "非链接、非表格、非标题、非代码块的普通行每行不超过113个字符",
+   "alt_clause": "除了链接、表格、标题、代码块之外的行，每行长度控制在113字符以内",
    "distinctive": "113",
    "coords": {
     "bucket": "output_contract",
@@ -1195,11 +1151,11 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c26",
+   "cid": "e01-c25",
    "text": "when writing an explanation avoid: reference Sesame Street characters",
-   "clause": "写解释时别引用芝麻街角色",
+   "clause": "写解释时别扯芝麻街角色",
    "alt_clause": "解释里不要提芝麻街人物",
-   "distinctive": "芝麻街角色",
+   "distinctive": "芝麻街",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "explanation.analogies",
@@ -1241,10 +1197,10 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c27",
+   "cid": "e01-c26",
    "text": "when evaluating generated text avoid: check first person perspective",
-   "clause": "以后都别用第一人称视角",
-   "alt_clause": "禁止使用第一人称来写",
+   "clause": "别用第一人称视角",
+   "alt_clause": "禁止第一人称写法",
    "distinctive": "第一人称",
    "coords": {
     "bucket": "output_contract",
@@ -1287,11 +1243,11 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c28",
+   "cid": "e01-c27",
    "text": "when recommending reading order avoid: recommend order of books",
-   "clause": "以后别推荐阅读顺序",
-   "alt_clause": "阅读顺序不用你管",
-   "distinctive": "阅读顺序",
+   "clause": "推荐阅读顺序时别推线性顺序",
+   "alt_clause": "给阅读顺序建议时不要用从头到尾的排法",
+   "distinctive": "线性顺序",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "research.recommendation",
@@ -1333,11 +1289,11 @@
    "successor_of": null
   },
   {
-   "cid": "e01-c29",
+   "cid": "e01-c28",
    "text": "when writing subsequent headings avoid: use H2 or deeper headings",
-   "clause": "后续 heading 不准跳级，H2 或更深必须按顺序",
-   "alt_clause": "写 heading 时不能跳过 H2，更深的层级也要逐级递增",
-   "distinctive": "heading",
+   "clause": "以后都别用H2或更深的标题",
+   "alt_clause": "H2及以下标题以后都禁用",
+   "distinctive": "或更深的标题",
    "coords": {
     "bucket": "output_contract",
     "key": "format.headings",
@@ -1379,10 +1335,54 @@
    "successor_of": null
   },
   {
+   "cid": "e01-c29",
+   "text": "when concluding an article avoid: summarize key points discussed",
+   "clause": "以后写文章结尾时别总结关键点",
+   "alt_clause": "文章结尾不要概括讨论过的要点",
+   "distinctive": "关键点",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "summary.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "verb",
+     "val": "summarise",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
    "cid": "e01-c30",
    "text": "when writing code in a project avoid: use the keyword `function`",
-   "clause": "以后在项目里写代码别用 `function` 关键字",
-   "alt_clause": "项目代码里禁止出现 `function` 这个关键字",
+   "clause": "代码里别用 `function` 关键字",
+   "alt_clause": "写代码时禁止使用 `function` 关键字",
    "distinctive": "`function`",
    "coords": {
     "bucket": "output_contract",
@@ -1427,8 +1427,8 @@
   {
    "cid": "e01-c31",
    "text": "when generating an argument confine length (no more than 699 words)",
-   "clause": "生成论点时压到 699 字以内",
-   "alt_clause": "任何论点输出都控制在 699 字内",
+   "clause": "限制在699个词以内",
+   "alt_clause": "最多699个词，不能超",
    "distinctive": "699",
    "coords": {
     "bucket": "output_contract",
@@ -1471,8 +1471,8 @@
   {
    "cid": "e01-c32",
    "text": "when writing a description exceed word count (no more than 126 words)",
-   "clause": "描述字数不超过126词",
-   "alt_clause": "写描述时字数控制在126以内",
+   "clause": "写描述时字数不超过 126 个词",
+   "alt_clause": "描述内容控制在 126 词以内",
    "distinctive": "126",
    "coords": {
     "bucket": "output_contract",
@@ -1513,20 +1513,20 @@
    "successor_of": null
   },
   {
-   "cid": "e01-s00",
-   "text": "when interacting keep one-sentence-at-a-time conversation on the couch at home (no more than 22 sentences)",
-   "clause": "跟我说话时每次不超过22句",
-   "alt_clause": "一次最多22句，别一口气说太多",
-   "distinctive": "22",
+   "cid": "e01-s01",
+   "text": "when writing lines that are not links, tables, headings, or code blocks limit line length (no more than 63 characters)",
+   "clause": "非链接、非表格、非标题、非代码块的行，每行不超过63个字符",
+   "alt_clause": "普通文本行每行最多63个字符，链接表格标题代码块除外",
+   "distinctive": "63",
    "coords": {
-    "bucket": "execution_policy",
-    "key": "chat.length",
+    "bucket": "output_contract",
+    "key": "format.line_width",
     "polarity": "require",
     "binding": "hard",
     "value": {
      "type": "numeric",
-     "num": 11.0,
-     "unit": "sentences",
+     "num": 113.0,
+     "unit": "characters",
      "cmp": "max",
      "domain": "",
      "val": "",
@@ -1546,71 +1546,27 @@
    },
    "atom": {
     "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 11 -> 22"
+    "mutation": "threshold 113 -> 63"
    },
    "anchor_weak": false,
-   "successor_of": "e01-c21"
-  },
-  {
-   "cid": "e01-s01",
-   "text": "when writing a description exceed word count (no more than 178 words)",
-   "clause": "描述字数不超过178个词",
-   "alt_clause": "写描述时，字数控制在178词以内",
-   "distinctive": "178",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 126.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 126 -> 178"
-   },
-   "anchor_weak": false,
-   "successor_of": "e01-c32"
+   "successor_of": "e01-c24"
   },
   {
    "cid": "e01-s02",
-   "text": "when using conditional imports avoid: use conditional imports",
-   "clause": "别再用条件导入",
-   "alt_clause": "以后都避免用条件导入",
-   "distinctive": "条件导入",
+   "text": "when writing code blocks use fencing",
+   "clause": "代码块都用 fence 包",
+   "alt_clause": "写代码块统一用 fence 包裹",
+   "distinctive": "代码块都用",
    "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.dependencies",
-    "polarity": "prefer",
-    "binding": "soft",
+    "bucket": "output_contract",
+    "key": "format.code_blocks",
+    "polarity": "avoid",
+    "binding": "hard",
     "value": {
      "type": "set",
      "num": null,
@@ -1620,9 +1576,9 @@
      "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "include",
+     "op": "exclude",
      "items": [
-      "conditional imports"
+      "fencing"
      ],
      "before": "",
      "after": ""
@@ -1636,22 +1592,22 @@
    },
    "atom": {
     "provenance": {
-     "source": "google-styleguide/pyguide",
+     "source": "google-styleguide/docguide",
      "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prefer -> avoid"
+    "mutation": "polarity avoid -> prefer"
    },
    "anchor_weak": false,
-   "successor_of": "e01-c14"
+   "successor_of": "e01-c03"
   },
   {
-   "cid": "e01-s04",
-   "text": "when writing a blog post limit blog post (no more than 1056 words)",
-   "clause": "博客控制在1056字以内",
-   "alt_clause": "写博客别超过1056字",
-   "distinctive": "1056",
+   "cid": "e01-s03",
+   "text": "when writing a blog post limit blog post (no more than 937 words)",
+   "clause": "写博客别超过937词",
+   "alt_clause": "博客字数控制在937以内",
+   "distinctive": "937",
    "coords": {
     "bucket": "deliverables",
     "key": "length.max",
@@ -1685,63 +1641,17 @@
      "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 752 -> 1056"
+    "mutation": "threshold 752 -> 937"
    },
    "anchor_weak": false,
    "successor_of": "e01-c00"
   },
   {
-   "cid": "e01-s05",
-   "text": "when summarizing or generating content indicate degree of certainty or fantasy",
-   "clause": "不确定或脑补的内容要标记出来",
-   "alt_clause": "如果只是猜测或不确定，就加个‘可能’或‘推测’",
-   "distinctive": "不确定",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "analysis.uncertainty",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "degree of certainty or fantasy"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity avoid -> prefer"
-   },
-   "anchor_weak": false,
-   "successor_of": "e01-c13"
-  },
-  {
-   "cid": "e01-s06",
-   "text": "when writing an email limit length (no more than 262 words)",
-   "clause": "写邮件别超过262个词",
-   "alt_clause": "邮件正文控制在262词以内",
-   "distinctive": "262",
+   "cid": "e01-s04",
+   "text": "when writing an email limit length (no more than 295 words)",
+   "clause": "邮件不超过295个词",
+   "alt_clause": "邮件字数控制在295以内",
+   "distinctive": "295",
    "coords": {
     "bucket": "output_contract",
     "key": "email.length",
@@ -1775,10 +1685,100 @@
      "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 185 -> 262"
+    "mutation": "threshold 185 -> 295"
    },
    "anchor_weak": false,
-   "successor_of": "e01-c17"
+   "successor_of": "e01-c19"
+  },
+  {
+   "cid": "e01-s05",
+   "text": "when recommending reading order recommend order of books",
+   "clause": "以后推荐阅读顺序都按出版时间排",
+   "alt_clause": "推荐书单的顺序就按出版日期走，别自己乱排",
+   "distinctive": "出版时间",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "research.recommendation",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "order of books"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": "e01-c27"
+  },
+  {
+   "cid": "e01-s06",
+   "text": "when writing a description exceed word count (no more than 199 words)",
+   "clause": "写描述时字数别超过199个字",
+   "alt_clause": "描述类内容控制在199个字以内",
+   "distinctive": "199",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 126.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 126 -> 199"
+   },
+   "anchor_weak": false,
+   "successor_of": "e01-c32"
   }
  ],
  "effects": [
@@ -2048,8 +2048,8 @@
   },
   {
    "seq": 41,
-   "kind": "contradict",
-   "cid": "e01-s00",
+   "kind": "retire",
+   "cid": "",
    "target": "e01-c21",
    "targets": [],
    "delta": 0
@@ -2058,7 +2058,7 @@
    "seq": 42,
    "kind": "contradict",
    "cid": "e01-s01",
-   "target": "e01-c32",
+   "target": "e01-c24",
    "targets": [],
    "delta": 0
   },
@@ -2066,15 +2066,15 @@
    "seq": 43,
    "kind": "contradict",
    "cid": "e01-s02",
-   "target": "e01-c14",
+   "target": "e01-c03",
    "targets": [],
    "delta": 0
   },
   {
    "seq": 45,
-   "kind": "retire",
-   "cid": "",
-   "target": "e01-c19",
+   "kind": "contradict",
+   "cid": "e01-s03",
+   "target": "e01-c00",
    "targets": [],
    "delta": 0
   },
@@ -2082,7 +2082,7 @@
    "seq": 46,
    "kind": "contradict",
    "cid": "e01-s04",
-   "target": "e01-c00",
+   "target": "e01-c19",
    "targets": [],
    "delta": 0
   },
@@ -2090,7 +2090,7 @@
    "seq": 47,
    "kind": "contradict",
    "cid": "e01-s05",
-   "target": "e01-c13",
+   "target": "e01-c27",
    "targets": [],
    "delta": 0
   },
@@ -2098,7 +2098,7 @@
    "seq": 49,
    "kind": "contradict",
    "cid": "e01-s06",
-   "target": "e01-c17",
+   "target": "e01-c32",
    "targets": [],
    "delta": 0
   },
@@ -2114,7 +2114,7 @@
    "seq": 51,
    "kind": "retire",
    "cid": "",
-   "target": "e01-c05",
+   "target": "e01-c13",
    "targets": [],
    "delta": 0
   },
@@ -2122,7 +2122,7 @@
    "seq": 53,
    "kind": "retire",
    "cid": "",
-   "target": "e01-c06",
+   "target": "e01-c07",
    "targets": [],
    "delta": 0
   },
@@ -2130,7 +2130,7 @@
    "seq": 54,
    "kind": "retire",
    "cid": "",
-   "target": "e01-c24",
+   "target": "e01-c06",
    "targets": [],
    "delta": 0
   },
@@ -2138,7 +2138,7 @@
    "seq": 55,
    "kind": "retire",
    "cid": "",
-   "target": "e01-c11",
+   "target": "e01-c14",
    "targets": [],
    "delta": 0
   },
@@ -2146,7 +2146,7 @@
    "seq": 57,
    "kind": "retire",
    "cid": "",
-   "target": "e01-c09",
+   "target": "e01-c05",
    "targets": [],
    "delta": 0
   },
@@ -2154,7 +2154,7 @@
    "seq": 58,
    "kind": "retire",
    "cid": "",
-   "target": "e01-c03",
+   "target": "e01-c23",
    "targets": [],
    "delta": 0
   },
@@ -2162,7 +2162,7 @@
    "seq": 41,
    "kind": "retire",
    "cid": "",
-   "target": "e01-c08",
+   "target": "e01-c09",
    "targets": [],
    "delta": 0
   },
@@ -2170,7 +2170,7 @@
    "seq": 42,
    "kind": "retire",
    "cid": "",
-   "target": "e01-c25",
+   "target": "e01-c28",
    "targets": [],
    "delta": 0
   },
@@ -2178,7 +2178,7 @@
    "seq": 43,
    "kind": "retire",
    "cid": "",
-   "target": "e01-c28",
+   "target": "e01-c11",
    "targets": [],
    "delta": 0
   },
@@ -2186,7 +2186,7 @@
    "seq": 45,
    "kind": "retire",
    "cid": "",
-   "target": "e01-c07",
+   "target": "e01-c08",
    "targets": [],
    "delta": 0
   },
@@ -2202,7 +2202,7 @@
    "seq": 38,
    "kind": "reinforce",
    "cid": "",
-   "target": "e01-c26",
+   "target": "e01-c25",
    "targets": [],
    "delta": 0
   },
@@ -2226,8 +2226,8 @@
   },
   {
    "seq": 2,
-   "type": "S",
-   "text": "哎你刚才那个脚本写得还行，但有个问题啊，你写博客的时候能不能控制一下字数，别动不动就长篇大论，我这边看着累。以后写博客，每篇控制在752词以内，别超了行不行",
+   "type": "C",
+   "text": "帮我写封邮件，通知组里下周二的数据库维护窗口，预计凌晨2点到4点，影响读服务，提前把通知发出去，顺便提醒大家检查自己的连接池配置。以后都注意，写博客的时候控制在752词以内，别超了 另外帮我写个这周线上事故的复盘报告，按时间线列一下，再给个改进建议列表，要能直接发给老板看的那种",
    "context": {
     "app": "email-client",
     "task": "email"
@@ -2246,9 +2246,9 @@
   {
    "seq": 3,
    "type": "S",
-   "text": "对，还有以后都别写docstring summary了，直接写参数和返回值就行，省得我看着烦",
+   "text": "你上次写文档的时候又管函数叫function了，咱能不能别这样，以后写函数和方法的说明时，别用‘function’这个词，直接说‘函数’就行，不然读起来怪别扭的。还有，帮我把这个 nginx 配置里 upstream 的 server 改成从环境变量读取，用 lua 或者 envsubst 都行，别写死 IP",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -2264,8 +2264,8 @@
   },
   {
    "seq": 4,
-   "type": "S",
-   "text": "你刚才那段里又混着用function和method了，这两个在咱们文档里是两回事，以后写函数相关的东西别再用‘function’泛指所有可调用对象了，搞得新人看不懂。顺便帮我把上周五Redis内存打满导致缓存雪崩的事故复盘写一下，根因、影响、修复步骤、后续改进都列上，语气平和点别甩锅，刚那个代码块你咋没加 fencing 啊，直接贴的纯文本，我复制的时候格式全乱了。以后写代码块记得用 fencing 包起来，别省这个",
+   "type": "C",
+   "text": "帮我写个脚本，把最近三天nginx日志里所有状态码大于等于400的请求按ip聚合统计一下，输出到csv里，字段是ip，请求次数，最后一次出现的时间，按次数降序排。上回你写的那页，配图说明又写了一大堆，我跟你说了多少次了，写页面的时候别带那个description of the illustration，直接删掉，没人看那个，还占地方。然后帮我写封邮件，通知各部门下周二的数据库维护窗口，凌晨2点到4点，影响所有主库读写在那个时段会中断，让前端接口也一起发个公告。你刚才那个代码块怎么又用三个反引号包起来了 我上次不是说了吗 别用那种 fencing 我截图发给别人看的时候格式全乱了 以后写代码块别用 fencing 了行不行 还有帮我写个故障复盘 昨天线上 Redis 挂了 15 分钟 用户登录全崩了 root cause 是内存打满 OOM 时间线 影响 修复 后续改进都列一下",
    "context": {
     "app": "email-client",
     "task": "code-write"
@@ -2292,32 +2292,29 @@
   {
    "seq": 5,
    "type": "R",
-   "text": "帮我写一个Python脚本，用来批量检查ECS实例的磁盘使用率，超过80%就报警，输出到日志文件里",
+   "text": "帮我写个Python脚本，解析nginx的access log，按IP统计请求次数，输出前10个IP",
    "context": {
     "app": "email-client",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e01-c03",
-    "e01-c02"
+    "e01-c01",
+    "e01-c03"
    ],
    "may_fire": [
     "e01-c01",
-    "e01-c02",
     "e01-c03"
    ],
-   "should_fire": [
-    "e01-c03"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 6,
    "type": "C",
-   "text": "帮我写封邮件给研发团队，通知他们下周三晚上十点要重启数据库集群，大概需要十五分钟 downtime，让他们提前安排好任务别在那时候跑线上作业。对了帮我把这个复盘报告写出来，时间线根因影响范围修复措施todo都列上就行，我先发群里看看。另外以后写方向或者区域的时候，compass direction和region全用小写，别大写，比如south china别写成South China",
+   "text": "帮我写一封邮件给组里，通知下周三下午两点做一次数据库迁移演练，需要所有人提前检查自己的本地环境，有问题提前找我沟通。对了顺便帮我写封邮件，通知各部门下周二凌晨2点到4点数据库维护，主库读写会中断，让前端接口也发个公告。还有以后写容器类型和迭代器的时候别用传统循环、map、filter、lambda那些，一律用推导式和生成器表达式",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "email"
    },
    "effects": [
@@ -2333,10 +2330,10 @@
   },
   {
    "seq": 7,
-   "type": "C",
-   "text": "帮我写个这周线上服务的故障复盘报告，从昨天那个数据库连接池打满开始，到凌晨回滚结束，把关键时间点和影响范围列出来，我直接贴到wiki上。你上次那个链接排布搞得我有点晕，source view 里链接目标直接怼在正文里，看着乱死了。以后排链接的时候能不能把目标藏到别处去，别直接扔在文字流里碍眼。对了，帮我写个 Python 脚本，扫描 /var/log 下所有 .log 文件，找最近24小时内有改动的，然后按行数统计前10大的文件，输出格式是 '文件名 行数 大小MB'。对了，帮我写个邮件给运维同事，说我们那台 staging 的 MySQL 又 OOM 了，连着两次了，让他们加一下 swap 或者看看内存配置，顺便 cc 一下 TL——哦还有，以后写代码的时候 import 超过 61 个字符就别强行换行了，直接写长行就行，不用管那个 80 字符限制",
+   "type": "S",
+   "text": "哎对了，帮我写封邮件给运维组，说我们线上那个Redis集群的慢查询日志需要保留更长时间，现在只留一天不够排查问题，建议改成保留七天，顺便问下他们有没有时间一起review下慢查询的优化方案。还有以后写地理方向或者区域的时候，记得用全小写，比如north、southwest这种，别大写首字母了，你刚那个回复里，source view 里链接堆得乱七八糟的，看得眼都花了。以后在 source view 里排链接的时候，别把链接目的地直接怼在正文里，太乱了，放后面或者单独一行都行。另外帮我写个python脚本，用来批量检查一组服务器端口通不通，输入是个ip列表文件，输出结果要标清楚哪些通哪些不通，超时设3秒，别用nmap，用socket",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -2361,9 +2358,9 @@
   {
    "seq": 8,
    "type": "C",
-   "text": "帮我写个 Python 脚本，解析 nginx 的 access log，统计每个 IP 的请求次数，然后按次数降序输出前 20 个，log 路径是 /var/log/nginx/access.log，格式是默认的 combined。你刚才那个页面里怎么又放了一堆图啊，我跟你说了多少次了，写页面的时候别加插图描述，这种图对排查问题一点用没有，还占地方，下次注意啊。对了，顺便帮我写个这周线上故障的复盘报告，把时间线、影响范围、根因和修复步骤都列清楚，我直接发到群里",
+   "text": "帮我写个go的脚本，用来批量检查一组http接口的健康状态，返回码不是200就告警，输出到stdout就行。对了顺便帮我写封邮件，通知大家这周五下午三点升级Kubernetes集群，各服务owner确认自己服务没问题，没空就提前授权给oncall的人。还有你写代码的时候import语句超过61个字符就别硬折行了，直接放一行，80字符限制我不管，看着更清楚",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "code-write"
    },
    "effects": [
@@ -2380,7 +2377,7 @@
   {
    "seq": 9,
    "type": "C",
-   "text": "写一下昨天线上数据库连接池爆满的事儿，排个postmortem，把时间线、根因、修复步骤和后续改进列清楚。对了，以后都别回那种恶心或者不道德的东西啊，保持友好积极就行。然后帮我写个事故复盘，昨晚那个数据库连接池爆炸的事，记一下时间线、根因和修复动作，语气别太正式，说人话就行。哎你刚才那个代码片段里又用返回列表的方法了，不是说好的吗，选方法的时候尽量避开那些返回 list 的，容易出性能坑，你咋又忘了",
+   "text": "帮我写个事故复盘，上周五线上那个Redis连接池耗尽的事，大概20分钟才恢复，根因是没配limit，连带影响三个下游服务，写完后发到群里。对了，顺便帮我把这个脚本的风格调一下，以后你回我的东西都别搞那些vile或者不ethical的内容，我要friendly and uplifting的调调，别给我整阴阳怪气或者道德有问题的回复。然后那个python脚本，帮我写个批量检查服务器端口通不通的，输入是一个ip列表文件，输出标清楚哪些通哪些不通，超时3秒，别用nmap，用socket就行。对了 以后都注意一下，别选那些返回 list 的方法，优先用别的",
    "context": {
     "app": "email-client",
     "task": "postmortem"
@@ -2407,31 +2404,33 @@
   {
    "seq": 10,
    "type": "R",
-   "text": "给组里发个邮件，说下我们新搭的监控系统地址，dashboard在monitor.internal，region用us-east-1，别搞大写",
+   "text": "帮我写封邮件，发给团队，说一下我们下周二要把香港的数据库迁移到新加坡，让大家提前检查一下自己的服务有没有依赖香港的读写，有的话要改配置",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e01-c09",
-    "e01-c04"
+    "e01-c05",
+    "e01-c08"
    ],
    "may_fire": [
     "e01-c00",
-    "e01-c04",
+    "e01-c05",
     "e01-c08",
     "e01-c09"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e01-c05"
+   ],
    "must_not_fire": []
   },
   {
    "seq": 11,
-   "type": "C",
-   "text": "帮我写个这周线上事故的复盘报告，重点说下那个Redis连接池耗尽的问题，把根因、影响和修复方案都列清楚，最后加个后续改进事项。对了，上次那个MySQL死锁事故的postmortem帮我写个草稿，主要是问题根因、影响范围、修复步骤和后续的预防措施，我语音说的你整理一下就行。另外以后你写命令的时候别把多个参数塞一个字符串里，分开写，不然我review的时候眼睛都要瞎了",
+   "type": "S",
+   "text": "对了帮我写个故障复盘，昨天线上 Redis 挂了 15 分钟，用户登录全崩了，root cause 是内存打满然后 OOM 了，时间线影响修复后续改进都列一下 另外以后传多个命令参数的时候不要用单个字符串，拆开传",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -2447,10 +2446,10 @@
   },
   {
    "seq": 12,
-   "type": "S",
-   "text": "对了以后都注意一下，设计接口的时候把公开接口和内部接口分开，别混在一起，不然review的时候看着乱，你刚刚那个脚本里，用了一堆自定义的迭代器和操作符，看得我头大，以后别用那些了，默认的迭代器和操作符就够用了，清晰好懂。还有，帮我写个 Python 脚本，监控某个端口是否通，不通就发钉钉告警，环境是 CentOS，端口号用 8080 就行",
+   "type": "C",
+   "text": "帮我写个 Python 脚本，监控 nginx 的 access log 如果有 5xx 超过阈值就告警到钉钉群。对了，以后都注意一下，设计接口的时候把对外和对内的接口分开，别混在一起，不然后面维护起来很蛋疼。另外帮我写封邮件给运维组，说我们线上那个Redis集群的慢查询日志需要保留更长时间，现在只留一天不够排查问题，建议改成保留七天，顺便问下他们有没有时间一起review下慢查询的优化方案。以后都别用默认的迭代器和运算符了，尤其那些支持迭代器和运算符的类型，自己写清楚。另外帮我写个这周线上事故的复盘报告，把时间线、root cause、影响范围、修复措施都列清楚，最后加个改进TODO，格式跟上次一样就行",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "code-write"
    },
    "effects": [
@@ -2474,10 +2473,10 @@
   },
   {
    "seq": 13,
-   "type": "C",
-   "text": "写个postmortem吧，昨天线上Redis集群OOM导致缓存雪崩，核心接口延迟从5ms飙到3s，持续了12分钟，根因是某个业务方没加ttl的key把内存打爆了，加上我们监控告警阈值设太高没及时发现，修复方案是加逐出策略和调低告警线，顺便把那个业务方的key限流一下。语音输入又没识别对，你刚才那个总结里把‘可能’和‘肯定’混在一起了，读起来像我在瞎猜，根本没法用。以后别这样了，写东西的时候把确定性和推测或者脑洞分开，别混着说",
+   "type": "S",
+   "text": "对了，以后都注意一下，提到英国的时候，Great Britain（英格兰、苏格兰和威尔士）这个说法不能用来指代北爱尔兰，别搞混了",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "postmortem"
    },
    "effects": [
@@ -2493,8 +2492,8 @@
   },
   {
    "seq": 14,
-   "type": "C",
-   "text": "帮我写封邮件给新来的运维同事，说一下我们服务器的日志轮转策略，包括每天凌晨3点切割、保留7天、压缩旧日志，让他配置一下rsyslog和logrotate，抄送组长。你上次那个条件导入的写法又给我搞出问题了，我查了半天才发现是条件导入没处理好。以后别老用条件导入行不行，能少用就少用，藏得深容易出bug。还有，帮我写个这周线上事故的复盘报告，简单点，把时间线、根因、影响范围、修复措施和后续todo列一下就行，我先发群里看看。对了，顺便说一句，以后写脚本的时候，处理文件循环或者命令替换，尽量用 while read 或者 readarray，别用那种直接命令替换的写法，容易踩空白符的坑。另外帮我写个这周线上事故的复盘报告，把几个关键时间点和根因列清楚，还有后续的改进项也写上，不用太正式，组里看就行",
+   "type": "S",
+   "text": "刚那封邮件写得还行，但你没标注哪些是猜测哪些是事实啊，比如你说“可能是内存碎片导致”，我哪知道你是猜的还是真有依据 以后写这种带推测的内容，你直接标一下“我猜”或者“不确定”，别让我自己猜你的语气，行不，你刚才那个条件导入的写法我看着还是别扭，感觉不够干净。以后涉及到条件导入，还是尽量用显式的if-else吧，别用那种花里胡哨的动态导入，可读性差。对了，帮我写封邮件给运维组，说我们线上那个Redis集群的慢查询日志需要保留更长时间，现在只留一天不够排查问题，建议改成保留七天，顺便问下他们有没有时间一起review下慢查询的优化方案",
    "context": {
     "app": "slack",
     "task": "email"
@@ -2521,30 +2520,34 @@
   {
    "seq": 15,
    "type": "R",
-   "text": "帮我写个邮件给组里，通知大家下周三下午三点有个线上分享，主题是最近我们做的那个容器化迁移方案，会议链接我放附件里了",
+   "text": "帮我写个脚本，每天凌晨自动清理 /tmp 下超过三天的日志文件，日志名是 app-*.log",
    "context": {
-    "app": "slack",
-    "task": "email"
+    "app": "editor",
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e01-c04",
-    "e01-c09"
+    "e01-c06",
+    "e01-c10"
    ],
    "may_fire": [
-    "e01-c00",
+    "e01-c01",
+    "e01-c03",
     "e01-c04",
-    "e01-c08",
-    "e01-c09",
-    "e01-c13"
+    "e01-c06",
+    "e01-c07",
+    "e01-c10",
+    "e01-c11",
+    "e01-c12",
+    "e01-c15"
    ],
    "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 16,
-   "type": "C",
-   "text": "帮我写个 bash 脚本，批量检查线上 20 台机器磁盘使用率，超过 80% 就报警，日志写到 /var/log/disk_check.log。对了，你以后别用那种 Markdown 链接标题写什么‘点这里’‘链接’之类的，直接写清楚是啥链接。顺便帮我写个 Python 脚本，扫描 /var/log 下所有 .log 文件，找最近24小时内有改动的，然后按行数统计前10大的文件，输出格式是 '文件名 行数 大小MB'",
+   "type": "S",
+   "text": "你上回那个代码里，别用那种大范围的 pylint disable 来沉默警告，特别是指定 invalid-name 的时候，范围要缩到最小，不然以后查起来全是坑。另外，帮我写封邮件，通知各部门下周二的数据库维护窗口，凌晨2点到4点，影响所有主库读写在那个时段会中断，让前端接口也一起发个公告",
    "context": {
     "app": "email-client",
     "task": "code-write"
@@ -2563,9 +2566,9 @@
   {
    "seq": 17,
    "type": "C",
-   "text": "帮我写个昨晚Redis OOM事故的postmortem，大概时间线、根因、影响范围、修复措施，还有后续怎么避免再发生，要能直接发给组里review的。对了，以后写邮件你帮我注意一下，别超过 185 个词，太长没人看。然后刚才那个事，帮我写个邮件给运维同事，说我们那台 staging 的 MySQL 又 OOM 了，连着两次了，让他们加一下 swap 或者看看内存配置，顺便 cc 一下 TL。对了，顺便说下，以后写邮件说延期的时候别直接写数字9，把原截止和新截止的星期几写清楚，比如‘原定周五改成下周三’这种。然后帮我写个这周线上事故的复盘报告，把几个关键时间点和根因列清楚，还有后续的改进项也写上，不用太正式，组里看就行",
+   "text": "帮我写个故障复盘，昨天下午线上数据库连接池爆了，导致服务不可用大概十五分钟，根因是慢查询没及时杀掉，影响范围、时间线、后续改进都列一下。对了，帮我写个这周线上服务异常的复盘报告，把昨天那个Redis主从切换导致写超时的case也加进去，大概讲一下影响范围和修复步骤。以后写脚本的时候，尽量避免用命令替换或者循环那种容易吃空格的方式，用while read loop或者readarray来搞。你上次那个Markdown链接的标题写的什么鬼啊，一堆『点击这里』『详情』，根本不知道点进去是啥，以后别用这种没信息量的标题了，直接写清楚内容",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "postmortem"
    },
    "effects": [
@@ -2590,7 +2593,7 @@
   {
    "seq": 18,
    "type": "C",
-   "text": "帮我写封邮件给运维组，说我们下周要升级Redis集群，需要他们配合安排停机窗口，最好能定在周三凌晨两点，预计影响时间不超过30分钟。对了 以后你生成的句子至少要有13个词 别整太短的 不然看着像没写完 还有那个nginx日志监控脚本帮我写一下 阈值你看着设",
+   "text": "帮我写个邮件给运维的同事，说我们下周三晚上要上线一个新服务，需要他们提前给K8s集群加几个节点，顺便把ingress的域名证书也配好，大概需要多少资源你帮我估一下，谢谢。对了我刚说的那个事故postmortem，你写的时候注意一下，以后写邮件都控制在185词以内，太长没人看。那个postmortem主要写mongo连接池爆了导致api超时，从10:12到10:28影响所有用户，root cause是connection没释放，修了加了个超时关闭，顺便把监控告警补上。",
    "context": {
     "app": "slack",
     "task": "email"
@@ -2609,9 +2612,9 @@
   {
    "seq": 19,
    "type": "C",
-   "text": "帮我写个这周线上事故的复盘报告，重点放在根因和后续改进措施上，直接给个 draft 就行。对了，以后都别用“Great Britain”指代英国，要说“Great Britain (England, Scotland and Wales)”，不然Northern Ireland那边老被漏掉，上次postmortem里就写错了，搞得人家很不爽。另外上次线上那个MySQL死锁事故的postmortem帮我写个草稿，主要是问题根因、影响范围、修复步骤和后续的预防措施，我语音说的你整理一下就行。你刚才那波输出太长了，一口气扔了十几句，我这边在家沙发上看着眼睛都花了。以后跟我聊的时候，一次只说一句，最多11句，别一上来就整段整段的，行不",
+   "text": "把上周五线上事故的复盘报告整理一下，重点写清楚根因、影响范围、修复时间线，还有后续要加的告警和监控项，别太啰嗦，给TL看就行。对了，顺便帮我写封邮件，通知大家这周五下午三点要升级Kubernetes集群，各服务owner确认自己的服务没问题，如果没空就提前授权给oncall的人。还有以后写deadline延期的时候，别直接写9这个数字，要说清楚原来截止是哪天、新截止是哪天，比如原来周五现在下周一，别光写延期9天，听得懂吧。对了还有个事，以后你生成的句子至少得13个词以上，别整太短，不够表达清楚。顺便帮我写个这周线上服务异常的复盘报告，把昨天那个Redis主从切换导致写超时的case也加进去，大概讲一下影响范围和修复步骤",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2636,39 +2639,38 @@
   {
    "seq": 20,
    "type": "R",
-   "text": "帮我写个这周线上故障的复盘报告，格式要简洁，把故障时间线、根因、影响范围和修复措施列清楚就行，不用加图",
+   "text": "帮我写一个内网用的服务发现模块，接口分两层：一层给外部业务调，另一层是内部 agent 上报用的，不要混在一起，代码用 Go 写",
    "context": {
     "app": "slack",
-    "task": "report"
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e01-c04",
-    "e01-c07"
+    "e01-c11",
+    "e01-c06"
    ],
    "may_fire": [
+    "e01-c01",
+    "e01-c03",
     "e01-c04",
+    "e01-c06",
     "e01-c07",
-    "e01-c09",
-    "e01-c13",
+    "e01-c10",
+    "e01-c11",
+    "e01-c12",
+    "e01-c15",
     "e01-c16",
-    "e01-c19",
-    "e01-c20",
-    "e01-c21"
+    "e01-c17"
    ],
-   "should_fire": [
-    "e01-c13",
-    "e01-c19",
-    "e01-c21"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 21,
    "type": "C",
-   "text": "帮我把这次线上事故的复盘写一下，核心问题是数据库连接池耗尽，影响范围是订单服务，恢复手段是临时扩容加限流，要写清楚时间线根因和后续改进。你上次那个回复又直接说‘这个没法搞’了，我跟你讲，以后别动不动就否定可能性，哪怕你觉得不行，也先想想有没有替代方案或者workaround，别一上来就关死门",
+   "text": "帮我写个事故复盘文档，上周三线上那个Redis主从切换导致缓存雪崩的，把时间线、根因、影响范围和修复措施都列清楚，最后加个TODO list。不对，你刚才那个回复里怎么还带标题啊，我写文档最烦这种格式，直接给我正文就行，别搞那些花里胡哨的 headings",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "postmortem"
    },
    "effects": [
@@ -2685,9 +2687,9 @@
   {
    "seq": 22,
    "type": "C",
-   "text": "帮我写封邮件给运维组，说我们那台Redis主从同步延迟有点高，想让他们帮忙看看是不是网络带宽的问题，顺便提一下我们最近在压测，可能流量大了。对了，帮我写封邮件，通知前端组明天下午三点在线上会议讨论新的API接口设计，把腾讯会议链接发给他们，顺便提醒他们提前看一下我上周发的设计文档——另外你以后写东西别加什么标题啊，直接正文就行，我这边看着烦。对了 还有 以后写摘要的时候别给我搞那么啰嗦 直接说重点就行 另外帮我写个这周线上故障的复盘报告，把时间线、影响范围、根因和修复步骤都列清楚，我直接发到群里",
+   "text": "帮我写个邮件给新来的运维同事，说一下我们线上环境更新包要放在 /opt/deploy/ 下，别放 /tmp，还有记得更新后删掉旧版本，别留一堆历史包占空间。你刚写的那个复盘太啰嗦了，好多细节其实一句话就能说完，别搞那么长，以后都给我写简洁点，别废话。对了，以后写非链接、非表格、非标题、非代码块的那种普通行，每行别超过113个字符，看着舒服点。另外帮我写封邮件，通知各部门下周二的数据库维护窗口，凌晨2点到4点，影响所有主库读写在那个时段会中断，让前端接口也一起发个公告。",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -2712,7 +2714,7 @@
   {
    "seq": 23,
    "type": "C",
-   "text": "帮我写个事故报告，昨晚线上有个数据库连接池被打满的事故，记一下影响范围、根因分析和后续改进措施，口语点就行，不用太正式。对了，你写这个脚本的时候，非链接、非表格、非标题、非代码块的行，每行别超过113个字符，帮我写个 Python 脚本，扫描 /var/log 下所有 .log 文件，找最近24小时内有改动的，然后按行数统计前10大的文件，输出格式是 '文件名 行数 大小MB'",
+   "text": "帮我写个周报，总结这周把线上nginx配置从openresty迁移到envoy了，主要改了upstream和限流逻辑，灰度跑了两天没出问题，下周准备切全量，顺便提一下prometheus监控指标也加上了。对了，以后写解释的时候别扯芝麻街那些角色，太儿戏了，正经点。另外帮我写个这周线上事故的复盘报告，按时间线列一下，再给个改进建议列表，要能直接发给老板看的那种",
    "context": {
     "app": "email-client",
     "task": "report"
@@ -2731,38 +2733,36 @@
   {
    "seq": 24,
    "type": "R",
-   "text": "帮我写一个Python函数，用来解析Prometheus的告警规则文件，返回一个结构化的字典，包含规则名、表达式和持续时间，另外把内部处理逻辑和对外暴露的接口分开写",
+   "text": "帮我写个go的脚本，用来批量检查一组http接口的健康状态，返回码不是200就告警，输出到stdout就行",
    "context": {
     "app": "email-client",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e01-c02",
-    "e01-c11"
+    "e01-c11",
+    "e01-c03"
    ],
    "may_fire": [
     "e01-c01",
-    "e01-c02",
     "e01-c03",
-    "e01-c05",
+    "e01-c04",
     "e01-c06",
+    "e01-c07",
     "e01-c10",
     "e01-c11",
     "e01-c12",
-    "e01-c14",
-    "e01-c15"
+    "e01-c15",
+    "e01-c16",
+    "e01-c17"
    ],
-   "should_fire": [
-    "e01-c02",
-    "e01-c03"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 25,
    "type": "R",
-   "text": "帮我写封邮件给运维团队，通知他们下周二的数据库维护窗口提前到上午十点，持续时间不变还是两小时，顺便提醒他们检查备份脚本有没有更新",
+   "text": "帮我把这个故障复盘总结发邮件给全组，语气友好点，别太严肃了",
    "context": {
     "app": "slack",
     "task": "email"
@@ -2774,12 +2774,11 @@
    ],
    "may_fire": [
     "e01-c00",
-    "e01-c04",
+    "e01-c05",
     "e01-c08",
     "e01-c09",
     "e01-c13",
-    "e01-c17",
-    "e01-c18",
+    "e01-c14",
     "e01-c19",
     "e01-c20",
     "e01-c21",
@@ -2789,9 +2788,7 @@
     "e01-c25"
    ],
    "should_fire": [
-    "e01-c17",
-    "e01-c19",
-    "e01-c25"
+    "e01-c19"
    ],
    "must_not_fire": []
   },
@@ -2814,36 +2811,30 @@
   {
    "seq": 28,
    "type": "R",
-   "text": "帮我写封邮件给运维组，说我们下周三下午两点要重启数据库集群，预计停机十五分钟，让他们提前通知受影响的业务方，顺便把维护窗口发到群里",
+   "text": "帮我写个Python脚本，定期清理服务器上超过7天的日志文件，路径是 /var/log/myapp/，要保留最近3天的日志，用cron跑就行",
    "context": {
-    "app": "slack",
-    "task": "email"
+    "app": "email-client",
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e01-c20",
-    "e01-c18"
+    "e01-c03",
+    "e01-c07"
    ],
    "may_fire": [
-    "e01-c00",
+    "e01-c01",
+    "e01-c03",
     "e01-c04",
-    "e01-c08",
-    "e01-c09",
-    "e01-c13",
-    "e01-c17",
-    "e01-c18",
-    "e01-c19",
-    "e01-c20",
-    "e01-c21",
-    "e01-c22",
-    "e01-c23",
-    "e01-c24",
-    "e01-c25"
+    "e01-c06",
+    "e01-c07",
+    "e01-c10",
+    "e01-c11",
+    "e01-c12",
+    "e01-c15",
+    "e01-c16",
+    "e01-c17"
    ],
-   "should_fire": [
-    "e01-c17",
-    "e01-c25"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2857,7 +2848,7 @@
   {
    "seq": 30,
    "type": "R",
-   "text": "帮我写个python脚本，从S3拉取最近一小时的日志，解析出所有ERROR级别的行，按时间排序后输出到本地文件，只保留message和timestamp两个字段，别用第三方库，就用boto3和标准库",
+   "text": "帮我写个 Python 函数，读一个 yaml 文件，返回里面所有 key 的列表，要递归展开",
    "context": {
     "app": "slack",
     "task": "code-write"
@@ -2869,18 +2860,19 @@
    ],
    "may_fire": [
     "e01-c01",
-    "e01-c02",
     "e01-c03",
-    "e01-c05",
+    "e01-c04",
     "e01-c06",
+    "e01-c07",
     "e01-c10",
     "e01-c11",
     "e01-c12",
-    "e01-c14",
-    "e01-c15"
+    "e01-c15",
+    "e01-c16",
+    "e01-c17"
    ],
    "should_fire": [
-    "e01-c01"
+    "e01-c16"
    ],
    "must_not_fire": []
   },
@@ -2895,7 +2887,7 @@
   {
    "seq": 32,
    "type": "S",
-   "text": "对了，以后写解释的时候别扯什么芝麻街角色，搞得跟教小孩似的。帮我写个事故复盘，昨晚那个数据库连接池爆炸的事，记一下时间线、根因和修复动作，语气别太正式，说人话就行，对了，以后都别用第一人称视角写东西，我这边看不惯，感觉像在念我的代码",
+   "text": "对了，顺便说下，以后你写东西别用第一人称视角，什么“我建议”、“我觉得”这种，看着别扭。帮我写个python脚本，用来批量检查一组服务器端口通不通，输入是个ip列表文件，输出结果要标清楚哪些通哪些不通，超时设3秒，别用nmap，用socket，帮我写个昨天线上事故的 postmortem，mongo 连接池爆了导致 api 超时，从 10:12 到 10:28 影响所有用户，root cause 是 connection 没释放，修了加了个超时关闭，顺便把监控告警补上。对了，以后你推荐阅读顺序的时候，别给我推那种从头到尾的线性顺序，我讨厌那种",
    "context": {
     "app": "email-client",
     "task": "code-write"
@@ -2922,7 +2914,7 @@
   {
    "seq": 33,
    "type": "S",
-   "text": "对了以后都别给我推荐阅读顺序了，我自己知道先看哪个，你直接给内容就行，对了，用默认迭代器和操作符，别用自定义的这条继续保持啊",
+   "text": "以后都别用H2和更深的标题了，太乱了，直接写正文就行。另外帮我写封邮件，通知大家这周五下午三点要升级Kubernetes集群，各服务owner确认自己的服务没问题，如果没空就提前授权给oncall的人，对了，以后都别用默认的迭代器和运算符这条继续保持啊",
    "context": {
     "app": "email-client",
     "task": "postmortem"
@@ -2949,7 +2941,7 @@
   {
    "seq": 34,
    "type": "C",
-   "text": "帮我写封邮件给组里，通知大家这周五下午要做一次数据库主从切换演练，大概需要停服15分钟，让大家提前安排好手头工作，别在那个时候跑重要任务。你刚才那个文档里 heading 从 H1 直接跳到 H3，中间缺了 H2，看着好奇怪。以后写文档的时候，H2 或者更深的 heading 都不准直接跳级，必须按顺序来，不然我 review 又要改半天。对了，顺便说一下，以后你在项目里写代码的时候，别再用 `function` 这个关键字了，大家统一用箭头函数或者方法声明。另外帮我写个邮件给组里，通知大家这周五下午三点有个线上分享，讲一下我们最近做的那个压力测试工具，我大概讲十五分钟，然后留时间讨论，邮件里写清楚会议链接和日历邀请",
+   "text": "帮我写封邮件，通知组里下周三下午三点做一次线上服务降级演练，把时间、目的、注意事项写清楚，语气正式一点但别太啰嗦。以后写文章结尾的时候别给我总结关键点了，直接收尾就行，我不用你帮我回顾。顺便帮我写个这周线上服务异常的复盘报告，把昨天那个Redis主从切换导致写超时的case也加进去，大概讲一下影响范围和修复步骤。刚看了你上次写的那个复盘草稿，代码示例里还在用 `function` 关键字，别用那个了，我们项目里现在都统一用箭头函数或者方法简写，`function` 已经废弃了，以后写代码都别用 `function` 了",
    "context": {
     "app": "email-client",
     "task": "email"
@@ -2976,36 +2968,57 @@
   {
    "seq": 35,
    "type": "R",
-   "text": "帮我写一个python脚本，监控几个端口的连通性，每10秒检查一次，结果写到日志里，带时间戳",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
+   "text": "帮我写个postmortem，昨天线上那个Redis缓存雪崩的事，先把时间线理清楚，然后根因分析和改进措施，有些数据我记不太清的地方你帮我标个问号",
+   "context": {},
    "probe": true,
    "probe_targets": [
-    "e01-c25",
-    "e01-c24"
+    "e01-c14",
+    "e01-c25"
    ],
    "may_fire": [
+    "e01-c00",
     "e01-c01",
     "e01-c02",
     "e01-c03",
+    "e01-c04",
     "e01-c05",
     "e01-c06",
+    "e01-c07",
+    "e01-c08",
+    "e01-c09",
     "e01-c10",
     "e01-c11",
     "e01-c12",
+    "e01-c13",
     "e01-c14",
     "e01-c15",
+    "e01-c16",
+    "e01-c17",
+    "e01-c18",
+    "e01-c19",
+    "e01-c20",
+    "e01-c21",
+    "e01-c22",
+    "e01-c23",
+    "e01-c24",
+    "e01-c25",
+    "e01-c26",
+    "e01-c27",
+    "e01-c28",
+    "e01-c29",
     "e01-c30"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e01-c14",
+    "e01-c23",
+    "e01-c26"
+   ],
    "must_not_fire": []
   },
   {
    "seq": 36,
    "type": "C",
-   "text": "帮我写封邮件给组里，通知大家下周MySQL主库要切到新机器，大概需要窗口期两小时，让大家提前安排好业务测试和灰度发布。哎你上次那个事故复盘写得太啰嗦了，以后生成任何论点都给我压到 699 字以内，别超了，我组里兄弟们没空看长篇大论。昨晚那个数据库连接池爆炸的事，帮我写个复盘，记一下时间线、根因和修复动作，语气别太正式，说人话就行",
+   "text": "帮我写封邮件，通知组里下周二的数据库维护窗口，预计凌晨2点到4点，影响读服务，提前把通知发出去，顺便提醒大家检查自己的连接池配置。你刚才那个回复又写了一大篇，我根本看不完。跟你说了多少次了，写东西别那么啰嗦，以后生成任何论点性的内容，限制在699个词以内，超过的我不看，直接重来",
    "context": {
     "app": "email-client",
     "task": "email"
@@ -3023,10 +3036,10 @@
   },
   {
    "seq": 37,
-   "type": "C",
-   "text": "帮我写个本周线上故障复盘报告，主要讲那个Redis缓存雪崩导致接口超时的事，把影响范围、根因和临时措施都列清楚，我直接发给leader。以后写描述的时候，字数别超过126个词，你之前那个事故复盘写得太长了，看着累",
+   "type": "S",
+   "text": "对了，以后都注意一下，你写描述的时候字数别超过 126 个词，我这边文档有字数限制，超了就不好看了",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -3043,7 +3056,7 @@
   {
    "seq": 38,
    "type": "S",
-   "text": "对了，以后在项目里写代码别用 `function` 关键字这条继续保持啊，对了，写解释时别引用芝麻街角色这条继续保持啊",
+   "text": "对了，代码里别用 `function` 关键字这条继续保持啊，对了，写解释时别扯芝麻街角色这条继续保持啊",
    "context": {
     "app": "email-client",
     "task": "code-write"
@@ -3061,7 +3074,7 @@
      "seq": 38,
      "kind": "reinforce",
      "cid": "",
-     "target": "e01-c26",
+     "target": "e01-c25",
      "targets": [],
      "delta": 0
     }
@@ -3078,53 +3091,49 @@
   {
    "seq": 40,
    "type": "R",
-   "text": "帮我写个这周线上服务延迟的复盘报告，把确定的事实和我的推测分两段写，别混在一起",
+   "text": "帮我写个脚本，用来批量给 K8s 集群里的 Pod 打标签，输入是 namespace 和 label key=value，输出每个 Pod 的修改结果，用 Go 写，别用 range 那种默认迭代器，自己写循环",
    "context": {
     "app": "email-client",
-    "task": "report"
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e01-c13",
-    "e01-c16"
+    "e01-c12",
+    "e01-c06"
    ],
    "may_fire": [
+    "e01-c01",
+    "e01-c03",
     "e01-c04",
+    "e01-c06",
     "e01-c07",
-    "e01-c09",
-    "e01-c13",
+    "e01-c10",
+    "e01-c11",
+    "e01-c12",
+    "e01-c15",
     "e01-c16",
-    "e01-c19",
-    "e01-c20",
-    "e01-c21",
-    "e01-c22",
-    "e01-c23",
-    "e01-c24",
-    "e01-c25",
-    "e01-c26",
-    "e01-c27",
-    "e01-c28",
-    "e01-c29",
-    "e01-c31"
+    "e01-c17",
+    "e01-c30"
    ],
    "should_fire": [
-    "e01-c27"
+    "e01-c01",
+    "e01-c30"
    ],
    "must_not_fire": []
   },
   {
    "seq": 41,
    "type": "S",
-   "text": "你刚才那个回复又给我整了一大段，我这边在沙发上躺着看手机呢，根本没法读。以后跟我说话能不能一句一句来，别一次扔超过22句话，不然我直接不看了。对了，先帮我写封邮件，通知前端组明天下午三点在线上会议讨论新的API接口设计，把腾讯会议链接发给他们，顺便提醒他们提前看一下我上周发的设计文档，之前说的「别回恶心不道德的内容，保持友好积极」那条不用了，按你默认的来吧",
+   "text": "之前说的「至少13个词」那条不用了，按你默认的来吧，之前说的「以后都别选返回 list 的方法」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "email"
    },
    "effects": [
     {
      "seq": 41,
-     "kind": "contradict",
-     "cid": "e01-s00",
+     "kind": "retire",
+     "cid": "",
      "target": "e01-c21",
      "targets": [],
      "delta": 0
@@ -3133,7 +3142,7 @@
      "seq": 41,
      "kind": "retire",
      "cid": "",
-     "target": "e01-c08",
+     "target": "e01-c09",
      "targets": [],
      "delta": 0
     }
@@ -3142,9 +3151,9 @@
   {
    "seq": 42,
    "type": "S",
-   "text": "你上次写的那个描述太长了，我都没看完就划走了。以后写描述的时候，字数不能超过178个词，不然没人会看的。还有，帮我写封邮件，通知前端组明天下午三点在线上会议讨论新的API接口设计，把腾讯会议链接发给他们，顺便提醒他们提前看一下我上周发的设计文档，之前说的「非链接、非表格、非标题、非代码块的行，每行别超过113个字符」那条不用了，按你默认的来吧",
+   "text": "你刚才那封邮件里，有几行特别长，我手机上一看直接折行了，读起来贼难受。以后所有非链接、非表格、非标题、非代码块的行，每行别超过63个字符，行不行？，之前说的「以后都别用H2或更深的标题」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -3152,39 +3161,12 @@
      "seq": 42,
      "kind": "contradict",
      "cid": "e01-s01",
-     "target": "e01-c32",
+     "target": "e01-c24",
      "targets": [],
      "delta": 0
     },
     {
      "seq": 42,
-     "kind": "retire",
-     "cid": "",
-     "target": "e01-c25",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 43,
-   "type": "S",
-   "text": "诶你上次那个条件导入的写法又给我整出事了，我明明说了不要用条件导入，你咋又用了呢，搞得我代码里一堆ifdef乱飞，下次别再用条件导入了行不行 对了，帮我写封邮件，通知前端组明天下午三点在线上会议讨论新的API接口设计，把腾讯会议链接发给他们，顺便提醒他们提前看一下我上周发的设计文档，之前说的「以后别推荐阅读顺序」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 43,
-     "kind": "contradict",
-     "cid": "e01-s02",
-     "target": "e01-c14",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 43,
      "kind": "retire",
      "cid": "",
      "target": "e01-c28",
@@ -3194,51 +3176,79 @@
    ]
   },
   {
+   "seq": 43,
+   "type": "S",
+   "text": "你上次代码块那个 fence 又没标对，我拷到终端直接跑飞了。以后写代码块都用 fence 包起来，别偷懒用缩进。然后帮我写封邮件，通知各部门下周二的数据库维护窗口，凌晨2点到4点，影响所有主库读写在那个时段会中断，让前端接口也一起发个公告，之前说的「设计接口时把对外和对内的接口分开」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 43,
+     "kind": "contradict",
+     "cid": "e01-s02",
+     "target": "e01-c03",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 43,
+     "kind": "retire",
+     "cid": "",
+     "target": "e01-c11",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
    "seq": 44,
    "type": "R",
-   "text": "帮我写个Python脚本，从k8s集群拉所有namespace的pod状态，输出成表格，直接用内置的json和csv模块就行，别整那些花里胡哨的",
+   "text": "语音写个postmortem 昨天线上那个redis连接池耗尽的事故 开头先说时间线 然后讲根因 最后放action items 不要总结 不要h2标题 直接用段落写",
    "context": {
     "app": "editor",
-    "task": "code-write"
+    "task": "postmortem"
    },
    "probe": true,
    "probe_targets": [
-    "e01-s02",
-    "e01-c12",
-    "e01-c14"
+    "e01-c29",
+    "e01-c25",
+    "e01-c09",
+    "e01-c28"
    ],
    "may_fire": [
-    "e01-c01",
-    "e01-c02",
-    "e01-c03",
     "e01-c05",
-    "e01-c06",
-    "e01-c10",
-    "e01-c11",
-    "e01-c12",
-    "e01-c15",
-    "e01-c30",
-    "e01-s02"
+    "e01-c13",
+    "e01-c14",
+    "e01-c22",
+    "e01-c23",
+    "e01-c25",
+    "e01-c26",
+    "e01-c27",
+    "e01-c29",
+    "e01-s01"
    ],
-   "should_fire": [
-    "e01-c01"
-   ],
-   "must_not_fire": []
+   "should_fire": [],
+   "must_not_fire": [
+    "e01-c21",
+    "e01-c24"
+   ]
   },
   {
    "seq": 45,
    "type": "S",
-   "text": "之前说的「以后生成的句子至少要有13个词」那条不用了，按你默认的来吧，之前说的「写页面时不要加插图描述」那条不用了，按你默认的来吧",
+   "text": "刚你写的那个博客草稿我看了，字数又超了，快1000字了都。跟你说了多少次了，写博客别超过937词，超过了我还得自己删，烦死了。对了，顺便帮我写封邮件，通知各部门下周二的数据库维护窗口，凌晨2点到4点，影响所有主库读写在那个时段会中断，让前端接口也一起发个公告。，之前说的「以后回复都保持friendly and uplifting，不要vile或unethical」那条不用了，按你默认的来吧",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
     {
      "seq": 45,
-     "kind": "retire",
-     "cid": "",
-     "target": "e01-c19",
+     "kind": "contradict",
+     "cid": "e01-s03",
+     "target": "e01-c00",
      "targets": [],
      "delta": 0
     },
@@ -3246,7 +3256,7 @@
      "seq": 45,
      "kind": "retire",
      "cid": "",
-     "target": "e01-c07",
+     "target": "e01-c08",
      "targets": [],
      "delta": 0
     }
@@ -3255,9 +3265,9 @@
   {
    "seq": 46,
    "type": "S",
-   "text": "哎你上次写的那个博客太长了，1056字以内就够，别整那么啰嗦，以后注意点",
+   "text": "刚那封邮件太长了，你写那么多字谁看啊，我组里人看邮件都只看前两段 以后写邮件别超过295个词，多了没人读的 你帮我重写一下刚才那个数据库维护通知，周二凌晨两点到四点主库读写中断那个，让前端也发公告",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -3265,7 +3275,7 @@
      "seq": 46,
      "kind": "contradict",
      "cid": "e01-s04",
-     "target": "e01-c00",
+     "target": "e01-c19",
      "targets": [],
      "delta": 0
     }
@@ -3274,9 +3284,9 @@
   {
    "seq": 47,
    "type": "S",
-   "text": "你刚才那个总结写得也太绝对了吧，感觉像是我拍胸脯保证一样。其实有些东西我自己也不确定，或者就是纯脑补的。以后你写东西的时候，能不能顺便标记一下哪些是你猜的、哪些是确定的？比如加个‘可能’、‘推测’之类的，别搞得跟真理似的",
+   "text": "你刚才那个推荐阅读顺序的建议，顺序有点乱啊，能不能以后都按出版时间排，别按你自己的想法来",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "code-write"
    },
    "effects": [
@@ -3284,7 +3294,7 @@
      "seq": 47,
      "kind": "contradict",
      "cid": "e01-s05",
-     "target": "e01-c13",
+     "target": "e01-c27",
      "targets": [],
      "delta": 0
     }
@@ -3293,38 +3303,45 @@
   {
    "seq": 48,
    "type": "R",
-   "text": "帮我写一个 Python 脚本，用来监控一组 HTTP 端点的健康状态，返回 200 就算正常，否则报警，输出结果要带时间戳和响应码，能跑在 Linux cron 里就行",
+   "text": "帮我把上周的线上事故复盘整理成报告，按时间线列一下关键节点和影响范围，加上改进措施，发到群里",
    "context": {
-    "app": "slack",
-    "task": "code-write"
+    "app": "editor",
+    "task": "report"
    },
    "probe": true,
    "probe_targets": [
-    "e01-c22",
-    "e01-c29",
-    "e01-c25",
-    "e01-c19"
+    "e01-s05",
+    "e01-c05",
+    "e01-c28",
+    "e01-c24"
    ],
    "may_fire": [
-    "e01-c01",
     "e01-c02",
-    "e01-c03",
     "e01-c05",
-    "e01-c06",
-    "e01-c10",
-    "e01-c11",
-    "e01-c12",
-    "e01-c15",
-    "e01-c30",
-    "e01-s02"
+    "e01-c13",
+    "e01-c14",
+    "e01-c18",
+    "e01-c22",
+    "e01-c23",
+    "e01-c25",
+    "e01-c26",
+    "e01-c29",
+    "e01-c31",
+    "e01-s01",
+    "e01-s05"
    ],
-   "should_fire": [],
-   "must_not_fire": []
+   "should_fire": [
+    "e01-c31",
+    "e01-s01"
+   ],
+   "must_not_fire": [
+    "e01-c24"
+   ]
   },
   {
    "seq": 49,
    "type": "S",
-   "text": "你刚才那封邮件太长了，我读着都累，以后写邮件别超过262个词，行不行？帮我写封邮件，通知前端组明天下午三点在线上会议讨论新的API接口设计，把腾讯会议链接发给他们，顺便提醒他们提前看一下我上周发的设计文档",
+   "text": "卧槽刚那封邮件写得太长了，我让你写个通知，你给整出三百多字，谁有功夫看啊以后写描述的时候字数别超过199个字，行不行",
    "context": {
     "app": "slack",
     "task": "email"
@@ -3334,7 +3351,7 @@
      "seq": 49,
      "kind": "contradict",
      "cid": "e01-s06",
-     "target": "e01-c17",
+     "target": "e01-c32",
      "targets": [],
      "delta": 0
     }
@@ -3343,9 +3360,9 @@
   {
    "seq": 50,
    "type": "S",
-   "text": "之前说的「生成论点时压到 699 字以内」那条不用了，按你默认的来吧",
+   "text": "之前说的「限制在699个词以内」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -3362,7 +3379,7 @@
   {
    "seq": 51,
    "type": "S",
-   "text": "之前说的「排链接时别把链接目标直接放在正文里碍眼」那条不用了，按你默认的来吧",
+   "text": "之前说的「提到英国时，Great Britain（英格兰、苏格兰和威尔士）不能用来指代北爱尔兰」那条不用了，按你默认的来吧",
    "context": {
     "app": "email-client",
     "task": "code-write"
@@ -3372,7 +3389,7 @@
      "seq": 51,
      "kind": "retire",
      "cid": "",
-     "target": "e01-c05",
+     "target": "e01-c13",
      "targets": [],
      "delta": 0
     }
@@ -3381,27 +3398,28 @@
   {
    "seq": 52,
    "type": "R",
-   "text": "帮我写个Python脚本，用来定期清理三天前的临时日志文件，路径从环境变量读，别用condition import，直接全量 import os 和 glob 就行",
+   "text": "帮我写个清理过期日志的脚本，保留最近30天的，日志路径在 /var/log/app 下，文件名带日期，比如 app-2024-01-01.log，处理完把结果记录到 /var/log/cleanup.log 里",
    "context": {
     "app": "editor",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e01-c02",
-    "e01-c30",
-    "e01-c14",
-    "e01-c05"
+    "e01-c16",
+    "e01-c06",
+    "e01-c03",
+    "e01-c11"
    ],
    "may_fire": [
     "e01-c01",
-    "e01-c02",
-    "e01-c03",
+    "e01-c04",
     "e01-c06",
+    "e01-c07",
     "e01-c10",
-    "e01-c11",
     "e01-c12",
     "e01-c15",
+    "e01-c16",
+    "e01-c17",
     "e01-c30",
     "e01-s02"
    ],
@@ -3411,7 +3429,7 @@
   {
    "seq": 53,
    "type": "S",
-   "text": "之前说的「import 超过 61 字符不换行」那条不用了，按你默认的来吧",
+   "text": "之前说的「import语句超过61个字符就别硬折行」那条不用了，按你默认的来吧",
    "context": {
     "app": "slack",
     "task": "email"
@@ -3421,7 +3439,7 @@
      "seq": 53,
      "kind": "retire",
      "cid": "",
-     "target": "e01-c06",
+     "target": "e01-c07",
      "targets": [],
      "delta": 0
     }
@@ -3430,9 +3448,9 @@
   {
    "seq": 54,
    "type": "S",
-   "text": "之前说的「写摘要时别啰嗦」那条不用了，按你默认的来吧",
+   "text": "之前说的「在 source view 里排链接时，避免把链接目的地放在正文中」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -3440,7 +3458,7 @@
      "seq": 54,
      "kind": "retire",
      "cid": "",
-     "target": "e01-c24",
+     "target": "e01-c06",
      "targets": [],
      "delta": 0
     }
@@ -3449,9 +3467,9 @@
   {
    "seq": 55,
    "type": "S",
-   "text": "之前说的「设计接口时公开接口和内部接口要分开」那条不用了，按你默认的来吧",
+   "text": "之前说的「标注不确定的内容」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "code-write"
    },
    "effects": [
@@ -3459,7 +3477,7 @@
      "seq": 55,
      "kind": "retire",
      "cid": "",
-     "target": "e01-c11",
+     "target": "e01-c14",
      "targets": [],
      "delta": 0
     }
@@ -3468,37 +3486,44 @@
   {
    "seq": 56,
    "type": "R",
-   "text": "帮我写一个解析k8s节点taints的python函数，输入是节点对象，返回taint列表，每个taint是Effect和Key两个字段，接口要分公开和内部，别写docstring，直接写代码",
+   "text": "帮我写个周报，总结这周把线上nginx配置从openresty迁移到envoy了，主要改了upstream和限流逻辑，灰度跑了两天没出问题，下周准备切全量，顺便提一下prometheus监控指标也加上了",
    "context": {
-    "app": "slack",
-    "task": "code-write"
+    "app": "email-client",
+    "task": "report"
    },
    "probe": true,
    "probe_targets": [
-    "e01-c10",
-    "e01-c01",
-    "e01-c11",
-    "e01-c14"
+    "e01-c23",
+    "e01-c05",
+    "e01-c28",
+    "e01-c31"
    ],
    "may_fire": [
-    "e01-c01",
     "e01-c02",
-    "e01-c03",
-    "e01-c10",
-    "e01-c12",
-    "e01-c15",
-    "e01-c30",
-    "e01-s02"
+    "e01-c05",
+    "e01-c18",
+    "e01-c22",
+    "e01-c23",
+    "e01-c25",
+    "e01-c26",
+    "e01-c29",
+    "e01-s01",
+    "e01-s05"
    ],
-   "should_fire": [],
-   "must_not_fire": []
+   "should_fire": [
+    "e01-c26"
+   ],
+   "must_not_fire": [
+    "e01-c21",
+    "e01-c31"
+   ]
   },
   {
    "seq": 57,
    "type": "S",
-   "text": "之前说的「选方法时避开返回列表的」那条不用了，按你默认的来吧",
+   "text": "之前说的「地理方向和区域一律用小写」那条不用了，按你默认的来吧",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -3506,7 +3531,7 @@
      "seq": 57,
      "kind": "retire",
      "cid": "",
-     "target": "e01-c09",
+     "target": "e01-c05",
      "targets": [],
      "delta": 0
     }
@@ -3515,7 +3540,7 @@
   {
    "seq": 58,
    "type": "S",
-   "text": "之前说的「代码块记得用 fencing」那条不用了，按你默认的来吧",
+   "text": "之前说的「写简洁点，别废话」那条不用了，按你默认的来吧",
    "context": {
     "app": "email-client",
     "task": "report"
@@ -3525,7 +3550,7 @@
      "seq": 58,
      "kind": "retire",
      "cid": "",
-     "target": "e01-c03",
+     "target": "e01-c23",
      "targets": [],
      "delta": 0
     }
@@ -3534,137 +3559,128 @@
   {
    "seq": 59,
    "type": "R",
-   "text": "帮我写一个Python脚本，从Kubernetes集群里拉所有Pod的CPU和内存使用数据，然后输出成CSV",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e01-c04",
-    "e01-c26",
-    "e01-c21",
-    "e01-c13"
-   ],
-   "may_fire": [
-    "e01-c01",
-    "e01-c02",
-    "e01-c04",
-    "e01-c10",
-    "e01-c12",
-    "e01-c15",
-    "e01-c16",
-    "e01-c18",
-    "e01-c20",
-    "e01-c22",
-    "e01-c23",
-    "e01-c26",
-    "e01-c27",
-    "e01-c29",
-    "e01-c30",
-    "e01-s00",
-    "e01-s01",
-    "e01-s02",
-    "e01-s04",
-    "e01-s05",
-    "e01-s06"
-   ],
-   "should_fire": [],
-   "must_not_fire": [
-    "e01-c25"
-   ]
-  },
-  {
-   "seq": 60,
-   "type": "R",
-   "text": "帮我写一个Python脚本，解析nginx的access.log，统计每个IP的访问次数，输出前10个IP，用字典计数，别搞得太复杂",
+   "text": "帮我写个Python脚本，用来解析Nginx access log，统计每个IP的请求次数和总流量，输出到CSV文件，注意处理一下不同的日志格式",
    "context": {
     "app": "email-client",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e01-c10",
+    "e01-c15",
     "e01-s02",
-    "e01-c05",
-    "e01-c03"
+    "e01-c11",
+    "e01-c07"
    ],
    "may_fire": [
     "e01-c01",
-    "e01-c02",
+    "e01-c04",
     "e01-c10",
     "e01-c12",
     "e01-c15",
+    "e01-c16",
+    "e01-c17",
     "e01-c30",
     "e01-s02"
    ],
    "should_fire": [
-    "e01-c01"
+    "e01-c04",
+    "e01-c16"
    ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 60,
+   "type": "R",
+   "text": "帮我把上周线上那个Redis cluster挂了的故障写个postmortem，时间线拉一下，root cause和action items列清楚，最后加个总结，别太长",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e01-s01",
+    "e01-s05",
+    "e01-c27",
+    "e01-c13"
+   ],
+   "may_fire": [
+    "e01-c22",
+    "e01-c25",
+    "e01-c26",
+    "e01-c29",
+    "e01-s01",
+    "e01-s05"
+   ],
+   "should_fire": [],
    "must_not_fire": [
-    "e01-c03"
+    "e01-c21",
+    "e01-c24"
    ]
   },
   {
    "seq": 61,
    "type": "R",
-   "text": "帮我写个脚本，从文件里读主机列表，然后ssh上去每台机器跑个df -h，把结果汇总到一个文件，用readarray读文件，别用反引号",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e01-c15",
-    "e01-c12",
-    "e01-c14",
-    "e01-c05"
-   ],
-   "may_fire": [
-    "e01-c01",
-    "e01-c02",
-    "e01-c10",
-    "e01-c12",
-    "e01-c15",
-    "e01-c30",
-    "e01-s02"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 62,
-   "type": "R",
-   "text": "帮我写个邮件给团队，通知大家新博客上线了，主题是MySQL连接池调优，让大家有空看看提意见",
+   "text": "帮我把这次Redis集群迁移的复盘整理成邮件发给组里，重点说下我们为什么选了新的分片策略，还有迁移过程中出的那个坑怎么解决的，语气轻松点，别搞太正式",
    "context": {
     "app": "slack",
     "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e01-s04",
-    "e01-c27",
+    "e01-c25",
+    "e01-c29",
     "e01-c09",
-    "e01-c21"
+    "e01-c05"
    ],
    "may_fire": [
-    "e01-c04",
-    "e01-c18",
     "e01-c20",
     "e01-c22",
-    "e01-c23",
+    "e01-c25",
     "e01-c26",
-    "e01-c27",
     "e01-c29",
-    "e01-s00",
+    "e01-s01",
+    "e01-s03",
     "e01-s04",
-    "e01-s05",
-    "e01-s06"
+    "e01-s05"
    ],
    "should_fire": [
-    "e01-s00"
+    "e01-s04"
    ],
    "must_not_fire": [
     "e01-c19",
-    "e01-c25"
+    "e01-c21"
    ]
+  },
+  {
+   "seq": 62,
+   "type": "R",
+   "text": "帮我写个函数，把一组容器按指定大小分批，每个批次用生成器表达式返回，别用列表推导式攒中间结果，另外记得给函数加个 docstring 和类型注解",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e01-c04",
+    "e01-c16",
+    "e01-c06",
+    "e01-c07"
+   ],
+   "may_fire": [
+    "e01-c01",
+    "e01-c04",
+    "e01-c10",
+    "e01-c12",
+    "e01-c15",
+    "e01-c16",
+    "e01-c17",
+    "e01-c30",
+    "e01-s02"
+   ],
+   "should_fire": [
+    "e01-c30"
+   ],
+   "must_not_fire": []
   }
  ],
  "checkpoints": [
