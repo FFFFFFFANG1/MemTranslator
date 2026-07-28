@@ -541,16 +541,17 @@ def main():
             # that miss the carried rule and traps that never tempt —
             # SUPPRESS 1.00 as "the exam never asked", not "it held".
             targets = _pick_probe_targets(p, seq, rng)
-            req = _targeted_request(persona, targets, hooks, hook_i, rng)
-            hook_i += 1
-            # The probe's task must match what its targets are scoped to, or
-            # the scope filter silently excludes the very rules the probe was
-            # built to test — a probe that cannot reach its own targets is a
-            # free point for every arm.
+            # The task comes from the targets' scope and is handed to the
+            # generator, so the request TEXT and the context LABEL agree. A
+            # probe whose text is a postmortem but whose label says
+            # code-write passes the scope filter and leaves only meaning to
+            # catch it — the canary produced exactly that.
             scoped = [t.coords.scope["task"] for t in targets
                       if t.coords.scope["task"] != ANY]
+            task = scoped[0] if scoped else rng.choice(CONTEXT_POOL["tasks"])
+            req = _targeted_request(persona, targets, hooks, hook_i, rng, task)
+            hook_i += 1
             wide = rng.random() < 0.4 and not scoped
-            task = scoped[0] if scoped else req["task"]
             ctx = {} if wide else {"app": req["app"], "task": task}
             rounds.append({"seq": seq, "type": "R", "text": req["text"],
                            "context": ctx, "probe": True,
@@ -651,12 +652,12 @@ _CJK_RUN = re.compile(r"[一-鿿]{2,}")
 
 
 PROBE_SYSTEM = """You write ONE short work request a user types to their AI assistant.
-PERSONA and TARGET RULES are given. The request must be a plain, concrete piece
-of work squarely in the DOMAIN of the target rules — the kind of work where a
-user who stated those rules would expect them honoured. The request itself
-must contain NO rules, NO preferences, and must not quote or hint at the
-rules' content or numbers. In the persona's language.
-Output exactly: {"request": "<the message>", "task": "<one of email|report|code-write|postmortem>"}"""
+You are given PERSONA, TASK KIND, and TARGET RULES.
+The request MUST be an instance of the stated TASK KIND — if the task kind is code-write, it is a request to write or change code, never a document or an email.
+It must be plain concrete work where a user who stated the target rules would expect them honoured.
+The request itself must contain NO rules and NO preferences, and must not quote, restate, paraphrase or hint at any target rule's content, object or numbers — if the user already said it, the rewriter has nothing to add.
+In the persona's language.
+Output exactly: {"request": "<the message>"}"""
 
 
 def _pick_probe_targets(p, seq, rng):
@@ -688,25 +689,30 @@ def _pick_probe_targets(p, seq, rng):
     return [t for t in targets if t is not None][:4]
 
 
-def _targeted_request(persona, targets, hooks, hook_i, rng) -> dict:
+def _targeted_request(persona, targets, hooks, hook_i, rng, task) -> dict:
+    """The TASK is decided by the targets' scope and handed to the generator,
+    not read back from it. The canary produced a postmortem request for three
+    code rules and the harness then stamped it `task=code-write` because that
+    is what the rules were scoped to — text and label disagreeing is worse
+    than either being wrong, since the scope filter passes and only meaning
+    can catch it."""
     if targets:
         lines = "\n".join(f"- {t.clause or t.text}" for t in targets)
-        got = flash_json(PROBE_SYSTEM,
-                         f"PERSONA:\n{json.dumps(persona, ensure_ascii=False)}"
-                         f"\n\nTARGET RULES:\n{lines}\n\nJSON:",
-                         max_tokens=250, temperature=0.8)
-        if got and got.get("request"):
-            text = got["request"].strip()
+        for _try in range(2):
+            got = flash_json(
+                PROBE_SYSTEM,
+                f"PERSONA:\n{json.dumps(persona, ensure_ascii=False)}"
+                f"\n\nTASK KIND: {task}"
+                f"\n\nTARGET RULES:\n{lines}\n\nJSON:",
+                max_tokens=250, temperature=0.8)
+            text = (got or {}).get("request", "").strip()
             # a probe containing a target's anchor hands CARRY out for free
-            if not any(t.distinctive and t.distinctive in text
-                       for t in targets):
-                task = got.get("task")
-                if task not in CONTEXT_POOL["tasks"]:
-                    task = rng.choice(CONTEXT_POOL["tasks"])
+            if text and not any(t.distinctive and t.distinctive in text
+                                for t in targets):
                 return {"text": text, "task": task,
                         "app": rng.choice(CONTEXT_POOL["apps"])}
     hook = hooks[hook_i % len(hooks)]
-    return hook
+    return {**hook, "task": task}
 
 
 APPLIES_SYSTEM = """You judge which of a user's stored delivery rules a rewriter MUST add to ONE specific request.
@@ -718,6 +724,26 @@ Include a rule only when ALL THREE hold:
 
 Exclude a rule when it is about WHAT to say rather than HOW to deliver (topics, opinions, values, safety, persona), when it is vacuous, or when it is garbled and you cannot tell what compliance would look like.
 Output exactly: {"applies": [<number>, ...]} (possibly empty). Numbers only from the list."""
+
+
+CONFIRM_SYSTEM = """A rewriter sits between a user and an assistant. It may only ADD constraints that a stored rule requires.
+Decide whether the rewriter MUST weave this ONE stored rule into this ONE request. Answer yes only when all three hold:
+(a) the rule applies to this kind of work;
+(b) the request does not already state, paraphrase or satisfy it — if the user already said it, there is nothing to add;
+(c) the default answer could plausibly violate it and a reader could tell whether it was honoured.
+Output exactly: {"must_add": true|false, "why": "<short phrase>"}"""
+
+
+def _confirm_one(query: str, clause: str) -> bool:
+    """Second stage, one rule at a time. The list-form question asks about
+    20+ rules in a single call and the model cannot check each against the
+    request carefully — restatements and vacuous rules survived it three
+    votes running. Asking about one rule with nothing else in view is the
+    difference between skimming and reading."""
+    got = flash_json(CONFIRM_SYSTEM,
+                     f"Stored rule:\n{clause}\n\nRequest:\n{query}\n\nJSON:",
+                     max_tokens=120)
+    return bool(isinstance(got, dict) and got.get("must_add") is True)
 
 
 def _applies_to(query: str, cids: list, by_cid: dict, votes: int = 3) -> set:
@@ -749,7 +775,17 @@ def _applies_to(query: str, cids: list, by_cid: dict, votes: int = 3) -> set:
         got_any = True
     if not got_any:
         return set()
-    return _cap_should_fire(out, by_cid)
+    # stage 2: confirm each survivor on its own, then cap
+    capped = _cap_should_fire(out, by_cid)
+    if not capped:
+        return capped
+    ordered = sorted(capped)
+    with ThreadPoolExecutor(max_workers=4) as ex:
+        keep = list(ex.map(
+            lambda cid: _confirm_one(query,
+                                     by_cid[cid].clause or by_cid[cid].text),
+            ordered))
+    return {cid for cid, ok in zip(ordered, keep) if ok}
 
 
 SHOULD_FIRE_CAP = 3
