@@ -108,6 +108,13 @@ def wired(monkeypatch, tmp_path):
     import memtranslator.translate as tr
     monkeypatch.setattr(tr.llm, "complete", echo.complete)
     monkeypatch.setattr(re_mod, "V1Provider", _ScriptedProvider)
+    # offline judge: a clause is "carried" when its distinctive word made it
+    # into the rewrite — keeps the judge band deterministic and networkless
+    monkeypatch.setattr(
+        re_mod, "judge",
+        lambda crit, ctx: (any(w in ctx["rewritten_request"]
+                               for w in ("词册", "台账", "簿录")
+                               if w in crit), False))
     return _episode()
 
 
@@ -146,8 +153,9 @@ def test_full_context_leaks_by_construction(wired):
     # the transcript contains 台账 in the (withdrawn) turn AND in the
     # superseding turn; an echo model reproduces it → trap leaks. A real
     # model may do better — that is exactly what the arm measures.
+    # (carry is judge-band and only graded on real/oracle-arm now)
     assert fc["suppress_hits"] == 0
-    assert fc["carry_hits"] == 2
+    assert fc["carry_n"] == 0
 
 
 def test_state_band_alignment(wired):

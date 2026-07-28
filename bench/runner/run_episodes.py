@@ -45,6 +45,7 @@ from memtranslator.store import Store
 from bench.graph.derive import (Effect, fold, project_status,
                                 to_product_context, to_product_scope)
 from bench.runner.config import CASES, RUN_DIR
+from bench.runner.judge import judge
 from bench.runner.providers import V1Provider
 from bench.runner.report import write_snapshot
 from bench.runner.retry import with_retry
@@ -251,18 +252,36 @@ def score_probe(ep, row, arm_name, by_cid) -> dict:
         else {"polished": row["chained_polished"], "latency_ms": 0,
               "block_chars": 0}
     polished = out.get("polished") or ""
-    # CARRY runs on should_fire (applies_to-filtered); may_fire survives as a
-    # diagnostic count only. Nodes whose anchor could not be verified in the
-    # persona's language are excluded from BOTH bands and counted — grading
-    # them with a cross-language anchor is how the pilot got oracle CARRY 0.03.
+    # Three pilots taught the split: SUPPRESS is mechanical (a dead rule's
+    # anchor reappearing IS a leak), but mechanical CARRY is only
+    # well-defined for OPERATIVE anchors — a number must appear for the rule
+    # to be honoured ("≤185词" carried means 185 is in the text), while a
+    # qualitative rule ("先给结论") is honoured without reproducing any
+    # particular token. The harvest is ~92% qualitative, so CARRY runs on
+    # the judge band (E-judge, like E0's criterion) with numeric-mech kept
+    # as a zero-judge cross-check column. This is the spec's own E-mech
+    # boundary — its mechanical claims were always the SUPPRESS half.
     strong = lambda cid: not by_cid[cid].get("anchor_weak")
-    carry = [(cid, _mech(polished, by_cid[cid]))
-             for cid in r.get("should_fire", r["may_fire"]) if strong(cid)]
+    should = [cid for cid in r.get("should_fire", r["may_fire"])
+              if strong(cid)]
+    numeric = [cid for cid in should if by_cid[cid]["distinctive"].isdigit()]
+    carry_judged = []
+    if polished and arm_name in ("real", "oracle-arm"):
+        for cid in should:
+            n = by_cid[cid]
+            ok, _flag = judge(
+                f"The rewritten request explicitly carries this "
+                f"constraint: {n['clause'] or n['text']}",
+                {"rewritten_request": polished})
+            carry_judged.append((cid, ok))
+    carry_mech = [(cid, _mech(polished, by_cid[cid])) for cid in numeric]
     supp = [(cid, not _mech(polished, by_cid[cid]))
             for cid in r["must_not_fire"] if strong(cid)]
     return {"arm": arm_name, "seq": r["seq"],
-            "carry_hits": sum(1 for _c, h in carry if h),
-            "carry_n": len(carry),
+            "carry_hits": sum(1 for _c, h in carry_judged if h),
+            "carry_n": len(carry_judged),
+            "carry_mech_hits": sum(1 for _c, h in carry_mech if h),
+            "carry_mech_n": len(carry_mech),
             "suppress_hits": sum(1 for _c, h in supp if h),
             "suppress_n": len(supp),
             "block_chars": out.get("block_chars", 0),
@@ -333,11 +352,14 @@ def main():
     for arm in arms:
         sub = [r for r in rows if r["arm"] == arm]
         cn = sum(r["carry_n"] for r in sub)
+        cmn = sum(r["carry_mech_n"] for r in sub)
         sn = sum(r["suppress_n"] for r in sub)
         carry = sum(r["carry_hits"] for r in sub) / cn if cn else None
+        cmech = sum(r["carry_mech_hits"] for r in sub) / cmn if cmn else None
         supp = sum(r["suppress_hits"] for r in sub) / sn if sn else None
         per_arm[arm] = {
-            "carry": carry, "suppress": supp,
+            "carry": carry, "carry_mech_numeric": cmech,
+            "carry_mech_n": cmn, "suppress": supp,
             "mean_block_chars": sum(r["block_chars"] for r in sub) / len(sub),
             "mean_latency_ms": sum(r["latency_ms"] for r in sub) / len(sub)}
 
@@ -350,10 +372,13 @@ def main():
                          + WEIGHTS["suppress"] * real["suppress"]
                          + WEIGHTS["state"] * state)
 
-    print(f"\n{'arm':<14} {'CARRY':>7} {'SUPPRESS':>9} {'chars':>7} {'ms':>6}")
+    print(f"\n{'arm':<14} {'CARRYj':>7} {'CARRYm#':>8} {'SUPPRESS':>9} "
+          f"{'chars':>7} {'ms':>6}")
     for arm, s in per_arm.items():
         f = lambda x: "  n/a" if x is None else f"{x:.2f}"
-        print(f"{arm:<14} {f(s['carry']):>7} {f(s['suppress']):>9} "
+        cm = ("   n/a" if s["carry_mech_numeric"] is None
+              else f"{s['carry_mech_numeric']:.2f}/{s['carry_mech_n']}")
+        print(f"{arm:<14} {f(s['carry']):>7} {cm:>8} {f(s['suppress']):>9} "
               f"{s['mean_block_chars']:7.0f} {s['mean_latency_ms']:6.0f}")
     print(f"STATE (chained store vs gold): {state:.2f}")
     if episode_score is not None:
