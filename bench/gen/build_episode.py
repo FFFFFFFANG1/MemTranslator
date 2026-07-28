@@ -94,14 +94,42 @@ CONTEXT_POOL = {
 N_EPISODES = 12
 
 
+# Which work domains each persona plausibly holds rules about. Assignment by
+# fit, not filtering after the fact: the stride partition was domain-blind
+# and put "每种岩石描述控制在71个词以内" in an SRE's memory, while filtering
+# that per-persona threw away 80% of a corpus that was fine for SOMEBODY.
+PERSONA_DOMAINS = {
+    "e-01": ("code", "docs", "email-comms", "general-writing"),
+    "e-02": ("email-comms", "docs", "data-analysis", "general-writing"),
+    "e-03": ("data-analysis", "code", "general-writing"),
+    "e-04": ("docs", "data-analysis", "code", "general-writing"),
+    "e-05": ("docs", "code", "general-writing"),
+    "e-06": ("email-comms", "docs", "general-writing"),
+    "e-07": ("code", "docs", "general-writing"),
+    "e-08": ("email-comms", "docs", "general-writing"),
+    "e-09": ("docs", "email-comms", "general-writing"),
+    "e-10": ("code", "docs", "email-comms", "general-writing"),
+    "e-11": ("docs", "general-writing"),
+    "e-12": ("general-writing", "docs", "email-comms"),
+}
+
+
 def episode_slice(catalogue: list[dict], episode: str) -> list[dict]:
-    """Deterministic per-episode partition: global shuffle then stride, so
-    episodes never share an atom and every episode samples all sources."""
-    idx = int(episode.split("-")[1]) - 1
+    """Per-episode partition, domain-aware. Atoms are dealt round-robin
+    WITHIN each domain to the personas that accept it, so episodes never
+    share an atom, every episode gets rules its persona would plausibly hold,
+    and `other-specialist` atoms are dropped fleet-wide."""
+    want = PERSONA_DOMAINS[episode]
     rng = random.Random(7700)
-    pool = sorted(catalogue, key=lambda a: a["aid"])
-    rng.shuffle(pool)
-    return pool[idx::N_EPISODES]
+    out = []
+    for dom in want:
+        pool = sorted((a for a in catalogue if a.get("domain") == dom),
+                      key=lambda a: a["aid"])
+        rng.shuffle(pool)
+        takers = [e for e in sorted(PERSONA_DOMAINS)
+                  if dom in PERSONA_DOMAINS[e]]
+        out += pool[takers.index(episode)::len(takers)]
+    return out
 
 HOOK_SYSTEM = """You write ONE short work request a user types to their AI assistant.
 PERSONA and TASK KIND are given. The request must be a plain, concrete piece of
@@ -298,16 +326,31 @@ def plan(catalogue: list[dict], seed: int, prefix: str = "e01") -> dict:
             "withdrawn": withdrawn, "rng": rng}
 
 
-def _preflight(candidates: list, persona: dict, hooks: list,
-               seed: int) -> list:
-    """Utterance + gates for every candidate, in parallel. Survivors carry
-    their `utt` (utterance/clause/alt_clause/anchor) so the round loop never
-    has to generate — and never has to fall back."""
+def _preflight(candidates: list, persona: dict, hooks: list, seed: int,
+               need: int = 40, quiet: bool = False) -> list:
+    """Two phases, cheap filter first.
+
+    Plausibility is a property of the ATOM and the persona, not of the
+    wording, so it runs on the canonical text for one call before anything
+    expensive happens — generating an utterance and running four gates on a
+    rule this user would never state is four wasted calls. Only plausible
+    atoms go on to utter + gates, and survivors carry their `utt` so the
+    round loop never generates and never falls back."""
+    from bench.gen.build_catalogue import _canonical
+
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        plaus = list(ex.map(
+            lambda a: plausibility_gate(_canonical(a["skeleton"]), persona)[0],
+            candidates))
+    kept = [a for a, ok in zip(candidates, plaus) if ok]
+    if not quiet:
+        print(f"  plausible for this persona: {len(kept)}/{len(candidates)}")
+    kept = kept[:max(need, 1)]
+
     surfaces = ["complaint"] * 4 + ["aside"] * 4 + ["standing_order"] * 2
 
     def one(idx_atom):
         i, atom = idx_atom
-        rng = random.Random(seed * 104729 + i)
         surface = surfaces[i % len(surfaces)]
         hook = hooks[i % len(hooks)]["text"]
         for _attempt in range(2):
@@ -321,14 +364,11 @@ def _preflight(candidates: list, persona: dict, hooks: list,
             anchor = _verified_anchor(u, atom["distinctive"])
             if not anchor:
                 continue          # no persona-language anchor → ungradeable
-            ok, _why = plausibility_gate(u["clause"], persona)
-            if not ok:
-                return None       # this user would never have said it
             return {**atom, "utt": u, "distinctive": anchor}
         return None
 
     with ThreadPoolExecutor(max_workers=8) as ex:
-        out = list(ex.map(one, enumerate(candidates)))
+        out = list(ex.map(one, enumerate(kept)))
     return [x for x in out if x]
 
 
@@ -346,8 +386,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("episode", nargs="?", default="e-01")
     ap.add_argument("--seed", type=int, default=41)
-    ap.add_argument("--preflight-cap", type=int, default=58,
-                    help="candidates gated before planning (needs 33 to survive)")
+    ap.add_argument("--preflight-cap", type=int, default=52,
+                    help="plausible atoms sent to utter+gates (need 33 survivors)")
     args = ap.parse_args()
     persona = PERSONAS[args.episode]
 
@@ -371,13 +411,14 @@ def main():
         k = a["coords"]["key"]
         (head if k not in seen_keys else tail).append(a)
         seen_keys.add(k)
-    catalogue = (head + tail)[:args.preflight_cap]
+    catalogue = head + tail
 
     print(f"pre-flighting {len(catalogue)} candidates...")
     hooks0 = _gen_hooks(PERSONAS[args.episode], 12, random.Random(args.seed))
     if not hooks0:
         raise SystemExit("hook generation failed entirely")
-    survivors = _preflight(catalogue, persona, hooks0, args.seed)
+    survivors = _preflight(catalogue, persona, hooks0, args.seed,
+                           need=args.preflight_cap)
     print(f"  {len(survivors)}/{len(catalogue)} candidates passed the gates")
 
     p = plan(survivors, args.seed, prefix=args.episode.replace("-", ""))
@@ -400,7 +441,8 @@ def main():
                 sk2, desc = mutate(pred_meta["atom"]["skeleton"], rng)
                 cand = {**pred_meta["atom"], "skeleton": sk2,
                         "mutation": desc, "distinctive": _re_distinctive(sk2)}
-                got = _preflight([cand], persona, hooks0, args.seed + _try)
+                got = _preflight([cand], persona, hooks0, args.seed + _try,
+                                 need=1, quiet=True)
                 if got:
                     atom, u = got[0], got[0]["utt"]
                     break

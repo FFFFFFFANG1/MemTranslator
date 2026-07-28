@@ -176,9 +176,9 @@ def delivery_gate(clause: str, votes: int = 2) -> tuple[bool, str]:
     return True, ""
 
 
-PLAUSIBILITY_SYSTEM = """You judge whether a specific person would plausibly have stated a standing rule to their AI assistant.
-Answer no when the rule belongs to a domain this person does not work in (a rule about rock descriptions for a site-reliability engineer, about legal citations for a backend developer), or when it is so far below their concerns that they would never think to state it.
-Answer yes when it is the kind of instruction this person could realistically have given about their own work.
+PLAUSIBILITY_SYSTEM = """You judge whether a rule could belong to a specific person's work at all.
+Answer NO only for a clear non-sequitur: the rule is about subject matter this person does not work with (rock descriptions for a site-reliability engineer, legal citations for a backend developer, recipe steps for a product manager).
+Answer YES otherwise — including for small, fussy, or low-stakes rules. People state fussy rules about their own work all the time; that is not implausible, it is normal.
 Output exactly: {"plausible": true|false, "why": "<short phrase>"}"""
 
 
