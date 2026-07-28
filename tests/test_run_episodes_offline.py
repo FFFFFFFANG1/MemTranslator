@@ -124,13 +124,10 @@ def test_probe_scoring_all_arms(wired):
     out = re_mod.run_chained(wired, flush_every=1)
     by_cid = {n["cid"]: n for n in wired["catalogue"]}
     late = out["probe_rows"][1]                       # seq 5, after supersede
-    real = re_mod.score_probe(wired, late, "real", out["store"], by_cid)
-    no_ret = re_mod.score_probe(wired, late, "no_retire", out["store"],
-                                by_cid)
-    oracle = re_mod.score_probe(wired, late, "oracle-arm", out["store"],
-                                by_cid)
-    null = re_mod.score_probe(wired, late, "null-generic", out["store"],
-                              by_cid)
+    real = re_mod.score_probe(wired, late, "real", by_cid)
+    no_ret = re_mod.score_probe(wired, late, "no_retire", by_cid)
+    oracle = re_mod.score_probe(wired, late, "oracle-arm", by_cid)
+    null = re_mod.score_probe(wired, late, "null-generic", by_cid)
     # real: store is clean (台账 retired) → trap suppressed, both live carried
     assert real["suppress_hits"] == 1 and real["carry_hits"] == 2
     # no_retire: injects the dead rule too → echo carries it → trap leaks
@@ -145,7 +142,7 @@ def test_full_context_leaks_by_construction(wired):
     out = re_mod.run_chained(wired, flush_every=1)
     by_cid = {n["cid"]: n for n in wired["catalogue"]}
     late = out["probe_rows"][1]
-    fc = re_mod.score_probe(wired, late, "full_context", out["store"], by_cid)
+    fc = re_mod.score_probe(wired, late, "full_context", by_cid)
     # the transcript contains 台账 in the (withdrawn) turn AND in the
     # superseding turn; an echo model reproduces it → trap leaks. A real
     # model may do better — that is exactly what the arm measures.

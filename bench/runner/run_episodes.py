@@ -125,16 +125,17 @@ def _complete_with_block(text: str, system: str, block: str,
             "latency_ms": latency_ms, "block_chars": len(block)}
 
 
-def arm_real(store: Store, ep, r, transcript):
+def arm_real(store_items: list, ep, r, transcript):
+    active = [x for x in store_items if x.status == "active"]
     out = with_retry(lambda: tr_mod.translate(
-        r["text"], store.active(),
+        r["text"], active,
         context=to_product_context(r["context"])), "arm/real")
     return {"polished": out["polished"], "latency_ms": out["latency_ms"],
-            "block_chars": sum(len(x.text) for x in store.active())}
+            "block_chars": sum(len(x.text) for x in active)}
 
 
-def arm_no_retire(store: Store, ep, r, transcript):
-    pool = [x for x in store.list() if x.kind == "requirement"]
+def arm_no_retire(store_items: list, ep, r, transcript):
+    pool = [x for x in store_items if x.kind == "requirement"]
     pool.sort(key=lambda x: x.created_at)
     if len(pool) > RECALL_CAP:
         scores = BM25([f"{x.text} {x.key or ''}" for x in pool]) \
@@ -148,7 +149,7 @@ def arm_no_retire(store: Store, ep, r, transcript):
                                 "Stored requirements")
 
 
-def arm_oracle(store: Store, ep, r, transcript):
+def arm_oracle(store_items: list, ep, r, transcript):
     gold = [x for x in _gold_requirements(ep, r["seq"])
             if x.status == "active"]
     out = with_retry(lambda: tr_mod.translate(
@@ -158,14 +159,14 @@ def arm_oracle(store: Store, ep, r, transcript):
             "block_chars": sum(len(x.text) for x in gold)}
 
 
-def arm_full_context(store: Store, ep, r, transcript):
+def arm_full_context(store_items: list, ep, r, transcript):
     turns = "\n".join(f"{i + 1}. {t}" for i, t in enumerate(transcript))
     block = f"{FULL_CONTEXT_PREAMBLE}\n\n{turns}"
     return _complete_with_block(r["text"], tr_mod.TRANSLATOR_SYSTEM, block,
                                 "Conversation history")
 
 
-def arm_null_generic(store: Store, ep, r, transcript):
+def arm_null_generic(store_items: list, ep, r, transcript):
     return _complete_with_block(r["text"], GENERIC_POLISH_SYSTEM, "(none)",
                                 "Stored requirements")
 
@@ -198,8 +199,12 @@ def run_chained(ep: dict, flush_every: int = 4) -> dict:
                                                   context=prod_ctx),
                          f"{ep['id']}/r{r['seq']}")
         if r.get("probe"):
+            # snapshot the store AS OF this probe: arms scored later must see
+            # the store the probe-time system saw, not the end-of-episode one
             probe_rows.append({"round": r, "transcript": list(transcript),
-                               "chained_polished": out["polished"]})
+                               "chained_polished": out["polished"],
+                               "store_state": [x.to_dict()
+                                               for x in store.list()]})
         pending.append({"type": "natural", "text": r["text"]})
         rounds_since_flush += 1
         if rounds_since_flush >= flush_every:
@@ -238,9 +243,10 @@ def _mech(polished: str | None, node) -> bool:
     return bool(polished) and node["distinctive"] in polished
 
 
-def score_probe(ep, row, arm_name, store, by_cid) -> dict:
+def score_probe(ep, row, arm_name, by_cid) -> dict:
     r = row["round"]
-    out = ARMS[arm_name](store, ep, r, row["transcript"]) \
+    store_items = [Requirement.from_dict(d) for d in row["store_state"]]
+    out = ARMS[arm_name](store_items, ep, r, row["transcript"]) \
         if arm_name != "real" or row.get("chained_polished") is None \
         else {"polished": row["chained_polished"], "latency_ms": 0,
               "block_chars": 0}
@@ -307,7 +313,7 @@ def main():
     rows = []
     for row in chained["probe_rows"]:
         for arm in arms:
-            rows.append(score_probe(ep, row, arm, chained["store"], by_cid))
+            rows.append(score_probe(ep, row, arm, by_cid))
             print(f"  probe seq {row['round']['seq']:2d} {arm:13s} "
                   f"carry {rows[-1]['carry_hits']}/{rows[-1]['carry_n']} "
                   f"suppress {rows[-1]['suppress_hits']}"
