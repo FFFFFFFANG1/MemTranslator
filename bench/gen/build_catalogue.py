@@ -19,7 +19,42 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from bench.gen.annotate import annotate
+from bench.gen.gates import delivery_gate
 from bench.gen.mutate import mutate
+
+
+def _canonical(sk: dict) -> str:
+    """Readable rendering of a skeleton. The first version concatenated
+    trigger+act+object+"{value} {unit}" blindly and produced strings like
+    "when writing shell scripts use shell 14 items" — a number welded onto a
+    clause that never asked for one. 5.6% of the first fleet's nodes carried
+    that damage into the gold. The threshold now renders as a comparison
+    phrase, and only when the object does not already state it."""
+    parts = []
+    if sk.get("trigger"):
+        parts.append(str(sk["trigger"]).strip())
+    act = str(sk.get("act") or "").strip()
+    obj = str(sk.get("object") or "").strip()
+    if act and obj:
+        parts.append(f"{act} {obj}")
+    elif act or obj:
+        parts.append(act or obj)
+    th = sk.get("threshold") or {}
+    val = th.get("value")
+    if val is not None and str(val) not in obj:
+        unit = str(th.get("unit") or "").strip()
+        cmp_ = "at least" if any(w in act.lower()
+                                 for w in ("least", "minimum", "min")) \
+            else "no more than"
+        parts.append(f"({cmp_} {val} {unit})".replace(" )", ")"))
+    order = [str(x) for x in (sk.get("order") or []) if x]
+    if len(order) == 2:
+        parts.append(f"({order[0]} before {order[1]})")
+    if sk.get("polarity") in ("avoid", "prohibit") and act \
+            and not any(w in act.lower() for w in ("avoid", "not", "never",
+                                                   "omit", "skip")):
+        parts.insert(max(0, len(parts) - 1), "avoid:")
+    return " ".join(p for p in parts if p).strip()
 
 HARVEST = Path(__file__).resolve().parent / "harvest"
 OUT = HARVEST / "catalogue.jsonl"
@@ -75,6 +110,9 @@ def build_one(args) -> dict | None:
     mutated, desc = mutate(item["skeleton"], rng)
     if not anchor_ok(_distinctive(mutated)):
         return None                     # weak grading anchor → not admissible
+    ok, _why = delivery_gate(_canonical(mutated))
+    if not ok:
+        return None                     # content/values/vacuous → distractor pool
     coords = annotate(mutated)
     if not coords["key"]:
         return None                     # no registry key won a vote → unusable

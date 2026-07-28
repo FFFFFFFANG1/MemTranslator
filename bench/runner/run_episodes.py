@@ -284,12 +284,34 @@ def score_probe(ep, row, arm_name, by_cid) -> dict:
 
 
 def score_state(ep, snapshot: list[dict], seq: int) -> dict:
-    """Alignment by distinctive substring: dead gold cid → no ACTIVE store
-    entry carries its distinctive; live gold cid → at least one does."""
+    """Does the SUT's store hold the right account at this checkpoint?
+
+    Alignment is substring-first, judge-on-miss. Substring alone measured
+    0.227 against 0.348 by judge on the same 66 nodes: the SUT routinely
+    stores a Chinese rule in English ("函数文档只写接口说明" →
+    "In function documentation, include only interface usage..."), so a
+    Chinese anchor can never match and the band under-reported real learning
+    by roughly a third. A substring HIT is conclusive and costs nothing; only
+    misses go to the judge."""
     st = fold(_effects(ep), seq)
     by_cid = {n["cid"]: n for n in ep["catalogue"]}
     active_texts = [s["text"] for s in snapshot
                     if s["status"] == "active" and s["kind"] == "requirement"]
+    listing = "\n".join(f"{i + 1}. {t}"
+                        for i, t in enumerate(active_texts)) or "(empty)"
+
+    def aligned(node) -> bool:
+        if any(node["distinctive"] in t for t in active_texts):
+            return True
+        if not active_texts:
+            return False
+        ok, _flag = judge(
+            "At least one of the stored entries expresses the same durable "
+            "rule as the target rule.",
+            {"stored_entries": listing,
+             "target_rule": node["clause"] or node["text"]})
+        return ok
+
     ok = n = 0
     detail = []
     for cid, g in st.items():
@@ -297,21 +319,19 @@ def score_state(ep, snapshot: list[dict], seq: int) -> dict:
         if node is None or not node["distinctive"] \
                 or node.get("anchor_weak"):
             continue
-        aligned = [t for t in active_texts if node["distinctive"] in t]
         # a dead entry whose live SUCCESSOR shares the distinctive (object
-        # anchors survive supersession) cannot be told apart mechanically —
-        # skip those, they are judge-band material
+        # anchors survive supersession) cannot be told apart — skip those
         succ = [m for m in ep["catalogue"]
                 if m.get("successor_of") == cid
                 and m["distinctive"] == node["distinctive"]]
         if succ:
             continue
+        has = aligned(node)
         n += 1
-        good = bool(aligned) if g.status == "active" else not aligned
+        good = has if g.status == "active" else not has
         ok += good
         if not good:
-            detail.append({"cid": cid, "gold": g.status,
-                           "aligned_active": len(aligned)})
+            detail.append({"cid": cid, "gold": g.status, "aligned": has})
     return {"ok": ok, "n": n, "rate": ok / n if n else 1.0,
             "misses": detail[:20]}
 

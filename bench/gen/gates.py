@@ -146,6 +146,36 @@ def style_gate(utterance: str) -> tuple[bool, str]:
     return got["score"] >= 4, f"style {got['score']}"
 
 
+DELIVERY_SYSTEM = """You decide whether a stored rule belongs in a DELIVERY-REQUIREMENT memory.
+It belongs (answer yes) when it constrains HOW work is produced or delivered: format, length, structure, ordering, wording, register, language, method, workflow.
+It does NOT belong (answer no) when it is any of:
+- a content, topic, opinion or recommendation preference ("prefer open-source tools")
+- a safety / values / harm rule ("never write anything offensive", "stay positive")
+- a persona or role instruction ("don't roleplay as a character")
+- vacuous or unactionable ("be professional", "do a good job") — an assistant could not tell whether it complied
+- a one-off step for a single task rather than a durable rule
+Output exactly: {"delivery": true|false, "why": "<short phrase>"}"""
+
+
+def delivery_gate(clause: str, votes: int = 2) -> tuple[bool, str]:
+    """Admission control against the classes that leaked into the first fleet
+    audit: safety/values rows (PRISM is ~64% of them), persona instructions,
+    and vacuous rules. Conservative by construction — both votes must say
+    yes, because a content rule in the catalogue is worse than a missing one:
+    the product is designed NOT to store it, so the suite would be grading a
+    behaviour it forbids."""
+    if not clause.strip():
+        return False, "empty"
+    for _ in range(votes):
+        got = flash_json(DELIVERY_SYSTEM, f"Rule:\n{clause}\n\nJSON:",
+                         max_tokens=120)
+        if not isinstance(got, dict) or got.get("delivery") is not True:
+            why = (got or {}).get("why", "unparseable") if isinstance(
+                got, dict) else "unparseable"
+            return False, f"not a delivery rule: {why}"
+    return True, ""
+
+
 def contamination_gate(distinctive: str) -> tuple[bool, str]:
     """The distinctive token must not exist anywhere in src/ — otherwise the
     'memory' being tested is sitting in the product prompt."""

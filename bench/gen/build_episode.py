@@ -30,6 +30,7 @@ import argparse
 import json
 import random
 import re
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from bench.gen.flash import flash_json
@@ -297,6 +298,37 @@ def plan(catalogue: list[dict], seed: int, prefix: str = "e01") -> dict:
             "withdrawn": withdrawn, "rng": rng}
 
 
+def _preflight(candidates: list, persona: dict, hooks: list,
+               seed: int) -> list:
+    """Utterance + gates for every candidate, in parallel. Survivors carry
+    their `utt` (utterance/clause/alt_clause/anchor) so the round loop never
+    has to generate — and never has to fall back."""
+    surfaces = ["complaint"] * 4 + ["aside"] * 4 + ["standing_order"] * 2
+
+    def one(idx_atom):
+        i, atom = idx_atom
+        rng = random.Random(seed * 104729 + i)
+        surface = surfaces[i % len(surfaces)]
+        hook = hooks[i % len(hooks)]["text"]
+        for _attempt in range(2):
+            u = utter(atom["skeleton"], persona, hook, surface)
+            if u is None:
+                continue
+            ok, _fails = run_gates(u["utterance"], atom["skeleton"],
+                                   atom.get("raw", ""), atom["distinctive"])
+            if not ok:
+                continue
+            anchor = _verified_anchor(u, atom["distinctive"])
+            if not anchor:
+                continue          # no persona-language anchor → ungradeable
+            return {**atom, "utt": u, "distinctive": anchor}
+        return None
+
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        out = list(ex.map(one, enumerate(candidates)))
+    return [x for x in out if x]
+
+
 def a_same_value(atoms: list) -> bool:
     """Two atoms with the same key, equivalent value AND the same polarity
     sign → usable dup pair. Value equality alone admitted "prefer snake" +
@@ -318,27 +350,70 @@ def main():
                  (HARVEST / "catalogue.jsonl").read_text().splitlines()
                  if l.strip()]
     catalogue = episode_slice(catalogue, args.episode)
-    p = plan(catalogue, args.seed, prefix=args.episode.replace("-", ""))
+
+    # --- PRE-FLIGHT: generate every candidate's utterance and gate it BEFORE
+    # planning, so a gate failure DROPS the atom instead of falling back to
+    # canonical text. The first fleet fell back 8-9 times per episode and each
+    # fallback wrote machine English into a Chinese persona's gold — 12.1% of
+    # nodes fleet-wide. A missing node costs one slot; a fallback node
+    # poisons the exam.
+    print(f"pre-flighting {len(catalogue)} candidates...")
+    hooks0 = _gen_hooks(PERSONAS[args.episode], 12, random.Random(args.seed))
+    if not hooks0:
+        raise SystemExit("hook generation failed entirely")
+    survivors = _preflight(catalogue, persona, hooks0, args.seed)
+    print(f"  {len(survivors)}/{len(catalogue)} candidates passed the gates")
+
+    p = plan(survivors, args.seed, prefix=args.episode.replace("-", ""))
     rng = p["rng"]
 
-    # --- build Constraint objects (successors = re-mutated predecessors)
-    constraints, cat_out = [], []
+    # --- build Constraint objects. Primaries reuse their pre-flighted
+    # utterance; successors are re-mutated predecessors and must pass the
+    # gates now. A successor that cannot be uttered cleanly DEGRADES to a
+    # plain withdrawal (its predecessor still dies, just without a
+    # replacement) — never to canonical fallback text.
+    print("uttering successors...")
+    constraints = []
+    degraded = []
     for cid in sorted(p["node_meta"]):
         meta = p["node_meta"][cid]
         if "successor_of" in meta:
             pred_meta = p["node_meta"][meta["successor_of"]]
-            sk2, desc = mutate(pred_meta["atom"]["skeleton"], rng)
-            atom = {**pred_meta["atom"], "skeleton": sk2,
-                    "mutation": desc,
-                    "distinctive": _re_distinctive(sk2)}
+            u = atom = None
+            for _try in range(2):
+                sk2, desc = mutate(pred_meta["atom"]["skeleton"], rng)
+                cand = {**pred_meta["atom"], "skeleton": sk2,
+                        "mutation": desc, "distinctive": _re_distinctive(sk2)}
+                got = _preflight([cand], persona, hooks0, args.seed + _try)
+                if got:
+                    atom, u = got[0], got[0]["utt"]
+                    break
+            if atom is None:
+                degraded.append(cid)
+                continue
             scope = pred_meta["scope"]
         else:
             atom, scope = meta["atom"], meta["scope"]
-        text = _canonical_text(atom["skeleton"])
-        c = _constraint(cid, atom, scope, text)
-        meta["constraint"] = c
-        meta["atom"] = atom              # gates need skeleton + raw later
+            u = atom["utt"]
+        c = _constraint(cid, atom, scope, _canonical_text(atom["skeleton"]))
+        c.clause, c.alt_clause = u["clause"], u["alt_clause"]
+        c.distinctive = atom["distinctive"]
+        meta["constraint"], meta["atom"], meta["utt"] = c, atom, u
         constraints.append(c)
+
+    if degraded:
+        # rewrite the plan: the contradict becomes a retire, the successor
+        # node disappears from the catalogue and from every probe's gold
+        keep = []
+        for e in p["effects"]:
+            if e.kind == "contradict" and e.cid in degraded:
+                keep.append(Effect(seq=e.seq, kind="retire", target=e.target))
+            else:
+                keep.append(e)
+        p["effects"] = keep
+        for cid in degraded:
+            p["node_meta"].pop(cid, None)
+        print(f"  {len(degraded)} successors degraded to plain withdrawals")
 
     # --- rounds: hooks, utterances, diffs, distractors, probes
     print("generating hooks...")
@@ -353,7 +428,7 @@ def main():
     for e in p["effects"]:
         by_seq.setdefault(e.seq, []).append(e)
 
-    rounds, probes, gate_drops = [], [], 0
+    rounds, probes = [], []
     distractor_iter = iter(DISTRACTORS)
     hook_i = 0
     print("uttering signal rounds...")
@@ -369,28 +444,8 @@ def main():
                 node = p["node_meta"].get(e.cid or e.target, {})
                 c = node.get("constraint")
                 if e.kind in ("assert", "contradict"):
-                    surface = surfaces.pop() if surfaces else "aside"
-                    u = _uttered_with_gates(c, node.get("atom") or {},
-                                            persona, hook["text"], surface,
-                                            e.kind)
-                    if u is None:
-                        gate_drops += 1
-                        u = {"utterance": c.text, "clause": c.text,
-                             "alt_clause": c.text, "anchor": "",
-                             "surface": "fallback"}
-                    c.clause, c.alt_clause = u["clause"], u["alt_clause"]
-                    # The grading anchor must be a token the SUT's rewrite
-                    # will reproduce VERBATIM — i.e. persona-language, taken
-                    # from the clause itself. The pilot measured the cost of
-                    # skipping this: English object anchors under Chinese
-                    # rewrites scored oracle-arm CARRY 0.03, an impossible
-                    # product fact and a broken criterion.
-                    anchor = _verified_anchor(u, c.distinctive)
-                    if anchor:
-                        c.distinctive = anchor
-                    else:
-                        node["anchor_weak"] = True
-                    texts.append(u["utterance"])
+                    # already generated and gated in pre-flight
+                    texts.append(node["utt"]["utterance"])
                 elif e.kind == "retire":
                     texts.append(_withdrawal_text(c, persona))
                 elif e.kind == "reinforce":
@@ -489,7 +544,7 @@ def main():
         "checkpoints": p["checkpoints"],
         "dup_pairs": [[a["aid"], b["aid"]] for a, b in p["dup_pairs"]],
         "stats": {"nodes": len(constraints), "dead_final": n_dead,
-                  "peak_gold_active": peak, "gate_drops": gate_drops,
+                  "peak_gold_active": peak, "degraded_successors": len(degraded),
                   "i11_pruned_traps": pruned,
                   "lint_errors": errs},
     }
@@ -497,7 +552,8 @@ def main():
     path.write_text(json.dumps(out, ensure_ascii=False, indent=1))
     print(f"\n{args.episode}: {len(constraints)} nodes, {n_dead} dead at "
           f"final, peak gold-active {peak}, {len(probes)} probes, "
-          f"{gate_drops} gate fallbacks, {pruned} traps I11-pruned")
+          f"{len(degraded)} degraded successors, "
+          f"{pruned} traps I11-pruned")
     print(f"lint: {'GREEN' if not errs else errs}")
     print(f"-> {path}")
 
@@ -615,37 +671,10 @@ def _verified_anchor(u: dict, old: str) -> str:
 
 
 def _canonical_text(sk: dict) -> str:
-    th = sk.get("threshold")
-    parts = [sk.get("trigger") or "", sk.get("act") or "",
-             sk.get("object") or ""]
-    if th:
-        parts.append(f"{th.get('value')} {th.get('unit') or ''}")
-    if sk.get("order"):
-        parts.append(" before ".join(str(x) for x in sk["order"] if x))
-    return " ".join(x for x in parts if x).strip()
+    from bench.gen.build_catalogue import _canonical
+    return _canonical(sk)
 
 
-def _uttered_with_gates(c, atom, persona, hook, surface, kind):
-    """utter → gates, one regeneration, then None (caller falls back and
-    counts it — silent fallbacks would let the corpus quietly go formal).
-
-    The REAL skeleton and the REAL source sentence go to the gates: an
-    earlier version fed a mangled skeleton (registry key as object) and the
-    provenance URL as the source text, which made readback fail spuriously
-    and the licence gate vacuously pass — the exact quiet corruption gates
-    exist to prevent."""
-    sk = atom["skeleton"]
-    if kind == "contradict":
-        surface = "complaint"            # supersessions read as corrections
-    for _attempt in range(2):
-        u = utter(sk, persona, hook, surface)
-        if u is None:
-            continue
-        ok, _fails = run_gates(u["utterance"], sk, atom.get("raw", ""),
-                               c.distinctive)
-        if ok:
-            return u
-    return None
 
 
 def _th_of(c):
