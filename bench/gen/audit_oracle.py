@@ -54,25 +54,37 @@ def _classify(req: str, clause: str, zh: bool) -> str:
 
 
 def audit_probe(job):
+    """Runs the ceiling arm AND the floor arm on the same gold.
+
+    A high ceiling means nothing on its own. If the answer key drifts toward
+    "rules any polisher would add anyway", oracle-should rises and so does
+    null-generic, and the suite has stopped measuring memory while looking
+    healthier than ever. The floor is the guard against tuning the gold to
+    the system under test — the one failure mode this whole loop could
+    manufacture."""
     epid, ep, r, zh = job
     by = {n["cid"]: n for n in ep["catalogue"]}
     out = R.arm_oracle_should([], ep, r, [])
     polished = out.get("polished") or ""
+    floor_out = R.arm_null_generic([], ep, r, [])
+    floor_pol = floor_out.get("polished") or ""
     rows = []
     for cid in r.get("should_fire", []):
         n = by.get(cid)
         if n is None or n.get("anchor_weak"):
             continue
         clause = n["clause"] or n["text"]
-        carried = False
-        if polished:
-            carried, _flag = judge(
-                f"The rewritten request explicitly carries this constraint: "
-                f"{clause}", {"rewritten_request": polished})
+        crit = (f"The rewritten request explicitly carries this constraint: "
+                f"{clause}")
+        carried = bool(polished) and judge(
+            crit, {"rewritten_request": polished})[0]
+        floor_carried = bool(floor_pol) and judge(
+            crit, {"rewritten_request": floor_pol})[0]
         rows.append({
             "episode": epid, "seq": r["seq"], "cid": cid,
             "request": r["text"], "clause": clause,
             "noop": not polished, "carried": bool(carried),
+            "floor_carried": bool(floor_carried),
             "verdict": ("carried" if carried
                         else _classify(r["text"], clause, zh))})
     return rows
@@ -122,6 +134,15 @@ def main():
     for k, v in sorted(verdicts.items()):
         if k != "carried":
             print(f"  {k:<32s} {v:4d}  {v / n:.3f}")
+    floor = sum(1 for r in rows if r["floor_carried"])
+    print(f"\n  FLOOR  null-generic carries        : {floor / n:.3f}  "
+          f"(a memory-less polisher; must stay near 0)")
+    print(f"  CEILING oracle-should carries      : {carried / n:.3f}")
+    print(f"  discrimination (ceiling - floor)   : "
+          f"{(carried - floor) / n:.3f}")
+    if floor / n > 0.15:
+        print("  !! the answer key is drifting toward rules any polisher "
+              "adds anyway — it has stopped measuring memory")
     print(f"\n  gold-defect share of ALL decisions : {gold_bad / n:.3f}")
     if gold_bad + prod_bad:
         print(f"  gold-defect share of MISSES        : "
