@@ -5,9 +5,9 @@
    context KNOWS the task is something else; unknown dimensions keep the
    entry (never exclude on missing information);
 3. within RECALL_CAP everything goes through (v0 behavior); above the cap,
-   entries whose facet-key surface forms appear in the query rank first,
-   then recency fills the rest.
+   BM25 over the entry's own text decides, recency breaking ties.
 """
+from memtranslator.bm25 import BM25
 from memtranslator.config import RECALL_CAP, STYLE_RULE_CAP
 from memtranslator.schema import Requirement
 from memtranslator.signals import _KEY_LEXICON
@@ -41,10 +41,16 @@ def recall(requirements: list[Requirement], *, query: str = "",
     pool.sort(key=lambda r: r.created_at)
     if len(pool) <= RECALL_CAP:
         return pool
-    hits = [r for r in pool if _key_hits_query(r.key, query)]
-    rest = [r for r in pool if r not in hits]
-    picked = hits[-RECALL_CAP:] + rest[-(RECALL_CAP - min(len(hits), RECALL_CAP)):]
-    picked = picked[:RECALL_CAP]
+    # Above the cap, rank by BM25 over the entry's own words. The previous
+    # ranker keyed on `_KEY_LEXICON`, 14 registered roots, and M1 measured the
+    # cost: a rule keyed `report.format` scored zero against "写一份季度服务器
+    # 容量规划文档" because neither 报告 nor 格式 appears in it, so an old but
+    # exactly-on-topic rule was dropped on recency alone (CARRY 0.00 on that
+    # facet). BM25 needs no registry — 文档 matches 长文档 on its own.
+    scores = BM25([f"{r.text} {r.key or ''}" for r in pool]).scores(query)
+    order = sorted(range(len(pool)),
+                   key=lambda i: (-scores[i], -pool[i].created_at))
+    picked = [pool[i] for i in order[:RECALL_CAP]]
     picked.sort(key=lambda r: r.created_at)
     return picked
 
