@@ -1,7 +1,7 @@
 {
  "id": "e-11",
  "schema_version": "E1",
- "seed": 52,
+ "seed": 61,
  "protocol_version": 2,
  "persona": {
   "id": "student-en",
@@ -14,106 +14,18 @@
  "catalogue": [
   {
    "cid": "e11-c00",
-   "text": "when writing code insert one blank line 17 lines method definition before blank line before next method definition",
-   "clause": "when writing code insert one blank line 17 lines method definition before blank line before next method definition",
-   "alt_clause": "when writing code insert one blank line 17 lines method definition before blank line before next method definition",
-   "distinctive": "17",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.code_blocks",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 17.0,
-     "unit": "lines",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1 -> 17"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c01",
-   "text": "when writing code insert two blank lines between top-level definitions 17 lines",
-   "clause": "when writing code insert two blank lines between top-level definitions 17 lines",
-   "alt_clause": "when writing code insert two blank lines between top-level definitions 17 lines",
-   "distinctive": "17",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.code_blocks",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 17.0,
-     "unit": "lines",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 2 -> 17"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c02",
-   "text": "when describing geological formations or landmarks in the first table limit description length 67 words",
-   "clause": "when describing geological formations or landmarks in the first table limit description length 67 words",
-   "alt_clause": "when describing geological formations or landmarks in the first table limit description length 67 words",
-   "distinctive": "67",
+   "text": "when writing a paper limit length (no more than 781 words)",
+   "clause": "keep it under 781 words for papers",
+   "alt_clause": "don't go over 781 words when writing a paper",
+   "distinctive": "781",
    "coords": {
     "bucket": "deliverables",
     "key": "length.max",
-    "polarity": "require",
+    "polarity": "prefer",
     "binding": "hard",
     "value": {
      "type": "numeric",
-     "num": 67.0,
+     "num": 781.0,
      "unit": "words",
      "cmp": "max",
      "domain": "",
@@ -134,114 +46,22 @@
    },
    "atom": {
     "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 40 -> 67"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c03",
-   "text": "when writing shell scripts follow Shell Style Guide",
-   "clause": "when writing shell scripts, don't follow the Shell Style Guide",
-   "alt_clause": "for any shell script, avoid the Shell Style Guide",
-   "distinctive": "Shell Style Guide",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.naming",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "Shell Style Guide"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/shellguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c04",
-   "text": "when asking and answering questions in the conversation use past tense",
-   "clause": "when asking and answering questions in the conversation use past tense",
-   "alt_clause": "when asking and answering questions in the conversation use past tense",
-   "distinctive": "tense",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "tone.register",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "past tense"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
      "source": "wild-if-eval",
      "license": "Apache-2.0",
      "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity require -> prohibit"
+    "mutation": "threshold 1200 -> 781"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
-   "cid": "e11-c05",
-   "text": "when writing sentences enclose sentences in quotation marks",
-   "clause": "don't enclose sentences in quotation marks",
-   "alt_clause": "never put quotes around whole sentences",
-   "distinctive": "quotation marks",
+   "cid": "e11-c01",
+   "text": "when mentioning items avoid: bracket words of physical object items mentioned as non-animate",
+   "clause": "don't bracket physical object words like 'pen' or 'book'",
+   "alt_clause": "never use brackets around items that are physical objects",
+   "distinctive": "bracket",
    "coords": {
     "bucket": "output_contract",
     "key": "format.emphasis",
@@ -258,7 +78,235 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "sentences in quotation marks"
+      "words of physical object items mentioned as non-animate"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c02",
+   "text": "when creating tables avoid: follow best practices for short, readable tables",
+   "clause": "from now on, when creating tables, follow best practices for short, readable tables",
+   "alt_clause": "going forward, for any tables you make, keep them short and readable",
+   "distinctive": "short, readable tables",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "format.tables",
+    "polarity": "prohibit",
+    "binding": "soft",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "best practices for short, readable tables"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c03",
+   "text": "when writing about projects avoid: use HISTORY, NEWS or RELEASES",
+   "clause": "don't use HISTORY, NEWS or RELEASES",
+   "alt_clause": "avoid referencing HISTORY, NEWS or RELEASES",
+   "distinctive": "HISTORY, NEWS or RELEASES",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.lists",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "HISTORY, NEWS or RELEASES"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "keep-a-changelog",
+     "license": "MIT",
+     "url": "https://keepachangelog.com/en/1.1.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c04",
+   "text": "when writing documents avoid: design for scanning",
+   "clause": "design for scanning, not for reading",
+   "alt_clause": "write for skimming, not for deep reading",
+   "distinctive": "scanning",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "doc.structure",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "scanning"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c05",
+   "text": "when writing code avoid: use underscore or camelCase naming",
+   "clause": "avoid hyphenated naming when writing code, use underscore or camelCase instead",
+   "alt_clause": "no hyphens in variable names, only underscores or camelCase",
+   "distinctive": "hyphenated naming",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.naming",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "case_style",
+     "val": "snake",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c06",
+   "text": "always avoid: include vivid sensory imagery",
+   "clause": "no vivid sensory imagery",
+   "alt_clause": "don't use any sensory-rich descriptions",
+   "distinctive": "vivid sensory imagery",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "code.comments",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "vivid sensory imagery"
      ],
      "before": "",
      "after": ""
@@ -283,23 +331,23 @@
    "successor_of": null
   },
   {
-   "cid": "e11-c06",
-   "text": "when your data could easily be presented in a list avoid tables",
-   "clause": "if data can be listed, use a list, not a table",
-   "alt_clause": "when a list works, skip the table",
-   "distinctive": "tables",
+   "cid": "e11-c07",
+   "text": "when writing a document with long links avoid: use reference links",
+   "clause": "no inline long links, use reference links instead",
+   "alt_clause": "put long links as references, not embedded in the text",
+   "distinctive": "inline long links",
    "coords": {
     "bucket": "output_contract",
-    "key": "format.tables",
-    "polarity": "prefer",
-    "binding": "soft",
+    "key": "format.markdown",
+    "polarity": "prohibit",
+    "binding": "hard",
     "value": {
      "type": "enum",
      "num": null,
      "unit": "",
      "cmp": "",
      "domain": "format",
-     "val": "bullets",
+     "val": "markdown",
      "tag": "",
      "bool_val": null,
      "op": "",
@@ -309,7 +357,7 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -321,26 +369,26 @@
      "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity avoid -> prefer"
+    "mutation": "polarity require -> prohibit"
    },
-   "anchor_weak": true,
+   "anchor_weak": false,
    "successor_of": null
   },
   {
-   "cid": "e11-c07",
-   "text": "when generating a transcript designate each course with unit count 14 options",
-   "clause": "when generating a transcript designate each course with unit count 14 options",
-   "alt_clause": "when generating a transcript designate each course with unit count 14 options",
-   "distinctive": "14",
+   "cid": "e11-c08",
+   "text": "when writing a docstring summary line limit summary line length (no more than 165 characters)",
+   "clause": "keep summary lines under 165 characters",
+   "alt_clause": "limit docstring first lines to 165 chars max",
+   "distinctive": "165",
    "coords": {
-    "bucket": "deliverables",
-    "key": "analysis.units",
+    "bucket": "output_contract",
+    "key": "summary.length",
     "polarity": "require",
     "binding": "hard",
     "value": {
      "type": "numeric",
-     "num": 14.0,
-     "unit": "options",
+     "num": 165.0,
+     "unit": "characters",
      "cmp": "max",
      "domain": "",
      "val": "",
@@ -353,78 +401,32 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
    "atom": {
     "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 4 -> 14"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c08",
-   "text": "when concatenating strings ensure linear time concatenation",
-   "clause": "use linear time concatenation, not quadratic",
-   "alt_clause": "always concatenate strings in O(n) time, avoid O(n²)",
-   "distinctive": "linear time concatenation",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.error_handling",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "linear time concatenation"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
+    "mutation": "threshold 80 -> 165"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
    "cid": "e11-c09",
-   "text": "always use intricately crafted sentence structuring",
-   "clause": "don't use intricately crafted sentence structuring",
-   "alt_clause": "avoid fancy sentence construction",
-   "distinctive": "intricately crafted sentence structuring",
+   "text": "when describing sites avoid: include walking distance between sites",
+   "clause": "don't include walking distance between sites",
+   "alt_clause": "skip mentioning how far apart sites are on foot",
+   "distinctive": "walking distance",
    "coords": {
-    "bucket": "output_contract",
-    "key": "style.voice",
+    "bucket": "deliverables",
+    "key": "evidence.grounding",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -438,14 +440,14 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "intricately crafted sentence structuring"
+      "walking distance between sites"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -464,26 +466,28 @@
   },
   {
    "cid": "e11-c10",
-   "text": "when formatting code break line before binary operator 16 lines",
-   "clause": "when formatting code break line before binary operator 16 lines",
-   "alt_clause": "when formatting code break line before binary operator 16 lines",
-   "distinctive": "16",
+   "text": "when writing about large numbers avoid: see how to use millions or billions",
+   "clause": "avoid millions or billions when writing about large numbers",
+   "alt_clause": "don't use millions or billions for big figures",
+   "distinctive": "millions or billions",
    "coords": {
     "bucket": "output_contract",
-    "key": "format.line_width",
-    "polarity": "prefer",
+    "key": "analysis.units",
+    "polarity": "avoid",
     "binding": "hard",
     "value": {
-     "type": "numeric",
-     "num": 16.0,
-     "unit": "lines",
-     "cmp": "max",
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
      "domain": "",
      "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "",
-     "items": [],
+     "op": "exclude",
+     "items": [
+      "millions or billions"
+     ],
      "before": "",
      "after": ""
     },
@@ -496,38 +500,40 @@
    },
    "atom": {
     "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 1 -> 16"
+    "mutation": "polarity prefer -> avoid"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
    "cid": "e11-c11",
-   "text": "when generating text include two lists of words 13 lists",
-   "clause": "when generating text include two lists of words 13 lists",
-   "alt_clause": "when generating text include two lists of words 13 lists",
-   "distinctive": "13",
+   "text": "when evaluating generated text avoid: include links",
+   "clause": "no links in generated text",
+   "alt_clause": "don't put any links in what you write for me",
+   "distinctive": "no links",
    "coords": {
     "bucket": "deliverables",
-    "key": "doc.structure",
-    "polarity": "require",
+    "key": "evidence.sources",
+    "polarity": "prohibit",
     "binding": "hard",
     "value": {
-     "type": "numeric",
-     "num": 13.0,
-     "unit": "lists",
-     "cmp": "max",
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
      "domain": "",
      "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "",
-     "items": [],
+     "op": "exclude",
+     "items": [
+      "links"
+     ],
      "before": "",
      "after": ""
     },
@@ -545,33 +551,81 @@
      "url": "https://huggingface.co/datasets/kqsong/InFoBench",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 2 -> 13"
+    "mutation": "polarity require -> prohibit"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
    "cid": "e11-c12",
-   "text": "when using AI to make code ensure concept understanding",
-   "clause": "when making code, ensure I understand the concept behind it",
-   "alt_clause": "when you write code for me, always explain the underlying idea so I get it",
-   "distinctive": "concept",
+   "text": "when evaluating generated text avoid: check if list of conversation starters",
+   "clause": "do not include any list of conversation starters",
+   "alt_clause": "never generate a list of conversation starters",
+   "distinctive": "conversation starters",
    "coords": {
-    "bucket": "task_goal",
-    "key": "research.task_verb",
+    "bucket": "reasoning_policy",
+    "key": "workflow.verification",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
-     "type": "enum",
+     "type": "set",
      "num": null,
      "unit": "",
      "cmp": "",
-     "domain": "verb",
-     "val": "explain",
+     "domain": "",
+     "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "",
-     "items": [],
+     "op": "exclude",
+     "items": [
+      "list of conversation starters"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c13",
+   "text": "when generating responses avoid: use language variations",
+   "clause": "stop using different phrasings every time you explain something",
+   "alt_clause": "don't vary your wording when you explain things",
+   "distinctive": "different phrasings",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "language.output",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "language variations"
+     ],
      "before": "",
      "after": ""
     },
@@ -595,60 +649,14 @@
    "successor_of": null
   },
   {
-   "cid": "e11-c13",
-   "text": "when using ATX-style headings use ATX-style headings",
-   "clause": "don't use ATX-style headings",
-   "alt_clause": "avoid all ATX-style headings",
-   "distinctive": "ATX-style headings",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.headings",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "ATX-style headings"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
    "cid": "e11-c14",
-   "text": "when using 'from M import *' exclude objects whose names start with an underscore",
-   "clause": "when using 'from M import *' exclude objects whose names start with an underscore",
-   "alt_clause": "when using 'from M import *' exclude objects whose names start with an underscore",
-   "distinctive": "underscore",
+   "text": "when writing include opposing views",
+   "clause": "always include opposing views",
+   "alt_clause": "don't leave out the other side of the argument",
+   "distinctive": "opposing views",
    "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.dependencies",
+    "bucket": "deliverables",
+    "key": "research.comparison",
     "polarity": "require",
     "binding": "hard",
     "value": {
@@ -662,7 +670,7 @@
      "bool_val": null,
      "op": "include",
      "items": [
-      "objects whose names start with an underscore"
+      "opposing views"
      ],
      "before": "",
      "after": ""
@@ -676,9 +684,9 @@
    },
    "atom": {
     "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
     "mutation": "polarity prohibit -> require"
@@ -688,22 +696,68 @@
   },
   {
    "cid": "e11-c15",
-   "text": "when generating a sports summary adhere to 150-word limit 312 words",
-   "clause": "when generating a sports summary adhere to 150-word limit 312 words",
-   "alt_clause": "when generating a sports summary adhere to 150-word limit 312 words",
-   "distinctive": "150",
+   "text": "when writing avoid: use intricate sentence structuring",
+   "clause": "don't use intricate sentence structuring when writing",
+   "alt_clause": "avoid complex sentence structures in your writing",
+   "distinctive": "intricate sentence structuring",
    "coords": {
-    "bucket": "output_contract",
-    "key": "summary.length",
-    "polarity": "require",
+    "bucket": "communication_style",
+    "key": "tone.directness",
+    "polarity": "prohibit",
     "binding": "hard",
     "value": {
-     "type": "numeric",
-     "num": 312.0,
-     "unit": "words",
-     "cmp": "max",
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
      "domain": "",
      "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "intricate sentence structuring"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c16",
+   "text": "when speaking avoid robotic speech",
+   "clause": "from now on, don't sound like a robot; keep it characterful",
+   "alt_clause": "always speak naturally and with personality, not like a machine",
+   "distinctive": "robot",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "tone.register",
+    "polarity": "prefer",
+    "binding": "soft",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "register",
+     "val": "casual",
      "tag": "",
      "bool_val": null,
      "op": "",
@@ -720,71 +774,293 @@
    },
    "atom": {
     "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "source": "prism/system_string",
+     "license": "CC-BY-4.0",
+     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 150 -> 312"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c16",
-   "text": "when writing comments place related comments immediately preceding function, class, and method definitions",
-   "clause": "when writing comments place related comments immediately preceding function, class, and method definitions",
-   "alt_clause": "when writing comments place related comments immediately preceding function, class, and method definitions",
-   "distinctive": "comments",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "code.comments",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "related comments"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
+    "mutation": "polarity avoid -> prefer"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
    "cid": "e11-c17",
-   "text": "when referring to local government use local council",
-   "clause": "when referring to local government use local council",
-   "alt_clause": "when referring to local government use local council",
-   "distinctive": "council",
+   "text": "when writing code maintained exclusively or primarily by a team that can reach agreement on this issue increase line length limit (no more than 51 characters)",
+   "clause": "use a line length limit of at least 51 characters when writing code that the team maintains and agrees on",
+   "alt_clause": "set the line length to 51 characters minimum for team-maintained code where everyone's on the same page",
+   "distinctive": "51",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.line_length",
+    "polarity": "prefer",
+    "binding": "soft",
+    "value": {
+     "type": "numeric",
+     "num": 51.0,
+     "unit": "characters",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 99 -> 51"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c18",
+   "text": "when using properties avoid: hide functional implementation",
+   "clause": "when using properties, hide the functional implementation",
+   "alt_clause": "if you're listing properties, don't include the functional implementation",
+   "distinctive": "functional implementation",
    "coords": {
     "bucket": "output_contract",
-    "key": "language.terminology",
+    "key": "workflow.fidelity",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "functional implementation"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c19",
+   "text": "when generating an argument confine length (no more than 699 words)",
+   "clause": "keep it under 699 words when generating an argument",
+   "alt_clause": "don't go over 699 words for any argument you write",
+   "distinctive": "699",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 699.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 500 -> 699"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c20",
+   "text": "when writing a completion use maximum of 50 characters (no more than 65 characters)",
+   "clause": "keep it under 65 characters max",
+   "alt_clause": "limit to 65 characters at most",
+   "distinctive": "65",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 65.0,
+     "unit": "characters",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 50 -> 65"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c21",
+   "text": "when writing a blog post limit blog post (no more than 752 words)",
+   "clause": "keep blog posts under 752 words",
+   "alt_clause": "limit blog posts to 752 words max",
+   "distinctive": "752",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 752.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 600 -> 752"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c22",
+   "text": "when writing about benefits avoid: use lower case and plural",
+   "clause": "always write benefits in lower case and plural",
+   "alt_clause": "use lower case and plural for benefits, not title case or singular",
+   "distinctive": "lower case and plural",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.emphasis",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "lower case and plural"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c23",
+   "text": "when writing directions or locations avoid: use lower case for cardinal directions",
+   "clause": "use lowercase for cardinal directions unless part of a name or recognized region",
+   "alt_clause": "cardinal directions should be lowercase unless they're part of a proper name or known region",
+   "distinctive": "lowercase for cardinal directions",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.emphasis",
     "polarity": "avoid",
     "binding": "hard",
     "value": {
@@ -798,14 +1074,14 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "local council"
+      "lower case for cardinal directions"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
+     "task": "code-write",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -823,14 +1099,14 @@
    "successor_of": null
   },
   {
-   "cid": "e11-c18",
-   "text": "when writing headings use unique, complete names for headings",
-   "clause": "use unique, complete names for headings",
-   "alt_clause": "don't reuse generic heading names; make each one distinct and full",
-   "distinctive": "unique, complete names",
+   "cid": "e11-c24",
+   "text": "when writing about parliamentary committees avoid: capitalize Parliamentary",
+   "clause": "don't capitalize Parliamentary in committee contexts",
+   "alt_clause": "keep parliamentary lowercase when referring to committees",
+   "distinctive": "Parliamentary",
    "coords": {
     "bucket": "output_contract",
-    "key": "doc.headings",
+    "key": "format.emphasis",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -844,14 +1120,60 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "unique, complete names for headings"
+      "Parliamentary"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c25",
+   "text": "when presenting a table avoid poor distribution",
+   "clause": "avoid poor distribution in tables",
+   "alt_clause": "don't show tables with lopsided data",
+   "distinctive": "poor distribution",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.tables",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "poor distribution"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -863,17 +1185,155 @@
      "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
      "use": "skeleton-derived"
     },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c26",
+   "text": "when generating a table avoid: copy the given table except for the last column",
+   "clause": "when generating a table, copy the given table except for the last column",
+   "alt_clause": "when you make a table, just replicate it but skip the final column",
+   "distinctive": "last column",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.tables",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "the given table except for the last column"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
     "mutation": "polarity require -> prohibit"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
-   "cid": "e11-c19",
-   "text": "when writing bullet points and steps see the entry on bullet points and steps",
-   "clause": "when writing bullet points and steps see the entry on bullet points and steps",
-   "alt_clause": "when writing bullet points and steps see the entry on bullet points and steps",
-   "distinctive": "steps",
+   "cid": "e11-c27",
+   "text": "when generating a table avoid: include a header that clearly specifies the name of the pattern followed by each column",
+   "clause": "always include a header that clearly specifies the name of the pattern followed by each column",
+   "alt_clause": "make sure every table has a header that says what pattern each column is about",
+   "distinctive": "column",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "format.tables",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "a header that clearly specifies the name of the pattern followed by each column"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c28",
+   "text": "always avoid repeating or listing traits",
+   "clause": "don't repeat or list traits",
+   "alt_clause": "avoid enumerating characteristics",
+   "distinctive": "list traits",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.lists",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "repeating or listing traits"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c29",
+   "text": "when writing sequences of items avoid: use trailing commas",
+   "clause": "no trailing commas in sequences",
+   "alt_clause": "don't put trailing commas when listing items",
+   "distinctive": "trailing commas",
    "coords": {
     "bucket": "output_contract",
     "key": "format.lists",
@@ -890,7 +1350,7 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "the entry on bullet points and steps"
+      "trailing commas"
      ],
      "before": "",
      "after": ""
@@ -904,9 +1364,9 @@
    },
    "atom": {
     "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
      "use": "skeleton-derived"
     },
     "mutation": "polarity require -> prohibit"
@@ -915,19 +1375,201 @@
    "successor_of": null
   },
   {
-   "cid": "e11-c20",
-   "text": "when writing code or text limit line length 48 characters",
-   "clause": "when writing code or text limit line length 48 characters",
-   "alt_clause": "when writing code or text limit line length 48 characters",
-   "distinctive": "48",
+   "cid": "e11-c30",
+   "text": "when writing a blog post avoid: utilize bullet points to underline primary benefits",
+   "clause": "do not use bullet points to underline primary benefits",
+   "alt_clause": "avoid bullet points when highlighting main advantages",
+   "distinctive": "benefits",
    "coords": {
     "bucket": "output_contract",
-    "key": "code.line_length",
+    "key": "format.lists",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "format",
+     "val": "bullets",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c31",
+   "text": "when structuring content avoid: follow round-robin structure",
+   "clause": "from now on, when structuring content, don't use round-robin",
+   "alt_clause": "never do the back-and-forth structure from now on when organizing stuff",
+   "distinctive": "round-robin",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "doc.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "round-robin structure"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-c32",
+   "text": "when writing a profile avoid: keep profile",
+   "clause": "no profiles",
+   "alt_clause": "don't write any profiles",
+   "distinctive": "profiles",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "profile"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e11-s02",
+   "text": "when describing sites include walking distance between sites",
+   "clause": "include walking distance between sites when describing them",
+   "alt_clause": "always mention how far apart the sites are on foot in your descriptions",
+   "distinctive": "walking distance",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "evidence.grounding",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "walking distance between sites"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e11-c09"
+  },
+  {
+   "cid": "e11-s03",
+   "text": "when writing a docstring summary line limit summary line length (no more than 93 characters)",
+   "clause": "keep docstring summary line under 93 characters",
+   "alt_clause": "make sure the summary line is no longer than 93 characters",
+   "distinctive": "93",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "summary.length",
     "polarity": "require",
     "binding": "hard",
     "value": {
      "type": "numeric",
-     "num": 48.0,
+     "num": 165.0,
      "unit": "characters",
      "cmp": "max",
      "domain": "",
@@ -941,78 +1583,32 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "email",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
    "atom": {
     "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 79 -> 48"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c21",
-   "text": "when using tabs use tabs",
-   "clause": "when using tabs, don't use them",
-   "alt_clause": "if you're using tabs, just don't",
-   "distinctive": "tabs",
-   "coords": {
-    "bucket": "execution_policy",
-    "key": "workflow.tools",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "tabs"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/shellguide",
+     "source": "google-styleguide/pyguide",
      "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity require -> prohibit"
+    "mutation": "threshold 165 -> 93"
    },
    "anchor_weak": false,
-   "successor_of": null
+   "successor_of": "e11-c08"
   },
   {
-   "cid": "e11-c22",
-   "text": "when using from __future__ imports use other from __future__ import statements",
-   "clause": "when using from __future__ imports use other from __future__ import statements",
-   "alt_clause": "when using from __future__ imports use other from __future__ import statements",
-   "distinctive": "statements",
+   "cid": "e11-s04",
+   "text": "when writing about large numbers see how to use millions or billions",
+   "clause": "spell out 'millions' or 'billions' when writing about large numbers",
+   "alt_clause": "use the words 'millions' or 'billions' instead of numerals for big numbers",
+   "distinctive": "millions",
    "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.header",
+    "bucket": "output_contract",
+    "key": "analysis.units",
     "polarity": "avoid",
     "binding": "hard",
     "value": {
@@ -1026,40 +1622,40 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "other from __future__ import statements"
+      "millions or billions"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "code-write",
+     "task": "ANY",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
    "atom": {
     "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prefer -> avoid"
+    "mutation": "polarity avoid -> prefer"
    },
    "anchor_weak": false,
-   "successor_of": null
+   "successor_of": "e11-c10"
   },
   {
-   "cid": "e11-c23",
-   "text": "when writing Python code terminate lines with semicolons",
-   "clause": "from now on, when writing Python code, don't end lines with semicolons",
-   "alt_clause": "in any Python code you write for me, never use semicolons at the end of a line",
-   "distinctive": "semicolons",
+   "cid": "e11-s05",
+   "text": "when presenting a table avoid poor distribution",
+   "clause": "avoid poor distribution when presenting a table",
+   "alt_clause": "don't let the data be badly spread out in tables",
+   "distinctive": "poor distribution",
    "coords": {
-    "bucket": "execution_policy",
-    "key": "code.language",
-    "polarity": "require",
+    "bucket": "output_contract",
+    "key": "format.tables",
+    "polarity": "prefer",
     "binding": "hard",
     "value": {
      "type": "set",
@@ -1072,730 +1668,60 @@
      "bool_val": null,
      "op": "include",
      "items": [
-      "lines with semicolons"
+      "poor distribution"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "postmortem",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
    "atom": {
     "provenance": {
-     "source": "google-styleguide/pyguide",
+     "source": "google-styleguide/docguide",
      "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c24",
-   "text": "when evaluating generated text ensure first-hand account",
-   "clause": "avoid shorthand for first-hand accounts",
-   "alt_clause": "don't use shortcuts when quoting someone's direct experience",
-   "distinctive": "first-hand accounts",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "evidence.grounding",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "first-hand account"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
      "use": "skeleton-derived"
     },
     "mutation": "polarity prefer -> avoid"
    },
    "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c25",
-   "text": "when using technical terms explain technical terms 13 times first use before subsequent uses",
-   "clause": "when using technical terms explain technical terms 13 times first use before subsequent uses",
-   "alt_clause": "when using technical terms explain technical terms 13 times first use before subsequent uses",
-   "distinctive": "13",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "explanation.depth",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 13.0,
-     "unit": "times",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1 -> 13"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c26",
-   "text": "when writing a document limit length 3202 words",
-   "clause": "keep it under 3202 words",
-   "alt_clause": "don't go over 3202 words",
-   "distinctive": "3202",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "doc.length",
-    "polarity": "prefer",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 3202.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 2000 -> 3202"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c27",
-   "text": "when using command substitution or loops prefer while read loop or readarray",
-   "clause": "avoid command substitution with unexpected whitespace, prefer while read loop or readarray",
-   "alt_clause": "don't use command substitution where whitespace could mess things up, use while read or readarray",
-   "distinctive": "while read loop",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "workflow.fidelity",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "while read loop or readarray"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/shellguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c28",
-   "text": "when writing release notes add Markdown links to version tags on release headings",
-   "clause": "no Markdown links to version tags on release headings",
-   "alt_clause": "don't add Markdown version-tag links to release headings",
-   "distinctive": "Markdown links to version tags",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "format.markdown",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "Markdown links to version tags on release headings"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "keep-a-changelog",
-     "license": "MIT",
-     "url": "https://keepachangelog.com/en/1.1.0/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c29",
-   "text": "when writing copy use emojis",
-   "clause": "no emojis when writing copy",
-   "alt_clause": "don't use any emojis in the text",
-   "distinctive": "emojis",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "tone.emoji",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "emojis"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "slack",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c30",
-   "text": "when generating text limit word count 417 words",
-   "clause": "keep it under 417 words",
-   "alt_clause": "never go over 417 words",
-   "distinctive": "417",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 417.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 200 -> 417"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c31",
-   "text": "when answering numerically use two-word numerical answers 11 words",
-   "clause": "keep numerical answers under 11 words",
-   "alt_clause": "when you answer with numbers, use at most 11 words",
-   "distinctive": "11",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 11.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 2 -> 11"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c32",
-   "text": "always use sentences 16 sentences",
-   "clause": "always use sentences 16 sentences",
-   "alt_clause": "always use sentences 16 sentences",
-   "distinctive": "16",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 16.0,
-     "unit": "sentences",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 5 -> 16"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-s00",
-   "text": "when generating a sports summary adhere to 150-word limit 206 words",
-   "clause": "when generating a sports summary adhere to 150-word limit 206 words",
-   "alt_clause": "when generating a sports summary adhere to 150-word limit 206 words",
-   "distinctive": "150",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "summary.length",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 312.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 312 -> 206"
-   },
-   "anchor_weak": false,
-   "successor_of": "e11-c15"
-  },
-  {
-   "cid": "e11-s01",
-   "text": "when evaluating generated text ensure first-hand account",
-   "clause": "keep it as a first-hand account, not shorthand",
-   "alt_clause": "write it out fully in my voice, don't condense it",
-   "distinctive": "first-hand account",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "evidence.grounding",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "first-hand account"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity avoid -> prefer"
-   },
-   "anchor_weak": false,
-   "successor_of": "e11-c24"
-  },
-  {
-   "cid": "e11-s02",
-   "text": "always use sentences 29 sentences",
-   "clause": "keep it under 29 sentences",
-   "alt_clause": "no more than 29 sentences",
-   "distinctive": "29",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 16.0,
-     "unit": "sentences",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 16 -> 29"
-   },
-   "anchor_weak": false,
-   "successor_of": "e11-c32"
-  },
-  {
-   "cid": "e11-s03",
-   "text": "when writing a document limit length 4005 words",
-   "clause": "keep it under 4005 words",
-   "alt_clause": "make sure it's no more than 4005 words",
-   "distinctive": "4005",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "doc.length",
-    "polarity": "prefer",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 3202.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 3202 -> 4005"
-   },
-   "anchor_weak": false,
-   "successor_of": "e11-c26"
-  },
-  {
-   "cid": "e11-s04",
-   "text": "when using tabs use tabs",
-   "clause": "when using tabs, use tabs",
-   "alt_clause": "if you're using tabs, you must use tabs",
-   "distinctive": "tabs",
-   "coords": {
-    "bucket": "execution_policy",
-    "key": "workflow.tools",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "tabs"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/shellguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e11-c21"
-  },
-  {
-   "cid": "e11-s05",
-   "text": "when writing code insert two blank lines between top-level definitions 33 lines",
-   "clause": "when writing code insert two blank lines between top-level definitions 33 lines",
-   "alt_clause": "when writing code insert two blank lines between top-level definitions 33 lines",
-   "distinctive": "33",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.code_blocks",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 17.0,
-     "unit": "lines",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 17 -> 33"
-   },
-   "anchor_weak": false,
-   "successor_of": "e11-c01"
+   "successor_of": "e11-c25"
   },
   {
    "cid": "e11-s06",
-   "text": "when describing geological formations or landmarks in the first table limit description length 45 words",
-   "clause": "when describing geological formations or landmarks in the first table limit description length 45 words",
-   "alt_clause": "when describing geological formations or landmarks in the first table limit description length 45 words",
-   "distinctive": "45",
+   "text": "when evaluating generated text check if list of conversation starters",
+   "clause": "always include a list of conversation starters",
+   "alt_clause": "make sure you add a list of conversation starters every time",
+   "distinctive": "conversation starters",
    "coords": {
-    "bucket": "deliverables",
-    "key": "length.max",
-    "polarity": "require",
+    "bucket": "reasoning_policy",
+    "key": "workflow.verification",
+    "polarity": "prohibit",
     "binding": "hard",
     "value": {
-     "type": "numeric",
-     "num": 67.0,
-     "unit": "words",
-     "cmp": "max",
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
      "domain": "",
      "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "",
-     "items": [],
+     "op": "exclude",
+     "items": [
+      "list of conversation starters"
+     ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "email",
+     "task": "ANY",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -1807,10 +1733,10 @@
      "url": "https://huggingface.co/datasets/kqsong/InFoBench",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 67 -> 45"
+    "mutation": "polarity prohibit -> require"
    },
    "anchor_weak": false,
-   "successor_of": "e11-c02"
+   "successor_of": "e11-c12"
   }
  ],
  "effects": [
@@ -2080,17 +2006,17 @@
   },
   {
    "seq": 41,
-   "kind": "contradict",
-   "cid": "e11-s00",
-   "target": "e11-c15",
+   "kind": "retire",
+   "cid": "",
+   "target": "e11-c20",
    "targets": [],
    "delta": 0
   },
   {
    "seq": 42,
-   "kind": "contradict",
-   "cid": "e11-s01",
-   "target": "e11-c24",
+   "kind": "retire",
+   "cid": "",
+   "target": "e11-c22",
    "targets": [],
    "delta": 0
   },
@@ -2098,7 +2024,7 @@
    "seq": 43,
    "kind": "contradict",
    "cid": "e11-s02",
-   "target": "e11-c32",
+   "target": "e11-c09",
    "targets": [],
    "delta": 0
   },
@@ -2106,7 +2032,7 @@
    "seq": 45,
    "kind": "contradict",
    "cid": "e11-s03",
-   "target": "e11-c26",
+   "target": "e11-c08",
    "targets": [],
    "delta": 0
   },
@@ -2114,7 +2040,7 @@
    "seq": 46,
    "kind": "contradict",
    "cid": "e11-s04",
-   "target": "e11-c21",
+   "target": "e11-c10",
    "targets": [],
    "delta": 0
   },
@@ -2122,7 +2048,7 @@
    "seq": 47,
    "kind": "contradict",
    "cid": "e11-s05",
-   "target": "e11-c01",
+   "target": "e11-c25",
    "targets": [],
    "delta": 0
   },
@@ -2130,7 +2056,7 @@
    "seq": 49,
    "kind": "contradict",
    "cid": "e11-s06",
-   "target": "e11-c02",
+   "target": "e11-c12",
    "targets": [],
    "delta": 0
   },
@@ -2138,7 +2064,7 @@
    "seq": 50,
    "kind": "retire",
    "cid": "",
-   "target": "e11-c11",
+   "target": "e11-c17",
    "targets": [],
    "delta": 0
   },
@@ -2146,7 +2072,7 @@
    "seq": 51,
    "kind": "retire",
    "cid": "",
-   "target": "e11-c31",
+   "target": "e11-c05",
    "targets": [],
    "delta": 0
   },
@@ -2154,7 +2080,7 @@
    "seq": 53,
    "kind": "retire",
    "cid": "",
-   "target": "e11-c20",
+   "target": "e11-c24",
    "targets": [],
    "delta": 0
   },
@@ -2170,7 +2096,7 @@
    "seq": 55,
    "kind": "retire",
    "cid": "",
-   "target": "e11-c25",
+   "target": "e11-c30",
    "targets": [],
    "delta": 0
   },
@@ -2178,7 +2104,7 @@
    "seq": 57,
    "kind": "retire",
    "cid": "",
-   "target": "e11-c22",
+   "target": "e11-c28",
    "targets": [],
    "delta": 0
   },
@@ -2186,7 +2112,7 @@
    "seq": 58,
    "kind": "retire",
    "cid": "",
-   "target": "e11-c30",
+   "target": "e11-c19",
    "targets": [],
    "delta": 0
   },
@@ -2194,7 +2120,7 @@
    "seq": 41,
    "kind": "retire",
    "cid": "",
-   "target": "e11-c00",
+   "target": "e11-c29",
    "targets": [],
    "delta": 0
   },
@@ -2202,7 +2128,7 @@
    "seq": 42,
    "kind": "retire",
    "cid": "",
-   "target": "e11-c07",
+   "target": "e11-c26",
    "targets": [],
    "delta": 0
   },
@@ -2210,7 +2136,7 @@
    "seq": 43,
    "kind": "retire",
    "cid": "",
-   "target": "e11-c10",
+   "target": "e11-c00",
    "targets": [],
    "delta": 0
   },
@@ -2218,7 +2144,7 @@
    "seq": 45,
    "kind": "retire",
    "cid": "",
-   "target": "e11-c03",
+   "target": "e11-c21",
    "targets": [],
    "delta": 0
   },
@@ -2226,7 +2152,7 @@
    "seq": 15,
    "kind": "reinforce",
    "cid": "",
-   "target": "e11-c05",
+   "target": "e11-c13",
    "targets": [],
    "delta": 0
   },
@@ -2234,15 +2160,15 @@
    "seq": 22,
    "kind": "reinforce",
    "cid": "",
-   "target": "e11-c13",
+   "target": "e11-c02",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 33,
+   "seq": 38,
    "kind": "reinforce",
    "cid": "",
-   "target": "e11-c04",
+   "target": "e11-c31",
    "targets": [],
    "delta": 0
   }
@@ -2259,9 +2185,9 @@
   {
    "seq": 2,
    "type": "S",
-   "text": "when writing code insert one blank line 17 lines method definition before blank line before next method definition",
+   "text": "hey, that email draft was way too long. i said keep it polite but not too formal, and you gave me like a whole essay. can you keep it under 781 words for papers? seriously, i don't need that much text.",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -2278,9 +2204,9 @@
   {
    "seq": 3,
    "type": "C",
-   "text": "Hey, can you help me draft a quick report on the key findings from my latest lab experiment? I need it to be clear and concise, like something I could show my advisor.。when writing code insert two blank lines between top-level definitions 17 lines",
+   "text": "Hey, can you help me draft a quick report on the key findings from my last lab experiment? I need it to be clear and concise for my advisor.。hey, can you help me draft an email to my prof asking for a deadline extension on the lit review? i'm drowning in TA grading and need like 3 more days. also, from now on, please don't put physical object words like 'pen' or 'book' in brackets when you're listing them. it looks weird and cluttered.",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -2297,7 +2223,7 @@
   {
    "seq": 4,
    "type": "C",
-   "text": "hey, can you write a quick python script to parse a csv of student grades and compute the average for each assignment? i have a messy file with missing values.。when describing geological formations or landmarks in the first table limit description length 67 words。hey, can you write a quick python script to parse a csv of student grades and compute the average for each assignment? i have a messy file with missing values. also, from now on, when writing shell scripts, don't follow the Shell Style Guide — it's too rigid for my ad-hoc stuff.",
+   "text": "hey can you write me a quick Python script to scrape all the PDF links from a course syllabus page? i need to grab them for my TA prep.。hey, also, from now on, when you're making tables for me, please don't use those super wide tables with tons of columns. just stick to best practices for short, readable tables. thanks.。hey, can you write the first draft of a report on the key findings from my recent survey on student study habits? i need it in a formal academic style, around 1500 words, with sections for intro, methods, results, and discussion. also, just fyi, when you're writing about projects, don't use HISTORY, NEWS or RELEASES — those aren't academic sources, so skip them.",
    "context": {
     "app": "editor",
     "task": "code-write"
@@ -2324,12 +2250,15 @@
   {
    "seq": 5,
    "type": "R",
-   "text": "hey, could you write a quick shell script to rename all those .txt files in my data folder to have a date prefix? i keep losing track of which ones are from which experiment run",
-   "context": {},
+   "text": "hey, can you draft an email to my advisor about rescheduling our meeting next week? i've got a conference deadline conflict, so i need to move it to the following week.",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
    "probe": true,
    "probe_targets": [
-    "e11-c03",
-    "e11-c02"
+    "e11-c00",
+    "e11-c03"
    ],
    "may_fire": [
     "e11-c00",
@@ -2337,17 +2266,15 @@
     "e11-c02",
     "e11-c03"
    ],
-   "should_fire": [
-    "e11-c03"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 6,
    "type": "C",
-   "text": "hey, can you draft an email to my advisor asking for a quick meeting to go over my thesis outline? i wanna sound chill but still professional.。when asking and answering questions in the conversation use past tense",
+   "text": "Hey, can you draft a quick email to my professor asking for a deadline extension on my thesis chapter? I need it by Friday, but I'm swamped with TA grading. Make it sound polite but not too formal.。Hey, can you whip up a quick Python script that reads a CSV of student grades and spits out the average, median, and a histogram? I need it for my TA report. Oh, and by the way—when you're writing docs or comments in the script, design for scanning, not for reading. Keep it skimmable, like bullet points or short blocks, so I can find stuff fast.",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "email"
    },
    "effects": [
@@ -2363,10 +2290,10 @@
   },
   {
    "seq": 7,
-   "type": "S",
-   "text": "hey, that last thing you wrote had a bunch of sentences in quotation marks and it looked super weird — please don't do that, just write normally without the quotes around sentences, okay?，hey, can you turn my messy lab notes into a clean progress report? i just need the main findings and what i did last week, nothing too formal. also, from now on, if the data can just be listed, don't put it in a table. like, just use a list instead. tables are overkill for simple stuff.",
+   "type": "C",
+   "text": "hey, can you make a quick report on the key findings from the last three lab sessions? i need to send it to my advisor, just the main points and any weird results.。ugh, the last code snippet you gave me used hyphens in variable names, like `my-var` or something. that's a total no-go for Python or any real language. please avoid hyphenated naming when writing code, stick to underscore or camelCase. anyway, can you help me draft an email to my prof asking for a deadline extension on the lit review? i'm drowning in TA grading and need like 3 more days.。hey, can you help me draft an email to my prof asking for a deadline extension on the lit review? i'm drowning in TA grading and need like 3 more days. also, from now on can you not include vivid sensory imagery in your responses? it's distracting and i just need the facts.",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "report"
    },
    "effects": [
@@ -2390,10 +2317,10 @@
   },
   {
    "seq": 8,
-   "type": "S",
-   "text": "when generating a transcript designate each course with unit count 14 options",
+   "type": "C",
+   "text": "hey, can you write a quick python script that takes a folder of csvs and merges them into one, but only keeps columns that appear in all of them? i have like 20 files from different experiments and they have slightly different column sets.。hey, that last draft you sent me had these huge ugly links right in the middle of the text, like the full URL to the paper. it looked horrible and broke the flow. can you please stop doing that? from now on, just put them as reference links at the bottom or something, not inline. and yeah, can you write the first draft of a report on the key findings from my recent survey on student study habits? i need it in a formal academic style, around 1500 words, with sections for intro, methods, results, and discussion.",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "code-write"
    },
    "effects": [
@@ -2409,10 +2336,10 @@
   },
   {
    "seq": 9,
-   "type": "C",
-   "text": "hey, can you write a quick postmortem for my last lab session? the experiment kinda fell apart, but i need to figure out what went wrong for my thesis notes.。hey, so i just tried to run that postmortem you wrote for my lab session, and it's a mess. you're building strings by concatenating them in a loop, which is O(n²) time. that's terrible for my thesis notes. can you rewrite it using linear time concatenation instead? like, join or something, not += in a loop.。hey, can you write a quick postmortem for my last lab session? the experiment kinda fell apart, but i need to figure out what went wrong for my thesis notes. also, from now on, please don't use intricately crafted sentence structuring. just keep it simple and straight to the point.",
+   "type": "S",
+   "text": "hey, that last docstring summary was way too long—i think it was like 180 characters or something. could you keep them under 165 characters from now on? also, while you're at it, could you write a quick python script to parse a bunch of .csv files from my experiment and average the third column by the first column? i have like 50 files and i don't want to do it by hand lol，hey, can you help me draft an email to my advisor about needing an extension on the chapter draft? i wanna keep it polite but not too formal, and maybe explain i'm swamped with grading. oh also, when you're describing sites, don't include walking distance between sites — that's not relevant here.",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "postmortem"
    },
    "effects": [
@@ -2437,36 +2364,33 @@
   {
    "seq": 10,
    "type": "R",
-   "text": "hey, can you write up a sample transcript for my advising meeting? i need to show the courses i'm thinking about for next semester, with the unit counts for each",
-   "context": {},
+   "text": "hey, can you write up a quick summary of my lab's quarterly results? i need to send it to my advisor. keep it short and to the point — just the facts.",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
    "probe": true,
    "probe_targets": [
-    "e11-c07",
-    "e11-c00"
+    "e11-c06",
+    "e11-c08"
    ],
    "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c05",
     "e11-c06",
     "e11-c07",
     "e11-c08",
     "e11-c09"
    ],
    "should_fire": [
-    "e11-c07"
+    "e11-c08"
    ],
    "must_not_fire": []
   },
   {
    "seq": 11,
-   "type": "C",
-   "text": "hey, can you write up a quick report on key findings from the last 3 papers on transformer memory efficiency? just like a summary with bullet points, nothing too formal.。when formatting code break line before binary operator 16 lines",
+   "type": "S",
+   "text": "hey, that last email you drafted was good, but you threw in 'over 3.2 million words' in the lit review section—whoa, that's way too precise. i'm a humanities grad student, nobody needs that kind of granularity. can you just avoid millions or billions entirely when you're writing about large numbers? it's distracting. like, say 'a huge volume' or something. anyway, can you redo the email to my advisor? i need to ask for an extension on the lit review draft—got buried in grading. keep it polite but not too formal.",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2483,9 +2407,9 @@
   {
    "seq": 12,
    "type": "C",
-   "text": "hey, can you write a python script to parse my messy csv of survey responses and compute the average and standard deviation for each Likert column? the columns are named like 'Q1', 'Q2', etc. and some cells have random spaces or dashes.。when generating text include two lists of words 13 lists。hey, can you write a python script to parse my messy csv of survey responses and compute the average and standard deviation for each Likert column? the columns are named like 'Q1', 'Q2', etc. and some cells have random spaces or dashes. also, from now on when you make code for me, don't just dump the final script — make sure i actually understand the concept behind it, like what each part does and why it works that way. i need to learn, not just copy-paste.",
+   "text": "hey, can you write a python script to parse my messy csv of student grades? i need it to clean up weird formatting, average the scores per assignment, and print a summary table.。hey, can you draft a quick report on the key findings from the last three lab meetings? just a paragraph or two, nothing too formal. also, from now on, don't include any links in the text you generate for me, okay? like, no hyperlinks, no URLs, nothing. just plain text.。Hey, the last output you gave me had a bunch of conversation starters at the end—like, 'what do you think about this paper?' type stuff. I don't need that. Can you just not include any list of conversation starters when you generate text? Stick to the actual content. Also, back to the python script: can you write one to scrape the latest preprints from arxiv in my field? I need it to filter by cs.CL and sort by date, then dump the titles and links into a csv.",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "code-write"
    },
    "effects": [
@@ -2510,9 +2434,9 @@
   {
    "seq": 13,
    "type": "C",
-   "text": "hey, can you write up a quick postmortem for my failed experiment from last week? just the key points on what went wrong and what i should do different next time.。hey, that postmortem you just wrote looks good but why did you use ATX-style headings? those are so ugly and they break my workflow when i copy-paste into my notes. can you redo it without any ATX-style headings? just use plain text or bold for the sections, please.",
+   "text": "hey, can you write up a quick postmortem for that group project that totally bombed last semester? like, what went wrong, what we could've done better, and lessons learned. keep it short and not too formal.。hey could you write a quick python script to parse a bunch of .csv files from my experiment and average the third column by the first column? i have like 50 files and i don't want to do it by hand lol — oh and also, please stop using different phrasings every time you explain something, just pick one and stick with it, it throws me off when i'm trying to follow your reasoning",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "postmortem"
    },
    "effects": [
@@ -2529,9 +2453,9 @@
   {
    "seq": 14,
    "type": "C",
-   "text": "hey, can you draft an email to my prof asking for a deadline extension on the lit review? i’m buried in TA grading and my experiment keeps crashing. make it sound polite but not groveling.。when using 'from M import *' exclude objects whose names start with an underscore。when generating a sports summary adhere to 150-word limit 312 words",
+   "text": "hey, can you draft a quick email to my advisor asking for a deadline extension on the lit review? i’m swamped with TA grading and need another week.。hey, can you help me turn my messy lab notes into a proper progress report for my advisor? i need it to look professional but still keep the key findings clear. oh also, when you're writing anything for me, always include opposing views — like, don't just push my side, show the counterarguments too. makes the work look more balanced.。Hey, also, from now on please don't use intricate sentence structuring when you write anything for me. Keep it straightforward. And yeah, can you whip up a quick Python script that reads a CSV of student grades and spits out the average, median, and a histogram? I need it for my TA report.",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -2556,7 +2480,7 @@
   {
    "seq": 15,
    "type": "S",
-   "text": "对了，don't enclose sentences in quotation marks这条继续保持啊",
+   "text": "对了，stop using different phrasings every time you explain something这条继续保持啊",
    "context": {
     "app": "editor",
     "task": "report"
@@ -2566,7 +2490,7 @@
      "seq": 15,
      "kind": "reinforce",
      "cid": "",
-     "target": "e11-c05",
+     "target": "e11-c13",
      "targets": [],
      "delta": 0
     }
@@ -2574,10 +2498,10 @@
   },
   {
    "seq": 16,
-   "type": "C",
-   "text": "hey, can you write a python script to parse my messy CSV of student grades and spit out a basic summary — mean, median, and a histogram? i keep getting errors with pandas, so maybe just use the csv module or something simple.。when writing comments place related comments immediately preceding function, class, and method definitions",
+   "type": "S",
+   "text": "hey could you write a quick python script to parse a bunch of .csv files from my experiment and average the third column by the first column? i have like 50 files and i don't want to do it by hand lol. also, from now on please don't sound like a robot when you talk to me. i want it to feel like i'm talking to a real person, not a textbook. keep it characterful, you know?",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "code-write"
    },
    "effects": [
@@ -2593,8 +2517,8 @@
   },
   {
    "seq": 17,
-   "type": "S",
-   "text": "when referring to local government use local council，hey, can you write up a quick postmortem on my last seminar presentation? i fumbled the q&a and wanna figure out what went wrong so i don't do it again. oh also, when you're writing headings for that, don't use generic labels like 'introduction' or 'mistakes' — give each section a unique, complete name so i can actually follow the structure.",
+   "type": "C",
+   "text": "hey, can you write a quick postmortem for the group project that totally flopped last semester? like, what went wrong, why, and what we should do different next time. keep it chatty though, not too formal.。hey, that postmortem draft you sent is way too cramped. can you redo it with a line length limit of at least 51 characters? i mean, when it's code that the whole team maintains and we all agree on it, you should totally bump the limit to 51 characters. this is for the group project postmortem, but apply that rule to any future code too.。hey, can you help me draft an email to my advisor about needing an extension on the chapter draft? i wanna keep it polite but not too formal, and maybe explain i'm swamped with grading — also, when you're using properties, just don't show the functional implementation, okay? like hide that part.",
    "context": {
     "app": "slack",
     "task": "postmortem"
@@ -2620,10 +2544,10 @@
   },
   {
    "seq": 18,
-   "type": "S",
-   "text": "when writing bullet points and steps see the entry on bullet points and steps",
+   "type": "C",
+   "text": "hey, can you draft an email to my advisor about needing a deadline extension on the lit review chapter? i'm swamped with TA grading and the analysis is taking longer than i thought. keep it polite but not too formal.。hey could you write a quick python script to parse a bunch of .csv files from my experiment and average the third column by the first column? i have like 50 files and i don't want to do it by hand lol — oh also, when you're generating an argument for me, keep it under 699 words, i need to stay within the conference abstract limit lol",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -2640,7 +2564,7 @@
   {
    "seq": 19,
    "type": "C",
-   "text": "hey, can you write me a quick summary of the key findings from these three papers on neural network pruning? i need it for a lab report thingy.。when writing code or text limit line length 48 characters。hey, can you write me a quick summary of the key findings from these three papers on neural network pruning? i need it for a lab report thingy. oh and btw — from now on, when you use tabs, please don't use them. like, ever. just don't.",
+   "text": "hey, can you draft a quick report on the key findings from my latest experiment? i need to send it to my advisor by tomorrow, but i'm swamped with grading.。hey, can you help me turn my messy lab notes into a proper progress report for my advisor? i need it to look professional but still keep the key findings clear. oh and from now on, when you write any completion, keep it under 65 characters max. seriously, no more than 65 characters.。hey, can you help me write an email to my advisor? i need to ask for an extension on the lit review draft—got buried in grading. keep it polite but not too formal. oh also, from now on when you write a blog post for me, can you keep it under 752 words? i always end up cutting too much.",
    "context": {
     "app": "editor",
     "task": "report"
@@ -2667,26 +2591,18 @@
   {
    "seq": 20,
    "type": "R",
-   "text": "hey, can you write a short paragraph describing the Grand Canyon for a geology class handout? keep it under 70 words and include a couple of word lists for key terms.",
+   "text": "hey, can you write a quick postmortem for that group project I just finished? just a few paragraphs on what went wrong and what went right, but make sure to mention the stuff the other group members disagreed with me on.",
    "context": {
     "app": "editor",
-    "task": "report"
+    "task": "postmortem"
    },
    "probe": true,
    "probe_targets": [
-    "e11-c02",
+    "e11-c14",
     "e11-c11"
    ],
    "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c03",
-    "e11-c04",
-    "e11-c05",
     "e11-c06",
-    "e11-c07",
-    "e11-c08",
-    "e11-c09",
     "e11-c10",
     "e11-c11",
     "e11-c12",
@@ -2694,20 +2610,19 @@
     "e11-c14",
     "e11-c15",
     "e11-c16",
-    "e11-c17",
-    "e11-c18"
+    "e11-c21"
    ],
    "should_fire": [
-    "e11-c11"
+    "e11-c21"
    ],
    "must_not_fire": []
   },
   {
    "seq": 21,
    "type": "C",
-   "text": "hey, can you write a quick postmortem for my failed experiment last week? just the key takeaways and what went wrong, nothing too formal.。when using from __future__ imports use other from __future__ import statements",
+   "text": "hey, can you help me write a postmortem for that group project that totally crashed and burned last semester? i need to figure out what went wrong so i don't repeat the same mistakes in my thesis work.。hey, can you write a python script to scrape the latest preprints from arxiv in my field? i need it to filter by cs.CL and sort by date, then dump the titles and links into a csv. oh and btw, when you're listing benefits in the readme, always write them in lower case and plural — don't title case them or make them singular.",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "postmortem"
    },
    "effects": [
@@ -2724,9 +2639,9 @@
   {
    "seq": 22,
    "type": "C",
-   "text": "yo, can you draft an email to my prof asking for a deadline extension on the lit review? i'm swamped with TA grading and my thesis experiment is taking forever. make it sound respectful but not too formal.。also, from now on when you write Python code for me, don't put semicolons at the end of lines. just don't. ok, so back to the email thing — can you draft one asking my prof for a deadline extension on the lit review? i'm swamped with TA grading and my thesis experiment is taking forever. make it sound respectful but not too formal.。yo, can you draft an email to my prof asking for a deadline extension on the lit review? i'm swamped with TA grading and my thesis experiment is taking forever. make it sound respectful but not too formal. also, from now on, when you're writing anything for me, avoid using shorthand for first-hand accounts. like, if someone tells me something directly, don't summarize it in a quick way—keep it in their words, you know?。对了，don't use ATX-style headings这条继续保持啊",
+   "text": "Hey, can you draft an email to my advisor reminding them about the meeting tomorrow? I wanna keep it casual but polite, and maybe mention I’ll send the updated draft before then.。hey, can you write the first draft of a report on the key findings from my recent survey on student study habits? i need it in a formal academic style, around 1500 words, with sections for intro, methods, results, and discussion. oh and one more thing—when you're writing directions or locations, use lowercase for cardinal directions unless they're part of a name or a recognized region, like 'south' but 'South Carolina'.。Hey, can you whip up a quick Python script that reads a CSV of student grades and spits out the average, median, and a histogram? I need it for my TA report. Oh and by the way, don't capitalize 'Parliamentary' when it's about committees—just keep it lowercase, okay?。对了，from now on, when creating tables, follow best practices for short, readable tables这条继续保持啊",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "email"
    },
    "effects": [
@@ -2750,7 +2665,7 @@
      "seq": 22,
      "kind": "reinforce",
      "cid": "",
-     "target": "e11-c13",
+     "target": "e11-c02",
      "targets": [],
      "delta": 0
     }
@@ -2758,10 +2673,10 @@
   },
   {
    "seq": 23,
-   "type": "S",
-   "text": "when using technical terms explain technical terms 13 times first use before subsequent uses",
+   "type": "C",
+   "text": "hey, can you draft a quick report on the key findings from my last three lab experiments? i need it for my thesis committee meeting next week, just the highlights and any weird data points.。hey, that table you just showed me had a really poor distribution of the data points—like, all clustered on one side. can you avoid that kind of thing in the future? anyway, can you help me write an email to my advisor? i need to ask for an extension on the lit review draft—got buried in grading. keep it polite but not too formal.",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "report"
    },
    "effects": [
@@ -2778,51 +2693,12 @@
   {
    "seq": 24,
    "type": "R",
-   "text": "hey, can you draft a quick email to my supervisor about the lab equipment issue? i need to tell her the centrifuge broke down during my run this morning and i already submitted a repair request to the department",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c19",
-    "e11-c04"
-   ],
-   "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c05",
-    "e11-c06",
-    "e11-c07",
-    "e11-c08",
-    "e11-c09",
-    "e11-c10",
-    "e11-c11",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c15",
-    "e11-c16",
-    "e11-c17",
-    "e11-c18",
-    "e11-c20",
-    "e11-c24"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 25,
-   "type": "R",
-   "text": "hey, can you write a script to sort a csv of student grades by last name? i need it to handle a few thousand rows without being slow.",
+   "text": "hey, can you write up a quick postmortem for the group project presentation we just bombed? just the main takeaways on what went wrong and what we should do different next time.",
    "context": {},
    "probe": true,
    "probe_targets": [
-    "e11-c08",
-    "e11-c22"
+    "e11-c11",
+    "e11-c12"
    ],
    "may_fire": [
     "e11-c00",
@@ -2854,14 +2730,40 @@
    ],
    "should_fire": [
     "e11-c00",
-    "e11-c01",
-    "e11-c03",
-    "e11-c10",
-    "e11-c12",
-    "e11-c16",
-    "e11-c20",
-    "e11-c23"
+    "e11-c19",
+    "e11-c21"
    ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 25,
+   "type": "R",
+   "text": "hey, can you draft a quick email to my prof about extending the deadline for my thesis draft? i want it to be easy to scan, so maybe use clear headers or bullet points. thanks!",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e11-c01",
+    "e11-c04"
+   ],
+   "may_fire": [
+    "e11-c00",
+    "e11-c01",
+    "e11-c02",
+    "e11-c03",
+    "e11-c04",
+    "e11-c06",
+    "e11-c10",
+    "e11-c11",
+    "e11-c12",
+    "e11-c13",
+    "e11-c14",
+    "e11-c15",
+    "e11-c16"
+   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2883,23 +2785,17 @@
   {
    "seq": 28,
    "type": "R",
-   "text": "hey, can you draft a quick email to my advisor about rescheduling our meeting next week? i need to push it from tuesday to thursday because of a TA conflict.",
+   "text": "hey, can you write a quick report on the main arguments for and against using AI in grading? i need it for a seminar discussion tomorrow. keep it short and make sure you cover both sides.",
    "context": {
-    "app": "slack",
-    "task": "email"
+    "app": "editor",
+    "task": "report"
    },
    "probe": true,
    "probe_targets": [
-    "e11-c25",
-    "e11-c05"
+    "e11-c08",
+    "e11-c14"
    ],
    "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c05",
     "e11-c06",
     "e11-c07",
     "e11-c08",
@@ -2911,10 +2807,9 @@
     "e11-c14",
     "e11-c15",
     "e11-c16",
-    "e11-c17",
-    "e11-c18",
-    "e11-c20",
-    "e11-c24"
+    "e11-c19",
+    "e11-c22",
+    "e11-c25"
    ],
    "should_fire": [],
    "must_not_fire": []
@@ -2930,22 +2825,17 @@
   {
    "seq": 30,
    "type": "R",
-   "text": "can you write a quick script to batch rename all the .md files in my thesis folder to match the new naming convention? i need something that just works on my mac",
+   "text": "hey, can you help me write a quick progress report for my thesis advisor? i need to summarize what i did this month on the literature review and the first experiment setup.",
    "context": {
-    "app": "slack",
-    "task": "code-write"
+    "app": "email-client",
+    "task": "report"
    },
    "probe": true,
    "probe_targets": [
-    "e11-c03",
+    "e11-c12",
     "e11-c13"
    ],
    "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c03",
-    "e11-c04",
-    "e11-c05",
     "e11-c06",
     "e11-c07",
     "e11-c08",
@@ -2957,13 +2847,12 @@
     "e11-c14",
     "e11-c15",
     "e11-c16",
-    "e11-c17",
-    "e11-c18",
     "e11-c19",
-    "e11-c22"
+    "e11-c22",
+    "e11-c25"
    ],
    "should_fire": [
-    "e11-c03"
+    "e11-c08"
    ],
    "must_not_fire": []
   },
@@ -2977,10 +2866,10 @@
   },
   {
    "seq": 32,
-   "type": "S",
-   "text": "hey, can you write a python script to scrape the titles and dates from my university's CS department seminar page? the url is https://cs.example.edu/seminars/ — also, from now on, whenever you write anything for me, keep it under 3202 words, okay? i don't want to hit the same wall again.，hey, can you write a python script to scrape the titles and dates from my university's CS department seminar page? the url is https://cs.example.edu/seminars/ — also, from now on when you're doing command substitution or loops, avoid using command substitution with unexpected whitespace, prefer a while read loop or readarray instead.",
+   "type": "C",
+   "text": "hey, can you write a quick python script to scrape the latest preprints from arxiv in my field and dump them into a csv? just the titles, authors, and links.。hey, that script you gave me is almost perfect, but i noticed the table you generated in the output had an extra column that i didn't need. can you please, from now on, when you generate a table, just copy the table exactly as i give it, but leave off the last column? i don't need that one. it's throwing off my notes.。hey, can you help me draft an email to my advisor about needing an extension on the chapter draft? i wanna keep it polite but not too formal, and maybe explain i'm swamped with grading. oh also, whenever you make a table, can you always include a header that clearly specifies the name of the pattern followed by each column? i keep having to guess what the columns mean.",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "code-write"
    },
    "effects": [
@@ -3005,7 +2894,7 @@
   {
    "seq": 33,
    "type": "C",
-   "text": "hey, can you write a quick postmortem for that group project that totally flopped last semester? just the key stuff—what went wrong, what we learned, and what i should tell my prof so it doesn't look like a total disaster.。hey, that last release note you wrote for me was nice, but why did you put those Markdown links to version tags on the release headings? it looks cluttered and honestly i don't need them. can you stop doing that? also, can you write a quick postmortem for that group project that totally flopped last semester? just the key stuff—what went wrong, what we learned, and what i should tell my prof so it doesn't look like a total disaster.。对了，when asking and answering questions in the conversation use past tense这条继续保持啊",
+   "text": "hey, can you write a postmortem for that group project i did last semester? just a quick rundown of what went wrong and what we should've done differently.。Hey, this is good but you're just listing all the traits of each experiment again. Can you not do that? Like, if I ask for a summary, don't just repeat the features back to me. It's super redundant and I need to see the actual takeaways, not a catalog of traits. So, for the draft I asked about—the key findings from the last three lab meetings—can you rewrite it without that?",
    "context": {
     "app": "slack",
     "task": "postmortem"
@@ -3018,23 +2907,15 @@
      "target": "",
      "targets": [],
      "delta": 0
-    },
-    {
-     "seq": 33,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e11-c04",
-     "targets": [],
-     "delta": 0
     }
    ]
   },
   {
    "seq": 34,
    "type": "C",
-   "text": "hey, can you draft an email to my prof asking for a deadline extension on the lit review? it's due friday but i'm swamped with TA grading. make it sound polite but honest.。ugh, the last email you wrote for me had way too many emojis in it. can you please not use any emojis when writing copy for me? it's so unprofessional. also, can you draft an email to my prof asking for a deadline extension on the lit review? it's due friday but i'm swamped with TA grading. make it sound polite but honest.。hey, can you draft an email to my prof asking for a deadline extension on the lit review? it's due friday but i'm swamped with TA grading. make it sound polite but honest. oh and from now on, whenever you generate text, keep it under 417 words. no more essays, i'm serious.",
+   "text": "hey, can you help me write a quick email to my professor asking for an extension on the lit review draft? i'm swamped with TA grading and my thesis data is a mess rn.。hey, that last list you wrote didn't have trailing commas. i actually hate those things—they look messy and i always forget them myself. next time, can you just not use trailing commas when you're writing sequences? oh, and while i'm here, can you help me draft an email to my advisor about needing an extension on the chapter draft? i wanna keep it polite but not too formal, and maybe explain i'm swamped with grading.。hey, that last postmortem you wrote for me was way too bullet-pointy. it felt like a shopping list, not a real reflection. can you please not use bullet points to underline primary benefits in blog posts? it makes everything sound like a sales pitch.",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -3059,48 +2940,31 @@
   {
    "seq": 35,
    "type": "R",
-   "text": "hey, can you draft a quick email to my advisor about rescheduling our meeting next week? i have a conflict with the TA grading session.",
+   "text": "hey, can you help me write a quick report on the main findings from the last three lab sessions? i need to send it to my advisor by tomorrow, but i'm swamped with TA grading.",
    "context": {
     "app": "editor",
-    "task": "email"
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e11-c18",
-    "e11-c04"
+    "e11-c26",
+    "e11-c17"
    ],
    "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
     "e11-c05",
-    "e11-c06",
-    "e11-c07",
-    "e11-c08",
-    "e11-c09",
-    "e11-c10",
-    "e11-c11",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c15",
-    "e11-c16",
     "e11-c17",
     "e11-c18",
-    "e11-c20",
-    "e11-c24"
+    "e11-c26"
    ],
    "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 36,
-   "type": "S",
-   "text": "hey, can you write a quick email to my prof asking for an extension on the lit review draft? just a casual heads-up, nothing too formal. oh and btw, when you give me numbers in answers, keep them under 11 words, like 'two hundred' or 'three point five' — not the whole explanation.",
+   "type": "C",
+   "text": "hey, can you draft a polite email to the prof for me? i need to ask for a deadline extension on my lit review draft, got too much grading to finish this week.。hey, also—from now on, when you're structuring anything, don't do that round-robin thing where you bounce between points. just pick one and finish it before moving on. thanks. oh, and can you help me write an email to my advisor? i need to ask for an extension on the lit review draft—got buried in grading. keep it polite but not too formal.",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -3117,9 +2981,9 @@
   {
    "seq": 37,
    "type": "C",
-   "text": "Hey, can you help me draft a quick report on the key findings from my latest lab experiment? I need it to be clear and concise, like something I could show my advisor.。always use sentences 16 sentences",
+   "text": "Hey, can you help me draft a quick report on the key findings from my last lab experiment? I need it to be clear and concise for my advisor.。hey, that last profile you wrote for me was way too long and kinda cringey. can you please not write any profiles for me from now on? just skip that part entirely.",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -3135,6 +2999,25 @@
   },
   {
    "seq": 38,
+   "type": "S",
+   "text": "对了，from now on, when structuring content, don't use round-robin这条继续保持啊",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 38,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e11-c31",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 39,
    "type": "N",
    "text": "又来了，这 API 每次都超时，烦死",
    "context": {},
@@ -3142,30 +3025,19 @@
    "effects": []
   },
   {
-   "seq": 39,
-   "type": "N",
-   "text": "你上次自己说的「建议拆成两个 PR」，我照做了，结果还是冲突",
-   "context": {},
-   "distractor_kind": "quoted-agent",
-   "effects": []
-  },
-  {
    "seq": 40,
    "type": "R",
-   "text": "hey, can you throw together a quick python script that simulates a simple queue system? i need to understand how it works, so add comments explaining the logic step by step",
-   "context": {},
+   "text": "hey, can you write up a quick report on the three main papers we covered in seminar this week? just the key findings, methods, and why they matter for my thesis topic. keep it casual, not like a textbook.",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
    "probe": true,
    "probe_targets": [
-    "e11-c12",
-    "e11-c17"
+    "e11-c16",
+    "e11-c31"
    ],
    "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c05",
     "e11-c06",
     "e11-c07",
     "e11-c08",
@@ -3177,55 +3049,90 @@
     "e11-c14",
     "e11-c15",
     "e11-c16",
-    "e11-c17",
-    "e11-c18",
     "e11-c19",
-    "e11-c20",
-    "e11-c21",
     "e11-c22",
-    "e11-c23",
-    "e11-c24",
     "e11-c25",
-    "e11-c26",
-    "e11-c27",
     "e11-c28",
-    "e11-c29",
-    "e11-c30",
-    "e11-c31",
-    "e11-c32"
+    "e11-c31"
    ],
    "should_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c10",
-    "e11-c12",
-    "e11-c16",
-    "e11-c20",
-    "e11-c23",
-    "e11-c26",
-    "e11-c30"
+    "e11-c08"
    ],
    "must_not_fire": []
   },
   {
    "seq": 41,
    "type": "S",
-   "text": "when generating a sports summary adhere to 150-word limit 206 words，之前说的「when writing code insert one blank line 17 lines method definition before blank line before next method definition」那条不用了，按你默认的来吧",
+   "text": "之前说的「keep it under 65 characters max」那条不用了，按你默认的来吧，之前说的「no trailing commas in sequences」那条不用了，按你默认的来吧",
    "context": {
     "app": "email-client",
-    "task": "postmortem"
+    "task": "email"
    },
    "effects": [
     {
      "seq": 41,
-     "kind": "contradict",
-     "cid": "e11-s00",
-     "target": "e11-c15",
+     "kind": "retire",
+     "cid": "",
+     "target": "e11-c20",
      "targets": [],
      "delta": 0
     },
     {
      "seq": 41,
+     "kind": "retire",
+     "cid": "",
+     "target": "e11-c29",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 42,
+   "type": "S",
+   "text": "之前说的「always write benefits in lower case and plural」那条不用了，按你默认的来吧，之前说的「when generating a table, copy the given table except for the last column」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 42,
+     "kind": "retire",
+     "cid": "",
+     "target": "e11-c22",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 42,
+     "kind": "retire",
+     "cid": "",
+     "target": "e11-c26",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 43,
+   "type": "S",
+   "text": "hey, that last email draft was okay but you totally forgot to mention walking distance between the sites when describing them. i need that in there—it's a key detail for my advisor. anyway, can you rewrite it with that included?，之前说的「keep it under 781 words for papers」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 43,
+     "kind": "contradict",
+     "cid": "e11-s02",
+     "target": "e11-c09",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 43,
      "kind": "retire",
      "cid": "",
      "target": "e11-c00",
@@ -3235,118 +3142,64 @@
    ]
   },
   {
-   "seq": 42,
-   "type": "S",
-   "text": "hey, that email draft was decent but it felt a bit too shorthand-y, y'know? like you condensed everything into bullet points almost. i need you to keep it as a first-hand account, like actually write it out in my voice, not just summarize. can you redo it?，之前说的「when generating a transcript designate each course with unit count 14 options」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 42,
-     "kind": "contradict",
-     "cid": "e11-s01",
-     "target": "e11-c24",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 42,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c07",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 43,
-   "type": "S",
-   "text": "okay so i just got your last version of the lab notes and it's way too long. i asked for a clean progress report, not a full essay. you literally wrote like 35 sentences for a simple update. can you please keep it under 29 sentences from now on? i don't need that much detail, just the main findings and what i did last week.，之前说的「when formatting code break line before binary operator 16 lines」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 43,
-     "kind": "contradict",
-     "cid": "e11-s02",
-     "target": "e11-c32",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 43,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c10",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
    "seq": 44,
    "type": "R",
-   "text": "hey, can you write a quick python script that simulates a simple Markov chain for text generation? i need to see the transition matrix logic clearly, not just the final output.",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
+   "text": "hey, can you write a short summary of my lab's progress on the quantum dots project? just the key findings from last month, no need to get fancy with the wording.",
+   "context": {},
    "probe": true,
    "probe_targets": [
-    "e11-c12",
-    "e11-s02",
-    "e11-c00",
-    "e11-c10"
+    "e11-c11",
+    "e11-c13"
    ],
    "may_fire": [
     "e11-c01",
+    "e11-c02",
     "e11-c03",
     "e11-c04",
     "e11-c05",
     "e11-c06",
+    "e11-c07",
     "e11-c08",
-    "e11-c09",
+    "e11-c10",
     "e11-c11",
     "e11-c12",
     "e11-c13",
     "e11-c14",
+    "e11-c15",
     "e11-c16",
     "e11-c17",
     "e11-c18",
     "e11-c19",
-    "e11-c22",
+    "e11-c21",
+    "e11-c23",
+    "e11-c24",
+    "e11-c25",
+    "e11-c27",
+    "e11-c28",
+    "e11-c30",
     "e11-c31",
-    "e11-s00"
+    "e11-c32",
+    "e11-s02"
    ],
-   "should_fire": [
-    "e11-c01",
-    "e11-c12",
-    "e11-c16"
-   ],
+   "should_fire": [],
    "must_not_fire": [
-    "e11-c00",
-    "e11-c10"
+    "e11-c20"
    ]
   },
   {
    "seq": 45,
    "type": "S",
-   "text": "Hey, that postmortem you just wrote is way too long. I asked for a quick one, not a full paper. I need it to be under 4005 words, max. Can you cut it down and keep it tight?，之前说的「when writing shell scripts, don't follow the Shell Style Guide」那条不用了，按你默认的来吧",
+   "text": "hey, that email was good but the docstring summary you just wrote for that function was way too long. can you keep it under 93 characters from now on? i need to scan them fast.，之前说的「keep blog posts under 752 words」那条不用了，按你默认的来吧",
    "context": {
-    "app": "editor",
-    "task": "postmortem"
+    "app": "slack",
+    "task": "email"
    },
    "effects": [
     {
      "seq": 45,
      "kind": "contradict",
      "cid": "e11-s03",
-     "target": "e11-c26",
+     "target": "e11-c08",
      "targets": [],
      "delta": 0
     },
@@ -3354,7 +3207,7 @@
      "seq": 45,
      "kind": "retire",
      "cid": "",
-     "target": "e11-c03",
+     "target": "e11-c21",
      "targets": [],
      "delta": 0
     }
@@ -3363,17 +3216,17 @@
   {
    "seq": 46,
    "type": "S",
-   "text": "hey, that last email draft was okay but you used bullet points in the tabs section — i specifically said 'when using tabs' i meant use actual tabs, not spaces or bullet lists. can you rewrite that part? also, from now on, when using tabs, you must use tabs, not spaces or bullets.",
+   "text": "hey, that last email draft was okay but you wrote 'several million' and i had to double-check if it was millions or billions. can you just default to spelling out 'millions' or 'billions' when you write about big numbers? it's way clearer. anyway, can you help me write an email to my advisor? i need to ask for an extension on the lit review draft—got buried in grading. keep it polite but not too formal.",
    "context": {
-    "app": "email-client",
-    "task": "email"
+    "app": "editor",
+    "task": "report"
    },
    "effects": [
     {
      "seq": 46,
      "kind": "contradict",
      "cid": "e11-s04",
-     "target": "e11-c21",
+     "target": "e11-c10",
      "targets": [],
      "delta": 0
     }
@@ -3382,17 +3235,17 @@
   {
    "seq": 47,
    "type": "S",
-   "text": "when writing code insert two blank lines between top-level definitions 33 lines",
+   "text": "hey, that last table you showed me had the data all lopsided—like, the numbers were clumped in one column. can you please avoid poor distribution when presenting a table? it makes it hard to see the real trends.",
    "context": {
-    "app": "email-client",
-    "task": "report"
+    "app": "slack",
+    "task": "code-write"
    },
    "effects": [
     {
      "seq": 47,
      "kind": "contradict",
      "cid": "e11-s05",
-     "target": "e11-c01",
+     "target": "e11-c25",
      "targets": [],
      "delta": 0
     }
@@ -3401,74 +3254,51 @@
   {
    "seq": 48,
    "type": "R",
-   "text": "hey, can you rewrite my lab report intro? i need to make the part about the sedimentary layers shorter, and clean up the section where i talk about my field observations",
-   "context": {},
+   "text": "hey, can you draft an email to my advisor about pushing back our next meeting? I've got a stack of lab reports to grade and my thesis intro is still a mess. Something casual but not too sloppy.",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
    "probe": true,
    "probe_targets": [
-    "e11-c28",
-    "e11-c02",
-    "e11-c26",
-    "e11-c24"
+    "e11-c11",
+    "e11-c03",
+    "e11-c10",
+    "e11-c00"
    ],
    "may_fire": [
+    "e11-c01",
     "e11-c02",
+    "e11-c03",
     "e11-c04",
-    "e11-c05",
     "e11-c06",
-    "e11-c08",
-    "e11-c09",
     "e11-c11",
     "e11-c12",
     "e11-c13",
     "e11-c14",
+    "e11-c15",
     "e11-c16",
-    "e11-c17",
-    "e11-c18",
-    "e11-c19",
-    "e11-c20",
-    "e11-c22",
-    "e11-c23",
-    "e11-c25",
-    "e11-c27",
-    "e11-c28",
-    "e11-c29",
-    "e11-c30",
-    "e11-c31",
-    "e11-s00",
-    "e11-s01",
-    "e11-s02",
-    "e11-s03",
-    "e11-s04",
-    "e11-s05"
+    "e11-s04"
    ],
    "should_fire": [
-    "e11-c02",
-    "e11-c04",
-    "e11-c05",
-    "e11-c20",
-    "e11-c30",
-    "e11-s02",
-    "e11-s03"
+    "e11-c16"
    ],
-   "must_not_fire": [
-    "e11-c26",
-    "e11-c32"
-   ]
+   "must_not_fire": []
   },
   {
    "seq": 49,
    "type": "S",
-   "text": "when describing geological formations or landmarks in the first table limit description length 45 words",
+   "text": "hey, that email you just wrote—it's fine, but it's missing a list of conversation starters at the end. i always need those to keep the chat going when i meet my advisor. can you make sure from now on you always include a list of conversation starters whenever you're generating text for me?",
    "context": {
-    "app": "slack",
-    "task": "postmortem"
+    "app": "editor",
+    "task": "email"
    },
    "effects": [
     {
      "seq": 49,
      "kind": "contradict",
      "cid": "e11-s06",
-     "target": "e11-c02",
+     "target": "e11-c12",
      "targets": [],
      "delta": 0
     }
@@ -3477,17 +3307,17 @@
   {
    "seq": 50,
    "type": "S",
-   "text": "之前说的「when generating text include two lists of words 13 lists」那条不用了，按你默认的来吧",
+   "text": "之前说的「use a line length limit of at least 51 characters when writing code that the team maintains and agrees on」那条不用了，按你默认的来吧",
    "context": {
-    "app": "email-client",
-    "task": "email"
+    "app": "editor",
+    "task": "report"
    },
    "effects": [
     {
      "seq": 50,
      "kind": "retire",
      "cid": "",
-     "target": "e11-c11",
+     "target": "e11-c17",
      "targets": [],
      "delta": 0
     }
@@ -3496,17 +3326,17 @@
   {
    "seq": 51,
    "type": "S",
-   "text": "之前说的「keep numerical answers under 11 words」那条不用了，按你默认的来吧",
+   "text": "之前说的「avoid hyphenated naming when writing code, use underscore or camelCase instead」那条不用了，按你默认的来吧",
    "context": {
     "app": "editor",
-    "task": "report"
+    "task": "code-write"
    },
    "effects": [
     {
      "seq": 51,
      "kind": "retire",
      "cid": "",
-     "target": "e11-c31",
+     "target": "e11-c05",
      "targets": [],
      "delta": 0
     }
@@ -3515,56 +3345,52 @@
   {
    "seq": 52,
    "type": "R",
-   "text": "Hey, can you draft a transcript for my last semester's courses? I need to send it to my advisor for review.",
+   "text": "hey, can you write up a quick report on the three field sites I visited last week? include a table comparing the soil moisture readings and make sure the numbers are spread out evenly, not all clumped in one column. also mention how far apart the sites are by foot.",
    "context": {
     "app": "email-client",
     "task": "report"
    },
    "probe": true,
    "probe_targets": [
-    "e11-c18",
-    "e11-s03",
-    "e11-c07",
-    "e11-c26"
+    "e11-s05",
+    "e11-s02",
+    "e11-c22",
+    "e11-c25"
    ],
    "may_fire": [
-    "e11-c04",
-    "e11-c05",
     "e11-c06",
-    "e11-c08",
-    "e11-c09",
-    "e11-c12",
+    "e11-c07",
+    "e11-c11",
     "e11-c13",
     "e11-c14",
+    "e11-c15",
     "e11-c16",
-    "e11-c17",
-    "e11-c18",
-    "e11-c25",
+    "e11-c19",
     "e11-c28",
-    "e11-c30",
-    "e11-s00",
+    "e11-c31",
+    "e11-s02",
     "e11-s03",
-    "e11-s05"
+    "e11-s04",
+    "e11-s05",
+    "e11-s06"
    ],
    "should_fire": [],
-   "must_not_fire": [
-    "e11-c07"
-   ]
+   "must_not_fire": []
   },
   {
    "seq": 53,
    "type": "S",
-   "text": "之前说的「when writing code or text limit line length 48 characters」那条不用了，按你默认的来吧",
+   "text": "之前说的「don't capitalize Parliamentary in committee contexts」那条不用了，按你默认的来吧",
    "context": {
     "app": "slack",
-    "task": "postmortem"
+    "task": "email"
    },
    "effects": [
     {
      "seq": 53,
      "kind": "retire",
      "cid": "",
-     "target": "e11-c20",
+     "target": "e11-c24",
      "targets": [],
      "delta": 0
     }
@@ -3573,10 +3399,10 @@
   {
    "seq": 54,
    "type": "S",
-   "text": "之前说的「avoid command substitution with unexpected whitespace, prefer while read loop or readarray」那条不用了，按你默认的来吧",
+   "text": "之前说的「always include a header that clearly specifies the name of the pattern followed by each column」那条不用了，按你默认的来吧",
    "context": {
     "app": "editor",
-    "task": "email"
+    "task": "report"
    },
    "effects": [
     {
@@ -3592,96 +3418,14 @@
   {
    "seq": 55,
    "type": "S",
-   "text": "之前说的「when using technical terms explain technical terms 13 times first use before subsequent uses」那条不用了，按你默认的来吧",
+   "text": "之前说的「do not use bullet points to underline primary benefits」那条不用了，按你默认的来吧",
    "context": {
-    "app": "editor",
-    "task": "report"
+    "app": "slack",
+    "task": "code-write"
    },
    "effects": [
     {
      "seq": 55,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c25",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 56,
-   "type": "R",
-   "text": "can you rewrite this draft for my thesis intro? i need it to sound more academic and flow better",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c29",
-    "e11-c16",
-    "e11-c25",
-    "e11-c32"
-   ],
-   "may_fire": [
-    "e11-c04",
-    "e11-c05",
-    "e11-c06",
-    "e11-c08",
-    "e11-c09",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c16",
-    "e11-c17",
-    "e11-c18",
-    "e11-c28",
-    "e11-c30",
-    "e11-s00",
-    "e11-s03",
-    "e11-s05"
-   ],
-   "should_fire": [
-    "e11-c04",
-    "e11-c05",
-    "e11-c09",
-    "e11-c30",
-    "e11-s03"
-   ],
-   "must_not_fire": [
-    "e11-c26"
-   ]
-  },
-  {
-   "seq": 57,
-   "type": "S",
-   "text": "之前说的「when using from __future__ imports use other from __future__ import statements」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 57,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c22",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 58,
-   "type": "S",
-   "text": "之前说的「keep it under 417 words」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 58,
      "kind": "retire",
      "cid": "",
      "target": "e11-c30",
@@ -3691,155 +3435,31 @@
    ]
   },
   {
-   "seq": 59,
+   "seq": 56,
    "type": "R",
-   "text": "Hey, can you write a Python script that reads a CSV of student grades and prints the class average? I need it for my TA work.",
+   "text": "hey, can you write a quick report on the recent enrollment trends in our department? just a few paragraphs and a small table showing undergrad vs grad numbers over the last three years. keep it casual, not too formal.",
    "context": {
-    "app": "email-client",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-s05",
-    "e11-s03",
-    "e11-c21",
-    "e11-c27"
-   ],
-   "may_fire": [
-    "e11-c04",
-    "e11-c05",
-    "e11-c06",
-    "e11-c08",
-    "e11-c09",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c16",
-    "e11-c17",
-    "e11-c18",
-    "e11-c19",
-    "e11-s00",
-    "e11-s05"
-   ],
-   "should_fire": [
-    "e11-c12",
-    "e11-c16",
-    "e11-s05"
-   ],
-   "must_not_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c10"
-   ]
-  },
-  {
-   "seq": 60,
-   "type": "R",
-   "text": "hey, can you rewrite this paragraph from my thesis intro? it's about the limitations of prior work in my field. i need it to sound more assertive but still academic. also, i'll probably ask for a few more tweaks after this.",
-   "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "report"
    },
    "probe": true,
    "probe_targets": [
-    "e11-c29",
-    "e11-s00",
-    "e11-c30",
-    "e11-c22"
+    "e11-s04",
+    "e11-c16",
+    "e11-c25",
+    "e11-c08"
    ],
    "may_fire": [
-    "e11-c04",
-    "e11-c05",
     "e11-c06",
-    "e11-c08",
-    "e11-c09",
-    "e11-c12",
+    "e11-c07",
+    "e11-c11",
     "e11-c13",
     "e11-c14",
+    "e11-c15",
     "e11-c16",
-    "e11-c17",
-    "e11-c18",
-    "e11-c28",
-    "e11-s00",
-    "e11-s03",
-    "e11-s05"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 61,
-   "type": "R",
-   "text": "could you rewrite the lab report section on data preprocessing? i think the explanation of the outlier removal is too vague",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c04",
-    "e11-c14",
-    "e11-c03",
-    "e11-c24"
-   ],
-   "may_fire": [
-    "e11-c04",
-    "e11-c05",
-    "e11-c06",
-    "e11-c08",
-    "e11-c09",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c16",
-    "e11-c17",
-    "e11-c18",
-    "e11-c28",
-    "e11-s00",
-    "e11-s03",
-    "e11-s05"
-   ],
-   "should_fire": [
-    "e11-c04",
-    "e11-c05",
-    "e11-c09",
-    "e11-s03"
-   ],
-   "must_not_fire": [
-    "e11-c26",
-    "e11-c30"
-   ]
-  },
-  {
-   "seq": 62,
-   "type": "R",
-   "text": "hey, can you help me draft an email to my prof asking for a deadline extension on my lit review? i'm swamped with TA grading and my thesis draft is due soon too. keep it polite but not too formal.",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e11-c13",
-    "e11-c14",
-    "e11-c02",
-    "e11-c11"
-   ],
-   "may_fire": [
-    "e11-c04",
-    "e11-c05",
-    "e11-c06",
-    "e11-c08",
-    "e11-c09",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c16",
-    "e11-c17",
-    "e11-c18",
     "e11-c19",
-    "e11-c23",
     "e11-c28",
-    "e11-c29",
-    "e11-s00",
-    "e11-s01",
+    "e11-c31",
     "e11-s02",
     "e11-s03",
     "e11-s04",
@@ -3847,14 +3467,166 @@
     "e11-s06"
    ],
    "should_fire": [
-    "e11-c05",
-    "e11-c29",
-    "e11-s01"
+    "e11-c19"
    ],
-   "must_not_fire": [
-    "e11-c24",
-    "e11-c32"
+   "must_not_fire": []
+  },
+  {
+   "seq": 57,
+   "type": "S",
+   "text": "之前说的「don't repeat or list traits」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 57,
+     "kind": "retire",
+     "cid": "",
+     "target": "e11-c28",
+     "targets": [],
+     "delta": 0
+    }
    ]
+  },
+  {
+   "seq": 58,
+   "type": "S",
+   "text": "之前说的「keep it under 699 words when generating an argument」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 58,
+     "kind": "retire",
+     "cid": "",
+     "target": "e11-c19",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 59,
+   "type": "R",
+   "text": "hey, can you help me write a short report on the impact of remote work on productivity? need it for my seminar next week.",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e11-s04",
+    "e11-c14",
+    "e11-c10",
+    "e11-c12"
+   ],
+   "may_fire": [
+    "e11-c06",
+    "e11-c07",
+    "e11-c11",
+    "e11-c13",
+    "e11-c14",
+    "e11-c15",
+    "e11-c16",
+    "e11-c31",
+    "e11-s02",
+    "e11-s03",
+    "e11-s04",
+    "e11-s05",
+    "e11-s06"
+   ],
+   "should_fire": [],
+   "must_not_fire": [
+    "e11-c19"
+   ]
+  },
+  {
+   "seq": 60,
+   "type": "R",
+   "text": "hey, could you write me a quick Python script to parse my grades CSV and print a summary table? I just need the first few columns, not the last one.",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e11-c18",
+    "e11-c05",
+    "e11-c26"
+   ],
+   "may_fire": [
+    "e11-c18"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 61,
+   "type": "R",
+   "text": "hey, can you help me draft an email to my advisor about rescheduling our meeting next week? i'm stuck on a chapter and could use a couple more days.",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e11-s06",
+    "e11-c16",
+    "e11-c10",
+    "e11-c00"
+   ],
+   "may_fire": [
+    "e11-c01",
+    "e11-c02",
+    "e11-c03",
+    "e11-c04",
+    "e11-c06",
+    "e11-c11",
+    "e11-c13",
+    "e11-c14",
+    "e11-c15",
+    "e11-c16",
+    "e11-s04",
+    "e11-s06"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 62,
+   "type": "R",
+   "text": "hey, can you draft an email to my advisor letting her know I'll be a bit late submitting the first draft of my lit review chapter? I want to mention that I'm still working through some conflicting sources, so I'll need a couple extra days to make sure I cover both sides fairly.",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e11-c14",
+    "e11-c02",
+    "e11-c12",
+    "e11-c00"
+   ],
+   "may_fire": [
+    "e11-c01",
+    "e11-c02",
+    "e11-c03",
+    "e11-c04",
+    "e11-c06",
+    "e11-c11",
+    "e11-c13",
+    "e11-c14",
+    "e11-c15",
+    "e11-c16",
+    "e11-s04",
+    "e11-s06"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
   }
  ],
  "checkpoints": [
@@ -3867,18 +3639,16 @@
   53,
   62
  ],
- "dup_pairs": [
-  [
-   "atom-1682",
-   "atom-1936"
-  ]
- ],
+ "dup_pairs": [],
  "stats": {
-  "nodes": 40,
+  "nodes": 38,
   "dead_final": 18,
   "peak_gold_active": 33,
-  "gate_drops": 19,
+  "degraded_successors": 2,
   "i11_pruned_traps": 0,
-  "lint_errors": []
+  "lint_errors": [
+   "I10: e11-c00 / e11-c08 textually near (J≥0.5) but INDEPENDENT — key split?",
+   "I10: e11-c00 / e11-s03 textually near (J≥0.5) but INDEPENDENT — key split?"
+  ]
  }
 }

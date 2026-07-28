@@ -1,7 +1,7 @@
 {
  "id": "e-03",
  "schema_version": "E1",
- "seed": 44,
+ "seed": 53,
  "protocol_version": 2,
  "persona": {
   "id": "datasci-zh",
@@ -14,10 +14,56 @@
  "catalogue": [
   {
    "cid": "e03-c00",
-   "text": "when generating a commencement speech fall within word count 483 words",
-   "clause": "毕业典礼致辞控制在483字以内",
-   "alt_clause": "毕业典礼致辞不超过483字",
-   "distinctive": "483",
+   "text": "when using the original instruction avoid: use the disclaimer and structure provided",
+   "clause": "别用你原来那个说明和结构",
+   "alt_clause": "不要再用你原来的说明和结构",
+   "distinctive": "说明和结构",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "doc.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "the disclaimer and structure provided"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c01",
+   "text": "when generating an experiment design limit word count (no more than 207 words)",
+   "clause": "实验设计字数控制在207字以内",
+   "alt_clause": "实验方案别超过207个字",
+   "distinctive": "207",
    "coords": {
     "bucket": "deliverables",
     "key": "length.max",
@@ -25,7 +71,7 @@
     "binding": "hard",
     "value": {
      "type": "numeric",
-     "num": 483.0,
+     "num": 207.0,
      "unit": "words",
      "cmp": "max",
      "domain": "",
@@ -51,20 +97,20 @@
      "url": "https://huggingface.co/datasets/kqsong/InFoBench",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 300 -> 483"
+    "mutation": "threshold 150 -> 207"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
-   "cid": "e03-c01",
-   "text": "when not specifically asked otherwise exhibit traits of intelligence",
-   "clause": "除非我明确说，否则不要拟人化，只展示智能特征",
-   "alt_clause": "没特别要求就别搞人类那套，光给数据特征",
-   "distinctive": "拟人化",
+   "cid": "e03-c02",
+   "text": "when writing geographical directions or regions avoid: use lower case for compass directions and regions",
+   "clause": "方向地区一律小写",
+   "alt_clause": "所有 compass 方向词都用小写",
+   "distinctive": "小写",
    "coords": {
-    "bucket": "reasoning_policy",
-    "key": "workflow.fidelity",
+    "bucket": "output_contract",
+    "key": "format.emphasis",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -78,7 +124,7 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "traits of intelligence"
+      "lower case for compass directions and regions"
      ],
      "before": "",
      "after": ""
@@ -92,9 +138,9 @@
    },
    "atom": {
     "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
      "use": "skeleton-derived"
     },
     "mutation": "polarity require -> prohibit"
@@ -103,27 +149,29 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c02",
-   "text": "when your class is intended to be subclassed and you have attributes that you do not want subclasses to use consider naming attributes with double leading underscores and no trailing underscores",
-   "clause": "不想被子类用的属性用双下划线开头且不加尾下划线",
-   "alt_clause": "子类不该碰的属性，命名时加双下划线前缀，别加尾下划线",
-   "distinctive": "双下划线",
+   "cid": "e03-c03",
+   "text": "when creating tables avoid: follow best practices for short, readable tables",
+   "clause": "以后做表都短点、可读性强点",
+   "alt_clause": "建表时别用长字段，保持简洁易读",
+   "distinctive": "短点",
    "coords": {
     "bucket": "reasoning_policy",
-    "key": "code.naming",
-    "polarity": "avoid",
-    "binding": "hard",
+    "key": "format.tables",
+    "polarity": "prohibit",
+    "binding": "soft",
     "value": {
-     "type": "enum",
+     "type": "set",
      "num": null,
      "unit": "",
      "cmp": "",
-     "domain": "case_style",
-     "val": "snake",
+     "domain": "",
+     "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "",
-     "items": [],
+     "op": "exclude",
+     "items": [
+      "best practices for short, readable tables"
+     ],
      "before": "",
      "after": ""
     },
@@ -136,25 +184,253 @@
    },
    "atom": {
     "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prefer -> avoid"
+    "mutation": "polarity require -> prohibit"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
-   "cid": "e03-c03",
-   "text": "when writing avoid bold",
-   "clause": "when writing avoid bold",
-   "alt_clause": "when writing avoid bold",
-   "distinctive": "bold",
+   "cid": "e03-c04",
+   "text": "when a function uses default operators avoid: describe function",
+   "clause": "函数别用默认操作符",
+   "alt_clause": "写函数时把操作符显式写出来，别用默认的",
+   "distinctive": "默认操作符",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.comments",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "function"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c05",
+   "text": "when formatting results avoid: format results as JSON object with keys name, rank, hometown",
+   "clause": "结果要用 JSON 对象输出，字段名 name、rank、hometown",
+   "alt_clause": "输出格式固定为 JSON，键名必须是 name、rank、hometown",
+   "distinctive": "name、rank、hometown",
    "coords": {
     "bucket": "output_contract",
-    "key": "format.emphasis",
+    "key": "format.code_blocks",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "format",
+     "val": "json",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c06",
+   "text": "when listing stopover cities in generated airline information avoid: separate arrival and departure times",
+   "clause": "列航班经停城市时，到达和出发时间别用'->'连着",
+   "alt_clause": "列举中转城市时，到达和出发时间不要用箭头连接",
+   "distinctive": "到达和出发时间别用",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.lists",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "arrival and departure times"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c07",
+   "text": "when writing numbers with exponents avoid: indicate exponent after number in curly brackets",
+   "clause": "指数用花括号括起来",
+   "alt_clause": "指数写在花括号里",
+   "distinctive": "花括号",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "analysis.units",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "exponent after number in curly brackets"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c08",
+   "text": "always avoid: use intricately crafted sentence structuring",
+   "clause": "别用复杂句子结构",
+   "alt_clause": "不要搞花哨句式",
+   "distinctive": "复杂句子结构",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "tone.register",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "intricately crafted sentence structuring"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c09",
+   "text": "when more advanced data manipulation is required avoid shell scripting",
+   "clause": "以后需要复杂数据处理时，别用shell脚本",
+   "alt_clause": "复杂数据处理别碰shell脚本",
+   "distinctive": "shell脚本",
+   "coords": {
+    "bucket": "execution_policy",
+    "key": "workflow.tools",
     "polarity": "require",
     "binding": "hard",
     "value": {
@@ -168,7 +444,187 @@
      "bool_val": null,
      "op": "include",
      "items": [
-      "bold"
+      "shell scripting"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c10",
+   "text": "when writing a script that is more than 100 lines long or uses non-straightforward control flow logic rewrite the script (no more than 209 lines)",
+   "clause": "超过100行或非直白控制流时，脚本必须重写到209行以内",
+   "alt_clause": "脚本如果超过100行或者逻辑不直接，一律重写，目标行数209",
+   "distinctive": "100",
+   "coords": {
+    "bucket": "task_goal",
+    "key": "research.task_verb",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 209.0,
+     "unit": "lines",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 100 -> 209"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c11",
+   "text": "when versioning avoid: start following SemVer",
+   "clause": "以后都别用SemVer",
+   "alt_clause": "之后版本号不要用SemVer",
+   "distinctive": "SemVer",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "research.comparison",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "verb",
+     "val": "evaluate",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "keep-a-changelog",
+     "license": "MIT",
+     "url": "https://keepachangelog.com/en/1.1.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c12",
+   "text": "when writing code or text avoid: use backslash for line continuation",
+   "clause": "写代码时禁止用反斜杠续行",
+   "alt_clause": "代码里不要用反斜杠来换行",
+   "distinctive": "反斜杠续行",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.line_width",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "backslash for line continuation"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c13",
+   "text": "when writing avoid: use 'per cent'",
+   "clause": "以后写报告时用'per cent'，不用'percent'",
+   "alt_clause": "所有报告里都写'per cent'，别写'percent'",
+   "distinctive": "per cent",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "style.voice",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "'per cent'"
      ],
      "before": "",
      "after": ""
@@ -187,35 +643,33 @@
      "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prohibit -> require"
+    "mutation": "polarity require -> prohibit"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
-   "cid": "e03-c04",
-   "text": "when leaving a comment suggest an alternative",
-   "clause": "避免模糊评论，建议给出替代方案",
-   "alt_clause": "别光说问题，提个其他选项",
-   "distinctive": "替代方案",
+   "cid": "e03-c14",
+   "text": "when writing ensure paragraph count (no more than 18 paragraphs)",
+   "clause": "每段不超过18段",
+   "alt_clause": "段落数控制在18段以内",
+   "distinctive": "18",
    "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.comments",
-    "polarity": "avoid",
-    "binding": "suggestion",
+    "bucket": "deliverables",
+    "key": "length.paragraphs",
+    "polarity": "require",
+    "binding": "hard",
     "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
+     "type": "numeric",
+     "num": 18.0,
+     "unit": "paragraphs",
+     "cmp": "max",
      "domain": "",
      "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "an alternative"
-     ],
+     "op": "",
+     "items": [],
      "before": "",
      "after": ""
     },
@@ -228,25 +682,69 @@
    },
    "atom": {
     "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prefer -> avoid"
+    "mutation": "threshold 5 -> 18"
    },
    "anchor_weak": false,
    "successor_of": null
   },
   {
-   "cid": "e03-c05",
-   "text": "when providing answers behave friendly advisor or scholar",
-   "clause": "以友好顾问或学者风格回答",
-   "alt_clause": "用平易近人的专家口吻说话",
-   "distinctive": "友好顾问或学者",
+   "cid": "e03-c15",
+   "text": "when evaluating a generated sentence contain at least 8 words (no more than 13 words)",
+   "clause": "每条至少13个词",
+   "alt_clause": "每句话不能少于13个词",
+   "distinctive": "13",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.min",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 13.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 8 -> 13"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c16",
+   "text": "always avoid: be to the point with no formalities",
+   "clause": "以后都别整那些虚头巴脑的客套话，直接说重点",
+   "alt_clause": "以后都省掉客套，直接给结论",
+   "distinctive": "客套话",
    "coords": {
     "bucket": "communication_style",
-    "key": "tone.register",
+    "key": "tone.directness",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -283,11 +781,57 @@
    "successor_of": null
   },
   {
-   "cid": "e03-c06",
-   "text": "when generating a chronology arrange events within each decade reverse chronological",
-   "clause": "when generating a chronology arrange events within each decade reverse chronological",
-   "alt_clause": "when generating a chronology arrange events within each decade reverse chronological",
-   "distinctive": "decade",
+   "cid": "e03-c17",
+   "text": "when naming Python identifiers avoid: use single trailing underscore",
+   "clause": "Python关键字后加单下划线",
+   "alt_clause": "关键字做变量名时末尾加_",
+   "distinctive": "单下划线",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.naming",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "single trailing underscore"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c18",
+   "text": "when generating text avoid: structure text as a dialogue",
+   "clause": "别用对话体写",
+   "alt_clause": "禁止写成对话形式",
+   "distinctive": "对话体",
    "coords": {
     "bucket": "output_contract",
     "key": "doc.structure",
@@ -304,556 +848,14 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "events within each decade"
+      "text as a dialogue"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c07",
-   "text": "when using code review tools or having several files open side by side limit editor window width",
-   "clause": "窗口别开太宽",
-   "alt_clause": "编辑器宽度别太大",
-   "distinctive": "太宽",
-   "coords": {
-    "bucket": "execution_policy",
-    "key": "workflow.tools",
-    "polarity": "avoid",
-    "binding": "soft",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "editor window width"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c08",
-   "text": "when giving an answer be objective 16 words",
-   "clause": "when giving an answer be objective 16 words",
-   "alt_clause": "when giving an answer be objective 16 words",
-   "distinctive": "16",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "style.voice",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 16.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 0 -> 16"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c09",
-   "text": "when breaking formulas break displayed formulas",
-   "clause": "别把显示公式拆到段落里",
-   "alt_clause": "显示公式不要折进行内段落",
-   "distinctive": "显示公式",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.lists",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "displayed formulas"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c10",
-   "text": "when writing a context manager for a database connection use explicit begin_transaction and commit/rollback",
-   "clause": "when writing a context manager for a database connection use explicit begin_transaction and commit/rollback",
-   "alt_clause": "when writing a context manager for a database connection use explicit begin_transaction and commit/rollback",
-   "distinctive": "rollback",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.error_handling",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "explicit begin_transaction and commit/rollback"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c11",
-   "text": "when generating text structure text as a dialogue",
-   "clause": "禁止用对话体写文本",
-   "alt_clause": "文本别写成对话形式",
-   "distinctive": "对话体",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.markdown",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "format",
-     "val": "prose",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c12",
-   "text": "when evaluating generated text check if list of activities",
-   "clause": "禁止在文本中列出活动列表",
-   "alt_clause": "文本里不准出现活动列表",
-   "distinctive": "活动列表",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "research.task_verb",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "list of activities"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c13",
-   "text": "when writing about the UK use UK and United Kingdom",
-   "clause": "以后写英国相关的东西，用UK和United Kingdom，别用Britain和British",
-   "alt_clause": "涉及英国时，用UK或United Kingdom，别用Britain或British",
-   "distinctive": "Kingdom",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "language.terminology",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "UK and United Kingdom"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c14",
-   "text": "when you identify your public API communicate changes to public API 11 increments",
-   "clause": "公开API改动需按版本号列出，累计≥11个增量才通知",
-   "alt_clause": "每次API变更要标明增量编号，满11次才发正式通知",
-   "distinctive": "11",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "evidence.sources",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 11.0,
-     "unit": "increments",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "semver",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/semver/semver/master/semver.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1 -> 11"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c15",
-   "text": "when choosing versions default to most recent versions",
-   "clause": "别总默认最新版本",
-   "alt_clause": "不要每次都选最新的版本",
-   "distinctive": "最新版本",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "research.comparison",
-    "polarity": "prohibit",
-    "binding": "default",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "most recent versions"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "keep-a-changelog",
-     "license": "MIT",
-     "url": "https://keepachangelog.com/en/1.1.0/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c16",
-   "text": "when writing functions use blank lines 14 lines",
-   "clause": "when writing functions use blank lines 14 lines",
-   "alt_clause": "when writing functions use blank lines 14 lines",
-   "distinctive": "14",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.code_blocks",
-    "polarity": "prefer",
-    "binding": "soft",
-    "value": {
-     "type": "numeric",
-     "num": 14.0,
-     "unit": "lines",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1 -> 14"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c17",
-   "text": "when writing an outline include units 16 units",
-   "clause": "when writing an outline include units 16 units",
-   "alt_clause": "when writing an outline include units 16 units",
-   "distinctive": "16",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "analysis.units",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 16.0,
-     "unit": "units",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 10 -> 16"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c18",
-   "text": "when generating a table include a header that clearly specifies the name of the pattern followed by each column",
-   "clause": "以后做表，每列头上必须写清楚跟的是哪个归因模型",
-   "alt_clause": "生成表格时，列名必须带上对应的归因模型名称",
-   "distinctive": "归因模型",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "format.tables",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "a header that clearly specifies the name of the pattern followed by each column"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -872,14 +874,14 @@
   },
   {
    "cid": "e03-c19",
-   "text": "when writing new code treat application-specific sub-package imports",
-   "clause": "写代码时避免应用子包导入",
-   "alt_clause": "新代码里不要用应用子包导入",
-   "distinctive": "应用子包导入",
+   "text": "when writing a document with links avoid: centralize all links",
+   "clause": "写文档时把所有链接集中到附录或单独一个section",
+   "alt_clause": "文档里的链接统一放在一个地方，别分散",
+   "distinctive": "链接集中",
    "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.dependencies",
-    "polarity": "avoid",
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "prohibit",
     "binding": "hard",
     "value": {
      "type": "set",
@@ -892,7 +894,53 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "application-specific sub-package imports"
+      "all links"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "keep-a-changelog",
+     "license": "MIT",
+     "url": "https://keepachangelog.com/en/1.1.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c20",
+   "text": "when generating text about activities avoid: include individual descriptions for each activity",
+   "clause": "每个活动单独写一段",
+   "alt_clause": "每个活动都要有独立描述",
+   "distinctive": "每个活动",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "individual descriptions for each activity"
      ],
      "before": "",
      "after": ""
@@ -900,6 +948,456 @@
     "scope": {
      "app": "ANY",
      "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c21",
+   "text": "when writing an article limit length (no more than 1502 words)",
+   "clause": "文章字数控制在1502个字以内",
+   "alt_clause": "文章长度不超过1502字",
+   "distinctive": "1502",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 1502.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 2000 -> 1502"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c22",
+   "text": "when writing a blog post limit blog post (no more than 752 words)",
+   "clause": "博客帖子字数不超过752字",
+   "alt_clause": "每篇博文限制在752字以内",
+   "distinctive": "752",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 752.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 600 -> 752"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c23",
+   "text": "when generating text with a second list ensure second list word count (no more than 21 words)",
+   "clause": "第二列表词数至少21个词",
+   "alt_clause": "第二列表字数不能少于21个词",
+   "distinctive": "21",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 21.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 5 -> 21"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c24",
+   "text": "when writing long passages of speech avoid: open quotes for each new paragraph",
+   "clause": "写大段对话时，每段开头都开引号，但不要在最后一段之前关引号",
+   "alt_clause": "大段对话里，每段开始都加引号，最后一段之前不关引号",
+   "distinctive": "最后一段之前",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.emphasis",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "quotes for each new paragraph"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c25",
+   "text": "when writing a footer avoid: use hyphen in place of whitespace",
+   "clause": "以后都别在footer里用空格，用短横线隔开",
+   "alt_clause": "footer里一律用短横线代替空格",
+   "distinctive": "短横线",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.emphasis",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "hyphen in place of whitespace"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "conventional-commits",
+     "license": "CC-BY-3.0",
+     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c26",
+   "text": "when using emphasis avoid: use markdown formatting",
+   "clause": "以后都别用markdown格式",
+   "alt_clause": "永远不要用markdown标记",
+   "distinctive": "以后都别用",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.emphasis",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "format",
+     "val": "markdown",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c27",
+   "text": "when generating a table avoid: copy the given table except for the last column",
+   "clause": "生成表时，不要复制最后一列",
+   "alt_clause": "做表的时候，最后一列别抄进去",
+   "distinctive": "最后一列",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.tables",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "the given table except for the last column"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c28",
+   "text": "when presenting a table avoid poor distribution",
+   "clause": "做表时避免分布差",
+   "alt_clause": "做表时别让分布太挤",
+   "distinctive": "分布差",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.tables",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "poor distribution"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c29",
+   "text": "when your data could easily be presented in a list avoid tables",
+   "clause": "能列清单就别甩表格",
+   "alt_clause": "能用列表展示就别用表格",
+   "distinctive": "表格",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.tables",
+    "polarity": "prefer",
+    "binding": "soft",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "format",
+     "val": "bullets",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-c30",
+   "text": "when writing code avoid: place comments",
+   "clause": "写代码别加注释",
+   "alt_clause": "代码里不要放任何注释",
+   "distinctive": "写代码别加注释",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "code.comments",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "comments"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -911,502 +1409,6 @@
      "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c20",
-   "text": "when evaluating the generated article compose article 13 sentences",
-   "clause": "每篇正文至少13句话",
-   "alt_clause": "正文句子数不能少于13句",
-   "distinctive": "13",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "doc.length",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 13.0,
-     "unit": "sentences",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 5 -> 13"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c21",
-   "text": "when calculating precedence separate version into major, minor, patch and pre-release identifiers major before minor before patch before pre-release",
-   "clause": "版本号按major.minor.patch.pre-release拆开",
-   "alt_clause": "版本号拆成major、minor、patch和pre-release四段",
-   "distinctive": "major.minor.patch.pre-release",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "analysis.assumptions",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "version into major, minor, patch and pre-release identifiers"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "semver",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/semver/semver/master/semver.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c22",
-   "text": "when generating responses use language variations",
-   "clause": "以后都别用语言变体",
-   "alt_clause": "每次输出都用同一套术语，不要变",
-   "distinctive": "语言变体",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "language.mixing",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "language variations"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c23",
-   "text": "when writing flowing long blocks of text with fewer structural restrictions (docstrings or comments) limit line length 116 characters",
-   "clause": "写注释或文档时每行不超过116个字符",
-   "alt_clause": "注释和文档段落每行最多116个字符",
-   "distinctive": "116",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "code.line_length",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 116.0,
-     "unit": "characters",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 72 -> 116"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c24",
-   "text": "when evaluating generated text ensure single paragraph",
-   "clause": "一个段落内不要拆段",
-   "alt_clause": "每个段落保持完整，别分拆",
-   "distinctive": "一个段落",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.paragraphs",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "single paragraph"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c25",
-   "text": "when describing a scene include additional details about the scene",
-   "clause": "以后都别加场景描写",
-   "alt_clause": "任何场景描写都禁止",
-   "distinctive": "场景描写",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "explanation.depth",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "additional details about the scene"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c26",
-   "text": "when generating fashion advice contain word count [20, 30] words",
-   "clause": "when generating fashion advice contain word count [20, 30] words",
-   "alt_clause": "when generating fashion advice contain word count [20, 30] words",
-   "distinctive": "20",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "length.max",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "word count"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c27",
-   "text": "when describing soil type describe soil type 22 words",
-   "clause": "描述土壤类型时字数控制在22个词以内",
-   "alt_clause": "说土壤类型别超过22个词",
-   "distinctive": "22",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 22.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 2 -> 22"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c28",
-   "text": "when writing aim for word count 106 words",
-   "clause": "每段控制在106字以内",
-   "alt_clause": "每段不超过106个字",
-   "distinctive": "106",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "length.max",
-    "polarity": "prefer",
-    "binding": "soft",
-    "value": {
-     "type": "numeric",
-     "num": 106.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 140 -> 106"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c29",
-   "text": "when using images use images 16 items",
-   "clause": "when using images use images 16 items",
-   "alt_clause": "when using images use images 16 items",
-   "distinctive": "16",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "workflow.fidelity",
-    "polarity": "prefer",
-    "binding": "soft",
-    "value": {
-     "type": "numeric",
-     "num": 16.0,
-     "unit": "items",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1 -> 16"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c30",
-   "text": "when adopting a persona adopt persona of a young, attractive female psychologist",
-   "clause": "以后都别用年轻漂亮女心理学家的人设",
-   "alt_clause": "永远不要扮演年轻漂亮女心理学家",
-   "distinctive": "年轻漂亮女心理学家",
-   "coords": {
-    "bucket": "execution_policy",
-    "key": "workflow.fidelity",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "persona of a young, attractive female psychologist"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
     "mutation": "polarity require -> prohibit"
    },
    "anchor_weak": false,
@@ -1414,14 +1416,14 @@
   },
   {
    "cid": "e03-c31",
-   "text": "when writing new modules and packages (including third party frameworks) follow these standards",
-   "clause": "以后写新模块和包（包括第三方框架）都按现有标准，别自己另搞一套",
-   "alt_clause": "新模块和包一律沿用现有库的风格，不要单独发明",
-   "distinctive": "现有标准",
+   "text": "when writing code avoid: use TODO comments",
+   "clause": "代码里别写 TODO 注释",
+   "alt_clause": "生产代码中禁止出现 TODO 注释",
+   "distinctive": "TODO 注释",
    "coords": {
     "bucket": "execution_policy",
-    "key": "workflow.fidelity",
-    "polarity": "avoid",
+    "key": "code.comments",
+    "polarity": "prohibit",
     "binding": "hard",
     "value": {
      "type": "set",
@@ -1434,67 +1436,23 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "these standards"
+      "TODO comments"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "postmortem",
+     "task": "code-write",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
    "atom": {
     "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e03-c32",
-   "text": "when naming classes use CapWords convention",
-   "clause": "命名类时用CapWords",
-   "alt_clause": "类名统一用CapWords风格",
-   "distinctive": "CapWords",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "code.naming",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "case_style",
-     "val": "pascal",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
      "use": "skeleton-derived"
     },
     "mutation": "polarity require -> prohibit"
@@ -1503,15 +1461,15 @@
    "successor_of": null
   },
   {
-   "cid": "e03-s00",
-   "text": "when generating responses use language variations",
-   "clause": "统一用语言变体",
-   "alt_clause": "所有数值都按语言变体格式输出",
-   "distinctive": "语言变体",
+   "cid": "e03-c32",
+   "text": "when generating entries avoid repeating entries from examples or generated",
+   "clause": "生成条目时，避免重复例子或已生成的条目",
+   "alt_clause": "别把例子或之前生成的条目再抄一遍",
+   "distinctive": "避免重复例子或已生成的条目",
    "coords": {
     "bucket": "reasoning_policy",
-    "key": "language.mixing",
-    "polarity": "prohibit",
+    "key": "code.comments",
+    "polarity": "require",
     "binding": "hard",
     "value": {
      "type": "set",
@@ -1522,9 +1480,9 @@
      "val": "",
      "tag": "",
      "bool_val": null,
-     "op": "exclude",
+     "op": "include",
      "items": [
-      "language variations"
+      "entries from examples or generated"
      ],
      "before": "",
      "after": ""
@@ -1532,230 +1490,6 @@
     "scope": {
      "app": "ANY",
      "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e03-c22"
-  },
-  {
-   "cid": "e03-s01",
-   "text": "when using images use images 31 items",
-   "clause": "图片里元素别超过31个",
-   "alt_clause": "图片里元素数控制在31以内",
-   "distinctive": "31",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "workflow.fidelity",
-    "polarity": "prefer",
-    "binding": "soft",
-    "value": {
-     "type": "numeric",
-     "num": 16.0,
-     "unit": "items",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 16 -> 31"
-   },
-   "anchor_weak": false,
-   "successor_of": "e03-c29"
-  },
-  {
-   "cid": "e03-s02",
-   "text": "when writing a context manager for a database connection use explicit begin_transaction and commit/rollback",
-   "clause": "when writing a context manager for a database connection use explicit begin_transaction and commit/rollback",
-   "alt_clause": "when writing a context manager for a database connection use explicit begin_transaction and commit/rollback",
-   "distinctive": "rollback",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.error_handling",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "explicit begin_transaction and commit/rollback"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity avoid -> prefer"
-   },
-   "anchor_weak": false,
-   "successor_of": "e03-c10"
-  },
-  {
-   "cid": "e03-s03",
-   "text": "when leaving a comment suggest an alternative",
-   "clause": "给个替代方案",
-   "alt_clause": "顺便提个别的选项",
-   "distinctive": "替代方案",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.comments",
-    "polarity": "avoid",
-    "binding": "suggestion",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "an alternative"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity avoid -> prefer"
-   },
-   "anchor_weak": false,
-   "successor_of": "e03-c04"
-  },
-  {
-   "cid": "e03-s04",
-   "text": "when evaluating the generated article compose article 19 sentences",
-   "clause": "when evaluating the generated article compose article 19 sentences",
-   "alt_clause": "when evaluating the generated article compose article 19 sentences",
-   "distinctive": "19",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "doc.length",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 13.0,
-     "unit": "sentences",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 13 -> 19"
-   },
-   "anchor_weak": false,
-   "successor_of": "e03-c20"
-  },
-  {
-   "cid": "e03-s05",
-   "text": "when writing an outline include units 23 units",
-   "clause": "when writing an outline include units 23 units",
-   "alt_clause": "when writing an outline include units 23 units",
-   "distinctive": "23",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "analysis.units",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 16.0,
-     "unit": "units",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -1767,26 +1501,162 @@
      "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 16 -> 23"
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e03-s00",
+   "text": "when generating a table copy the given table except for the last column",
+   "clause": "只复制除了最后一列之外的内容",
+   "alt_clause": "复制表格时不要最后一列",
+   "distinctive": "最后一列",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.tables",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "the given table except for the last column"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e03-c27"
+  },
+  {
+   "cid": "e03-s01",
+   "text": "when naming Python identifiers use single trailing underscore",
+   "clause": "Python关键字后面加单下划线",
+   "alt_clause": "遇到Python保留字，末尾加一个下划线",
+   "distinctive": "单下划线",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.naming",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "single trailing underscore"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
    },
    "anchor_weak": false,
    "successor_of": "e03-c17"
   },
   {
-   "cid": "e03-s06",
-   "text": "when writing functions use blank lines 21 lines",
-   "clause": "写函数时空行不超过21行",
-   "alt_clause": "函数里空行最多21行",
-   "distinctive": "21",
+   "cid": "e03-s02",
+   "text": "when your data could easily be presented in a list avoid tables",
+   "clause": "能列清单就别用表格",
+   "alt_clause": "能用列表展示的数据别做成表格",
+   "distinctive": "清单",
    "coords": {
     "bucket": "output_contract",
-    "key": "format.code_blocks",
+    "key": "format.tables",
     "polarity": "prefer",
     "binding": "soft",
     "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "format",
+     "val": "bullets",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": "e03-c29"
+  },
+  {
+   "cid": "e03-s03",
+   "text": "when evaluating a generated sentence contain at least 8 words (no more than 17 words)",
+   "clause": "生成的句子必须至少包含17个词",
+   "alt_clause": "句子字数不能少于17个词",
+   "distinctive": "17",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.min",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
      "type": "numeric",
-     "num": 14.0,
-     "unit": "lines",
+     "num": 13.0,
+     "unit": "words",
      "cmp": "max",
      "domain": "",
      "val": "",
@@ -1806,15 +1676,107 @@
    },
    "atom": {
     "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 14 -> 21"
+    "mutation": "threshold 13 -> 17"
    },
    "anchor_weak": false,
-   "successor_of": "e03-c16"
+   "successor_of": "e03-c15"
+  },
+  {
+   "cid": "e03-s04",
+   "text": "when writing code use TODO comments",
+   "clause": "写代码时用TODO注释",
+   "alt_clause": "代码里必须加TODO标记",
+   "distinctive": "TODO注释",
+   "coords": {
+    "bucket": "execution_policy",
+    "key": "code.comments",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "TODO comments"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e03-c31"
+  },
+  {
+   "cid": "e03-s06",
+   "text": "when writing long passages of speech open quotes for each new paragraph",
+   "clause": "长段发言时，每段开头用开引号，最后一段结尾才用闭引号",
+   "alt_clause": "写连续多段对话时，每段起始加引号，末尾不关，直到末段结束",
+   "distinctive": "开引号",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.emphasis",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "quotes for each new paragraph"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e03-c24"
   }
  ],
  "effects": [
@@ -2086,7 +2048,7 @@
    "seq": 41,
    "kind": "contradict",
    "cid": "e03-s00",
-   "target": "e03-c22",
+   "target": "e03-c27",
    "targets": [],
    "delta": 0
   },
@@ -2094,7 +2056,7 @@
    "seq": 42,
    "kind": "contradict",
    "cid": "e03-s01",
-   "target": "e03-c29",
+   "target": "e03-c17",
    "targets": [],
    "delta": 0
   },
@@ -2102,7 +2064,7 @@
    "seq": 43,
    "kind": "contradict",
    "cid": "e03-s02",
-   "target": "e03-c10",
+   "target": "e03-c29",
    "targets": [],
    "delta": 0
   },
@@ -2110,7 +2072,7 @@
    "seq": 45,
    "kind": "contradict",
    "cid": "e03-s03",
-   "target": "e03-c04",
+   "target": "e03-c15",
    "targets": [],
    "delta": 0
   },
@@ -2118,76 +2080,12 @@
    "seq": 46,
    "kind": "contradict",
    "cid": "e03-s04",
-   "target": "e03-c20",
+   "target": "e03-c31",
    "targets": [],
    "delta": 0
   },
   {
    "seq": 47,
-   "kind": "contradict",
-   "cid": "e03-s05",
-   "target": "e03-c17",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 49,
-   "kind": "contradict",
-   "cid": "e03-s06",
-   "target": "e03-c16",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 50,
-   "kind": "retire",
-   "cid": "",
-   "target": "e03-c02",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 51,
-   "kind": "retire",
-   "cid": "",
-   "target": "e03-c08",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 53,
-   "kind": "retire",
-   "cid": "",
-   "target": "e03-c14",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 54,
-   "kind": "retire",
-   "cid": "",
-   "target": "e03-c27",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 55,
-   "kind": "retire",
-   "cid": "",
-   "target": "e03-c07",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 57,
-   "kind": "retire",
-   "cid": "",
-   "target": "e03-c11",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 58,
    "kind": "retire",
    "cid": "",
    "target": "e03-c00",
@@ -2195,23 +2093,23 @@
    "delta": 0
   },
   {
-   "seq": 41,
-   "kind": "retire",
-   "cid": "",
-   "target": "e03-c28",
+   "seq": 49,
+   "kind": "contradict",
+   "cid": "e03-s06",
+   "target": "e03-c24",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 42,
+   "seq": 50,
    "kind": "retire",
    "cid": "",
-   "target": "e03-c03",
+   "target": "e03-c14",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 43,
+   "seq": 51,
    "kind": "retire",
    "cid": "",
    "target": "e03-c23",
@@ -2219,7 +2117,15 @@
    "delta": 0
   },
   {
-   "seq": 45,
+   "seq": 53,
+   "kind": "retire",
+   "cid": "",
+   "target": "e03-c01",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 54,
    "kind": "retire",
    "cid": "",
    "target": "e03-c18",
@@ -2227,7 +2133,71 @@
    "delta": 0
   },
   {
+   "seq": 55,
+   "kind": "retire",
+   "cid": "",
+   "target": "e03-c21",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 57,
+   "kind": "retire",
+   "cid": "",
+   "target": "e03-c22",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 58,
+   "kind": "retire",
+   "cid": "",
+   "target": "e03-c07",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 41,
+   "kind": "retire",
+   "cid": "",
+   "target": "e03-c20",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 42,
+   "kind": "retire",
+   "cid": "",
+   "target": "e03-c12",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 43,
+   "kind": "retire",
+   "cid": "",
+   "target": "e03-c11",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 45,
+   "kind": "retire",
+   "cid": "",
+   "target": "e03-c10",
+   "targets": [],
+   "delta": 0
+  },
+  {
    "seq": 15,
+   "kind": "reinforce",
+   "cid": "",
+   "target": "e03-c03",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 22,
    "kind": "reinforce",
    "cid": "",
    "target": "e03-c06",
@@ -2235,18 +2205,10 @@
    "delta": 0
   },
   {
-   "seq": 38,
+   "seq": 33,
    "kind": "reinforce",
    "cid": "",
-   "target": "e03-c25",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 39,
-   "kind": "reinforce",
-   "cid": "",
-   "target": "e03-c26",
+   "target": "e03-c04",
    "targets": [],
    "delta": 0
   }
@@ -2262,10 +2224,10 @@
   },
   {
    "seq": 2,
-   "type": "C",
-   "text": "写封邮件给业务方，解释一下AB实验里核心指标掉了0.3pp，但置信区间没穿越零，所以结论是‘没有显著差异’，让他们别慌。加一句下周再看一轮数据。。对了，顺便帮我把毕业典礼致辞控制在483字以内，别超。然后写封邮件给业务方，解释一下AB实验里核心指标掉了0.3pp，但置信区间没穿越零，所以结论是‘没有显著差异’，让他们别慌。加一句下周再看一轮数据。",
+   "type": "S",
+   "text": "对了，帮我写封邮件催一下业务方确认AB实验的样本量，对照组和实验组都要，我这边要跑显著性检验，差一个数都没法出结论。还有，以后别给我用你原来那个说明和结构了，看着烦。",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -2282,9 +2244,9 @@
   {
    "seq": 3,
    "type": "C",
-   "text": "跑一下上周A/B实验的转化率，按设备型号分组，给个汇总表，带样本量。。跑一下上周A/B实验的转化率，按设备型号分组，给个汇总表，带样本量。对了，以后除非我明确说，不然别给我整那些拟人化的说法，就老老实实摆数据讲智能特征就行。",
+   "text": "帮我把上周A/B实验的转化率、留存和ARPU拉个表，按实验组和日期分，单位标清楚。。你上次那个实验设计写得太啰嗦了，字数直接飙到300多，我扫一眼都费劲。以后设计实验方案，严格控制在207字以内，别超了。对了，上周A/B实验的diff表发我，转化率降了0.3pp，但置信区间很宽，帮我拆一下是哪个segment拉的，再写个复盘结论。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2300,10 +2262,10 @@
   },
   {
    "seq": 4,
-   "type": "S",
-   "text": "你上次给的那个类，属性名没加双下划线，结果子类全给污染了。以后这种不想被子类用的属性，记得用双下划线开头，别加尾下划线，省得我老得手动清理。，when writing avoid bold",
+   "type": "C",
+   "text": "写个SQL，把昨天新用户注册数按渠道拉出来，单位是‘人’。。你上次写的地理方向又全是大写了，什么“East China”看得我难受。以后写方向地区一律小写，east south north 都小写，别搞混了。另外，帮我写封邮件，催业务方尽快确认AB实验的对照组和实验组样本量，我这边要跑显著性检验，差一个数都没法出结论。。你上次建表又搞了一堆长字段名，看着就烦。以后做表都别整那些花里胡哨的，短点、可读性强点，行不行？对了，帮我写封邮件，催业务方尽快确认AB实验的对照组和实验组样本量，我这边要跑显著性检验，差一个数都没法出结论。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "code-write"
    },
    "effects": [
@@ -2328,17 +2290,20 @@
   {
    "seq": 5,
    "type": "R",
-   "text": "上周A/B实验的留存数据出了点异常，帮我写个复盘，重点看实验组和对照组的次日留存差距，再拆一下分渠道和分设备的情况，最后给个结论和建议。",
+   "text": "帮我写封邮件给产品经理，汇报上周AB实验的结论，要简短，别写太多背景。",
    "context": {
-    "app": "slack",
-    "task": "postmortem"
+    "app": "email-client",
+    "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e03-c03",
+    "e03-c01",
     "e03-c00"
    ],
    "may_fire": [
+    "e03-c00",
+    "e03-c01",
+    "e03-c02",
     "e03-c03"
    ],
    "should_fire": [],
@@ -2347,9 +2312,9 @@
   {
    "seq": 6,
    "type": "C",
-   "text": "用SQL拉一下上周DAU日均，分新老渠道，邮件发我，单位写万。。你刚那个评论也太模糊了，就一句‘数据不太对’——我哪知道你说的啥？下次建议给个替代方案行不行？",
+   "text": "给产品组发个邮件，总结一下A/B测试里新版转化率比旧版高0.8个百分点，但95%置信区间是[-0.2%, 1.8%]，建议延长测试一周再下结论。。Q3推荐实验的CTR掉到0.023了，去找找是哪个segment跌最狠，顺便把环比和同比拉出来。对了，以后你写函数别用默认操作符，显式写出来，不然我看不懂你默认了什么。",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -2366,9 +2331,9 @@
   {
    "seq": 7,
    "type": "C",
-   "text": "跑一下上周A/B实验的转化率，分渠道、分实验组，给个表，单位要百分比。跑一下上周A/B实验的转化率，分渠道、分实验组，给个表，单位要百分比。还有以后都别给我整那种机器人答案，你得像友好顾问或学者那样说话，别端着。。when generating a chronology arrange events within each decade reverse chronological",
+   "text": "跑一下上周新功能上线的DAU变化，按渠道拆开，给我看7日滑动平均和对比基线，p值也标上。。你上次给的转化率结果，咋没按我要求的格式输出？我要的是 JSON 对象，字段名是 name、rank、hometown，别给我整别的结构。以后都按这个格式来，别乱改。。帮我写封邮件给产品经理，告诉她A/B测试结果：V2版本转化率提升了3.2个百分点，p值0.003，统计显著，建议全量推。语气直接点，别绕弯。对了，以后列航班经停城市的时候，到达和出发时间别用'->'连着，分开写，不然我扒数据还得手动拆。",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "report"
    },
    "effects": [
@@ -2392,10 +2357,10 @@
   },
   {
    "seq": 8,
-   "type": "C",
-   "text": "写个Python脚本，把昨天A/B实验的click数据按用户分组，计算每个用户的总点击和首次点击时间，输出CSV，字段名用英文，时间戳转成UTC字符串。。顺便，你写脚本的时候窗口别开太宽，我这边同时挂着几个文件对代码，宽了挡我其他窗口。",
+   "type": "S",
+   "text": "跑一下上周A/B实验的转化率，按日和实验组拆开，要带样本量和置信区间。对了，以后写数字带指数的时候，指数用花括号括起来，别直接写^2那种，看着乱。",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "code-write"
    },
    "effects": [
@@ -2411,10 +2376,10 @@
   },
   {
    "seq": 9,
-   "type": "C",
-   "text": "把上周AB实验的postmortem拉一下，重点看对照组和实验组在转化率上的delta，顺便把置信区间和p值标上，别漏了样本量。。when giving an answer be objective 16 words。刚那版公式换行全乱了，显示公式给我拆成一段一段的，根本没法看。以后别再把显示公式拆到段落里了，行不行？",
+   "type": "S",
+   "text": "以后都别给我整那些花里胡哨的句子结构，直接说结论。跑一下上周A/B实验的转化率，按日和实验组拆开，要带样本量和置信区间。，对了，跑一下上周的GMV按渠道拆解，去掉测试订单，日环比也加上，单位标万。另外以后要是需要复杂的数据处理，别用shell脚本了，太容易出错，用Python或者SQL都行。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "postmortem"
    },
    "effects": [
@@ -2439,38 +2404,38 @@
   {
    "seq": 10,
    "type": "R",
-   "text": "帮我产出一个A/B实验的结论报告，版本B相对版本A的转化率提升2.3%，p值0.04，样本量各5000，置信区间[0.5%, 4.1%]，需要包含统计显著性和业务建议。",
+   "text": "给产品部发邮件，说上周实验组{转化率}比对照组高12%，但样本量不够，建议再跑一周。标题写‘实验结论待确认’。",
    "context": {
-    "app": "slack",
-    "task": "report"
+    "app": "email-client",
+    "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e03-c03",
-    "e03-c05"
+    "e03-c02",
+    "e03-c07"
    ],
    "may_fire": [
+    "e03-c00",
+    "e03-c01",
+    "e03-c02",
     "e03-c03",
     "e03-c04",
-    "e03-c05",
-    "e03-c06",
     "e03-c07",
-    "e03-c08",
-    "e03-c09"
+    "e03-c08"
    ],
    "should_fire": [
-    "e03-c04",
-    "e03-c05",
+    "e03-c01",
+    "e03-c02",
     "e03-c08"
    ],
    "must_not_fire": []
   },
   {
    "seq": 11,
-   "type": "S",
-   "text": "when writing a context manager for a database connection use explicit begin_transaction and commit/rollback",
+   "type": "C",
+   "text": "把上周AB实验的转化率、人均时长和ARPU按版本拉个表，标清楚样本量和置信区间，p值小于0.05的给我标红。。对了，以后写脚本要注意，超过100行或者逻辑绕来绕去的，你都得给我重写，至少压到209行以内。另外，刚才那个A/B实验的对照组和实验组核心指标差异，帮我整理成邮件草稿，加上置信区间和p值，单位别漏。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2486,10 +2451,10 @@
   },
   {
    "seq": 12,
-   "type": "S",
-   "text": "你刚给我的回复里，有一段文本居然写成对话形式了，看得我头大。我只要干净的报告，别给我整那些花里胡哨的对话体。赶紧的，写个Python脚本，把用户留存按周聚合，输出周留存率和环比变化，单位用%。，对了，以后你生成的任何文本里，只要出现活动列表，都不许列出来，直接说结论就行。另外帮我写个Python脚本，把用户留存按周聚合，输出周留存率和环比变化，单位用%",
+   "type": "C",
+   "text": "写个Python脚本，把昨天A/B实验的原始数据清洗一遍，剔除异常值和缺失行，然后按实验组和对照组分别算出日均指标，存成两个CSV。。对了，拉一下上周五AB实验的留存数据，按用户分群和实验组拆开，直接报绝对值和相对变化，别漏单位。另外以后凡是版本号相关的，你千万别给我用SemVer那一套，我看着烦。。你刚才那个脚本里，print了一堆东西，结果换行符搞得我眼都花了。以后写代码别用反斜杠续行，看着乱，还容易出错。",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "code-write"
    },
    "effects": [
@@ -2513,8 +2478,8 @@
   },
   {
    "seq": 13,
-   "type": "S",
-   "text": "对了，以后写英国相关的东西，别用Britain和British，用UK和United Kingdom。昨天A/B实验的对照组和实验组，DAU和转化率各跌了多少，单位写清楚，另外给个归因结论。",
+   "type": "C",
+   "text": "双十一大促活动复盘，流量和转化率对比去年，找出核心掉点，单量下滑原因逐层拆解。。上次那个报告里你写的是'percent'，不是'per cent'。我们数据分析里都用'per cent'，别再用'percent'了。顺便，跑一下上周A/B实验的转化率，按日和实验组拆开，要带样本量和置信区间。",
    "context": {
     "app": "slack",
     "task": "postmortem"
@@ -2532,10 +2497,10 @@
   },
   {
    "seq": 14,
-   "type": "C",
-   "text": "帮我写封邮件给运营组，附上昨天A/B实验的转化率差异，说清楚B组高1.2个百分点、p值0.03，提醒他们关注置信区间别瞎激动。。你刚才那封邮件里说“API有变化”，但没写清楚到底变了多少次。以后凡是提到公开API的改动，必须按版本号列出来，每次增量都标上，至少累计到11个增量才算一次正式通知，别漏。。帮我写封邮件给运营组，附上昨天A/B实验的转化率差异，说清楚B组高1.2个百分点、p值0.03，提醒他们关注置信区间别瞎激动。对了，以后选版本别总默认最新，老版本有时更稳，别搞成习惯。",
+   "type": "S",
+   "text": "对了，你以后写东西每段别超过18段，太长我没耐心看。上周A/B实验的diff表发我，转化率降了0.3pp，但置信区间很宽，帮我拆一下是哪个segment拉的，再写个复盘结论。，另外，以后你写句子的时候，每条至少13个词，别偷懒。还有，帮我写封邮件给产品经理，告诉她A/B测试结果：V2版本转化率提升了3.2个百分点，p值0.003，统计显著，建议全量推。语气直接点，别绕弯。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -2560,9 +2525,9 @@
   {
    "seq": 15,
    "type": "S",
-   "text": "对了，when generating a chronology arrange events within each decade reverse chronological这条继续保持啊",
+   "text": "对了，以后做表都短点、可读性强点这条继续保持啊",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2570,7 +2535,7 @@
      "seq": 15,
      "kind": "reinforce",
      "cid": "",
-     "target": "e03-c06",
+     "target": "e03-c03",
      "targets": [],
      "delta": 0
     }
@@ -2578,8 +2543,8 @@
   },
   {
    "seq": 16,
-   "type": "C",
-   "text": "写个Python函数，从宽表里按用户ID聚合，计算每个用户最近7天、14天、30天的付费金额和订单数，字段名要带单位，直接返回DataFrame。。when writing functions use blank lines 14 lines",
+   "type": "S",
+   "text": "对了，以后都别整那些虚头巴脑的客套话，直接说重点。另外帮我写个 Python 脚本，从 Hive 拉取昨日用户活跃明细，按渠道聚合，输出带日活数和占比的 CSV。",
    "context": {
     "app": "slack",
     "task": "code-write"
@@ -2598,7 +2563,7 @@
   {
    "seq": 17,
    "type": "C",
-   "text": "上周的渠道归因实验，A组比B组转化高了3%，但留存跌了5%，帮我看下是不是漏斗某个环节崩了，给个原因分析。。when writing an outline include units 16 units。你上次给的归因表，列名全是‘转化率’‘留存率’这种，我哪知道每列是归因到哪个模型？A组比B组转化高3%但留存跌5%，我要看漏斗哪个环节崩了。以后做表，每列头上必须写清楚跟的是哪个归因模型，像‘首次点击归因-转化率’这种，别给我裸列名。",
+   "text": "跑一下618大促的GMV后验，对比预算和实际，拆一下渠道和品类，给我归因结论。。你上次给我写的那个Python脚本，变量名里居然有class和return，我跑起来直接报语法错误。以后写Python的时候，凡是遇到关键字，变量名后面加个下划线，比如class_、return_，别再让我debug这种低级问题了。。等一下，你刚才那封邮件写得太啰嗦了，跟讲故事似的，我就要个干巴巴的结论，V2转化率+3.2pp，p=0.003，显著，推全量。别给我整成什么对话体，以后都别用对话形式写。",
    "context": {
     "app": "slack",
     "task": "postmortem"
@@ -2625,7 +2590,7 @@
   {
    "seq": 18,
    "type": "S",
-   "text": "你刚才写的那个函数里又塞了一堆应用子包导入，看着就乱。以后写代码别搞这种花里胡哨的import，直接写清楚不好吗？另外，把上周A/B实验的显著指标列个表，发我邮箱，带单位，别漏了p值。",
+   "text": "你刚发的那个文档里链接散得到处都是，我点半天才找到原始数据。以后写文档别把链接分散在各处，全部集中到附录或者单独一个section里，不然我每次都要翻来翻去。",
    "context": {
     "app": "slack",
     "task": "email"
@@ -2643,8 +2608,8 @@
   },
   {
    "seq": 19,
-   "type": "S",
-   "text": "对了，以后你写文章的时候，每篇正文必须至少13句话，别给我整那种就几句话糊弄的。，对了，跑一下上周的A/B实验数据，给出对照组和实验组在转化率、留存率和ARPU上的差异，加上置信区间，写个一页摘要。另外，以后算优先级的时候，版本号你得按major.minor.patch.pre-release拆开，别混在一起。",
+   "type": "C",
+   "text": "跑一下上周A/B实验的转化率，按用户分层给，带上置信区间。。拉一下上周五AB实验的留存数据，按用户分群和实验组拆开，直接报绝对值和相对变化，别漏单位。对了，以后写活动描述的时候，别给我合并写，每个活动单独写一段，别漏掉任何一个活动。。你上次那个文章写得太长了，我根本看不完。以后写文章字数控制在1502个字以内，别超了。另外，拉一下上周五AB实验的留存数据，按用户分群和实验组拆开，直接报绝对值和相对变化，别漏单位。",
    "context": {
     "app": "email-client",
     "task": "report"
@@ -2671,46 +2636,38 @@
   {
    "seq": 20,
    "type": "R",
-   "text": "写个Python脚本，把昨天的DAU按平台拆开，出个折线图，Y轴标单位'万'。",
-   "context": {},
+   "text": "写个Python脚本，读用户行为日志，算每个渠道的次日留存率，输出csv，日期列用YYYY-MM-DD格式。",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
    "probe": true,
    "probe_targets": [
-    "e03-c18",
-    "e03-c12"
+    "e03-c13",
+    "e03-c05"
    ],
    "may_fire": [
-    "e03-c00",
-    "e03-c01",
-    "e03-c02",
-    "e03-c03",
-    "e03-c04",
     "e03-c05",
     "e03-c06",
     "e03-c07",
     "e03-c08",
     "e03-c09",
-    "e03-c10",
-    "e03-c11",
-    "e03-c12",
     "e03-c13",
     "e03-c14",
     "e03-c15",
     "e03-c16",
-    "e03-c17",
     "e03-c18",
-    "e03-c19",
-    "e03-c20",
     "e03-c21"
    ],
    "should_fire": [
-    "e03-c19"
+    "e03-c18"
    ],
    "must_not_fire": []
   },
   {
    "seq": 21,
    "type": "C",
-   "text": "上周的A/B实验，版本B的转化率掉了0.8pp，但样本量没跑够，先出一份postmortem，重点看用户分群和置信区间，别给裸数。。对了，以后都别搞语言变体了，每次输出直接用同一套术语，别给我整花活。上周的A/B实验，版本B的转化率掉了0.8pp，但样本量没跑够，先出一份postmortem，重点看用户分群和置信区间，别给裸数。",
+   "text": "上一轮A/B实验的postmortem写好了吗？对照组和实验组转化率差0.3pp，但p值0.06，帮我看看样本量够不够，顺便把95%置信区间列出来。。对了，顺便把昨天用户活跃数据按小时聚合一下，输出hour和active_users，直接打印。另外以后写博客帖子的时候，每篇字数控制在752字以内，别超了，数字后面记得带单位。",
    "context": {
     "app": "editor",
     "task": "postmortem"
@@ -2728,10 +2685,10 @@
   },
   {
    "seq": 22,
-   "type": "S",
-   "text": "你上次写的docstring好长一行，看着难受。以后写注释或文档的时候，每行别超过116个字符，不然我滚动条都拖到手酸了。对了，顺便帮我写封邮件催BI发上周DAU分群报表的update，还要各群组的7日留存率，百分比单位。，你刚才那段写得太啰嗦了，一个段落拆成好几段，看着累。以后别这样，一个段落就一个意思，别拆。",
+   "type": "C",
+   "text": "帮我写封邮件给运营组，说明AB实验组转化率比对照组高1.2个百分点，但样本量还不够，建议延长观察期3天，附上当前数据表截图。。上周那个A/B实验的diff表你发我，转化率降了0.3pp，但置信区间很宽，帮我拆一下是哪个segment拉的，再写个复盘结论。对了，你刚才给的第二列表词数才15个，不够用，以后生成带第二列表的文本，确保第二列表词数至少21个词，别偷懒。。对了，以后都注意：你在写大段对话的时候，每段开头的引号都要打开，但别在最后一段之前就关掉引号。这个要记住。。对了，列航班经停城市时，到达和出发时间别用'->'连着这条继续保持啊",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -2750,15 +2707,23 @@
      "target": "",
      "targets": [],
      "delta": 0
+    },
+    {
+     "seq": 22,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e03-c06",
+     "targets": [],
+     "delta": 0
     }
    ]
   },
   {
    "seq": 23,
    "type": "S",
-   "text": "以后都别给我加场景描写，直接上数据，单位标清楚。先帮我把上周A/B实验的转化率差异跑出来，按城市和用户分层，出双尾p值，单位标清楚。",
+   "text": "上周A/B实验的diff表发我，转化率降了0.3pp，但置信区间很宽，帮我拆一下是哪个segment拉的，再写个复盘结论。以后都别在footer里用空格，用短横线隔开，不然看着乱。",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2775,53 +2740,39 @@
   {
    "seq": 24,
    "type": "R",
-   "text": "把上周的实验数据跑个汇总，发我飞书，带转化率和置信区间",
-   "context": {},
+   "text": "写个Python脚本，把昨天UV按小时切段，输出每段转化率，单位标清楚。",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
    "probe": true,
    "probe_targets": [
-    "e03-c02",
-    "e03-c00"
+    "e03-c13",
+    "e03-c07"
    ],
    "may_fire": [
-    "e03-c00",
-    "e03-c01",
-    "e03-c02",
-    "e03-c03",
-    "e03-c04",
-    "e03-c05",
-    "e03-c06",
-    "e03-c07",
-    "e03-c08",
-    "e03-c09",
     "e03-c10",
     "e03-c11",
     "e03-c12",
-    "e03-c13",
-    "e03-c14",
-    "e03-c15",
-    "e03-c16",
-    "e03-c17",
-    "e03-c18",
-    "e03-c19",
-    "e03-c20",
-    "e03-c21",
-    "e03-c22",
-    "e03-c23",
-    "e03-c24",
-    "e03-c25"
+    "e03-c17"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e03-c12"
+   ],
    "must_not_fire": []
   },
   {
    "seq": 25,
    "type": "R",
-   "text": "把近三年DAU周报里的异常波动按年份列出来，事件按最近发生往前排",
-   "context": {},
+   "text": "给产品经理老王发个邮件，上周AB实验的转化率提升3.2个点，p值0.01，显著性没问题，但需要确认样本量是否够，附件里放了详细数据，你帮我看看结论能不能直接发周报。",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
    "probe": true,
    "probe_targets": [
     "e03-c14",
-    "e03-c06"
+    "e03-c15"
    ],
    "may_fire": [
     "e03-c00",
@@ -2829,31 +2780,14 @@
     "e03-c02",
     "e03-c03",
     "e03-c04",
-    "e03-c05",
-    "e03-c06",
     "e03-c07",
     "e03-c08",
-    "e03-c09",
-    "e03-c10",
-    "e03-c11",
-    "e03-c12",
     "e03-c13",
     "e03-c14",
     "e03-c15",
-    "e03-c16",
-    "e03-c17",
-    "e03-c18",
-    "e03-c19",
-    "e03-c20",
-    "e03-c21",
-    "e03-c22",
-    "e03-c23",
-    "e03-c24",
-    "e03-c25"
+    "e03-c16"
    ],
-   "should_fire": [
-    "e03-c06"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2875,39 +2809,23 @@
   {
    "seq": 28,
    "type": "R",
-   "text": "把上周A/B实验的SQL和结果贴过来，UK用户转化率那列单位写清楚",
+   "text": "帮我写个pandas脚本，把实验组和对照组的转化率、ARPU、95%置信区间都算出来，出个表格。",
    "context": {
-    "app": "email-client",
-    "task": "report"
+    "app": "editor",
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e03-c14",
-    "e03-c13"
+    "e03-c12",
+    "e03-c17"
    ],
    "may_fire": [
-    "e03-c03",
-    "e03-c04",
-    "e03-c05",
-    "e03-c06",
-    "e03-c07",
-    "e03-c08",
-    "e03-c09",
     "e03-c10",
     "e03-c11",
     "e03-c12",
-    "e03-c13",
-    "e03-c14",
-    "e03-c15",
-    "e03-c16",
-    "e03-c17",
-    "e03-c18",
-    "e03-c21",
-    "e03-c23"
+    "e03-c17"
    ],
-   "should_fire": [
-    "e03-c13"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2921,39 +2839,23 @@
   {
    "seq": 30,
    "type": "R",
-   "text": "跑一下昨天A/B实验的SQL，把实验组和对照组的转化率、人均点击次数、收入拉出来，按天分组，单位标清楚",
+   "text": "帮我把这个A/B实验的SQL重写一下，别用反斜杠拆行。",
    "context": {
-    "app": "editor",
-    "task": "report"
+    "app": "email-client",
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e03-c02",
-    "e03-c22"
+    "e03-c12",
+    "e03-c11"
    ],
    "may_fire": [
-    "e03-c03",
-    "e03-c04",
-    "e03-c05",
-    "e03-c06",
-    "e03-c07",
-    "e03-c08",
-    "e03-c09",
     "e03-c10",
     "e03-c11",
     "e03-c12",
-    "e03-c13",
-    "e03-c14",
-    "e03-c15",
-    "e03-c16",
-    "e03-c17",
-    "e03-c18",
-    "e03-c21",
-    "e03-c23"
+    "e03-c17"
    ],
-   "should_fire": [
-    "e03-c18"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2966,10 +2868,10 @@
   },
   {
    "seq": 32,
-   "type": "C",
-   "text": "跑个AB实验的p值，对照组和实验组转化率分别是8.3%和9.1%，样本量各5000，给我出代码和结果。。when generating fashion advice contain word count [20, 30] words。跑个AB实验的p值，对照组和实验组转化率分别是8.3%和9.1%，样本量各5000，给我出代码和结果。对了，以后描述土壤类型的时候，字数控制在22个词以内，别啰嗦。",
+   "type": "S",
+   "text": "对了，以后都别用markdown格式，我只看纯文本。然后帮我写个Python脚本，把昨天的用户活跃数据按小时聚合，输出每个小时的活跃用户数，字段名用hour和active_users，直接打印结果。，你刚才那个表怎么又把我给的最后一列也抄进去了？我只要前几列，最后一列是我自己算的。以后生成表的时候，别复制最后一列，听到没？",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "code-write"
    },
    "effects": [
@@ -2993,8 +2895,8 @@
   },
   {
    "seq": 33,
-   "type": "C",
-   "text": "上月的AB实验收益比预期低了2.3pp，帮我把实验组和对照组的留存、ARPU、转化率按天拉出来，标注一下显著波动的时间段，我想看看是不是某个渠道的流量质量出了问题。。对了，以后写这种分析结论的时候，每段尽量控制在106字以内，别写太长。上月的AB实验收益比预期低了2.3pp，帮我把实验组和对照组的留存、ARPU、转化率按天拉出来，标注一下显著波动的时间段，我想看看是不是某个渠道的流量质量出了问题。",
+   "type": "S",
+   "text": "刚才那个表格看着太难受了，分布都挤在一起，根本看不出规律。你以后做表的时候，别把分布搞这么差行不行？，对了，函数别用默认操作符这条继续保持啊",
    "context": {
     "app": "slack",
     "task": "postmortem"
@@ -3007,13 +2909,21 @@
      "target": "",
      "targets": [],
      "delta": 0
+    },
+    {
+     "seq": 33,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e03-c04",
+     "targets": [],
+     "delta": 0
     }
    ]
   },
   {
    "seq": 34,
-   "type": "S",
-   "text": "when using images use images 16 items，对了，以后都别给我整什么年轻漂亮女心理学家的人设，直接说正事就行。另外帮我把上周AB实验的结论写封邮件发给产品经理，强调转化率提升2.3pp，但样本量不够，建议延长一周。",
+   "type": "C",
+   "text": "帮我写封邮件，通知业务方A/B测试结果：B版本转化率提升2.3%，但样本量不够，需要再跑一周，语气别太软。。刚才那个输出又给我整了个大表格，看得眼花。咱们数据分析的，能列清单就别甩表格行不行？以后都这样：列表优先。对了，帮我写个Python脚本，把CRM里近7天用户留存按天拉出来，输出留存率和对应基数，单位标清楚。。对了，以后写代码的时候别加注释，我代码自己读得懂，注释多了反而乱。现在帮我写封邮件给产品经理，告诉她A/B测试结果：V2版本转化率提升了3.2个百分点，p值0.003，统计显著，建议全量推。语气直接点，别绕弯。",
    "context": {
     "app": "slack",
     "task": "email"
@@ -3040,61 +2950,40 @@
   {
    "seq": 35,
    "type": "R",
-   "text": "帮我写个A/B实验结论的摘要，实验组转化率3.2%，对照组2.8%，样本量各5万，p值0.003，效应量绝对值0.4%，相对提升14.3%，置信区间[0.1%,0.7%]，结论要完整写。",
-   "context": {},
+   "text": "写一下上周A/B实验的复盘，核心指标是用户次日留存率，那个指数{7日留存}要单独分析，对照组和实验组的差异得写清楚，最后给个改进建议。",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
    "probe": true,
    "probe_targets": [
-    "e03-c20",
-    "e03-c09"
+    "e03-c15",
+    "e03-c07"
    ],
    "may_fire": [
-    "e03-c00",
-    "e03-c01",
-    "e03-c02",
-    "e03-c03",
-    "e03-c04",
-    "e03-c05",
-    "e03-c06",
     "e03-c07",
     "e03-c08",
-    "e03-c09",
-    "e03-c10",
-    "e03-c11",
-    "e03-c12",
     "e03-c13",
     "e03-c14",
     "e03-c15",
     "e03-c16",
-    "e03-c17",
-    "e03-c18",
-    "e03-c19",
     "e03-c20",
-    "e03-c21",
-    "e03-c22",
     "e03-c23",
-    "e03-c24",
-    "e03-c25",
     "e03-c26",
-    "e03-c27",
-    "e03-c28",
-    "e03-c29",
-    "e03-c30"
+    "e03-c29"
    ],
    "should_fire": [
-    "e03-c04",
-    "e03-c05",
-    "e03-c08",
-    "e03-c20",
-    "e03-c24"
+    "e03-c13",
+    "e03-c15"
    ],
    "must_not_fire": []
   },
   {
    "seq": 36,
-   "type": "S",
-   "text": "你刚才那封邮件里写模块的时候，又是自己瞎编一套命名，跟咱现有库的风格完全不一样。以后写新模块和包，包括那些第三方的框架，都按现有的标准来，别自己另搞一套，看着头疼。",
+   "type": "C",
+   "text": "帮我写封邮件给运营团队，说明上周A/B测试中方案B的转化率比方案A高了3.2个百分点，但样本量不够，建议再跑一周。。刚才那个脚本里你居然写了 TODO 注释，生产代码里别留这些，看着烦。另外，帮我写个 Python 脚本，从 Hive 拉取昨日用户活跃明细，按渠道聚合，输出带日活数和占比的 CSV。",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -3111,9 +3000,9 @@
   {
    "seq": 37,
    "type": "S",
-   "text": "跑一下上周A/B实验的转化率，按设备型号分组，给个汇总表，带样本量。对了，以后命名类的时候别用驼峰，用CapWords。",
+   "text": "你刚列的推荐实验里，怎么又把之前例子里的条目搬进来了？我明明要的是新segment的数据，不是让你抄作业。以后生成条目时，别重复用例子里的或已经生成过的，听到没？",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -3129,97 +3018,67 @@
   },
   {
    "seq": 38,
-   "type": "S",
-   "text": "对了，以后都别加场景描写这条继续保持啊",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 38,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e03-c25",
-     "targets": [],
-     "delta": 0
-    }
-   ]
+   "type": "N",
+   "text": "又来了，这 API 每次都超时，烦死",
+   "context": {},
+   "distractor_kind": "rule-pattern-no-rule",
+   "effects": []
   },
   {
    "seq": 39,
-   "type": "S",
-   "text": "对了，when generating fashion advice contain word count [20, 30] words这条继续保持啊",
-   "context": {
-    "app": "slack",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 39,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e03-c26",
-     "targets": [],
-     "delta": 0
-    }
-   ]
+   "type": "N",
+   "text": "你上次自己说的「建议拆成两个 PR」，我照做了，结果还是冲突",
+   "context": {},
+   "distractor_kind": "quoted-agent",
+   "effects": []
   },
   {
    "seq": 40,
    "type": "R",
-   "text": "跑一下昨天A/B实验的SQL，把两组转化率、置信区间和p-value算出来，放到一个表里，字段名加单位",
+   "text": "帮我把这周AB实验的结论写封邮件，简洁点，发给产品经理。核心指标变化列清楚，别写长句。",
    "context": {
-    "app": "editor",
-    "task": "report"
+    "app": "slack",
+    "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e03-c23",
-    "e03-c02"
+    "e03-c13",
+    "e03-c08"
    ],
    "may_fire": [
+    "e03-c00",
+    "e03-c01",
+    "e03-c02",
     "e03-c03",
     "e03-c04",
-    "e03-c05",
-    "e03-c06",
     "e03-c07",
     "e03-c08",
-    "e03-c09",
-    "e03-c10",
-    "e03-c11",
-    "e03-c12",
     "e03-c13",
     "e03-c14",
     "e03-c15",
-    "e03-c16",
-    "e03-c17",
-    "e03-c18",
-    "e03-c21",
-    "e03-c23",
-    "e03-c26",
-    "e03-c29",
-    "e03-c32"
+    "e03-c16"
    ],
    "should_fire": [
-    "e03-c18"
+    "e03-c01",
+    "e03-c14",
+    "e03-c15"
    ],
    "must_not_fire": []
   },
   {
    "seq": 41,
    "type": "S",
-   "text": "你刚给的表里转化率全写的小数，我一眼看过去还得心算乘100，烦死了。以后都统一用语言变体，别让我猜单位。，之前说的「每段控制在106字以内」那条不用了，按你默认的来吧",
+   "text": "你刚才那个表格，直接把最后一列也复制过来了，我只需要前几列啊。以后生成表格的时候，只复制除了最后一列之外的内容，别给我多带东西。，之前说的「每个活动单独写一段」那条不用了，按你默认的来吧",
    "context": {
     "app": "email-client",
-    "task": "report"
+    "task": "postmortem"
    },
    "effects": [
     {
      "seq": 41,
      "kind": "contradict",
      "cid": "e03-s00",
-     "target": "e03-c22",
+     "target": "e03-c27",
      "targets": [],
      "delta": 0
     },
@@ -3227,7 +3086,7 @@
      "seq": 41,
      "kind": "retire",
      "cid": "",
-     "target": "e03-c28",
+     "target": "e03-c20",
      "targets": [],
      "delta": 0
     }
@@ -3236,17 +3095,17 @@
   {
    "seq": 42,
    "type": "S",
-   "text": "你刚才那个图里元素也太多了，31个item，根本看不清，以后别用这么复杂的图了，要简洁点。另外帮我写个Python脚本，把昨天A/B实验的click数据按用户分组，计算每个用户的总点击和首次点击时间，输出CSV，字段名用英文，时间戳转成UTC字符串。，之前说的「when writing avoid bold」那条不用了，按你默认的来吧",
+   "text": "上次你那个Python代码，变量名直接用keyword，我跑的时候报语法错误了。以后碰见keyword，后面加个下划线，别让我再debug了。，之前说的「写代码时禁止用反斜杠续行」那条不用了，按你默认的来吧",
    "context": {
-    "app": "email-client",
-    "task": "code-write"
+    "app": "slack",
+    "task": "email"
    },
    "effects": [
     {
      "seq": 42,
      "kind": "contradict",
      "cid": "e03-s01",
-     "target": "e03-c29",
+     "target": "e03-c17",
      "targets": [],
      "delta": 0
     },
@@ -3254,7 +3113,7 @@
      "seq": 42,
      "kind": "retire",
      "cid": "",
-     "target": "e03-c03",
+     "target": "e03-c12",
      "targets": [],
      "delta": 0
     }
@@ -3263,419 +3122,22 @@
   {
    "seq": 43,
    "type": "S",
-   "text": "when writing a context manager for a database connection use explicit begin_transaction and commit/rollback，之前说的「写注释或文档时每行不超过116个字符」那条不用了，按你默认的来吧",
+   "text": "你刚才那个回复又给我整了个表，烦死了。我这边数据量不大，就几个实验组和对照组，列个清单就完事了，非得搞个表格出来，看着累还不方便复制。以后这种能列清单的别再用表格了，直接列表，清楚得多。，之前说的「以后都别用SemVer」那条不用了，按你默认的来吧",
    "context": {
     "app": "slack",
-    "task": "postmortem"
+    "task": "report"
    },
    "effects": [
     {
      "seq": 43,
      "kind": "contradict",
      "cid": "e03-s02",
-     "target": "e03-c10",
+     "target": "e03-c29",
      "targets": [],
      "delta": 0
     },
     {
      "seq": 43,
-     "kind": "retire",
-     "cid": "",
-     "target": "e03-c23",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 44,
-   "type": "R",
-   "text": "跑一下上周A/B实验的显著性检验，把结果整理成报表，按组别和指标拆开，带上效果量和置信区间",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e03-c21",
-    "e03-c26",
-    "e03-c10",
-    "e03-c28"
-   ],
-   "may_fire": [
-    "e03-c00",
-    "e03-c01",
-    "e03-c02",
-    "e03-c04",
-    "e03-c05",
-    "e03-c06",
-    "e03-c07",
-    "e03-c08",
-    "e03-c09",
-    "e03-c11",
-    "e03-c12",
-    "e03-c13",
-    "e03-c14",
-    "e03-c15",
-    "e03-c16",
-    "e03-c17",
-    "e03-c18",
-    "e03-c19",
-    "e03-c20",
-    "e03-c21",
-    "e03-c24",
-    "e03-c25",
-    "e03-c26",
-    "e03-c27",
-    "e03-c30",
-    "e03-c31",
-    "e03-c32",
-    "e03-s00",
-    "e03-s01",
-    "e03-s02"
-   ],
-   "should_fire": [
-    "e03-c04",
-    "e03-c05",
-    "e03-c08",
-    "e03-c15",
-    "e03-c20",
-    "e03-c24",
-    "e03-c25"
-   ],
-   "must_not_fire": [
-    "e03-c23",
-    "e03-c28"
-   ]
-  },
-  {
-   "seq": 45,
-   "type": "S",
-   "text": "刚那评论建议太水了，就一句‘这个不好’，也没说换啥。下次别光说不行，顺手给个替代方案行不行？，之前说的「以后做表，每列头上必须写清楚跟的是哪个归因模型」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 45,
-     "kind": "contradict",
-     "cid": "e03-s03",
-     "target": "e03-c04",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 45,
-     "kind": "retire",
-     "cid": "",
-     "target": "e03-c18",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 46,
-   "type": "S",
-   "text": "when evaluating the generated article compose article 19 sentences",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 46,
-     "kind": "contradict",
-     "cid": "e03-s04",
-     "target": "e03-c20",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 47,
-   "type": "S",
-   "text": "when writing an outline include units 23 units",
-   "context": {
-    "app": "slack",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 47,
-     "kind": "contradict",
-     "cid": "e03-s05",
-     "target": "e03-c17",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 48,
-   "type": "R",
-   "text": "帮我写份英国用户Q3留存实验的结论摘要，把实验组和对照组的D7、D30对比数据列清楚",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e03-c13",
-    "e03-c24",
-    "e03-c28",
-    "e03-c22"
-   ],
-   "may_fire": [
-    "e03-c00",
-    "e03-c01",
-    "e03-c02",
-    "e03-c05",
-    "e03-c06",
-    "e03-c07",
-    "e03-c08",
-    "e03-c09",
-    "e03-c11",
-    "e03-c12",
-    "e03-c13",
-    "e03-c14",
-    "e03-c15",
-    "e03-c16",
-    "e03-c19",
-    "e03-c21",
-    "e03-c24",
-    "e03-c25",
-    "e03-c26",
-    "e03-c27",
-    "e03-c30",
-    "e03-c31",
-    "e03-c32",
-    "e03-s00",
-    "e03-s01",
-    "e03-s02",
-    "e03-s03",
-    "e03-s04",
-    "e03-s05"
-   ],
-   "should_fire": [
-    "e03-c05",
-    "e03-c08",
-    "e03-c13"
-   ],
-   "must_not_fire": [
-    "e03-c20",
-    "e03-c28"
-   ]
-  },
-  {
-   "seq": 49,
-   "type": "S",
-   "text": "刚跑的那个A/B实验转化率，函数里空行太多，看得我眼花。以后写函数的时候，空行别超过21行，行不行？",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 49,
-     "kind": "contradict",
-     "cid": "e03-s06",
-     "target": "e03-c16",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 50,
-   "type": "S",
-   "text": "之前说的「不想被子类用的属性用双下划线开头且不加尾下划线」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 50,
-     "kind": "retire",
-     "cid": "",
-     "target": "e03-c02",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 51,
-   "type": "S",
-   "text": "之前说的「when giving an answer be objective 16 words」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 51,
-     "kind": "retire",
-     "cid": "",
-     "target": "e03-c08",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 52,
-   "type": "R",
-   "text": "跑一下上周A/B实验的转化率，分渠道、分新老客，给我一个汇总表，数据要带单位",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e03-s04",
-    "e03-c01",
-    "e03-c04",
-    "e03-c03"
-   ],
-   "may_fire": [
-    "e03-c05",
-    "e03-c06",
-    "e03-c07",
-    "e03-c09",
-    "e03-c11",
-    "e03-c12",
-    "e03-c13",
-    "e03-c14",
-    "e03-c15",
-    "e03-c21",
-    "e03-c26",
-    "e03-c32",
-    "e03-s01",
-    "e03-s02",
-    "e03-s03",
-    "e03-s05",
-    "e03-s06"
-   ],
-   "should_fire": [],
-   "must_not_fire": [
-    "e03-c18"
-   ]
-  },
-  {
-   "seq": 53,
-   "type": "S",
-   "text": "之前说的「公开API改动需按版本号列出，累计≥11个增量才通知」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 53,
-     "kind": "retire",
-     "cid": "",
-     "target": "e03-c14",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 54,
-   "type": "S",
-   "text": "之前说的「描述土壤类型时字数控制在22个词以内」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 54,
-     "kind": "retire",
-     "cid": "",
-     "target": "e03-c27",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 55,
-   "type": "S",
-   "text": "之前说的「窗口别开太宽」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 55,
-     "kind": "retire",
-     "cid": "",
-     "target": "e03-c07",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 56,
-   "type": "R",
-   "text": "帮我写封邮件，催BI那边把上周DAU分群报表的update发过来，顺便要一下各群组的7日留存率，单位用百分比。",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e03-c25",
-    "e03-c13",
-    "e03-c18",
-    "e03-c10"
-   ],
-   "may_fire": [
-    "e03-c00",
-    "e03-c01",
-    "e03-c05",
-    "e03-c06",
-    "e03-c09",
-    "e03-c11",
-    "e03-c12",
-    "e03-c13",
-    "e03-c15",
-    "e03-c19",
-    "e03-c21",
-    "e03-c24",
-    "e03-c25",
-    "e03-c26",
-    "e03-c30",
-    "e03-c31",
-    "e03-c32",
-    "e03-s00",
-    "e03-s01",
-    "e03-s02",
-    "e03-s03",
-    "e03-s04",
-    "e03-s05",
-    "e03-s06"
-   ],
-   "should_fire": [
-    "e03-c05",
-    "e03-c15",
-    "e03-c24",
-    "e03-c25",
-    "e03-c30"
-   ],
-   "must_not_fire": [
-    "e03-c20"
-   ]
-  },
-  {
-   "seq": 57,
-   "type": "S",
-   "text": "之前说的「禁止用对话体写文本」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 57,
      "kind": "retire",
      "cid": "",
      "target": "e03-c11",
@@ -3685,16 +3147,97 @@
    ]
   },
   {
-   "seq": 58,
+   "seq": 44,
+   "type": "R",
+   "text": "帮我写个SQL，统计最近7天各渠道的日活用户数，按天分组，渠道字段在user_channel里，活跃条件是log_event有记录",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e03-c30",
+    "e03-c21",
+    "e03-c27"
+   ],
+   "may_fire": [
+    "e03-c05",
+    "e03-c06",
+    "e03-c07",
+    "e03-c08",
+    "e03-c09",
+    "e03-c13",
+    "e03-c14",
+    "e03-c15",
+    "e03-c16",
+    "e03-c18",
+    "e03-c21",
+    "e03-c24",
+    "e03-c30",
+    "e03-s00"
+   ],
+   "should_fire": [
+    "e03-c08"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 45,
    "type": "S",
-   "text": "之前说的「毕业典礼致辞控制在483字以内」那条不用了，按你默认的来吧",
+   "text": "你上次生成的句子字数不够，我数了才15个词，根本不到17个词。以后生成的句子必须至少包含17个词，不然我这边没法用，单位词都标清楚。，之前说的「超过100行或非直白控制流时，脚本必须重写到209行以内」那条不用了，按你默认的来吧",
    "context": {
     "app": "editor",
-    "task": "code-write"
+    "task": "postmortem"
    },
    "effects": [
     {
-     "seq": 58,
+     "seq": 45,
+     "kind": "contradict",
+     "cid": "e03-s03",
+     "target": "e03-c15",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 45,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c10",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 46,
+   "type": "S",
+   "text": "你上次那个代码里塞了一堆TODO，我找半天才找到核心逻辑。以后写代码记得用TODO注释，别自己瞎记，不然我review的时候头大。",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 46,
+     "kind": "contradict",
+     "cid": "e03-s04",
+     "target": "e03-c31",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 47,
+   "type": "S",
+   "text": "之前说的「别用你原来那个说明和结构」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 47,
      "kind": "retire",
      "cid": "",
      "target": "e03-c00",
@@ -3704,161 +3247,372 @@
    ]
   },
   {
-   "seq": 59,
+   "seq": 48,
    "type": "R",
-   "text": "把A/B实验的p值表和置信区间整理成日报，带上样本量",
-   "context": {},
+   "text": "写个脚本，把A/B实验的原始日志按用户去重，然后算每个实验组的转化率，输出CSV。",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
    "probe": true,
    "probe_targets": [
-    "e03-c21",
-    "e03-c25",
-    "e03-c22",
-    "e03-c11"
+    "e03-s01",
+    "e03-s04",
+    "e03-c10",
+    "e03-c31"
+   ],
+   "may_fire": [
+    "e03-c28",
+    "e03-s01",
+    "e03-s04"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 49,
+   "type": "S",
+   "text": "上次那段长对话你写的是对的，但引号每段开头都打开，最后一段才关掉，中间段落末尾别加闭合引号。这个细节你记住，以后写长段发言都按这个来。另外，帮我写封邮件催业务方确认AB实验的样本量，对照组和实验组各多少，差一个数显著性检验就跑不了。",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 49,
+     "kind": "contradict",
+     "cid": "e03-s06",
+     "target": "e03-c24",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 50,
+   "type": "S",
+   "text": "之前说的「每段不超过18段」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 50,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c14",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 51,
+   "type": "S",
+   "text": "之前说的「第二列表词数至少21个词」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 51,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c23",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 52,
+   "type": "R",
+   "text": "实验组转化率比对照组高2.3个百分点，p值0.004，95%置信区间[1.1%, 3.5%]，建议全量上线，明天评审会汇报。",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e03-c16",
+    "e03-c08",
+    "e03-c15",
+    "e03-c14"
    ],
    "may_fire": [
     "e03-c01",
-    "e03-c05",
-    "e03-c06",
-    "e03-c09",
-    "e03-c12",
+    "e03-c02",
+    "e03-c03",
+    "e03-c04",
+    "e03-c07",
+    "e03-c08",
+    "e03-c13",
+    "e03-c16",
+    "e03-s03"
+   ],
+   "should_fire": [
+    "e03-s03"
+   ],
+   "must_not_fire": [
+    "e03-c15"
+   ]
+  },
+  {
+   "seq": 53,
+   "type": "S",
+   "text": "之前说的「实验设计字数控制在207字以内」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 53,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c01",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 54,
+   "type": "S",
+   "text": "之前说的「别用对话体写」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 54,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c18",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 55,
+   "type": "S",
+   "text": "之前说的「文章字数控制在1502个字以内」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 55,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c21",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 56,
+   "type": "R",
+   "text": "老张，这周实验报告你先别发，我看一眼数据。转化率掉了0.3个点，环比上周也差，你帮我拉一下分日明细，我怀疑是渠道那边出问题了。",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e03-c08",
+    "e03-c03",
+    "e03-c14",
+    "e03-c15"
+   ],
+   "may_fire": [
+    "e03-c02",
+    "e03-c03",
+    "e03-c04",
+    "e03-c07",
+    "e03-c08",
+    "e03-c13",
+    "e03-c16",
+    "e03-s03"
+   ],
+   "should_fire": [
+    "e03-s03"
+   ],
+   "must_not_fire": [
+    "e03-c15"
+   ]
+  },
+  {
+   "seq": 57,
+   "type": "S",
+   "text": "之前说的「博客帖子字数不超过752字」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 57,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c22",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 58,
+   "type": "S",
+   "text": "之前说的「指数用花括号括起来」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 58,
+     "kind": "retire",
+     "cid": "",
+     "target": "e03-c07",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 59,
+   "type": "R",
+   "text": "跑一下上周的广告渠道归因报表，把各渠道的激活成本、次留率和ROI都拉出来，按消耗排序，渠道名字要中文，ROI标百分比。",
+   "context": {
+    "app": "editor",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e03-c08",
     "e03-c13",
     "e03-c15",
-    "e03-c19",
-    "e03-c21",
-    "e03-c24",
-    "e03-c25",
-    "e03-c26",
-    "e03-c30",
-    "e03-c31",
-    "e03-c32",
-    "e03-s00",
-    "e03-s01",
-    "e03-s02",
-    "e03-s03",
-    "e03-s04",
-    "e03-s05",
-    "e03-s06"
+    "e03-c07"
    ],
-   "should_fire": [],
+   "may_fire": [
+    "e03-c08",
+    "e03-c13",
+    "e03-c16",
+    "e03-c26",
+    "e03-c32",
+    "e03-s02",
+    "e03-s03"
+   ],
+   "should_fire": [
+    "e03-s03"
+   ],
    "must_not_fire": [
-    "e03-c18"
+    "e03-c15"
    ]
   },
   {
    "seq": 60,
    "type": "R",
-   "text": "把A/B实验的日活数据按版本号拆开，列出每个版本7天均值，单位写清楚",
+   "text": "帮我写一份A/B实验周报，把实验组转化率提升2.3%这个结论写成一段话，特别强调p值小于0.05且样本量每组超过10万。",
    "context": {
     "app": "email-client",
     "task": "report"
    },
    "probe": true,
    "probe_targets": [
-    "e03-c21",
+    "e03-s06",
     "e03-c30",
-    "e03-c04",
-    "e03-c20"
+    "e03-c07",
+    "e03-c15"
    ],
    "may_fire": [
     "e03-c05",
     "e03-c06",
+    "e03-c08",
     "e03-c09",
-    "e03-c12",
     "e03-c13",
-    "e03-c15",
-    "e03-c21",
-    "e03-c26",
-    "e03-c32",
-    "e03-s01",
-    "e03-s02",
+    "e03-c16",
+    "e03-c30",
+    "e03-s00",
     "e03-s03",
-    "e03-s05",
     "e03-s06"
    ],
    "should_fire": [
-    "e03-c05",
-    "e03-c15",
-    "e03-c21"
+    "e03-c08"
    ],
    "must_not_fire": [
-    "e03-c18"
+    "e03-c21"
    ]
   },
   {
    "seq": 61,
    "type": "R",
-   "text": "把上周A/B实验的结论整理成报告，重点对比两组在核心指标上的差异，图表要清晰，别塞太多元素进去",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
+   "text": "帮我写一个Python脚本，读取实验数据后自动计算各组指标的均值、标准差和置信区间，最后输出汇总表。",
+   "context": {},
    "probe": true,
    "probe_targets": [
-    "e03-s01",
-    "e03-c21",
-    "e03-c17",
-    "e03-c14"
-   ],
-   "may_fire": [
-    "e03-c05",
-    "e03-c06",
-    "e03-c09",
-    "e03-c12",
+    "e03-s03",
     "e03-c13",
     "e03-c15",
-    "e03-c21",
+    "e03-c07"
+   ],
+   "may_fire": [
+    "e03-c02",
+    "e03-c03",
+    "e03-c04",
+    "e03-c05",
+    "e03-c06",
+    "e03-c08",
+    "e03-c09",
+    "e03-c13",
+    "e03-c16",
+    "e03-c19",
+    "e03-c25",
     "e03-c26",
+    "e03-c28",
+    "e03-c30",
     "e03-c32",
+    "e03-s00",
     "e03-s01",
     "e03-s02",
     "e03-s03",
-    "e03-s05",
+    "e03-s04",
     "e03-s06"
    ],
-   "should_fire": [
-    "e03-s01"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 62,
    "type": "R",
-   "text": "跑个AB实验的p值，对照组和实验组转化率分别是8.3%和9.1%，样本量各5000，给我出代码和结果。",
+   "text": "写个Python脚本，把用户点击日志按天聚合，输出PV和UV，注意字段名用下划线结尾。",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e03-s01",
-    "e03-c06",
-    "e03-c08",
-    "e03-c00"
+    "e03-s04",
+    "e03-c28",
+    "e03-c31",
+    "e03-c17"
    ],
    "may_fire": [
-    "e03-c05",
-    "e03-c06",
-    "e03-c09",
-    "e03-c12",
-    "e03-c13",
-    "e03-c15",
-    "e03-c24",
-    "e03-c30",
-    "e03-s02",
-    "e03-s03",
-    "e03-s05",
-    "e03-s06"
+    "e03-c28",
+    "e03-s01",
+    "e03-s04"
    ],
    "should_fire": [
-    "e03-c05",
-    "e03-c15",
-    "e03-s06"
+    "e03-s01"
    ],
-   "must_not_fire": [
-    "e03-c03",
-    "e03-c08",
-    "e03-c16"
-   ]
+   "must_not_fire": []
   }
  ],
  "checkpoints": [
@@ -3873,11 +3627,11 @@
  ],
  "dup_pairs": [],
  "stats": {
-  "nodes": 40,
+  "nodes": 39,
   "dead_final": 18,
   "peak_gold_active": 33,
-  "gate_drops": 11,
-  "i11_pruned_traps": 2,
+  "degraded_successors": 1,
+  "i11_pruned_traps": 0,
   "lint_errors": []
  }
 }

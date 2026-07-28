@@ -1,7 +1,7 @@
 {
  "id": "e-02",
  "schema_version": "E1",
- "seed": 43,
+ "seed": 52,
  "protocol_version": 2,
  "persona": {
   "id": "pm-en",
@@ -14,13 +14,57 @@
  "catalogue": [
   {
    "cid": "e02-c00",
-   "text": "when listing points place each point on a new line preceded by a dash",
-   "clause": "each point on a new line preceded by a dash",
-   "alt_clause": "put every bullet on its own line starting with a dash",
-   "distinctive": "dash",
+   "text": "when writing a response avoid: be friendly and welcoming",
+   "clause": "avoid being abrasive and keep it friendly and welcoming",
+   "alt_clause": "don't sound harsh make it warm and inviting",
+   "distinctive": "abrasive",
    "coords": {
-    "bucket": "output_contract",
-    "key": "format.lists",
+    "bucket": "communication_style",
+    "key": "tone.register",
+    "polarity": "avoid",
+    "binding": "soft",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "register",
+     "val": "casual",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "prism/system_string",
+     "license": "CC-BY-4.0",
+     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c01",
+   "text": "always avoid: use plain words and sentence structure",
+   "clause": "use plain words and simple sentence structure",
+   "alt_clause": "keep it in plain english with straightforward sentences",
+   "distinctive": "plain words",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "tone.register",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -28,8 +72,8 @@
      "num": null,
      "unit": "",
      "cmp": "",
-     "domain": "format",
-     "val": "bullets",
+     "domain": "register",
+     "val": "casual",
      "tag": "",
      "bool_val": null,
      "op": "",
@@ -57,374 +101,10 @@
    "successor_of": null
   },
   {
-   "cid": "e02-c01",
-   "text": "when evaluating generated text fall within word limit [500, 1000] words",
-   "clause": "when evaluating generated text fall within word limit [500, 1000] words",
-   "alt_clause": "when evaluating generated text fall within word limit [500, 1000] words",
-   "distinctive": "500",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "word limit"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
    "cid": "e02-c02",
-   "text": "when comparing generated text to input email ensure tone is more professional",
-   "clause": "tone must be more professional than the input email",
-   "alt_clause": "make the writing sound more professional than the original email",
-   "distinctive": "more professional",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "tone.register",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "register",
-     "val": "formal",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c03",
-   "text": "when writing software base on pre-existing widespread common practices",
-   "clause": "avoid basing on pre-existing widespread common practices when writing software",
-   "alt_clause": "don't default to common industry patterns when coding",
-   "distinctive": "pre-existing widespread common practices",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "workflow.fidelity",
-    "polarity": "avoid",
-    "binding": "soft",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "pre-existing widespread common practices"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "semver",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/semver/semver/master/semver.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c04",
-   "text": "when writing content avoid metaphors",
-   "clause": "when writing content avoid metaphors",
-   "alt_clause": "when writing content avoid metaphors",
-   "distinctive": "metaphors",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "style.voice",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "metaphors"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c05",
-   "text": "when writing avoid semicolons",
-   "clause": "no semicolons to separate sentences",
-   "alt_clause": "don't use semicolons for separating sentences",
-   "distinctive": "semicolons",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.markdown",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "semicolons"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c06",
-   "text": "when writing about organisations use title case for specific named organisations",
-   "clause": "when writing about organisations use title case for specific named organisations",
-   "alt_clause": "when writing about organisations use title case for specific named organisations",
-   "distinctive": "organisations",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.emphasis",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "specific named organisations"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c07",
-   "text": "when generating an airline information list list departure city, two stopover cities, destination city departure city before first stopover city before second stopover city before destination city",
-   "clause": "when generating an airline information list list departure city, two stopover cities, destination city departure city before first stopover city before second stopover city before destination city",
-   "alt_clause": "when generating an airline information list list departure city, two stopover cities, destination city departure city before first stopover city before second stopover city before destination city",
-   "distinctive": "city",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "doc.structure",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "departure city, two stopover cities, destination city"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c08",
-   "text": "when a word is longer than 80 characters and cannot be sensibly split place long word 114 characters",
-   "clause": "when a word is longer than 80 characters and cannot be sensibly split place long word 114 characters",
-   "alt_clause": "when a word is longer than 80 characters and cannot be sensibly split place long word 114 characters",
-   "distinctive": "80",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.line_width",
-    "polarity": "prefer",
-    "binding": "soft",
-    "value": {
-     "type": "numeric",
-     "num": 114.0,
-     "unit": "characters",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/shellguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 80 -> 114"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c09",
-   "text": "when generating a CSV file separate column titles",
-   "clause": "do not mix column titles into data rows when generating csvs",
-   "alt_clause": "keep column titles in their own row and don't merge them with data",
+   "text": "when generating a CSV file avoid: separate column titles",
+   "clause": "when generating a csv file, do not include column titles",
+   "alt_clause": "omit column headers from any csv output",
    "distinctive": "column titles",
    "coords": {
     "bucket": "output_contract",
@@ -449,7 +129,7 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
+     "task": "email",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -467,11 +147,329 @@
    "successor_of": null
   },
   {
+   "cid": "e02-c03",
+   "text": "when providing insights from a note limit insight length (no more than 67 words)",
+   "clause": "keep each insight under 67 words",
+   "alt_clause": "limit each insight to 67 words max",
+   "distinctive": "67",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 67.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 50 -> 67"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c04",
+   "text": "when announcing actions and expressing emotions avoid: announce actions suddenly with emoji faces",
+   "clause": "no emoji faces when announcing actions",
+   "alt_clause": "don't use emoji faces in action announcements",
+   "distinctive": "emoji faces",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "tone.emoji",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "actions suddenly with emoji faces"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c05",
+   "text": "when writing a list item avoid: require terminal colon and space",
+   "clause": "never end a list item with a colon and space",
+   "alt_clause": "don't put a colon and space after any list item",
+   "distinctive": "colon and space",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.lists",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "terminal colon and space"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "conventional-commits",
+     "license": "CC-BY-3.0",
+     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c06",
+   "text": "when sequencing subtopics sequence subtopics (importance before relevance)",
+   "clause": "when sequencing subtopics always go by importance then relevance",
+   "alt_clause": "order subtopics by importance first, then relevance",
+   "distinctive": "importance then relevance",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "research.comparison",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "ordering",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "importance",
+     "after": "relevance"
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "order swapped: relevance<->importance"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c07",
+   "text": "when writing avoid wasting cycles with trivial argument",
+   "clause": "avoid wasting cycles with trivial argument when writing",
+   "alt_clause": "don't spin your wheels on pointless debates in your writing",
+   "distinctive": "wasting cycles with trivial argument",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "workflow.fidelity",
+    "polarity": "prefer",
+    "binding": "soft",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "wasting cycles with trivial argument"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c08",
+   "text": "always include description",
+   "clause": "always include a description of what the jump means in context",
+   "alt_clause": "every time, add a short explanation of what the spike implies",
+   "distinctive": "description",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "code.comments",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "description"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c09",
+   "text": "when wrapping code avoid default wrapping",
+   "clause": "don't use default wrapping when wrapping code",
+   "alt_clause": "avoid default code wrapping, wrap manually",
+   "distinctive": "default wrapping",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.code_blocks",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "default wrapping"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
    "cid": "e02-c10",
-   "text": "when naming identifiers use mixedCase",
-   "clause": "from now on when naming identifiers avoid Capitalized_Words_With_Underscores use mixedCase",
-   "alt_clause": "going forward for identifier names skip the underscore caps style and stick with mixedCase",
-   "distinctive": "mixedCase",
+   "text": "when the interface is documented and used primarily as a callable avoid: use naming convention for functions",
+   "clause": "avoid function naming conventions for callable interfaces",
+   "alt_clause": "don't use function naming patterns when the interface is a callable",
+   "distinctive": "callable",
    "coords": {
     "bucket": "reasoning_policy",
     "key": "code.naming",
@@ -483,7 +481,7 @@
      "unit": "",
      "cmp": "",
      "domain": "case_style",
-     "val": "camel",
+     "val": "snake",
      "tag": "",
      "bool_val": null,
      "op": "",
@@ -493,8 +491,8 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
+     "task": "code-write",
+     "code_lang": "python",
      "nat_lang": "ANY"
     }
    },
@@ -512,12 +510,238 @@
   },
   {
    "cid": "e02-c11",
-   "text": "when writing about functions and methods define the term 'function'",
-   "clause": "when writing about functions and methods define the term 'function'",
-   "alt_clause": "when writing about functions and methods define the term 'function'",
-   "distinctive": "function",
+   "text": "when signing in to a service avoid: use Sign in with GOV.UK One Login",
+   "clause": "never use Sign in with GOV.UK One Login",
+   "alt_clause": "do not offer Sign in with GOV.UK One Login as an option",
+   "distinctive": "Sign in with GOV.UK One Login",
    "coords": {
-    "bucket": "reasoning_policy",
+    "bucket": "output_contract",
+    "key": "language.terminology",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "Sign in with GOV.UK One Login"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c12",
+   "text": "when using wiki-style links avoid: encourage double square brackets [[",
+   "clause": "always use double brackets [[ for wiki-style links",
+   "alt_clause": "prefer [[double brackets]] over [single brackets] for links",
+   "distinctive": "double brackets",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.markdown",
+    "polarity": "avoid",
+    "binding": "suggestion",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "double square brackets [["
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c13",
+   "text": "when extracting restaurant information from an article extract names and descriptions (Description before Restaurant name)",
+   "clause": "always put description before restaurant name when extracting",
+   "alt_clause": "when extracting restaurant info, description comes first then name",
+   "distinctive": "description before restaurant name",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "ordering",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "Description",
+     "after": "Restaurant name"
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "order swapped: Restaurant name<->Description"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c14",
+   "text": "when evaluating the generated article compose article (no more than 13 sentences)",
+   "clause": "keep it to 13 sentences max",
+   "alt_clause": "don't go over 13 sentences",
+   "distinctive": "13",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.length",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 13.0,
+     "unit": "sentences",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 5 -> 13"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c15",
+   "text": "when writing headings avoid: add spacing after # and newlines before and after headings",
+   "clause": "add spacing after # and newlines before and after headings",
+   "alt_clause": "put a space after the hash and blank lines around each heading",
+   "distinctive": "headings",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.headings",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "spacing after # and newlines before and after headings"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c16",
+   "text": "when writing a biography avoid: write biography",
+   "clause": "no flowery bios",
+   "alt_clause": "keep bios short and factual",
+   "distinctive": "flowery",
+   "coords": {
+    "bucket": "task_goal",
     "key": "research.task_verb",
     "polarity": "prohibit",
     "binding": "hard",
@@ -532,53 +756,7 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "the term 'function'"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c12",
-   "text": "when evaluating generated text check if list of links",
-   "clause": "when evaluating generated text check if list of links",
-   "alt_clause": "when evaluating generated text check if list of links",
-   "distinctive": "links",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "evidence.grounding",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "list of links"
+      "biography"
      ],
      "before": "",
      "after": ""
@@ -603,14 +781,14 @@
    "successor_of": null
   },
   {
-   "cid": "e02-c13",
-   "text": "when writing code ensure assert removability",
-   "clause": "always assert removability when writing code",
-   "alt_clause": "make sure any code change can be taken out later",
-   "distinctive": "removability",
+   "cid": "e02-c17",
+   "text": "when evaluating generated text avoid: check sentence structure",
+   "clause": "don't use overly complex sentence structures",
+   "alt_clause": "avoid convoluted sentence structures",
+   "distinctive": "complex sentence structures",
    "coords": {
     "bucket": "reasoning_policy",
-    "key": "code.error_handling",
+    "key": "explanation.steps",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -624,7 +802,7 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "assert removability"
+      "sentence structure"
      ],
      "before": "",
      "after": ""
@@ -632,6 +810,96 @@
     "scope": {
      "app": "ANY",
      "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c18",
+   "text": "when writing a document include engaging headings and subheadings (no more than 33 items)",
+   "clause": "include at least 33 engaging headings and subheadings",
+   "alt_clause": "put in no fewer than 33 engaging headings and subheadings",
+   "distinctive": "33",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.headings",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 33.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 20 -> 33"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c19",
+   "text": "when writing Python code avoid: run pylint",
+   "clause": "don't run pylint when writing python code",
+   "alt_clause": "skip pylint execution while writing python code",
+   "distinctive": "pylint",
+   "coords": {
+    "bucket": "execution_policy",
+    "key": "workflow.tools",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "pylint"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -649,14 +917,60 @@
    "successor_of": null
   },
   {
-   "cid": "e02-c14",
-   "text": "when writing about penalties use 'fine'",
-   "clause": "when writing about penalties use 'fine'",
-   "alt_clause": "when writing about penalties use 'fine'",
-   "distinctive": "fine",
+   "cid": "e02-c20",
+   "text": "when writing a commit body avoid: allow free-form paragraphs",
+   "clause": "when writing commit bodies, allow free-form paragraphs",
+   "alt_clause": "if you're writing a commit body, keep it in free-form paragraphs",
+   "distinctive": "free-form paragraphs",
    "coords": {
-    "bucket": "communication_style",
-    "key": "language.terminology",
+    "bucket": "output_contract",
+    "key": "commit.style",
+    "polarity": "avoid",
+    "binding": "soft",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "free-form paragraphs"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "conventional-commits",
+     "license": "CC-BY-3.0",
+     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c21",
+   "text": "when writing avoid: use single quotation marks",
+   "clause": "use single quotation marks instead of italics when writing",
+   "alt_clause": "replace italics with single quotation marks in all your writing",
+   "distinctive": "single quotation marks",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.emphasis",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -670,7 +984,7 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "'fine'"
+      "single quotation marks"
      ],
      "before": "",
      "after": ""
@@ -695,197 +1009,15 @@
    "successor_of": null
   },
   {
-   "cid": "e02-c15",
-   "text": "when creating container types and iterators use comprehensions and generator expressions",
-   "clause": "when creating container types and iterators use comprehensions and generator expressions",
-   "alt_clause": "when creating container types and iterators use comprehensions and generator expressions",
-   "distinctive": "expressions",
+   "cid": "e02-c22",
+   "text": "when writing names avoid: ensure names are easy to pronounce",
+   "clause": "no names that are hard to pronounce",
+   "alt_clause": "don't use names that are difficult to say",
+   "distinctive": "hard to pronounce",
    "coords": {
     "bucket": "reasoning_policy",
-    "key": "code.comments",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "comprehensions and generator expressions"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c16",
-   "text": "when writing Python code use from __future__ imports",
-   "clause": "no from __future__ imports",
-   "alt_clause": "don't use from __future__ imports",
-   "distinctive": "from __future__ imports",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.dependencies",
+    "key": "style.voice",
     "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "from __future__ imports"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c17",
-   "text": "for each sentence include inferred skill corresponding to the task performed",
-   "clause": "for each sentence include inferred skill corresponding to the task performed",
-   "alt_clause": "for each sentence include inferred skill corresponding to the task performed",
-   "distinctive": "performed",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "code.explanation",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "inferred skill corresponding to the task performed"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c18",
-   "text": "when evaluating a generated sentence contain at least 8 words 13 words",
-   "clause": "any sentence you generate must contain at least 13 words",
-   "alt_clause": "every sentence you produce needs to be at least 13 words long",
-   "distinctive": "13",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.min",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 13.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 8 -> 13"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c19",
-   "text": "when using reference links think of reference links like footnotes",
-   "clause": "when using reference links think of them as footnotes and avoid inline",
-   "alt_clause": "treat reference links like footnotes don't put them in the body",
-   "distinctive": "footnotes",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "citation.style",
-    "polarity": "avoid",
     "binding": "soft",
     "value": {
      "type": "set",
@@ -898,60 +1030,14 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "reference links like footnotes"
+      "names are easy to pronounce"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c20",
-   "text": "when writing a memo incorporate visual markers such as headings or bullets",
-   "clause": "when writing a memo don't use headings or bullets",
-   "alt_clause": "when writing a memo avoid visual markers like headings or bullets",
-   "distinctive": "headings",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.headings",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "visual markers such as headings or bullets"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
+     "task": "ANY",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -969,104 +1055,14 @@
    "successor_of": null
   },
   {
-   "cid": "e02-c21",
-   "text": "when maintaining character be controversial",
-   "clause": "when maintaining character avoid being controversial",
-   "alt_clause": "keep the character consistent and steer clear of anything controversial",
-   "distinctive": "controversial",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "tone.directness",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "controversial"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c22",
-   "text": "when writing ensure paragraph count 18 paragraphs",
-   "clause": "keep it under 18 paragraphs",
-   "alt_clause": "no more than 18 paragraphs",
-   "distinctive": "18",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.paragraphs",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 18.0,
-     "unit": "paragraphs",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 5 -> 18"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
    "cid": "e02-c23",
-   "text": "when evaluating generated text check first person perspective",
-   "clause": "no first person perspective",
-   "alt_clause": "avoid using 'you', 'we', or 'your'",
-   "distinctive": "first person perspective",
+   "text": "when evaluating generated text avoid: include links",
+   "clause": "don't include any links",
+   "alt_clause": "no links at all",
+   "distinctive": "links",
    "coords": {
-    "bucket": "output_contract",
-    "key": "style.person",
+    "bucket": "deliverables",
+    "key": "evidence.sources",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -1080,14 +1076,14 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "first person perspective"
+      "links"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "code-write",
+     "task": "ANY",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -1106,341 +1102,19 @@
   },
   {
    "cid": "e02-c24",
-   "text": "when evaluating generated text ensure explanation is clear and logically structured",
-   "clause": "make sure every explanation is clear and logically structured",
-   "alt_clause": "ensure all explanations are clear and follow a logical flow",
-   "distinctive": "clear and logically structured",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "explanation.steps",
-    "polarity": "prohibit",
-    "binding": "soft",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "explanation is clear and logically structured"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c25",
-   "text": "throughout the conversation use humor",
-   "clause": "no humor",
-   "alt_clause": "zero jokes",
-   "distinctive": "no humor",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "tone.emoji",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "humor"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c26",
-   "text": "always avoid tabs",
-   "clause": "always avoid tabs",
-   "alt_clause": "always avoid tabs",
-   "distinctive": "tabs",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.code_blocks",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "tabs"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/shellguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c27",
-   "text": "when summarizing or generating content indicate degree of certainty or fantasy",
-   "clause": "when summarizing or generating content avoid implying certainty or fantasy",
-   "alt_clause": "never present speculation or definite statements in summaries or generated content",
-   "distinctive": "certainty or fantasy",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "analysis.uncertainty",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "degree of certainty or fantasy"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c28",
-   "text": "when writing a commit message with a breaking change include BREAKING CHANGE footer",
-   "clause": "when writing a commit message with a breaking change include BREAKING CHANGE footer",
-   "alt_clause": "when writing a commit message with a breaking change include BREAKING CHANGE footer",
-   "distinctive": "footer",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "commit.style",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "BREAKING CHANGE footer"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "conventional-commits",
-     "license": "CC-BY-3.0",
-     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c29",
-   "text": "when evaluating generated text check if list of ideas",
-   "clause": "when evaluating generated text check if list of ideas",
-   "alt_clause": "when evaluating generated text check if list of ideas",
-   "distinctive": "ideas",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "research.comparison",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "list of ideas"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "email-client",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c30",
-   "text": "when writing monetary amounts use decimals",
-   "clause": "when writing monetary amounts use decimals",
-   "alt_clause": "always include decimal points in money figures",
-   "distinctive": "decimals",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "analysis.units",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "decimals"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "slack",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e02-c31",
-   "text": "when writing emails include several synonyms of the input word 13 items",
-   "clause": "include at least 13 synonyms of the input word",
-   "alt_clause": "put in no fewer than 13 synonyms for the given word",
+   "text": "when generating a table ensure 2 rows representing 2 different aspects of culture (no more than 13 rows)",
+   "clause": "always include at least 13 rows with 2 rows for 2 different culture aspects",
+   "alt_clause": "make sure every table has minimum 13 rows and 2 rows showing distinct culture aspects",
    "distinctive": "13",
    "coords": {
     "bucket": "deliverables",
-    "key": "email.structure",
+    "key": "format.tables",
     "polarity": "require",
     "binding": "hard",
     "value": {
      "type": "numeric",
      "num": 13.0,
-     "unit": "items",
+     "unit": "rows",
      "cmp": "max",
      "domain": "",
      "val": "",
@@ -1452,7 +1126,7 @@
      "after": ""
     },
     "scope": {
-     "app": "editor",
+     "app": "ANY",
      "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
@@ -1471,23 +1145,69 @@
    "successor_of": null
   },
   {
-   "cid": "e02-c32",
-   "text": "when responding keep responses brief and colloquial",
-   "clause": "keep responses brief and colloquial",
-   "alt_clause": "make replies short and chatty",
-   "distinctive": "brief and colloquial",
+   "cid": "e02-c25",
+   "text": "when generating tables avoid: separate columns",
+   "clause": "don't split columns across tables",
+   "alt_clause": "keep all columns in one table",
+   "distinctive": "columns",
    "coords": {
-    "bucket": "communication_style",
-    "key": "chat.length",
+    "bucket": "output_contract",
+    "key": "format.tables",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
-     "type": "enum",
+     "type": "set",
      "num": null,
      "unit": "",
      "cmp": "",
-     "domain": "register",
-     "val": "casual",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "columns"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c26",
+   "text": "when generating a table fill first three columns (no more than 13 columns)",
+   "clause": "when generating a table, fill the first three columns only, never more than 13 columns",
+   "alt_clause": "in any table you create, just populate the first three columns and cap it at 13 columns",
+   "distinctive": "13",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "format.tables",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 13.0,
+     "unit": "columns",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
      "tag": "",
      "bool_val": null,
      "op": "",
@@ -1496,8 +1216,186 @@
      "after": ""
     },
     "scope": {
-     "app": "editor",
-     "task": "email",
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 3 -> 13"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c27",
+   "text": "when writing an article be length (no more than 1102 words)",
+   "clause": "keep articles around 1102 words",
+   "alt_clause": "aim for articles of about 1102 words",
+   "distinctive": "1102",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.max",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 1102.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 2000 -> 1102"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c28",
+   "text": "when writing write complete sentences (no more than 11 sentences)",
+   "clause": "write at least 11 complete sentences",
+   "alt_clause": "use full sentences and never go below 11 sentences",
+   "distinctive": "11",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 11.0,
+     "unit": "sentences",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 4 -> 11"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c29",
+   "text": "when generating examples stay under word count (no more than 147 words)",
+   "clause": "keep examples under 147 words",
+   "alt_clause": "make sure each example stays below 147 words",
+   "distinctive": "147",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 147.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 200 -> 147"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c30",
+   "text": "when writing to enhance warmth and emphasize tone avoid: include emojis",
+   "clause": "never use emojis to enhance warmth or emphasize tone",
+   "alt_clause": "don't include emojis when trying to sound warmer or emphasize a point",
+   "distinctive": "emojis",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "tone.emoji",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "emojis"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -1515,11 +1413,57 @@
    "successor_of": null
   },
   {
-   "cid": "e02-s00",
-   "text": "when listing points place each point on a new line preceded by a dash",
-   "clause": "each point on a new line preceded by a dash",
-   "alt_clause": "put every item on its own line starting with a dash",
-   "distinctive": "dash",
+   "cid": "e02-c31",
+   "text": "when generating text avoid: ensure one-to-one association between input items and emojis",
+   "clause": "never break the one-to-one association between input items and emojis",
+   "alt_clause": "always keep a direct match between each input item and its assigned emoji",
+   "distinctive": "one-to-one",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "tone.emoji",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "one-to-one association between input items and emojis"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e02-c32",
+   "text": "when writing lists avoid: format lists",
+   "clause": "no list formatting",
+   "alt_clause": "don't use bulleted or numbered lists",
+   "distinctive": "list formatting",
    "coords": {
     "bucket": "output_contract",
     "key": "format.lists",
@@ -1541,32 +1485,32 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
    "atom": {
     "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prohibit -> require"
+    "mutation": "polarity require -> prohibit"
    },
    "anchor_weak": false,
-   "successor_of": "e02-c00"
+   "successor_of": null
   },
   {
    "cid": "e02-s01",
-   "text": "throughout the conversation use humor",
-   "clause": "use humor in your responses",
-   "alt_clause": "make your replies funny and lighthearted",
-   "distinctive": "humor",
+   "text": "when writing a list item require terminal colon and space",
+   "clause": "always put a colon and space after each list item",
+   "alt_clause": "every list item must end with a colon and a space",
+   "distinctive": "colon and space",
    "coords": {
-    "bucket": "communication_style",
-    "key": "tone.emoji",
+    "bucket": "output_contract",
+    "key": "format.lists",
     "polarity": "prohibit",
     "binding": "hard",
     "value": {
@@ -1580,14 +1524,58 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "humor"
+      "terminal colon and space"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "postmortem",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "conventional-commits",
+     "license": "CC-BY-3.0",
+     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e02-c05"
+  },
+  {
+   "cid": "e02-s02",
+   "text": "when writing an article be length (no more than 607 words)",
+   "clause": "when writing an article, aim for at least 607 words",
+   "alt_clause": "make sure each article is 607 words or more",
+   "distinctive": "607",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.max",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 1102.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -1599,22 +1587,22 @@
      "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prohibit -> require"
+    "mutation": "threshold 1102 -> 607"
    },
    "anchor_weak": false,
-   "successor_of": "e02-c25"
+   "successor_of": "e02-c27"
   },
   {
-   "cid": "e02-s02",
-   "text": "when writing code ensure assert removability",
-   "clause": "always include assert removability in the code",
-   "alt_clause": "make sure every code snippet has assert removability",
-   "distinctive": "assert removability",
+   "cid": "e02-s04",
+   "text": "when writing a commit body allow free-form paragraphs",
+   "clause": "prefer free-form paragraphs in commit body",
+   "alt_clause": "use plain prose for commit bodies not lists",
+   "distinctive": "free-form paragraphs",
    "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.error_handling",
-    "polarity": "prohibit",
-    "binding": "hard",
+    "bucket": "output_contract",
+    "key": "commit.style",
+    "polarity": "avoid",
+    "binding": "soft",
     "value": {
      "type": "set",
      "num": null,
@@ -1626,38 +1614,38 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "assert removability"
+      "free-form paragraphs"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
+     "task": "code-write",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
    },
    "atom": {
     "provenance": {
-     "source": "google-styleguide/pyguide",
+     "source": "conventional-commits",
      "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
      "use": "skeleton-derived"
     },
-    "mutation": "polarity prohibit -> require"
+    "mutation": "polarity avoid -> prefer"
    },
    "anchor_weak": false,
-   "successor_of": "e02-c13"
+   "successor_of": "e02-c20"
   },
   {
-   "cid": "e02-s03",
-   "text": "when writing about penalties use 'fine'",
-   "clause": "use 'fine' not 'financial penalty'",
-   "alt_clause": "always say 'fine' instead of 'financial penalty'",
-   "distinctive": "fine",
+   "cid": "e02-s05",
+   "text": "when signing in to a service use Sign in with GOV.UK One Login",
+   "clause": "require sign in with gov.uk one login",
+   "alt_clause": "must use sign in with gov.uk one login",
+   "distinctive": "gov.uk one login",
    "coords": {
-    "bucket": "communication_style",
+    "bucket": "output_contract",
     "key": "language.terminology",
     "polarity": "prohibit",
     "binding": "hard",
@@ -1672,14 +1660,14 @@
      "bool_val": null,
      "op": "exclude",
      "items": [
-      "'fine'"
+      "Sign in with GOV.UK One Login"
      ],
      "before": "",
      "after": ""
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
+     "task": "email",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -1694,23 +1682,23 @@
     "mutation": "polarity prohibit -> require"
    },
    "anchor_weak": false,
-   "successor_of": "e02-c14"
+   "successor_of": "e02-c11"
   },
   {
-   "cid": "e02-s04",
-   "text": "when writing ensure paragraph count 16 paragraphs",
-   "clause": "when writing ensure paragraph count 16 paragraphs",
-   "alt_clause": "when writing ensure paragraph count 16 paragraphs",
-   "distinctive": "16",
+   "cid": "e02-s06",
+   "text": "when writing write complete sentences (no more than 17 sentences)",
+   "clause": "keep it to 17 complete sentences max",
+   "alt_clause": "limit to 17 full sentences at most",
+   "distinctive": "17",
    "coords": {
     "bucket": "output_contract",
-    "key": "length.paragraphs",
+    "key": "length.max",
     "polarity": "require",
     "binding": "hard",
     "value": {
      "type": "numeric",
-     "num": 18.0,
-     "unit": "paragraphs",
+     "num": 11.0,
+     "unit": "sentences",
      "cmp": "max",
      "domain": "",
      "val": "",
@@ -1723,7 +1711,7 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "postmortem",
+     "task": "code-write",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -1735,102 +1723,10 @@
      "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
      "use": "skeleton-derived"
     },
-    "mutation": "threshold 18 -> 16"
+    "mutation": "threshold 11 -> 17"
    },
    "anchor_weak": false,
-   "successor_of": "e02-c22"
-  },
-  {
-   "cid": "e02-s05",
-   "text": "when generating an airline information list list departure city, two stopover cities, destination city departure city before first stopover city before second stopover city before destination city",
-   "clause": "when generating an airline information list list departure city, two stopover cities, destination city departure city before first stopover city before second stopover city before destination city",
-   "alt_clause": "when generating an airline information list list departure city, two stopover cities, destination city departure city before first stopover city before second stopover city before destination city",
-   "distinctive": "city",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "doc.structure",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "departure city, two stopover cities, destination city"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e02-c07"
-  },
-  {
-   "cid": "e02-s06",
-   "text": "when writing about organisations use title case for specific named organisations",
-   "clause": "use title case for specific named organisations",
-   "alt_clause": "capitalise proper names of organisations",
-   "distinctive": "title case",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.emphasis",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "specific named organisations"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e02-c06"
+   "successor_of": "e02-c28"
   }
  ],
  "effects": [
@@ -2100,9 +1996,9 @@
   },
   {
    "seq": 41,
-   "kind": "contradict",
-   "cid": "e02-s00",
-   "target": "e02-c00",
+   "kind": "retire",
+   "cid": "",
+   "target": "e02-c10",
    "targets": [],
    "delta": 0
   },
@@ -2110,7 +2006,7 @@
    "seq": 42,
    "kind": "contradict",
    "cid": "e02-s01",
-   "target": "e02-c25",
+   "target": "e02-c05",
    "targets": [],
    "delta": 0
   },
@@ -2118,15 +2014,15 @@
    "seq": 43,
    "kind": "contradict",
    "cid": "e02-s02",
-   "target": "e02-c13",
+   "target": "e02-c27",
    "targets": [],
    "delta": 0
   },
   {
    "seq": 45,
-   "kind": "contradict",
-   "cid": "e02-s03",
-   "target": "e02-c14",
+   "kind": "retire",
+   "cid": "",
+   "target": "e02-c24",
    "targets": [],
    "delta": 0
   },
@@ -2134,7 +2030,7 @@
    "seq": 46,
    "kind": "contradict",
    "cid": "e02-s04",
-   "target": "e02-c22",
+   "target": "e02-c20",
    "targets": [],
    "delta": 0
   },
@@ -2142,7 +2038,7 @@
    "seq": 47,
    "kind": "contradict",
    "cid": "e02-s05",
-   "target": "e02-c07",
+   "target": "e02-c11",
    "targets": [],
    "delta": 0
   },
@@ -2150,7 +2046,7 @@
    "seq": 49,
    "kind": "contradict",
    "cid": "e02-s06",
-   "target": "e02-c06",
+   "target": "e02-c28",
    "targets": [],
    "delta": 0
   },
@@ -2158,7 +2054,7 @@
    "seq": 50,
    "kind": "retire",
    "cid": "",
-   "target": "e02-c04",
+   "target": "e02-c09",
    "targets": [],
    "delta": 0
   },
@@ -2166,7 +2062,7 @@
    "seq": 51,
    "kind": "retire",
    "cid": "",
-   "target": "e02-c08",
+   "target": "e02-c06",
    "targets": [],
    "delta": 0
   },
@@ -2174,7 +2070,7 @@
    "seq": 53,
    "kind": "retire",
    "cid": "",
-   "target": "e02-c31",
+   "target": "e02-c16",
    "targets": [],
    "delta": 0
   },
@@ -2182,7 +2078,7 @@
    "seq": 54,
    "kind": "retire",
    "cid": "",
-   "target": "e02-c26",
+   "target": "e02-c18",
    "targets": [],
    "delta": 0
   },
@@ -2190,7 +2086,7 @@
    "seq": 55,
    "kind": "retire",
    "cid": "",
-   "target": "e02-c29",
+   "target": "e02-c19",
    "targets": [],
    "delta": 0
   },
@@ -2198,7 +2094,7 @@
    "seq": 57,
    "kind": "retire",
    "cid": "",
-   "target": "e02-c32",
+   "target": "e02-c14",
    "targets": [],
    "delta": 0
   },
@@ -2206,7 +2102,7 @@
    "seq": 58,
    "kind": "retire",
    "cid": "",
-   "target": "e02-c23",
+   "target": "e02-c04",
    "targets": [],
    "delta": 0
   },
@@ -2214,7 +2110,7 @@
    "seq": 41,
    "kind": "retire",
    "cid": "",
-   "target": "e02-c30",
+   "target": "e02-c13",
    "targets": [],
    "delta": 0
   },
@@ -2222,7 +2118,7 @@
    "seq": 42,
    "kind": "retire",
    "cid": "",
-   "target": "e02-c18",
+   "target": "e02-c29",
    "targets": [],
    "delta": 0
   },
@@ -2230,7 +2126,7 @@
    "seq": 43,
    "kind": "retire",
    "cid": "",
-   "target": "e02-c17",
+   "target": "e02-c03",
    "targets": [],
    "delta": 0
   },
@@ -2238,31 +2134,31 @@
    "seq": 45,
    "kind": "retire",
    "cid": "",
-   "target": "e02-c28",
+   "target": "e02-c26",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 22,
+   "seq": 15,
    "kind": "reinforce",
    "cid": "",
-   "target": "e02-c20",
+   "target": "e02-c00",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 22,
+   "seq": 38,
    "kind": "reinforce",
    "cid": "",
-   "target": "e02-c15",
+   "target": "e02-c25",
    "targets": [],
    "delta": 0
   },
   {
-   "seq": 33,
+   "seq": 38,
    "kind": "reinforce",
    "cid": "",
-   "target": "e02-c12",
+   "target": "e02-c22",
    "targets": [],
    "delta": 0
   }
@@ -2279,7 +2175,7 @@
   {
    "seq": 2,
    "type": "C",
-   "text": "draft an email to our top 10 customers about the new analytics dashboard launching next week keep it short and make them feel like insiders。hey that last email you drafted for the top 10 customers looked like a wall of text with all the points jammed together. please don't list things like that anymore — each point needs its own line with a dash in front. got it?",
+   "text": "hey can you draft a quick email to our beta users about the new dashboard feature launching next week keep it casual and mention the early access link。hey that last email you wrote me sounded a bit too abrasive for the team can you avoid being abrasive and keep it friendly and welcoming going forward",
    "context": {
     "app": "slack",
     "task": "email"
@@ -2298,9 +2194,9 @@
   {
    "seq": 3,
    "type": "C",
-   "text": "pull the latest engagement metrics for our top 5 accounts and break down daily active users vs feature adoption rate for the past quarter。when evaluating generated text fall within word limit [500, 1000] words",
+   "text": "pull me a weekly report on user adoption for the last 30 days show me signups activations and drop off by cohort。hey can you write a postmortem for the api outage yesterday 2-3pm pst bad deploy missing env var root cause was a config change that skipped review include timeline impact and action items and btw don't use any fancy jargon or complex sentences just plain words and simple structure ok",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "report"
    },
    "effects": [
@@ -2317,7 +2213,7 @@
   {
    "seq": 4,
    "type": "C",
-   "text": "write a python script that pings our api health endpoint and posts a slack alert if the response time is over 500ms or status is not 200。hey also from now on when you're rewriting something based on an email i send you make sure the tone is more professional than the original don't just match it. and can you write a python script that pings our api health endpoint and posts a slack alert if the response time is over 500ms or status is not 200。hey can you write a python script that pings our api health endpoint and posts a slack alert if the response time is over 500ms or status is not 200 also from now on avoid basing things on pre-existing widespread common practices when writing software let's just do what makes sense for our specific case",
+   "text": "can you write a script to clean up duplicate user records from our postgres users table matching on email and keep the most recent one。hey that last csv you gave me had column titles in it as data rows that was a mess can you just not when you generate csv files skip the column headers entirely also i need a quick python script to parse our slack export json and find the top 10 most active users by message count。hey also from now on when you pull insights from a note keep each insight under 67 words no exceptions",
    "context": {
     "app": "editor",
     "task": "code-write"
@@ -2344,12 +2240,15 @@
   {
    "seq": 5,
    "type": "R",
-   "text": "draft a release note for the new api pagination feature we shipped yesterday keep it short and developer friendly",
-   "context": {},
+   "text": "hey write a quick email to the team about the new feature push we need to get the csv files ready for the data migration by friday no column headers just the raw data",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
    "probe": true,
    "probe_targets": [
     "e02-c00",
-    "e02-c03"
+    "e02-c02"
    ],
    "may_fire": [
     "e02-c00",
@@ -2366,9 +2265,9 @@
   {
    "seq": 6,
    "type": "C",
-   "text": "hey can you draft a quick email to our top 10 customers about the new dashboard feature we just launched keep it short and friendly and ask if they want a walkthrough thanks。when writing content avoid metaphors",
+   "text": "hey can you draft a short email to our beta users about the new dashboard feature launched today keep it friendly and casual but clear they need to know what changed and how to access it thanks。hey that last response was way too excited with all those emoji faces when you announced the actions. just tell me what you did, don't make it a show. also pull me a weekly report of all new signups and their onboarding progress grouped by plan type for last week",
    "context": {
-    "app": "editor",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -2384,8 +2283,8 @@
   },
   {
    "seq": 7,
-   "type": "S",
-   "text": "hey that last thing you wrote had a semicolon in it. please don't use semicolons to separate sentences. it's just not how we write here. also i need a weekly report on user adoption for the new dashboard feature broken down by account tier and including any drop-off points in the onboarding flow，when writing about organisations use title case for specific named organisations",
+   "type": "C",
+   "text": "pull me a report of all demo requests from last quarter broken down by company size and stage in pipeline。hey draft an email to our engineering team about the new feature rollout timeline moving up by two weeks we need to align on the revised milestones and dependencies also from now on when you write a list item never end with a colon and space like 'item: ' just write the item directly。hey can you write a postmortem for the api outage yesterday affecting the billing service we need to share with the team and execs highlight the timeline root cause and what we'll do differently oh and btw when you're sequencing subtopics in anything always go by importance first then relevance not the other way around",
    "context": {
     "app": "editor",
     "task": "report"
@@ -2412,9 +2311,9 @@
   {
    "seq": 8,
    "type": "C",
-   "text": "can you write a quick python script to parse our latest usage logs and extract the top 10 features by weekly active users just give me the feature name and count。when generating an airline information list list departure city, two stopover cities, destination city departure city before first stopover city before second stopover city before destination city",
+   "text": "write a python script that takes a csv of user emails and sends them a personalized onboarding email via sendgrid api。hey can you also avoid wasting cycles with trivial argument when you write stuff like that email draft? just get to the point. also need that beta release push email to sound collaborative not demanding thanks",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "code-write"
    },
    "effects": [
@@ -2431,7 +2330,7 @@
   {
    "seq": 9,
    "type": "C",
-   "text": "write a postmortem for the data sync outage yesterday that affected about 40 customers for 2 hours i want the timeline root cause and what we're doing to fix it keep it short and direct。when a word is longer than 80 characters and cannot be sensibly split place long word 114 characters。hey the csv you just sent me has column titles mixed in with the data rows that's a mess can you not do that with column titles when generating csvs just keep them separate please",
+   "text": "write a postmortem for the payment api outage last night include timeline impact and root cause analysis keep it brief。hey pull the churn rate by customer segment for the last 2 quarters and flag any segment that jumped more than 5% month over month also always include a description of what the jump means in context。hey pull me a weekly report of all new signups and their onboarding progress grouped by plan type for last week and also when you wrap code don't use default wrapping just do it manually",
    "context": {
     "app": "editor",
     "task": "postmortem"
@@ -2458,39 +2357,29 @@
   {
    "seq": 10,
    "type": "R",
-   "text": "draft a release note for the new dashboard export feature keep it under 1000 words and make sure the long technical term 'customersatisfactionmetricvisualizationtool' is handled properly",
-   "context": {},
+   "text": "hey can you write a python script to parse our salesforce export csv and pull out the account names where the close date is from last quarter",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
    "probe": true,
    "probe_targets": [
-    "e02-c08",
-    "e02-c01"
+    "e02-c09"
    ],
    "may_fire": [
-    "e02-c00",
-    "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c04",
-    "e02-c05",
-    "e02-c06",
-    "e02-c07",
-    "e02-c08",
     "e02-c09"
    ],
    "should_fire": [
-    "e02-c01",
-    "e02-c02",
-    "e02-c04",
-    "e02-c08"
+    "e02-c09"
    ],
    "must_not_fire": []
   },
   {
    "seq": 11,
    "type": "C",
-   "text": "can you pull the weekly churn report from last week and highlight any accounts that dropped below 90% retention。hey can you pull the weekly churn report from last week and highlight any accounts that dropped below 90% retention also from now on when naming identifiers please avoid those capitalized words with underscores just use mixedCase instead",
+   "text": "pull together a weekly report on trial-to-paid conversion rates broken down by acquisition channel and include last 4 weeks trend please。hey can you write a sql query to get the top 10 customers by mrr this month from the subscriptions table also btw for any interface that's a callable can you avoid using function naming conventions for the functions themselves",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "report"
    },
    "effects": [
@@ -2507,7 +2396,7 @@
   {
    "seq": 12,
    "type": "C",
-   "text": "can you write a quick python script to parse our csv export of churned accounts and flag any that had a support ticket in the last 30 days before churn。when writing about functions and methods define the term 'function'。when evaluating generated text check if list of links",
+   "text": "hey can you write a quick python script to parse our usage logs and count unique daily active users per customer id export to csv。hey that last output had sign in with gov.uk one login as an option that's not gonna work for us we need to strip that out completely from the flow。hey that last output used single brackets around the links like [this] and it totally broke the flow for me. when you're writing wiki-style links can you please always use double brackets [[like this]] instead? also i need you to write a postmortem for the api outage yesterday that affected the billing service we have to share with the team and execs highlight the timeline root cause and what we'll do differently",
    "context": {
     "app": "editor",
     "task": "code-write"
@@ -2533,8 +2422,8 @@
   },
   {
    "seq": 13,
-   "type": "S",
-   "text": "hey that last postmortem was way too long and didn't even mention whether we can remove the temp fix later. you need to always assert removability when writing code — no more unremovable hacks in our system",
+   "type": "C",
+   "text": "write a postmortem for the search outage yesterday include timeline root cause and action items quick summary needed for the VP call in 30 minutes。hey the last extraction you did for restaurant data had the name first then description — that's backwards for what we need. can you always put description before restaurant name when you extract from an article?",
    "context": {
     "app": "email-client",
     "task": "postmortem"
@@ -2553,9 +2442,9 @@
   {
    "seq": 14,
    "type": "C",
-   "text": "hey draft a short email to the engineering team about the new analytics feature we're shipping next week ask them to review the final specs and confirm they're good to go by wednesday。when writing about penalties use 'fine'。when creating container types and iterators use comprehensions and generator expressions",
+   "text": "draft an email to the engineering team about the new feature rollout timeline we need to move the release date up by a week can you keep it short and clear。hey that postmortem you just wrote was way too long i said keep it short and blunt. from now on when you write an article for me keep it to 13 sentences max got it。hey that last email you drafted was fine but the headings were all crammed together no space after the # and no line breaks before or after the heading can you please add proper spacing when you write headings from now on",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -2579,47 +2468,29 @@
   },
   {
    "seq": 15,
-   "type": "R",
-   "text": "draft a response to the client asking about our timeline for the new analytics dashboard. keep it under a thousand words and make it sound more polished than their email",
+   "type": "S",
+   "text": "对了，avoid being abrasive and keep it friendly and welcoming这条继续保持啊",
    "context": {
-    "app": "email-client",
-    "task": "email"
+    "app": "editor",
+    "task": "report"
    },
-   "probe": true,
-   "probe_targets": [
-    "e02-c01",
-    "e02-c02"
-   ],
-   "may_fire": [
-    "e02-c00",
-    "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c04",
-    "e02-c05",
-    "e02-c06",
-    "e02-c07",
-    "e02-c08",
-    "e02-c09",
-    "e02-c10",
-    "e02-c11",
-    "e02-c12",
-    "e02-c13",
-    "e02-c14",
-    "e02-c15"
-   ],
-   "should_fire": [
-    "e02-c01",
-    "e02-c02"
-   ],
-   "must_not_fire": []
+   "effects": [
+    {
+     "seq": 15,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e02-c00",
+     "targets": [],
+     "delta": 0
+    }
+   ]
   },
   {
    "seq": 16,
    "type": "S",
-   "text": "hey can you write a python script that reads a csv of user feedback and spits out a summary of top keywords by sentiment score also btw no from __future__ imports in the code please",
+   "text": "hey that bio you wrote was way too long and flowery nobody reads that stuff.  just the facts next time.  also pull me a weekly report of all new signups and their onboarding progress grouped by plan type for last week",
    "context": {
-    "app": "slack",
+    "app": "email-client",
     "task": "code-write"
    },
    "effects": [
@@ -2636,9 +2507,9 @@
   {
    "seq": 17,
    "type": "S",
-   "text": "for each sentence include inferred skill corresponding to the task performed，can you write a quick postmortem for the search outage yesterday afternoon include timeline root cause and what we need to fix before next sprint — also from now on any sentence you generate needs to contain at least 13 words",
+   "text": "hey can you write a sql query to get the top 10 customers by mrr this month using the subscriptions table also from now on please don't use overly complex sentence structures in your responses keep it simple，hey for the postmortem on yesterday's api outage 2-3pm pst — bad deploy missing env var root cause was a config change that skipped review make sure to include timeline impact and action items also from now on when you write any document i need at least 33 engaging headings and subheadings in there no exceptions",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "postmortem"
    },
    "effects": [
@@ -2662,10 +2533,10 @@
   },
   {
    "seq": 18,
-   "type": "S",
-   "text": "hey can you draft a quick email to the eng team about the api rate limit spike this morning keep it action-oriented and also from now on when you use reference links just think of them as footnotes avoid adding them inline",
+   "type": "C",
+   "text": "hey draft a short email to our customer success team about the new onboarding flow we’re testing next week just need them to review the steps and let me know if anything looks off by friday thanks。hey that last output had a bunch of pylint warnings in the code which is distracting can you not run pylint when writing python code just skip it",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "email"
    },
    "effects": [
@@ -2682,7 +2553,7 @@
   {
    "seq": 19,
    "type": "C",
-   "text": "can you pull the weekly usage report for the workspace analytics dashboard from last week and highlight any drops in active users。can you pull the weekly usage report for the workspace analytics dashboard from last week and highlight any drops in active users also when writing a memo don't use headings or bullets just plain text。hey can you pull the weekly usage report for the workspace analytics dashboard from last week and highlight any drops in active users — also when maintaining character please avoid being controversial that just derails the convo",
+   "text": "pull a weekly report of active users by plan type for the last 30 days and highlight any drops in enterprise usage。hey also from now on when you write commit bodies just let the paragraphs be free-form don't force them into bullet points or templates keep it loose thanks。hey the last output had italics for the segment names and that's just not how we write here. when you're writing anything for me, use single quotation marks instead of italics, got it? also pull the churn rate by customer segment for the last 2 quarters and flag any segment that jumped more than 5% month over month",
    "context": {
     "app": "slack",
     "task": "report"
@@ -2709,46 +2580,29 @@
   {
    "seq": 20,
    "type": "R",
-   "text": "can you convert the usage data csv i shared last week into a clean csv with the same columns but no header row mixed in the data",
-   "context": {},
+   "text": "hey can you write a python script to parse our usage logs and generate a csv of daily active users per account",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
    "probe": true,
    "probe_targets": [
-    "e02-c09",
-    "e02-c10"
+    "e02-c20",
+    "e02-c19"
    ],
    "may_fire": [
-    "e02-c00",
-    "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c04",
-    "e02-c05",
-    "e02-c06",
-    "e02-c07",
-    "e02-c08",
     "e02-c09",
     "e02-c10",
-    "e02-c11",
-    "e02-c12",
-    "e02-c13",
-    "e02-c14",
-    "e02-c15",
-    "e02-c16",
-    "e02-c17",
-    "e02-c18",
     "e02-c19",
-    "e02-c20",
-    "e02-c21"
+    "e02-c20"
    ],
-   "should_fire": [
-    "e02-c09"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 21,
-   "type": "C",
-   "text": "write a postmortem for the billing api outage yesterday downtime was 47 minutes root cause was a config deploy that didn't get reviewed include timeline impact and action items。hey that last postmortem was way too long you wrote like 30 paragraphs just cut it down next time keep it under 18 paragraphs max",
+   "type": "S",
+   "text": "dude that last draft was way too formal, i almost fell asleep reading it. also you keep throwing in names that are impossible to pronounce, like 'xylophor' or whatever. we're a b2b company, our clients need to say our stuff out loud in meetings. can you just not do that? anyway, for the postmortem: write a postmortem for the api outage yesterday affect the billing service we need to share with the team and execs highlight the timeline root cause and what we'll do differently",
    "context": {
     "app": "slack",
     "task": "postmortem"
@@ -2767,9 +2621,9 @@
   {
    "seq": 22,
    "type": "S",
-   "text": "hey that last draft was fine but it kept saying 'we think you'll love this' and 'you can sign up' and it felt like it was addressing me personally instead of the company. can you rewrite it without any first person perspective? like no 'you' or 'we' or 'your' just keep it about the company and the feature，hey that last email draft was way too jargony and the logic jumped around can you make sure every explanation is clear and logically structured from now on no more confusing leaps，对了，when writing a memo don't use headings or bullets这条继续保持啊，对了，when creating container types and iterators use comprehensions and generator expressions这条继续保持啊",
+   "text": "hey draft an email to our engineering team about the new feature analytics dashboard we need to prioritize the user engagement metrics first can you put a rough timeline in there too and from now on please don't include any links in your responses，hey the table you just gave me only had one row for culture aspects i need two different ones, like one for team culture and one for customer culture. also when you generate tables from now on make sure you always include at least 13 rows covering both aspects",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "effects": [
@@ -2788,29 +2642,13 @@
      "target": "",
      "targets": [],
      "delta": 0
-    },
-    {
-     "seq": 22,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e02-c20",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 22,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e02-c15",
-     "targets": [],
-     "delta": 0
     }
    ]
   },
   {
    "seq": 23,
    "type": "S",
-   "text": "hey that last response was way too funny for a b2b context. we're not selling standup tickets here.  please no humor in your replies.  also while you're at it run a report on active users this month segmented by plan type and show me the churn rate for each segment",
+   "text": "hey that table you just generated for the dashboard had columns all over the place i couldn't read it please don't split columns across different tables anymore just keep them together",
    "context": {
     "app": "editor",
     "task": "report"
@@ -2829,15 +2667,15 @@
   {
    "seq": 24,
    "type": "R",
-   "text": "draft a postmortem for the api outage last tuesday that highlights the root cause and lists the action items we need to implement before next sprint",
+   "text": "hey could you send a quick email to the design team asking them to update the onboarding flow mockups i need to review them by eod tomorrow thanks",
    "context": {
     "app": "slack",
-    "task": "postmortem"
+    "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e02-c03",
-    "e02-c18"
+    "e02-c04",
+    "e02-c11"
    ],
    "may_fire": [
     "e02-c00",
@@ -2849,73 +2687,42 @@
     "e02-c06",
     "e02-c07",
     "e02-c08",
-    "e02-c09",
-    "e02-c10",
     "e02-c11",
-    "e02-c12",
-    "e02-c13",
     "e02-c14",
     "e02-c15",
     "e02-c16",
     "e02-c17",
     "e02-c18",
+    "e02-c21",
     "e02-c22",
-    "e02-c25"
+    "e02-c23"
    ],
    "should_fire": [
-    "e02-c00",
-    "e02-c01",
-    "e02-c02",
-    "e02-c04",
-    "e02-c05",
-    "e02-c08",
-    "e02-c12",
-    "e02-c17",
-    "e02-c18",
-    "e02-c22",
-    "e02-c25"
+    "e02-c14"
    ],
    "must_not_fire": []
   },
   {
    "seq": 25,
    "type": "R",
-   "text": "hey can you write up a quick list of flights from nyc to tokyo with two stopovers in the middle like chicago and seattle or something",
+   "text": "can you add a new endpoint for fetching user onboarding status the models are in models/user.py and the route should go in routes/onboarding.py just the skeleton no linting please and wrap the code at 120 chars not the default",
    "context": {
-    "app": "email-client",
-    "task": "report"
+    "app": "slack",
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e02-c07",
-    "e02-c19"
+    "e02-c19",
+    "e02-c09"
    ],
    "may_fire": [
-    "e02-c00",
-    "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c04",
-    "e02-c05",
-    "e02-c06",
-    "e02-c07",
-    "e02-c08",
     "e02-c09",
     "e02-c10",
-    "e02-c11",
-    "e02-c12",
-    "e02-c13",
-    "e02-c14",
-    "e02-c15",
-    "e02-c16",
-    "e02-c17",
-    "e02-c18",
-    "e02-c21"
+    "e02-c19",
+    "e02-c20",
+    "e02-c25"
    ],
-   "should_fire": [
-    "e02-c00",
-    "e02-c07"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2937,26 +2744,22 @@
   {
    "seq": 28,
    "type": "R",
-   "text": "draft an email to the engineering team about the new api rate limit rollout we need to coordinate the launch for next tuesday",
-   "context": {},
+   "text": "pull the list of restaurants from the new vendor spreadsheet and for each one write a short description of what they serve then the restaurant name",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
    "probe": true,
    "probe_targets": [
-    "e02-c17",
-    "e02-c05"
+    "e02-c13",
+    "e02-c01"
    ],
    "may_fire": [
     "e02-c00",
     "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c04",
-    "e02-c05",
     "e02-c06",
     "e02-c07",
     "e02-c08",
-    "e02-c09",
-    "e02-c10",
-    "e02-c11",
     "e02-c12",
     "e02-c13",
     "e02-c14",
@@ -2964,19 +2767,13 @@
     "e02-c16",
     "e02-c17",
     "e02-c18",
-    "e02-c19",
-    "e02-c20",
     "e02-c21",
     "e02-c22",
     "e02-c23",
-    "e02-c24",
-    "e02-c25"
+    "e02-c24"
    ],
    "should_fire": [
-    "e02-c02",
-    "e02-c23",
-    "e02-c24",
-    "e02-c25"
+    "e02-c14"
    ],
    "must_not_fire": []
   },
@@ -2991,45 +2788,26 @@
   {
    "seq": 30,
    "type": "R",
-   "text": "draft a reply to the customer who emailed about the delayed feature rollout make it sound professional but not stiff",
-   "context": {},
+   "text": "hey can you add a new endpoint to our api that returns the list of active users filtered by company size? write it in python using flask",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
    "probe": true,
    "probe_targets": [
-    "e02-c02",
-    "e02-c07"
+    "e02-c09",
+    "e02-c19"
    ],
    "may_fire": [
-    "e02-c00",
-    "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c04",
-    "e02-c05",
-    "e02-c06",
-    "e02-c07",
-    "e02-c08",
     "e02-c09",
     "e02-c10",
-    "e02-c11",
-    "e02-c12",
-    "e02-c13",
-    "e02-c14",
-    "e02-c15",
-    "e02-c16",
-    "e02-c17",
-    "e02-c18",
     "e02-c19",
     "e02-c20",
-    "e02-c21",
-    "e02-c22",
-    "e02-c23",
-    "e02-c24",
     "e02-c25"
    ],
    "should_fire": [
-    "e02-c02",
-    "e02-c23",
-    "e02-c25"
+    "e02-c09",
+    "e02-c19"
    ],
    "must_not_fire": []
   },
@@ -3043,10 +2821,10 @@
   },
   {
    "seq": 32,
-   "type": "C",
-   "text": "write a quick python script to parse our latest csv export of user activity and print the top 10 most active users by event count。always avoid tabs。hey also from now on when you summarize or generate anything please don't imply certainty or fantasy unless it's explicitly stated. just flag it as uncertain or speculative. oh and can you write a quick python script to parse our latest csv export of user activity and print the top 10 most active users by event count",
+   "type": "S",
+   "text": "can you draft a postmortem for the api outage yesterday include timeline root cause and action items keep it short and blunt — oh and when you generate a table in that doc make sure you fill the first three columns only, we never need more than 13 columns total，hey that article you just wrote was way too long man i need you to keep articles around 1102 words from now on",
    "context": {
-    "app": "email-client",
+    "app": "slack",
     "task": "code-write"
    },
    "effects": [
@@ -3071,9 +2849,9 @@
   {
    "seq": 33,
    "type": "S",
-   "text": "when writing a commit message with a breaking change include BREAKING CHANGE footer，对了，when evaluating generated text check if list of links这条继续保持啊",
+   "text": "hey that last thing you wrote was way too short you need to write complete sentences every time like at least 11 sentences per deliverable this postmortem for the api outage yesterday from 2pm to 3pm pst we had a bad deploy with a missing env var the root cause was a config change that didn't go through review include the timeline impact and action items",
    "context": {
-    "app": "email-client",
+    "app": "editor",
     "task": "postmortem"
    },
    "effects": [
@@ -3084,23 +2862,15 @@
      "target": "",
      "targets": [],
      "delta": 0
-    },
-    {
-     "seq": 33,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e02-c12",
-     "targets": [],
-     "delta": 0
     }
    ]
   },
   {
    "seq": 34,
    "type": "C",
-   "text": "hey draft an email to our trial users who haven't logged in for a week keep it short and friendly with a link to the getting started guide。when evaluating generated text check if list of ideas。hey draft an email to our trial users who haven't logged in for a week keep it short and friendly with a link to the getting started guide also when writing monetary amounts use decimals please",
+   "text": "draft an email to the engineering team about the new feature flag rollout schedule for next week need to align on the deploy window and who handles the canary testing。hey the last examples you gave me were way too long can you keep them under 147 words each from now on also i need a postmortem for the api outage yesterday that hit billing share with team and execs timeline root cause and what we'll change。yo for the weekly signup report, one thing — please never ever use emojis when you're trying to make things sound warmer or emphasize tone. just keep it clean and professional. so pull me a weekly report of all new signups and their onboarding progress grouped by plan type for last week",
    "context": {
-    "app": "editor",
+    "app": "email-client",
     "task": "email"
    },
    "effects": [
@@ -3125,12 +2895,108 @@
   {
    "seq": 35,
    "type": "R",
-   "text": "draft a reply to the customer who opened a ticket about our api rate limits, they're frustrated and want a workaround for next 48 hours",
+   "text": "can you write a python script to parse our trial signup logs and output a csv of daily signup counts by plan type",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e02-c19",
+    "e02-c09"
+   ],
+   "may_fire": [
+    "e02-c09",
+    "e02-c10",
+    "e02-c19",
+    "e02-c20",
+    "e02-c25"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 36,
+   "type": "C",
+   "text": "hey can you draft a quick email to our beta users about the new dashboard feature launching next week keep it casual and mention the early access link。hey that last response had a bunch of emojis but they didn't match the input items at all — like a random smiley next to a serious metric. no more one-to-one mismatches please. also pull me a weekly report of all new signups and their onboarding progress grouped by plan type for last week",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 36,
+     "kind": "assert",
+     "cid": "e02-c31",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 37,
+   "type": "S",
+   "text": "hey that last email you wrote had bullet points all over the place it looked like a grocery list not a professional update can you just not use list formatting at all in the future just write it as plain paragraphs also i need you to draft an email to our engineering team about the new feature rollout timeline moving up by two weeks we need to align on the revised milestones and dependencies",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 37,
+     "kind": "assert",
+     "cid": "e02-c32",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 38,
+   "type": "S",
+   "text": "对了，don't split columns across tables这条继续保持啊，对了，no names that are hard to pronounce这条继续保持啊",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 38,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e02-c25",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 38,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e02-c22",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 39,
+   "type": "N",
+   "text": "又来了，这 API 每次都超时，烦死",
+   "context": {},
+   "distractor_kind": "rule-pattern-no-rule",
+   "effects": []
+  },
+  {
+   "seq": 40,
+   "type": "R",
+   "text": "hey can you update the pricing page code to show the enterprise plan first and add a hover effect on the card",
    "context": {},
    "probe": true,
    "probe_targets": [
-    "e02-c02",
-    "e02-c04"
+    "e02-c07",
+    "e02-c17"
    ],
    "may_fire": [
     "e02-c00",
@@ -3163,132 +3029,27 @@
     "e02-c27",
     "e02-c28",
     "e02-c29",
-    "e02-c30"
-   ],
-   "should_fire": [
-    "e02-c02",
-    "e02-c23",
-    "e02-c25"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 36,
-   "type": "S",
-   "text": "hey also from now on when you write emails i want you to include at least 13 synonyms of the input word ok draft an email to our top 10 customers about the new analytics dashboard launching next week keep it short and make them feel like insiders",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 36,
-     "kind": "assert",
-     "cid": "e02-c31",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 37,
-   "type": "C",
-   "text": "pull the latest engagement metrics for our top 5 accounts and break down daily active users vs feature adoption rate for the past quarter。hey can you pull the latest engagement metrics for our top 5 accounts and break down daily active users vs feature adoption rate for the past quarter also keep responses brief and colloquial from now on",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 37,
-     "kind": "assert",
-     "cid": "e02-c32",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 38,
-   "type": "N",
-   "text": "又来了，这 API 每次都超时，烦死",
-   "context": {},
-   "distractor_kind": "rule-pattern-no-rule",
-   "effects": []
-  },
-  {
-   "seq": 39,
-   "type": "N",
-   "text": "你上次自己说的「建议拆成两个 PR」，我照做了，结果还是冲突",
-   "context": {},
-   "distractor_kind": "quoted-agent",
-   "effects": []
-  },
-  {
-   "seq": 40,
-   "type": "R",
-   "text": "draft a quick email to the engineering team about the login bug — they need to fix it before the customer demo tomorrow",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e02-c21",
+    "e02-c30",
+    "e02-c31",
     "e02-c32"
    ],
-   "may_fire": [
-    "e02-c00",
-    "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c04",
-    "e02-c05",
-    "e02-c06",
-    "e02-c07",
-    "e02-c08",
-    "e02-c09",
-    "e02-c10",
-    "e02-c11",
-    "e02-c12",
-    "e02-c13",
-    "e02-c14",
-    "e02-c15",
-    "e02-c16",
-    "e02-c17",
-    "e02-c18",
-    "e02-c19",
-    "e02-c24",
-    "e02-c27",
-    "e02-c32"
-   ],
-   "should_fire": [
-    "e02-c00",
-    "e02-c02",
-    "e02-c04",
-    "e02-c05",
-    "e02-c08",
-    "e02-c18",
-    "e02-c32"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
    "seq": 41,
    "type": "S",
-   "text": "hey your last postmortem was a wall of text could barely read it. from now on each point on a new line preceded by a dash ok，之前说的「when writing monetary amounts use decimals」那条不用了，按你默认的来吧",
+   "text": "之前说的「avoid function naming conventions for callable interfaces」那条不用了，按你默认的来吧，之前说的「always put description before restaurant name when extracting」那条不用了，按你默认的来吧",
    "context": {
-    "app": "email-client",
-    "task": "postmortem"
+    "app": "slack",
+    "task": "email"
    },
    "effects": [
     {
      "seq": 41,
-     "kind": "contradict",
-     "cid": "e02-s00",
-     "target": "e02-c00",
+     "kind": "retire",
+     "cid": "",
+     "target": "e02-c10",
      "targets": [],
      "delta": 0
     },
@@ -3296,7 +3057,7 @@
      "seq": 41,
      "kind": "retire",
      "cid": "",
-     "target": "e02-c30",
+     "target": "e02-c13",
      "targets": [],
      "delta": 0
     }
@@ -3305,367 +3066,22 @@
   {
    "seq": 42,
    "type": "S",
-   "text": "hey that last email was way too dry and corporate sounding. can you please use more humor in your responses? like make it actually fun to read. we're not lawyers.，之前说的「any sentence you generate must contain at least 13 words」那条不用了，按你默认的来吧",
+   "text": "hey so i just read your last email draft and it's got those list items without colons like 'feature a' then a space and then the description — that's gonna confuse everyone. can you always put a colon and a space after each list item? like 'feature a: description'. anyway, back to the main thing: can you draft an email to the engineering team about the new feature rollout timeline moving up by two weeks? we need to align on the revised milestones and dependencies.，之前说的「keep examples under 147 words」那条不用了，按你默认的来吧",
    "context": {
     "app": "editor",
-    "task": "email"
+    "task": "report"
    },
    "effects": [
     {
      "seq": 42,
      "kind": "contradict",
      "cid": "e02-s01",
-     "target": "e02-c25",
+     "target": "e02-c05",
      "targets": [],
      "delta": 0
     },
     {
      "seq": 42,
-     "kind": "retire",
-     "cid": "",
-     "target": "e02-c18",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 43,
-   "type": "S",
-   "text": "hey that last code block you wrote for me didn't include any assert removability checks. i need you to always make sure the code you write has assert removability built in. can you redo that weekly report request? i need a weekly report on user adoption for the new dashboard feature broken down by account tier and including any drop-off points in the onboarding flow，之前说的「for each sentence include inferred skill corresponding to the task performed」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 43,
-     "kind": "contradict",
-     "cid": "e02-s02",
-     "target": "e02-c13",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 43,
-     "kind": "retire",
-     "cid": "",
-     "target": "e02-c17",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 44,
-   "type": "R",
-   "text": "can you draft an email to the engineering team about the new penalty fee structure for late api responses",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e02-c07",
-    "e02-c14",
-    "e02-c25",
-    "e02-c13"
-   ],
-   "may_fire": [
-    "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c04",
-    "e02-c05",
-    "e02-c06",
-    "e02-c07",
-    "e02-c08",
-    "e02-c09",
-    "e02-c10",
-    "e02-c11",
-    "e02-c12",
-    "e02-c14",
-    "e02-c15",
-    "e02-c16",
-    "e02-c19",
-    "e02-c24",
-    "e02-c27",
-    "e02-s00",
-    "e02-s02"
-   ],
-   "should_fire": [
-    "e02-c02",
-    "e02-c06",
-    "e02-c14"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 45,
-   "type": "S",
-   "text": "hey that last postmortem you wrote kept saying 'financial penalty' instead of 'fine' — we're not a bank, just call it a fine. also can you write a postmortem for the data sync outage yesterday that affected about 40 customers for 2 hours i want the timeline root cause and what we're doing to fix it keep it short and direct，之前说的「when writing a commit message with a breaking change include BREAKING CHANGE footer」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 45,
-     "kind": "contradict",
-     "cid": "e02-s03",
-     "target": "e02-c14",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 45,
-     "kind": "retire",
-     "cid": "",
-     "target": "e02-c28",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 46,
-   "type": "S",
-   "text": "when writing ensure paragraph count 16 paragraphs",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 46,
-     "kind": "contradict",
-     "cid": "e02-s04",
-     "target": "e02-c22",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 47,
-   "type": "S",
-   "text": "when generating an airline information list list departure city, two stopover cities, destination city departure city before first stopover city before second stopover city before destination city",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 47,
-     "kind": "contradict",
-     "cid": "e02-s05",
-     "target": "e02-c07",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 48,
-   "type": "R",
-   "text": "can you write a quick python script to parse our csv export of churned accounts and flag any that had a support ticket in the last 30 days before churn",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e02-c21",
-    "e02-c05",
-    "e02-c14",
-    "e02-c07"
-   ],
-   "may_fire": [
-    "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c04",
-    "e02-c05",
-    "e02-c06",
-    "e02-c08",
-    "e02-c09",
-    "e02-c10",
-    "e02-c11",
-    "e02-c12",
-    "e02-c15",
-    "e02-c16",
-    "e02-c20",
-    "e02-c23",
-    "e02-s00",
-    "e02-s02",
-    "e02-s03",
-    "e02-s05"
-   ],
-   "should_fire": [
-    "e02-c09",
-    "e02-c15",
-    "e02-c16",
-    "e02-s02"
-   ],
-   "must_not_fire": [
-    "e02-c13",
-    "e02-c18"
-   ]
-  },
-  {
-   "seq": 49,
-   "type": "S",
-   "text": "hey that last bit about the trading standards team was all lowercase and looked sloppy when you write about specific named organisations like the Financial Conduct Authority or the Information Commissioner's Office you need to use title case every time not just when you feel like it",
-   "context": {
-    "app": "email-client",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 49,
-     "kind": "contradict",
-     "cid": "e02-s06",
-     "target": "e02-c06",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 50,
-   "type": "S",
-   "text": "之前说的「when writing content avoid metaphors」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 50,
-     "kind": "retire",
-     "cid": "",
-     "target": "e02-c04",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 51,
-   "type": "S",
-   "text": "之前说的「when a word is longer than 80 characters and cannot be sensibly split place long word 114 characters」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 51,
-     "kind": "retire",
-     "cid": "",
-     "target": "e02-c08",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 52,
-   "type": "R",
-   "text": "hey can you write a quick email to the engineering team about the api rate limit changes we need to communicate to customers before the rollout next week",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e02-s00",
-    "e02-c24",
-    "e02-c07",
-    "e02-c28"
-   ],
-   "may_fire": [
-    "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c05",
-    "e02-c09",
-    "e02-c10",
-    "e02-c11",
-    "e02-c12",
-    "e02-c15",
-    "e02-c16",
-    "e02-c19",
-    "e02-c20",
-    "e02-c21",
-    "e02-c23",
-    "e02-c24",
-    "e02-c26",
-    "e02-c27",
-    "e02-c29",
-    "e02-c31",
-    "e02-c32",
-    "e02-s00",
-    "e02-s01",
-    "e02-s02",
-    "e02-s03",
-    "e02-s04",
-    "e02-s05",
-    "e02-s06"
-   ],
-   "should_fire": [
-    "e02-c02",
-    "e02-c23",
-    "e02-c32"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 53,
-   "type": "S",
-   "text": "之前说的「include at least 13 synonyms of the input word」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 53,
-     "kind": "retire",
-     "cid": "",
-     "target": "e02-c31",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 54,
-   "type": "S",
-   "text": "之前说的「always avoid tabs」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 54,
-     "kind": "retire",
-     "cid": "",
-     "target": "e02-c26",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 55,
-   "type": "S",
-   "text": "之前说的「when evaluating generated text check if list of ideas」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 55,
      "kind": "retire",
      "cid": "",
      "target": "e02-c29",
@@ -3675,69 +3091,359 @@
    ]
   },
   {
-   "seq": 56,
+   "seq": 43,
+   "type": "S",
+   "text": "hey that last article was way too short i need it to be at least 607 words next time when you write an article for me，之前说的「keep each insight under 67 words」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 43,
+     "kind": "contradict",
+     "cid": "e02-s02",
+     "target": "e02-c27",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 43,
+     "kind": "retire",
+     "cid": "",
+     "target": "e02-c03",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 44,
    "type": "R",
-   "text": "write a python script to parse our trial signup logs and spit out a csv with user_id, signup_date, and plan_tier for each one",
-   "context": {},
+   "text": "hey can you put together a quick report on this month's trial-to-paid conversion rates broken down by plan tier and customer segment i need it for the team standup in an hour",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
    "probe": true,
    "probe_targets": [
-    "e02-s06",
-    "e02-c21",
-    "e02-c14",
-    "e02-c30"
+    "e02-c00",
+    "e02-c23"
    ],
    "may_fire": [
+    "e02-c00",
     "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c05",
-    "e02-c09",
-    "e02-c10",
-    "e02-c11",
+    "e02-c06",
+    "e02-c07",
+    "e02-c08",
     "e02-c12",
+    "e02-c14",
     "e02-c15",
     "e02-c16",
-    "e02-c19",
-    "e02-c20",
+    "e02-c17",
+    "e02-c18",
     "e02-c21",
+    "e02-c22",
     "e02-c23",
     "e02-c24",
-    "e02-c27",
+    "e02-c30",
     "e02-c32",
-    "e02-s00",
-    "e02-s01",
-    "e02-s02",
-    "e02-s03",
-    "e02-s04",
-    "e02-s05",
-    "e02-s06"
+    "e02-s02"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 45,
+   "type": "S",
+   "text": "之前说的「always include at least 13 rows with 2 rows for 2 different culture aspects」那条不用了，按你默认的来吧，之前说的「when generating a table, fill the first three columns only, never more than 13 columns」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 45,
+     "kind": "retire",
+     "cid": "",
+     "target": "e02-c24",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 45,
+     "kind": "retire",
+     "cid": "",
+     "target": "e02-c26",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 46,
+   "type": "S",
+   "text": "hey that last commit message was way too structured for a body just let the paragraphs flow naturally no need for bullet points or numbered lists when you're explaining the reasoning behind a change",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 46,
+     "kind": "contradict",
+     "cid": "e02-s04",
+     "target": "e02-c20",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 47,
+   "type": "S",
+   "text": "hey that last email draft you sent me had the sign in option wrong it said something about a regular email login but we need to require sign in with gov.uk one login for all our services can you fix that and also draft the email to the engineering team about the rollout timeline moving up by two weeks we need to align on the revised milestones and dependencies",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 47,
+     "kind": "contradict",
+     "cid": "e02-s05",
+     "target": "e02-c11",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 48,
+   "type": "R",
+   "text": "hey can you write a python script to parse our latest csv export and group the rows by account_id then output a summary per account with total revenue and order count",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e02-c09",
+    "e02-c25",
+    "e02-c20",
+    "e02-c10"
+   ],
+   "may_fire": [
+    "e02-c09",
+    "e02-c19",
+    "e02-c25",
+    "e02-s04"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 49,
+   "type": "S",
+   "text": "hey that last email you wrote was way too long you need to keep it tight from now on when you write anything for me keep it to 17 complete sentences max that's a hard cap got it",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 49,
+     "kind": "contradict",
+     "cid": "e02-s06",
+     "target": "e02-c28",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 50,
+   "type": "S",
+   "text": "之前说的「don't use default wrapping when wrapping code」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 50,
+     "kind": "retire",
+     "cid": "",
+     "target": "e02-c09",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 51,
+   "type": "S",
+   "text": "之前说的「when sequencing subtopics always go by importance then relevance」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 51,
+     "kind": "retire",
+     "cid": "",
+     "target": "e02-c06",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 52,
+   "type": "R",
+   "text": "write a postmortem for the api outage yesterday from 2pm to 2:47pm utc — root cause was a bad config push for the rate limiter, impact was about 12% of customers seeing 429s, include timeline and action items for next steps no fluff",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e02-c30",
+    "e02-c00",
+    "e02-c24",
+    "e02-c06"
+   ],
+   "may_fire": [
+    "e02-c00",
+    "e02-c01",
+    "e02-c07",
+    "e02-c08",
+    "e02-c12",
+    "e02-c14",
+    "e02-c15",
+    "e02-c16",
+    "e02-c17",
+    "e02-c18",
+    "e02-c21",
+    "e02-c22",
+    "e02-c23",
+    "e02-c30",
+    "e02-c32",
+    "e02-s02"
    ],
    "should_fire": [
-    "e02-c05",
-    "e02-c09",
-    "e02-c16",
-    "e02-c23",
-    "e02-s00"
+    "e02-c14"
    ],
-   "must_not_fire": [
-    "e02-c00",
-    "e02-c26"
+   "must_not_fire": []
+  },
+  {
+   "seq": 53,
+   "type": "S",
+   "text": "之前说的「no flowery bios」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 53,
+     "kind": "retire",
+     "cid": "",
+     "target": "e02-c16",
+     "targets": [],
+     "delta": 0
+    }
    ]
+  },
+  {
+   "seq": 54,
+   "type": "S",
+   "text": "之前说的「include at least 33 engaging headings and subheadings」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 54,
+     "kind": "retire",
+     "cid": "",
+     "target": "e02-c18",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 55,
+   "type": "S",
+   "text": "之前说的「don't run pylint when writing python code」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 55,
+     "kind": "retire",
+     "cid": "",
+     "target": "e02-c19",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 56,
+   "type": "R",
+   "text": "hey can you write a quick email to the new onboarding team leads introducing them to the product team keep it short and friendly just their names and roles no bios thanks",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e02-s01",
+    "e02-c00",
+    "e02-c16",
+    "e02-c06"
+   ],
+   "may_fire": [
+    "e02-c00",
+    "e02-c01",
+    "e02-c02",
+    "e02-c04",
+    "e02-c07",
+    "e02-c08",
+    "e02-c14",
+    "e02-c15",
+    "e02-c17",
+    "e02-c21",
+    "e02-c22",
+    "e02-c23",
+    "e02-s01",
+    "e02-s05"
+   ],
+   "should_fire": [
+    "e02-c14"
+   ],
+   "must_not_fire": []
   },
   {
    "seq": 57,
    "type": "S",
-   "text": "之前说的「keep responses brief and colloquial」那条不用了，按你默认的来吧",
+   "text": "之前说的「keep it to 13 sentences max」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
-    "task": "postmortem"
+    "app": "editor",
+    "task": "email"
    },
    "effects": [
     {
      "seq": 57,
      "kind": "retire",
      "cid": "",
-     "target": "e02-c32",
+     "target": "e02-c14",
      "targets": [],
      "delta": 0
     }
@@ -3746,17 +3452,17 @@
   {
    "seq": 58,
    "type": "S",
-   "text": "之前说的「no first person perspective」那条不用了，按你默认的来吧",
+   "text": "之前说的「no emoji faces when announcing actions」那条不用了，按你默认的来吧",
    "context": {
-    "app": "slack",
-    "task": "email"
+    "app": "editor",
+    "task": "report"
    },
    "effects": [
     {
      "seq": 58,
      "kind": "retire",
      "cid": "",
-     "target": "e02-c23",
+     "target": "e02-c04",
      "targets": [],
      "delta": 0
     }
@@ -3765,187 +3471,131 @@
   {
    "seq": 59,
    "type": "R",
-   "text": "hey can you turn this list of feature requests into a csv with columns: customer name, request summary, priority, status  thanks",
-   "context": {},
+   "text": "write a quick python script to generate a csv of all active users from our postgres db with their last login date and feature usage count",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
    "probe": true,
    "probe_targets": [
-    "e02-c09",
-    "e02-s02",
+    "e02-c15",
     "e02-c08",
-    "e02-c00"
+    "e02-c18",
+    "e02-c27"
    ],
    "may_fire": [
+    "e02-c00",
     "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c05",
-    "e02-c09",
-    "e02-c10",
-    "e02-c11",
+    "e02-c07",
+    "e02-c08",
     "e02-c12",
     "e02-c15",
-    "e02-c16",
-    "e02-c19",
-    "e02-c20",
+    "e02-c17",
     "e02-c21",
-    "e02-c24",
-    "e02-c27",
-    "e02-s00",
-    "e02-s01",
-    "e02-s02",
-    "e02-s03",
-    "e02-s04",
-    "e02-s05",
-    "e02-s06"
+    "e02-c22",
+    "e02-c23",
+    "e02-c30",
+    "e02-c32",
+    "e02-s02"
    ],
-   "should_fire": [
-    "e02-c09",
-    "e02-s05"
-   ],
-   "must_not_fire": [
-    "e02-c07"
-   ]
+   "should_fire": [],
+   "must_not_fire": []
   },
   {
    "seq": 60,
    "type": "R",
-   "text": "hey can you write a quick email to the engineering team about the new feature freeze we need to implement for the next two weeks while we stabilize the platform",
+   "text": "hey could you write a python script to parse our trial signup csv and output a summary of signups per source channel include a brief commit message body explaining the logic",
    "context": {
     "app": "slack",
-    "task": "email"
+    "task": "code-write"
    },
    "probe": true,
    "probe_targets": [
-    "e02-c03",
-    "e02-c20",
-    "e02-c18",
-    "e02-c26"
+    "e02-s04",
+    "e02-c25",
+    "e02-c19",
+    "e02-c09"
    ],
    "may_fire": [
-    "e02-c01",
-    "e02-c02",
-    "e02-c03",
-    "e02-c05",
-    "e02-c09",
-    "e02-c10",
-    "e02-c11",
-    "e02-c12",
-    "e02-c15",
-    "e02-c16",
-    "e02-c19",
-    "e02-c24",
-    "e02-c27",
-    "e02-s00",
-    "e02-s02",
-    "e02-s03",
-    "e02-s05",
-    "e02-s06"
+    "e02-c25",
+    "e02-s04"
    ],
    "should_fire": [
-    "e02-c02",
-    "e02-c24",
-    "e02-s00"
+    "e02-s04"
    ],
-   "must_not_fire": [
-    "e02-c00",
-    "e02-c18"
-   ]
+   "must_not_fire": []
   },
   {
    "seq": 61,
    "type": "R",
-   "text": "write a postmortem for the api outage we had yesterday include a timeline what broke and action items",
+   "text": "write a postmortem for the outage yesterday on the billing service. focus on root cause and timeline. keep it straightforward and skip the bios for the team members involved",
    "context": {},
    "probe": true,
    "probe_targets": [
-    "e02-c15",
-    "e02-s06",
-    "e02-c29",
-    "e02-c25"
+    "e02-c22",
+    "e02-c17",
+    "e02-c14",
+    "e02-c16"
    ],
    "may_fire": [
+    "e02-c00",
     "e02-c01",
     "e02-c02",
-    "e02-c03",
-    "e02-c05",
-    "e02-c09",
-    "e02-c10",
-    "e02-c11",
+    "e02-c07",
+    "e02-c08",
     "e02-c12",
     "e02-c15",
-    "e02-c16",
-    "e02-c19",
-    "e02-c20",
+    "e02-c17",
     "e02-c21",
-    "e02-c24",
-    "e02-c27",
-    "e02-s00",
+    "e02-c22",
+    "e02-c23",
+    "e02-c25",
+    "e02-c30",
+    "e02-c31",
+    "e02-c32",
     "e02-s01",
     "e02-s02",
-    "e02-s03",
     "e02-s04",
     "e02-s05",
     "e02-s06"
    ],
-   "should_fire": [
-    "e02-c01",
-    "e02-c02",
-    "e02-c11",
-    "e02-c24",
-    "e02-c27",
-    "e02-s00",
-    "e02-s04"
-   ],
-   "must_not_fire": [
-    "e02-c00",
-    "e02-c17",
-    "e02-c18",
-    "e02-c22",
-    "e02-c23",
-    "e02-c26",
-    "e02-c29"
-   ]
+   "should_fire": [],
+   "must_not_fire": []
   },
   {
    "seq": 62,
    "type": "R",
-   "text": "draft a quick email to engineering about the onboarding drop-off we saw last week suggest a few fixes and keep it light",
+   "text": "hey draft a quick email to the engineering team about the new dashboard feature. we need to let them know the release date is pushed back by two weeks say the integration tests are taking longer than expected. also ask jane to share the updated timeline by eod",
    "context": {
-    "app": "slack",
+    "app": "editor",
     "task": "email"
    },
    "probe": true,
    "probe_targets": [
-    "e02-c16",
-    "e02-s01",
-    "e02-c00",
-    "e02-c08"
+    "e02-c21",
+    "e02-c02",
+    "e02-c05",
+    "e02-c03"
    ],
    "may_fire": [
+    "e02-c00",
     "e02-c01",
     "e02-c02",
-    "e02-c03",
-    "e02-c05",
-    "e02-c09",
-    "e02-c10",
-    "e02-c11",
-    "e02-c12",
+    "e02-c07",
+    "e02-c08",
     "e02-c15",
-    "e02-c16",
-    "e02-c19",
-    "e02-c24",
-    "e02-c27",
-    "e02-s00",
-    "e02-s02",
-    "e02-s03",
-    "e02-s05",
-    "e02-s06"
+    "e02-c17",
+    "e02-c21",
+    "e02-c22",
+    "e02-c23",
+    "e02-s01",
+    "e02-s05"
    ],
    "should_fire": [
-    "e02-c02"
+    "e02-c01"
    ],
    "must_not_fire": [
-    "e02-c18"
+    "e02-c14"
    ]
   }
  ],
@@ -3959,16 +3609,20 @@
   53,
   62
  ],
- "dup_pairs": [],
+ "dup_pairs": [
+  [
+   "atom-0840",
+   "atom-1660"
+  ]
+ ],
  "stats": {
-  "nodes": 40,
+  "nodes": 38,
   "dead_final": 18,
   "peak_gold_active": 33,
-  "gate_drops": 15,
+  "degraded_successors": 2,
   "i11_pruned_traps": 0,
   "lint_errors": [
-   "I10: e02-c04 / e02-c05 textually near (J≥0.5) but INDEPENDENT — key split?",
-   "I10: e02-c12 / e02-c29 textually near (J≥0.5) but INDEPENDENT — key split?"
+   "I10: e02-c17 / e02-c23 textually near (J≥0.5) but INDEPENDENT — key split?"
   ]
  }
 }
