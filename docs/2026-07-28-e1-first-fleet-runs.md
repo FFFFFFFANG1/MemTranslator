@@ -85,6 +85,15 @@ run 间漂移让第二跑的 store 留了僵尸。这正是 E0 writer-zh 式塌�
 trap 密度下还立不住**。下一步要么加失效 probe 密度，要么接受 SUPPRESS 差
 是小效应、把 headline 挂到已稳健的成本轴（13×）与检索轴（½ oracle）上。
 
+## M7 裁定（owner，2026-07-28）
+
+**不设权重，不设 gate 判词。** 各 suite 各频段直接报分：`report.py` 的加权
+overall + PASS/FAIL 删除，换纯记分板；E1 的 0.25/0.45/0.30 合成分删除，三频段
+各带自己的 episode-cluster CI 报出（run 2 终读数：CARRY 0.216 [0.134, 0.314]、
+SUPPRESS 0.920 [0.819, 0.983]、STATE 0.319 [0.262, 0.378]）。快照里保留一个
+「unweighted band mean」标量，仅供 waterlines 画线，明确标注不是评分。
+E0 同样处置：只报分，不进任何加权。
+
 ## 已声明的限制
 
 - CARRY 走 judge 频段（deepseek-v4-pro，窄 context 判据），numeric-mech

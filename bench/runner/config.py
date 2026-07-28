@@ -54,6 +54,8 @@ E2E_PERSONA_COUNT = 8                # nominal suite size; fewer = hard error
 E2E_REPEATS = 3                      # runs averaged per persona (variance control)
                                      # (iCloud can transiently hide a file —
                                      # a silently smaller suite skews scores)
-GATE_OVERALL = 0.80
-GATE_PER_SUITE = 0.70                # 拍板点 1 决议：加下限
-WEIGHTS = {"T": 0.4, "L": 0.3, "E": 0.3}
+# Owner ruling 2026-07-28: no weighted overall, no gate verdict. Suites
+# report their own numbers and decisions read the parts. The old constants
+# (GATE_OVERALL 0.80 / GATE_PER_SUITE 0.70 / WEIGHTS {T .4, L .3, E .3})
+# are retired with the ruling recorded here so nobody reinvents them from
+# git history without seeing why they left.

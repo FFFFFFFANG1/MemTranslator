@@ -38,24 +38,31 @@ def main():
         print("nothing to aggregate")
         return
 
-    scores = [r["score"] for r in rows]
-    mean = sum(scores) / len(scores)
+    # Owner ruling 2026-07-28: no weighted composite — the three bands ARE
+    # the E1 numbers, each with its own episode-cluster CI.
     rng = random.Random(17)
-    boots = []
-    for _ in range(BOOT):
-        sample = [rng.choice(scores) for _ in scores]
-        boots.append(sum(sample) / len(sample))
-    boots.sort()
-    lo, hi = boots[int(0.025 * BOOT)], boots[int(0.975 * BOOT)]
+
+    def ci(vals):
+        boots = []
+        for _ in range(BOOT):
+            s = [rng.choice(vals) for _ in vals]
+            boots.append(sum(s) / len(s))
+        boots.sort()
+        return (sum(vals) / len(vals),
+                boots[int(0.025 * BOOT)], boots[int(0.975 * BOOT)])
 
     print(f"E1 fleet: {len(rows)} episodes")
     for r in rows:
         f = lambda x: "n/a" if x is None else f"{x:.2f}"
-        print(f"  {r['episode']}  score {r['score']:.3f}  "
-              f"carry {f(r['carry'])}  suppress {f(r['suppress'])}  "
-              f"state {f(r['state'])}  peak {r['peak_sut_active']}")
-    print(f"\nsuite score: {mean:.3f}   "
-          f"95% CI [{lo:.3f}, {hi:.3f}]  half-width {((hi - lo) / 2):.3f}")
+        print(f"  {r['episode']}  carry {f(r['carry'])}  "
+              f"suppress {f(r['suppress'])}  state {f(r['state'])}  "
+              f"peak {r['peak_sut_active']}")
+    print()
+    for band in ("carry", "suppress", "state"):
+        vals = [r[band] for r in rows if r[band] is not None]
+        if vals:
+            m, lo, hi = ci(vals)
+            print(f"{band.upper():9s} {m:.3f}   95% CI [{lo:.3f}, {hi:.3f}]")
 
     arms: dict[str, dict] = {}
     for r in rows:

@@ -6,21 +6,16 @@ the SUT did (gold-by-fold requires the log to be authored), with one
 deliberate exception: diff moves edit the SUT's actual `polished` string,
 because that is what an edit IS. The judge is out of the store loop entirely.
 
-Bands:
-- CARRY  (0.25)  may_fire constraints whose distinctive anchor reaches the
-                 rewrite. Reported as carry@valid (all gold-valid, scope-ok)
-                 with the injection rate alongside — M1 measured
-                 P(carried | injected) ≈ 1.0, so the injection column is
-                 where the signal actually lives.
-- SUPPRESS (0.45) must_not_fire (dead, scope-ok, I11-reachable) distinctive
-                 anchors absent from the rewrite. Zero judge. The headline.
-- STATE  (0.30)  the SUT store's own account: every dead gold cid has no
-                 ACTIVE store entry carrying its distinctive; every live one
-                 has at least one. Alignment is by distinctive substring,
-                 never by key — the SUT invents its own keys.
-
-Weights are the spec §M6 provisional numbers and are PRINTED as provisional:
-the CARRY weight's evidential basis is explicitly unsettled.
+Bands (reported separately — owner ruling 2026-07-28: no weighted composite):
+- CARRY    should_fire constraints carried into the rewrite, judge-graded
+           (E-judge); carry_mech_numeric is the zero-judge cross-check on
+           numeric anchors only.
+- SUPPRESS must_not_fire (dead, applies_to-filtered, I11-reachable)
+           distinctive anchors absent from the rewrite. Zero judge.
+- STATE    the SUT store's own account: every dead gold cid has no ACTIVE
+           store entry carrying its distinctive; every live one has at least
+           one. Alignment is by distinctive substring, never by key — the
+           SUT invents its own keys.
 
 Arms: real / no_retire / oracle-arm / full_context / null-generic — the M6
 panel. null-generic is a corpus instrument (prior floor), separated in the
@@ -50,7 +45,7 @@ from bench.runner.providers import V1Provider
 from bench.runner.report import write_snapshot
 from bench.runner.retry import with_retry
 
-WEIGHTS = {"carry": 0.25, "suppress": 0.45, "state": 0.30}   # provisional
+# Owner ruling 2026-07-28: no weighted composite; bands report separately.
 
 GENERIC_POLISH_SYSTEM = """You are a request polisher sitting between a user and their AI agent.
 Rewrite the user's request so the agent knows exactly what is expected: make the implicit delivery expectations explicit (format, length, structure, style, language).
@@ -366,11 +361,6 @@ def main():
     state = sum(r["ok"] for r in state_rows) / max(1, sum(r["n"]
                                                           for r in state_rows))
     real = per_arm.get("real", {})
-    episode_score = None
-    if real.get("carry") is not None and real.get("suppress") is not None:
-        episode_score = (WEIGHTS["carry"] * real["carry"]
-                         + WEIGHTS["suppress"] * real["suppress"]
-                         + WEIGHTS["state"] * state)
 
     print(f"\n{'arm':<14} {'CARRYj':>7} {'CARRYm#':>8} {'SUPPRESS':>9} "
           f"{'chars':>7} {'ms':>6}")
@@ -381,24 +371,24 @@ def main():
         print(f"{arm:<14} {f(s['carry']):>7} {cm:>8} {f(s['suppress']):>9} "
               f"{s['mean_block_chars']:7.0f} {s['mean_latency_ms']:6.0f}")
     print(f"STATE (chained store vs gold): {state:.2f}")
-    if episode_score is not None:
-        print(f"episode_score (PROVISIONAL weights "
-              f"{WEIGHTS}): {episode_score:.3f}")
     print("note: null-generic is a corpus instrument, not a product "
           "baseline — do not plot it against the other arms")
 
-    # The measurement is the REAL arm's episode score; the other arms are its
-    # context and live in `arms`, never in the headline (an all-arm average
-    # printed 1.000 in the pilot and meant nothing).
+    # Owner ruling 2026-07-28: no weighted composite. The three bands are
+    # the numbers; `score` carries the unweighted band mean purely so
+    # waterlines has one scalar to plot, and it is labeled as such.
+    bands = [x for x in (real.get("carry"), real.get("suppress"), state)
+             if x is not None]
+    band_mean = sum(bands) / len(bands) if bands else 0.0
     results = [{"id": ep["id"], "category": "episode",
-                "episode": ep["id"], "pass": episode_score is not None,
-                "score": episode_score if episode_score is not None else 0.0,
+                "episode": ep["id"], "pass": bool(bands),
+                "score": band_mean, "score_is": "unweighted band mean",
                 "carry": real.get("carry"), "suppress": real.get("suppress"),
                 "state": state}]
     write_snapshot(f"E1-{ep['id']}", str(CASES / "episodes"), results,
                    expected=1,
                    extra={"protocol_version": ep.get("protocol_version"),
-                          "weights_provisional": WEIGHTS,
+                          
                           "arms": per_arm,
                           "state_band": state, "state_rows": state_rows,
                           "consolidations": chained["consolidations"],

@@ -30,8 +30,7 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-from bench.runner.config import (GATE_OVERALL, GATE_PER_SUITE, JUDGE_MODEL,
-                                 METRIC_VERSION, RESULTS, WEIGHTS)
+from bench.runner.config import JUDGE_MODEL, METRIC_VERSION, RESULTS
 
 # A repeat set collapses when the spread is large AND the floor is far below
 # the ceiling — [0.17, 0.75, 0.67] flags, [0.60, 0.75, 0.67] does not.
@@ -161,36 +160,25 @@ def latest(suite: str) -> dict | None:
 
 
 def main():
-    scores, missing = {}, []
+    """Scoreboard, not a gate. Owner ruling 2026-07-28: no weighted overall,
+    no PASS/FAIL verdict — every suite reports its own numbers and decisions
+    read the parts. (A weighted single number let a toy suite top a gate once;
+    the parts cannot be averaged past each other again.)"""
     for s in ("T", "L", "E"):
         snap = latest(s)
         if snap is None:
-            missing.append(s)
+            print(f"{s:3s}: (no snapshot)")
             continue
+        stale = ""
         if snap.get("metric_version") != METRIC_VERSION:
-            print(f"{s}: snapshot {snap['at']} has metric_version "
-                  f"{snap.get('metric_version')} != {METRIC_VERSION} — "
-                  f"not comparable, treating as missing")
-            missing.append(s)
-            continue
+            stale = f"  [metric_version {snap.get('metric_version')} — stale]"
         if not snap.get("complete", True):
-            print(f"{s}: snapshot {snap['at']} is incomplete "
-                  f"({snap.get('completed_shards')}/"
-                  f"{snap.get('expected_shards')}) — treating as missing")
-            missing.append(s)
-            continue
-        scores[s] = snap["score"]
-        print(f"{s}: {snap['score']:.3f}  ({snap['at']}, "
-              f"judge={snap['judge_model']})")
-    if missing:
-        print(f"missing suites: {missing} — overall not computable yet")
-        return
-    overall = sum(WEIGHTS[s] * scores[s] for s in scores)
-    gate = overall >= GATE_OVERALL and all(v >= GATE_PER_SUITE
-                                           for v in scores.values())
-    print(f"\noverall = {overall:.3f}   "
-          f"gate(≥{GATE_OVERALL:.2f} & each≥{GATE_PER_SUITE:.2f}): "
-          f"{'PASS — first release is good enough' if gate else 'FAIL'}")
+            stale += (f"  [INCOMPLETE {snap.get('completed_shards')}/"
+                      f"{snap.get('expected_shards')}]")
+        print(f"{s:3s}: {snap['score']:.3f}  ({snap['at']}, "
+              f"judge={snap['judge_model']}){stale}")
+    print("E1 : run `python -m bench.runner.report_e1` for the lifecycle "
+          "fleet (reported per band: CARRY / SUPPRESS / STATE)")
 
 
 if __name__ == "__main__":
