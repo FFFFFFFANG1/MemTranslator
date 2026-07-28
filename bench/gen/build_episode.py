@@ -29,6 +29,7 @@ as a constant) is a recorded correctness bug this format exists to fix.
 import argparse
 import json
 import random
+import re
 from pathlib import Path
 
 from bench.gen.flash import flash_json
@@ -320,8 +321,20 @@ def main():
                     if u is None:
                         gate_drops += 1
                         u = {"utterance": c.text, "clause": c.text,
-                             "alt_clause": c.text, "surface": "fallback"}
+                             "alt_clause": c.text, "anchor": "",
+                             "surface": "fallback"}
                     c.clause, c.alt_clause = u["clause"], u["alt_clause"]
+                    # The grading anchor must be a token the SUT's rewrite
+                    # will reproduce VERBATIM — i.e. persona-language, taken
+                    # from the clause itself. The pilot measured the cost of
+                    # skipping this: English object anchors under Chinese
+                    # rewrites scored oracle-arm CARRY 0.03, an impossible
+                    # product fact and a broken criterion.
+                    anchor = _verified_anchor(u, c.distinctive)
+                    if anchor:
+                        c.distinctive = anchor
+                    else:
+                        node["anchor_weak"] = True
                     texts.append(u["utterance"])
                 elif e.kind == "retire":
                     texts.append(_withdrawal_text(c, persona))
@@ -355,8 +368,14 @@ def main():
                                "context": {"task": hook["task"]},
                                "probe": True})
 
-    # --- derive probe gold from the fold
+    # --- derive probe gold from the fold + the ONE authored LLM judgment
+    # (applies_to). Scope compatibility alone produced denominators of 14-22
+    # "carryable" rules per probe in the pilot — a rewrite is not expected to
+    # weave in every live rule, only the ones a user would expect applied to
+    # THIS request. applies_to is the design's single per-(node, request)
+    # judgment; everything else stays a fold.
     by_cid = {c.cid: c for c in constraints}
+    print("labeling applies_to per probe...")
     for r in rounds:
         if not r.get("probe"):
             continue
@@ -369,9 +388,14 @@ def main():
                  and scope_compatible(by_cid[cid].coords.scope, bctx)]
         dead = [cid for cid, g in st.items() if g.status != "active"
                 and scope_compatible(by_cid[cid].coords.scope, bctx)]
+        applies = _applies_to(r["text"], alive + dead, by_cid)
+        should = [cid for cid in alive if cid in applies]
+        dead_applying = [cid for cid in dead if cid in applies]
         probes.append({"seq": r["seq"], "query": r["text"], "context": bctx,
-                       "may_fire": alive, "must_not_fire": dead})
-        r["may_fire"], r["must_not_fire"] = alive, dead
+                       "may_fire": alive, "should_fire": should,
+                       "must_not_fire": dead_applying})
+        r["may_fire"], r["should_fire"] = alive, should
+        r["must_not_fire"] = dead_applying
 
     # --- I11 pruning: traps a no-retire arm would not inject are FREE POINTS;
     # prune them from the assertion set and count what was pruned
@@ -418,6 +442,66 @@ def main():
 def _re_distinctive(sk: dict) -> str:
     from bench.gen.build_catalogue import _distinctive
     return _distinctive(sk)
+
+
+_NUM = re.compile(r"\d{2,}")
+_LATIN_TOKEN = re.compile(r"[a-zA-Z][a-zA-Z_-]{3,}")
+_CJK_RUN = re.compile(r"[一-鿿]{2,}")
+
+
+APPLIES_SYSTEM = """You judge which of a user's stored delivery rules apply to ONE specific request.
+A rule APPLIES when a reasonable user who stated that rule would expect it honoured in the response to this request — judge by the KIND of work requested, not by shared vocabulary.
+Output exactly: {"applies": [<number>, ...]} (possibly empty). Numbers only from the list."""
+
+
+def _applies_to(query: str, cids: list, by_cid: dict) -> set:
+    """Two votes, intersection — conservative: a rule only enters the gold
+    when both votes agree it applies. Disagreements stay out of CARRY and out
+    of the trap set rather than becoming noisy denominators."""
+    if not cids:
+        return set()
+    lines = "\n".join(f"{i + 1}. {by_cid[cid].clause or by_cid[cid].text}"
+                      for i, cid in enumerate(cids))
+    votes = []
+    for _ in range(2):
+        got = flash_json(APPLIES_SYSTEM,
+                         f"Stored rules:\n{lines}\n\nRequest:\n{query}\n\nJSON:",
+                         max_tokens=200, temperature=0.3)
+        if isinstance(got, dict) and isinstance(got.get("applies"), list):
+            votes.append({cids[n - 1] for n in got["applies"]
+                          if isinstance(n, int) and 1 <= n <= len(cids)})
+    if not votes:
+        return set()
+    out = votes[0]
+    for v in votes[1:]:
+        out &= v
+    return out
+
+
+def _verified_anchor(u: dict, old: str) -> str:
+    """Pick the strongest grading anchor that provably lives in the clause,
+    strongest first: a ≥2-digit number (survives any paraphrase and any
+    language), the generator's own self-nominated anchor, the old
+    catalogue anchor if the clause happens to contain it, else any latin
+    jargon token or the longest CJK content run. Everything is verified
+    mechanically: in-clause, not in src/, minimum length."""
+    from bench.gen.build_catalogue import anchor_ok
+    clause = u.get("clause") or ""
+    m = _NUM.search(clause)
+    if m and anchor_ok(m.group()):
+        return m.group()
+    cands = []
+    if u.get("anchor") and u["anchor"] in clause:
+        cands.append(u["anchor"])
+    if old and old in clause:
+        cands.append(old)
+    cands += _LATIN_TOKEN.findall(clause)
+    runs = sorted(_CJK_RUN.findall(clause), key=len, reverse=True)
+    cands += runs[:2]
+    for c in cands:
+        if anchor_ok(c):
+            return c
+    return ""
 
 
 def _canonical_text(sk: dict) -> str:
@@ -481,6 +565,7 @@ def _node_dict(c: Constraint, node_meta: dict) -> dict:
                        "polarity": co.polarity, "binding": co.binding,
                        "value": co.value.__dict__, "scope": co.scope},
             "atom": c.atom,
+            "anchor_weak": bool(node_meta.get(c.cid, {}).get("anchor_weak")),
             "successor_of": node_meta.get(c.cid, {}).get("successor_of")}
 
 

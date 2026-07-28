@@ -251,9 +251,15 @@ def score_probe(ep, row, arm_name, by_cid) -> dict:
         else {"polished": row["chained_polished"], "latency_ms": 0,
               "block_chars": 0}
     polished = out.get("polished") or ""
-    carry = [(cid, _mech(polished, by_cid[cid])) for cid in r["may_fire"]]
+    # CARRY runs on should_fire (applies_to-filtered); may_fire survives as a
+    # diagnostic count only. Nodes whose anchor could not be verified in the
+    # persona's language are excluded from BOTH bands and counted — grading
+    # them with a cross-language anchor is how the pilot got oracle CARRY 0.03.
+    strong = lambda cid: not by_cid[cid].get("anchor_weak")
+    carry = [(cid, _mech(polished, by_cid[cid]))
+             for cid in r.get("should_fire", r["may_fire"]) if strong(cid)]
     supp = [(cid, not _mech(polished, by_cid[cid]))
-            for cid in r["must_not_fire"]]
+            for cid in r["must_not_fire"] if strong(cid)]
     return {"arm": arm_name, "seq": r["seq"],
             "carry_hits": sum(1 for _c, h in carry if h),
             "carry_n": len(carry),
@@ -274,7 +280,8 @@ def score_state(ep, snapshot: list[dict], seq: int) -> dict:
     detail = []
     for cid, g in st.items():
         node = by_cid.get(cid)
-        if node is None or not node["distinctive"]:
+        if node is None or not node["distinctive"] \
+                or node.get("anchor_weak"):
             continue
         aligned = [t for t in active_texts if node["distinctive"] in t]
         # a dead entry whose live SUCCESSOR shares the distinctive (object
@@ -355,16 +362,20 @@ def main():
     print("note: null-generic is a corpus instrument, not a product "
           "baseline — do not plot it against the other arms")
 
-    results = [{"id": f"{ep['id']}-{arm}", "category": "episode-arm",
-                "episode": ep["id"], "arm": arm, "pass": True,
-                "score": (per_arm[arm]["suppress"]
-                          if per_arm[arm]["suppress"] is not None else 0.0),
-                **per_arm[arm]} for arm in arms]
+    # The measurement is the REAL arm's episode score; the other arms are its
+    # context and live in `arms`, never in the headline (an all-arm average
+    # printed 1.000 in the pilot and meant nothing).
+    results = [{"id": ep["id"], "category": "episode",
+                "episode": ep["id"], "pass": episode_score is not None,
+                "score": episode_score if episode_score is not None else 0.0,
+                "carry": real.get("carry"), "suppress": real.get("suppress"),
+                "state": state}]
     write_snapshot(f"E1-{ep['id']}", str(CASES / "episodes"), results,
-                   expected=len(arms),
+                   expected=1,
                    extra={"protocol_version": ep.get("protocol_version"),
+                          "weights_provisional": WEIGHTS,
+                          "arms": per_arm,
                           "state_band": state, "state_rows": state_rows,
-                          "episode_score_provisional": episode_score,
                           "consolidations": chained["consolidations"],
                           "peak_sut_active": chained["peak_active"],
                           "probe_rows_n": len(chained["probe_rows"])})

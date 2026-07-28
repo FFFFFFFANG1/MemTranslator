@@ -36,7 +36,8 @@ Requirements:
 4. Output exactly one JSON object:
 {"utterance": "<the message>",
  "clause": "<short clause form of the rule, appendable to a request, in the persona's language>",
- "alt_clause": "<synonymous rewording of clause, different surface words>"}"""
+ "alt_clause": "<synonymous rewording of clause, different surface words>",
+ "anchor": "<ONE exact token copied from your clause that pins the rule's specific content — a number with its unit, or the most distinctive content word. It must appear verbatim in both utterance and clause. Never a generic word.>"}"""
 
 
 def utter(skeleton: dict, persona_card: dict, hook: str,
@@ -51,4 +52,5 @@ def utter(skeleton: dict, persona_card: dict, hook: str,
     return {"utterance": got["utterance"].strip(),
             "clause": got["clause"].strip(),
             "alt_clause": (got.get("alt_clause") or got["clause"]).strip(),
+            "anchor": (got.get("anchor") or "").strip(),
             "surface": surface}
