@@ -1,0 +1,167 @@
+"""Four automatic acceptance gates that replace "a human reads every line".
+
+readback is the load-bearing one: a second, BLIND flash call reconstructs the
+skeleton from the generated utterance (it never sees the original skeleton),
+and the fields are compared mechanically. It works because skeletons are
+structured — the comparison is field equality, not semantic similarity. One
+regeneration is allowed; a second mismatch drops the atom.
+
+licence gate is zero-token: content-word 5-gram intersection with the source
+must be empty and the longest common substring bounded — the generated
+sentence must not be the source sentence wearing a wig.
+
+style gate: self-instruct-anchored "does this sound like a person typing" —
+1-5, <4 regenerates, two failures drop.
+
+contamination gate rides tests/test_no_bench_contamination.py's approach:
+distinctive tokens must not appear in src/.
+"""
+import json
+import re
+from pathlib import Path
+
+from bench.gen.flash import flash_json
+
+SRC = Path(__file__).resolve().parents[2] / "src"
+
+READBACK_SYSTEM = """You read ONE user message to their AI assistant and extract the durable delivery rule it establishes, if any.
+Output exactly one JSON object:
+{"skeleton": {
+   "object": "<the named thing demanded/banned, short noun phrase>",
+   "threshold": {"value": <number>, "unit": "<unit>"} | null,
+   "order": ["<first>", "<second>"] | null,
+   "polarity": "require"|"prefer"|"avoid"|"prohibit"
+ }}
+or {"skeleton": null} when the message establishes no durable delivery rule.
+Report only what the message says — never guess a number that is not there."""
+
+STYLE_SYSTEM = """Rate how much this chat message sounds like a real person quickly typing to their AI assistant (not documentation, not a spec, not marketing).
+5 = indistinguishable from a real user; 1 = obviously synthetic/formal.
+Output exactly: {"score": <1-5>, "why": "<one short phrase>"}"""
+
+
+def readback_gate(utterance: str, skeleton: dict) -> tuple[bool, str]:
+    """Blind reconstruction, field comparison. threshold/polarity must match
+    exactly; object matches on token overlap (surface wording varies)."""
+    got = flash_json(READBACK_SYSTEM,
+                     f"Message:\n{utterance}\n\nJSON:", max_tokens=300)
+    if not isinstance(got, dict):
+        return False, "readback unparseable"
+    rb = got.get("skeleton")
+    if not rb:
+        return False, "readback found no rule"
+    want_th = skeleton.get("threshold")
+    got_th = rb.get("threshold")
+    if bool(want_th) != bool(got_th):
+        return False, "threshold presence mismatch"
+    if want_th and got_th:
+        try:
+            if float(got_th.get("value")) != float(want_th.get("value")):
+                return False, (f"threshold value {got_th.get('value')} != "
+                               f"{want_th.get('value')}")
+        except (TypeError, ValueError):
+            return False, "threshold not numeric in readback"
+    if not want_th and rb.get("polarity") != skeleton.get("polarity"):
+        # Polarity sign only carries information when there is NO threshold:
+        # "limit to at most 55" and "don't exceed 55" are the SAME demand
+        # with opposite surface polarity, and the number equality above has
+        # already pinned it. For named-object rules the sign IS the rule
+        # ("use bullets" vs "don't use bullets"), so a flip there is real.
+        pos = ("require", "prefer")
+        if (rb.get("polarity") in pos) != (skeleton.get("polarity") in pos):
+            return False, (f"polarity sign flipped: {rb.get('polarity')} vs "
+                           f"{skeleton.get('polarity')}")
+    if skeleton.get("order"):
+        if not rb.get("order"):
+            return False, "order lost"
+        if [x.lower() for x in rb["order"]] != \
+                [x.lower() for x in skeleton["order"]]:
+            return False, "order reversed or mangled"
+    return True, ""
+
+
+_WORD = re.compile(r"[a-zA-Z]{3,}|[一-鿿]")
+
+
+def _ngrams(text: str, n: int = 5) -> set:
+    words = _WORD.findall(text.lower())
+    return {tuple(words[i:i + n]) for i in range(len(words) - n + 1)}
+
+
+def _lcs_len(a: str, b: str) -> int:
+    """Longest common substring, O(len(a)*len(b)) — strings are short."""
+    if not a or not b:
+        return 0
+    prev = [0] * (len(b) + 1)
+    best = 0
+    for i in range(1, len(a) + 1):
+        cur = [0] * (len(b) + 1)
+        for j in range(1, len(b) + 1):
+            if a[i - 1] == b[j - 1]:
+                cur[j] = prev[j - 1] + 1
+                best = max(best, cur[j])
+        prev = cur
+    return best
+
+
+def licence_gate(utterance: str, source_raw: str,
+                 allowed: tuple = ()) -> tuple[bool, str]:
+    """Zero-token: no shared content-word 5-gram, LCS bounded (12 latin chars
+    / 6 CJK — approximated as 12 with CJK counting double). Named objects and
+    digits are exempt via `allowed` substrings."""
+    stripped_src = source_raw
+    stripped_utt = utterance
+    for a in allowed:
+        stripped_src = stripped_src.replace(a, " ")
+        stripped_utt = stripped_utt.replace(a, " ")
+    if _ngrams(stripped_utt) & _ngrams(stripped_src):
+        return False, "shared content 5-gram with source"
+    lcs = _lcs_len(stripped_utt.lower(), stripped_src.lower())
+    cjk = len(re.findall(r"[一-鿿]", utterance))
+    limit = 6 if cjk > len(utterance) / 3 else 12
+    if lcs > limit:
+        return False, f"LCS {lcs} > {limit}"
+    return True, ""
+
+
+def style_gate(utterance: str) -> tuple[bool, str]:
+    got = flash_json(STYLE_SYSTEM, f"Message:\n{utterance}\n\nJSON:",
+                     max_tokens=100)
+    if not isinstance(got, dict) or not isinstance(got.get("score"),
+                                                   (int, float)):
+        return False, "style rating unparseable"
+    return got["score"] >= 4, f"style {got['score']}"
+
+
+def contamination_gate(distinctive: str) -> tuple[bool, str]:
+    """The distinctive token must not exist anywhere in src/ — otherwise the
+    'memory' being tested is sitting in the product prompt."""
+    if not distinctive:
+        return True, ""
+    for p in SRC.rglob("*.py"):
+        if distinctive in p.read_text():
+            return False, f"distinctive {distinctive!r} found in {p.name}"
+    return True, ""
+
+
+def run_gates(utterance: str, skeleton: dict, source_raw: str,
+              distinctive: str = "") -> tuple[bool, list[str]]:
+    """All four; collects every failure rather than stopping at the first,
+    so a dropped atom's record says everything that was wrong with it."""
+    fails = []
+    ok, why = readback_gate(utterance, skeleton)
+    if not ok:
+        fails.append(f"readback: {why}")
+    num = skeleton.get("threshold") or {}
+    allowed = tuple(str(x) for x in (num.get("value"),
+                                     skeleton.get("object")) if x)
+    ok, why = licence_gate(utterance, source_raw, allowed)
+    if not ok:
+        fails.append(f"licence: {why}")
+    ok, why = style_gate(utterance)
+    if not ok:
+        fails.append(f"style: {why}")
+    ok, why = contamination_gate(distinctive)
+    if not ok:
+        fails.append(f"contamination: {why}")
+    return not fails, fails

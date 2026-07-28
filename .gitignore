@@ -8,3 +8,4 @@ __pycache__/
 .env
 bench/results/
 bench/gen/probes/extraction_old.py
+bench/gen/harvest/
