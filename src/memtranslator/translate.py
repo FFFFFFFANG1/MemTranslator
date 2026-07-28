@@ -78,7 +78,19 @@ def preserves_request(original: str, polished: str) -> bool:
 
 
 def _requirement_block(requirements: list[Requirement]) -> str:
-    return "\n".join(f"- [{r.id}] {r.text}" for r in requirements)
+    """Scope rides along with the text. `recall()` already drops entries whose
+    scope contradicts a KNOWN context dimension, but it keeps everything the
+    context is silent about — and until now the model was never told which of
+    those entries were conditional, so a rule the user scoped to one task read
+    exactly like a global one."""
+    lines = []
+    for r in requirements:
+        line = f"- [{r.id}] {r.text}"
+        if r.scope:
+            where = ", ".join(f"{k}={v}" for k, v in sorted(r.scope.items()))
+            line += f"  (only when {where})"
+        lines.append(line)
+    return "\n".join(lines)
 
 
 def parse_patch(raw: str) -> tuple[dict, bool]:
