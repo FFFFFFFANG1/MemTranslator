@@ -184,10 +184,21 @@ FILLER = [
 ]
 
 
-def build_store(density: int) -> list[Requirement]:
-    """Dead entries are placed oldest, which is how supersession actually
-    leaves them: any cap that takes the head of the list picks them up, any
-    cap that takes the tail does not. That asymmetry is the thing under test."""
+def build_store(density: int, layout: str = "fresh") -> list[Requirement]:
+    """Dead entries are always oldest — that is how supersession leaves them,
+    and it is why a head-taking cap picks them up while a tail-taking cap does
+    not. That asymmetry is what makes the dead-entry trap work.
+
+    `layout` decides where the LIVE rule sits, and it decides whether ranking
+    can show any value at all:
+
+      fresh  live rules newest. recency-32 always keeps them, so a ranker has
+             nothing to prove — the first M1 run used this and measured a
+             +0.00 gap, which was partly rigged by the construction.
+      aged   live rules oldest, buried under `density` newer fillers. Now the
+             tail-taking cap drops them and only a ranker that understands the
+             query can pull them back. This is where retrieval quality lives.
+    """
     reqs: list[Requirement] = []
     t = time.time() - 86_400 * 90
 
@@ -203,12 +214,16 @@ def build_store(density: int) -> list[Requirement]:
 
     for f in FACETS:                       # oldest: the superseded predecessors
         add(f.dead_text, f.key, status="retired")
+    if layout == "aged":                   # live rules buried under the filler
+        for f in FACETS:
+            add(f.live_text, f.key)
     for i in range(max(0, density - 2 * len(FACETS))):
         key, text = FILLER[i % len(FILLER)]
         add(f"{text}-{i:02d}", key)
-    for f in FACETS:                       # newest: live rule + its scope trap
+    for f in FACETS:
         add(f.oos_text, f.key, scope={"task": f.oos_task})
-        add(f.live_text, f.key)
+        if layout == "fresh":
+            add(f.live_text, f.key)
     return reqs
 
 
@@ -311,16 +326,30 @@ def summarise(rows):
     }
 
 
+def by_facet(rows, arm):
+    out = {}
+    for f in FACETS:
+        sub = [r for r in rows if r["arm"] == arm and r["facet"] == f.name]
+        if sub:
+            out[f.name] = {
+                "carry": sum(r["car_live"] for r in sub) / len(sub),
+                "live_injected": sum(r["inj_live"] for r in sub) / len(sub),
+            }
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("n", nargs="?", type=int, default=20,
                     help="probes per cell (facet x arm)")
-    ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--layout", choices=("fresh", "aged"), default="fresh",
+                    help="where the live rule sits in the store; see build_store")
     args = ap.parse_args()
 
-    store = build_store(CP06)
+    store = build_store(CP06, args.layout)
     active = [r for r in store if r.status == "active"]
-    print(f"store: {len(store)} entries, {len(active)} active, "
+    print(f"layout={args.layout}  store: {len(store)} entries, {len(active)} active, "
           f"{len(store)-len(active)} retired, RECALL_CAP={RECALL_CAP}")
 
     jobs = [(a, f, f.requests[i])
@@ -344,11 +373,21 @@ def main():
               f"{('n/a' if d is None else f'{d:.2f}'):>10} "
               f"{s['noop_rate']:6.2f}")
 
+    print("\nper-facet CARRY (live-rule injection rate in brackets) — this is "
+          "where\nkey-lexicon coverage shows up: recall() can only rank a rule "
+          "in if one of\nthe 14 roots in _KEY_LEXICON appears in the query")
+    for arm in ("real", "recency-32"):
+        bf = by_facet(rows, arm)
+        cells = "  ".join(
+            f"{k.split('.')[0]}: {v['carry']:.2f} [{v['live_injected']:.2f}]"
+            for k, v in bf.items())
+        print(f"  {arm:<11} {cells}")
+
     # dilution: the real arm at three densities
     print("\ndilution (real arm):")
     dil = {}
     for dens in DENSITIES:
-        s2 = build_store(dens)
+        s2 = build_store(dens, args.layout)
         djobs = [(f, f.requests[i]) for f in FACETS for i in range(args.n)]
         with ThreadPoolExecutor(max_workers=args.workers) as ex:
             drows = list(ex.map(lambda j: probe("real", j[0], j[1], s2), djobs))
@@ -377,9 +416,11 @@ def main():
 
     OUT.mkdir(exist_ok=True)
     stamp = time.strftime("%Y%m%d-%H%M%S")
-    path = OUT / f"M1-{stamp}.json"
+    path = OUT / f"M1-{args.layout}-{stamp}.json"
     path.write_text(json.dumps(
         {"at": stamp, "probes_per_cell": args.n, "recall_cap": RECALL_CAP,
+         "layout": args.layout,
+         "per_facet": {a: by_facet(rows, a) for a in ARMS},
          "store": {"total": len(store), "active": len(active)},
          "per_arm": per_arm,
          "dilution": {str(k): v for k, v in dil.items()},
