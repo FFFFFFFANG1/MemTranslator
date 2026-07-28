@@ -181,17 +181,58 @@ def plan(catalogue: list[dict], seed: int, prefix: str = "e01") -> dict:
             continue
         primaries.append(by_key[k][0])
     if len(primaries) < 33:
+        # Second admission pass: a chunk can run out of distinct keys (the
+        # fleet slices carry 29-35). Same-key seconds are admitted with
+        # FORCED-DISJOINT task scopes — the algebra reads disjoint boxes as
+        # INDEPENDENT, so I1/I3 stay clean by construction. Dup-pair keys are
+        # exempt: a dup pair must share its scope or it can never merge.
+        n_tasks = len(CONTEXT_POOL["tasks"])
+        for k in keys_order:
+            if len(primaries) >= 33:
+                break
+            if k in dup_keys[:2]:
+                continue
+            for cand in by_key[k][1:]:
+                if len(primaries) >= 33:
+                    break
+                # disjointness is manufactured from distinct concrete tasks,
+                # so a key can hold at most len(tasks) primaries
+                if sum(1 for p in primaries
+                       if p["coords"]["key"] == k) >= n_tasks:
+                    break
+                if cand not in primaries:
+                    primaries.append(cand)
+    if len(primaries) < 33:
         raise SystemExit(f"catalogue too thin: {len(primaries)}/33 primaries")
 
-    # --- scope assignment: 55% global, 30% single-dim, 15% two-dim
+    # --- scope assignment: 55% global, 30% single-dim, 15% two-dim.
+    # Keys appearing more than once get DISTINCT concrete tasks (disjoint
+    # boxes → INDEPENDENT); dup pairs are pinned to identical global scope
+    # (EQUAL → DUPLICATES → merge material).
+    dup_aids = {a["aid"] for pair in dup_pairs for a in pair}
+    key_counts: dict[str, int] = {}
+    for p in primaries:
+        key_counts[p["coords"]["key"]] = \
+            key_counts.get(p["coords"]["key"], 0) + 1
+    task_cycle: dict[str, int] = {}
     scopes = []
     for i, p in enumerate(primaries):
         base = {"app": ANY, "task": ANY, "code_lang": ANY, "nat_lang": ANY}
-        r = i / len(primaries)
-        if r >= 0.55:
-            base["task"] = rng.choice(CONTEXT_POOL["tasks"])
-        if r >= 0.85:
-            base["app"] = rng.choice(CONTEXT_POOL["apps"])
+        k = p["coords"]["key"]
+        if p["aid"] in dup_aids:
+            pass                                     # pinned global
+        elif key_counts[k] > 1:
+            n = task_cycle.get(k, 0)
+            if n >= len(CONTEXT_POOL["tasks"]):
+                raise SystemExit(f"key {k}: more same-key atoms than tasks")
+            base["task"] = CONTEXT_POOL["tasks"][n]
+            task_cycle[k] = n + 1
+        else:
+            r = i / len(primaries)
+            if r >= 0.55:
+                base["task"] = rng.choice(CONTEXT_POOL["tasks"])
+            if r >= 0.85:
+                base["app"] = rng.choice(CONTEXT_POOL["apps"])
         scopes.append(base)
 
     # --- effect schedule
@@ -246,10 +287,13 @@ def plan(catalogue: list[dict], seed: int, prefix: str = "e01") -> dict:
 
 
 def a_same_value(atoms: list) -> bool:
-    """Two atoms with the same key AND equivalent value → usable dup pair."""
-    v0 = atoms[0]["coords"]["value"]
-    v1 = atoms[1]["coords"]["value"]
-    return v0 == v1
+    """Two atoms with the same key, equivalent value AND the same polarity
+    sign → usable dup pair. Value equality alone admitted "prefer snake" +
+    "prohibit snake" — a CONTRADICTS pair wearing a dup pair's clothes."""
+    a, b = atoms[0]["coords"], atoms[1]["coords"]
+    pos = ("require", "prefer")
+    return a["value"] == b["value"] and \
+        (a["polarity"] in pos) == (b["polarity"] in pos)
 
 
 def main():
@@ -511,7 +555,7 @@ def _canonical_text(sk: dict) -> str:
     if th:
         parts.append(f"{th.get('value')} {th.get('unit') or ''}")
     if sk.get("order"):
-        parts.append(" before ".join(sk["order"]))
+        parts.append(" before ".join(str(x) for x in sk["order"] if x))
     return " ".join(x for x in parts if x).strip()
 
 

@@ -76,9 +76,10 @@ def _mechanical_value(sk: dict) -> dict | None:
             cmp_ = "exact"
         return {"type": "numeric", "num": float(th["value"]),
                 "unit": th.get("unit") or "", "cmp": cmp_}
-    if sk.get("order") and len(sk["order"]) == 2:
-        return {"type": "ordering", "before": sk["order"][0],
-                "after": sk["order"][1]}
+    order = sk.get("order")
+    if order and len(order) == 2 and all(isinstance(x, str) and x
+                                         for x in order):
+        return {"type": "ordering", "before": order[0], "after": order[1]}
     return None
 
 
