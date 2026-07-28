@@ -91,6 +91,9 @@ CONTEXT_POOL = {
     "tasks": ("email", "report", "code-write", "postmortem"),
 }
 
+# tasks whose output is prose — the ones a general-writing rule can govern
+PROSE_TASKS = ("email", "report", "postmortem")
+
 # domain tag → the task scope a rule from that domain actually governs.
 # general-writing maps to nothing: it stays global, which is the point of it.
 DOMAIN_TASK = {
@@ -571,7 +574,17 @@ def main():
             # catch it — the canary produced exactly that.
             scoped = [t.coords.scope["task"] for t in targets
                       if t.coords.scope["task"] != ANY]
-            task = scoped[0] if scoped else rng.choice(CONTEXT_POOL["tasks"])
+            if scoped:
+                task = scoped[0]
+            else:
+                # All targets globally scoped (general-writing). Choosing
+                # code-write here would make domain_fits_task drop every one
+                # of them, so the probe would test nothing and the gold would
+                # demand prose rules of a script. Prose targets get a prose
+                # task.
+                doms = {_domain_of(t, p) for t in targets}
+                task = ("code-write" if doms and doms <= {"code"}
+                        else rng.choice(PROSE_TASKS))
             req = _targeted_request(persona, targets, hooks, hook_i, rng, task)
             hook_i += 1
             wide = rng.random() < 0.4 and not scoped
@@ -724,6 +737,26 @@ def _pick_probe_targets(p, seq, rng):
     return [t for t in targets if t is not None][:4]
 
 
+TASK_KIND_SYSTEM = """You classify ONE work request by the kind of output it asks for.
+code-write — source code, a script, a query, a code change
+email      — a message addressed to people
+report     — a document, summary, analysis or write-up
+postmortem — an incident write-up
+Output exactly: {"kind": "<one of the four>"}"""
+
+
+def _is_task_kind(text: str, task: str) -> bool:
+    """Verify the generated request really is the kind it was asked for.
+
+    Told-the-model-twice is not the same as checked. Two rounds of the audit
+    traced gold defects to a request whose text and task label disagreed —
+    prose rules demanded of a Python script because the label said `report`.
+    One call closes the loop that two prompt revisions did not."""
+    got = flash_json(TASK_KIND_SYSTEM, f"Request:\n{text}\n\nJSON:",
+                     max_tokens=60)
+    return bool(isinstance(got, dict) and got.get("kind") == task)
+
+
 def _targeted_request(persona, targets, hooks, hook_i, rng, task) -> dict:
     """The TASK is decided by the targets' scope and handed to the generator,
     not read back from it. The canary produced a postmortem request for three
@@ -743,11 +776,17 @@ def _targeted_request(persona, targets, hooks, hook_i, rng, task) -> dict:
             text = (got or {}).get("request", "").strip()
             # a probe containing a target's anchor hands CARRY out for free
             if text and not any(t.distinctive and t.distinctive in text
-                                for t in targets):
+                                for t in targets) \
+                    and _is_task_kind(text, task):
                 return {"text": text, "task": task,
                         "app": rng.choice(CONTEXT_POOL["apps"])}
-    hook = hooks[hook_i % len(hooks)]
-    return {**hook, "task": task}
+    # Fallback: a hook of the RIGHT KIND. Returning any hook and stamping the
+    # requested task on it is how a Python-script request came to be labelled
+    # `report` — text and label disagreeing again, one layer down.
+    same = [h for h in hooks if h["task"] == task
+            and _is_task_kind(h["text"], task)]
+    pool = same or [h for h in hooks if h["task"] == task] or hooks
+    return {**pool[hook_i % len(pool)], "task": task}
 
 
 APPLIES_SYSTEM = """You judge which of a user's stored delivery rules a rewriter MUST add to ONE specific request.
