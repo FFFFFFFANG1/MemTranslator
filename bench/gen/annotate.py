@@ -36,12 +36,27 @@ bucket — apply these questions IN ORDER, first hit wins:
 5. Register and audience → "communication_style"
 6. How the agent acts while working (tools, confirmation, fidelity, channel) → "execution_policy"
 
+OWNER-CALIBRATED boundary between 3 and 4 (2026-07-28, binding): ask "does
+complying ADD A SEPARABLE CONTENT BLOCK, or does it re-render/mark content
+already present?" A demanded NEW block that would not otherwise exist
+(explanatory comments, a table of contents, a summary section) → question 3
+fires, "deliverables". A demanded marker or property ON information already
+present (units attached to numbers, a footer flagging what the diff already
+shows, capitalization, punctuation) → question 3 does NOT fire, fall through
+to question 4, "output_contract".
+
 key — pick the closest from this registry (never invent):
 {_KEYS}
 
 scope — every dimension EXPLICIT; "ANY" when the rule is not limited to that
-dimension. Only give a concrete value when the rule itself names or clearly
-implies it:
+dimension.
+OWNER-CALIBRATED rule (2026-07-28, binding): a concrete value ONLY when the
+rule itself STATES that qualifier ("python comments in English" →
+code_lang=python; "numbers in reports need units" → task=report). No stated
+qualifier → ANY on every dimension. NEVER infer a scope the user did not say.
+A qualifier these dimensions cannot express (a specific recipient, a specific
+document) stays in the rule TEXT at instance level and all dimensions stay
+ANY — do not promote an instance to its class.
 {_SCOPE_LINES}
 
 enum — only when the demand is a choice from one of these closed domains,

@@ -234,6 +234,7 @@ def main():
         text = _canonical_text(atom["skeleton"])
         c = _constraint(cid, atom, scope, text)
         meta["constraint"] = c
+        meta["atom"] = atom              # gates need skeleton + raw later
         constraints.append(c)
 
     # --- rounds: hooks, utterances, diffs, distractors, probes
@@ -266,7 +267,8 @@ def main():
                 c = node.get("constraint")
                 if e.kind in ("assert", "contradict"):
                     surface = surfaces.pop() if surfaces else "aside"
-                    u = _uttered_with_gates(c, persona, hook["text"], surface,
+                    u = _uttered_with_gates(c, node.get("atom") or {},
+                                            persona, hook["text"], surface,
                                             e.kind)
                     if u is None:
                         gate_drops += 1
@@ -382,20 +384,23 @@ def _canonical_text(sk: dict) -> str:
     return " ".join(x for x in parts if x).strip()
 
 
-def _uttered_with_gates(c, persona, hook, surface, kind):
+def _uttered_with_gates(c, atom, persona, hook, surface, kind):
     """utter → gates, one regeneration, then None (caller falls back and
-    counts it — silent fallbacks would let the corpus quietly go formal)."""
-    sk = {"trigger": c.text, "act": "", "object": c.coords.key,
-          "against": None, "threshold": _th_of(c), "order": _ord_of(c),
-          "polarity": c.coords.polarity, "subject": "you"}
+    counts it — silent fallbacks would let the corpus quietly go formal).
+
+    The REAL skeleton and the REAL source sentence go to the gates: an
+    earlier version fed a mangled skeleton (registry key as object) and the
+    provenance URL as the source text, which made readback fail spuriously
+    and the licence gate vacuously pass — the exact quiet corruption gates
+    exist to prevent."""
+    sk = atom["skeleton"]
     if kind == "contradict":
         surface = "complaint"            # supersessions read as corrections
     for _attempt in range(2):
         u = utter(sk, persona, hook, surface)
         if u is None:
             continue
-        ok, _fails = run_gates(u["utterance"], sk,
-                               c.atom.get("provenance", {}).get("url", ""),
+        ok, _fails = run_gates(u["utterance"], sk, atom.get("raw", ""),
                                c.distinctive)
         if ok:
             return u

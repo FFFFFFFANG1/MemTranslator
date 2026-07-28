@@ -53,7 +53,10 @@ def skeletonise_one(item: dict) -> dict | None:
         or bool(sk.get("object"))
     if not got.get("delivery") or not grip:
         return None
-    return {"skeleton": sk,
+    # `raw` stays in this gitignored file so the licence gate can compare the
+    # generated utterance against the true source sentence at episode-build
+    # time. It must NEVER be copied into a versioned artifact.
+    return {"skeleton": sk, "raw": item["raw"],
             "provenance": {"source": item["source"],
                            "license": item["license"], "url": item["url"],
                            "use": "skeleton-derived"}}
@@ -69,8 +72,8 @@ def main():
 
     pool = []
     for p in sorted(HARVEST.glob("*.jsonl")):
-        if p.name == "skeletons.jsonl":
-            continue
+        if p.name in ("skeletons.jsonl", "catalogue.jsonl"):
+            continue                     # pipeline outputs, not sources
         for line in p.read_text().splitlines():
             if line.strip():
                 it = json.loads(line)

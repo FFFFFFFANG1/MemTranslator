@@ -44,6 +44,7 @@ def build_one(args) -> dict | None:
         return None                     # no registry key won a vote → unusable
     return {"aid": f"atom-{n:04d}",
             "skeleton": mutated,
+            "raw": item.get("raw", ""),      # gitignored; licence gate input
             "mutation": desc,
             "coords": coords,
             "distinctive": _distinctive(mutated),
