@@ -675,9 +675,10 @@ def _targeted_request(persona, targets, hooks, hook_i, rng) -> dict:
 
 APPLIES_SYSTEM = """You judge which of a user's stored delivery rules a rewriter MUST add to ONE specific request.
 
-Include a rule only when BOTH hold:
+Include a rule only when ALL THREE hold:
 (a) it applies — a reasonable user who stated that rule would expect it honoured in the response to this request, judged by the KIND of work requested, not by shared vocabulary; AND
-(b) the request as written does NOT already state or satisfy it — if the user already said it, adding it again is redundant and the rewriter is right to leave it alone.
+(b) the request as written does NOT already state or satisfy it — if the user already said it, adding it again is redundant and the rewriter is right to leave it alone; AND
+(c) it is OPERATIVE here — the default answer to this request could plausibly violate it, and someone reading the answer could tell whether it was honoured. A rule the output would satisfy anyway (no emoji in a Python script, no legal citations in a commit message) is vacuous for this request: adding it is noise, not memory.
 
 Exclude a rule when it is about WHAT to say rather than HOW to deliver (topics, opinions, values, safety, persona), when it is vacuous, or when it is garbled and you cannot tell what compliance would look like.
 Output exactly: {"applies": [<number>, ...]} (possibly empty). Numbers only from the list."""
@@ -729,16 +730,19 @@ def _cap_should_fire(cids: set, by_cid: dict) -> set:
     that matter; that is what this measures.
 
     Ranking: operative anchors first (a number must appear for compliance to
-    be visible at all), then hard binding, then the shortest clause — brevity
-    correlates with the rule being a single crisp demand rather than a
-    typographic aside."""
+    be visible at all), then hard binding, then the LONGEST clause. Brevity
+    was the first tie-breaker and it was backwards — the shortest clause in a
+    catalogue is a blanket aside like "以后都别用emoji", which won three
+    slots in the canary audit and was adjudicated vacuous every time. A rule
+    that names its object and its condition is longer, and it is the one
+    worth surfacing."""
     def rank(cid):
         c = by_cid[cid]
         text = c.clause or c.text
         binding = getattr(c.coords, "binding", "")
         return (0 if (c.distinctive or "").isdigit() else 1,
                 0 if binding == "hard" else 1,
-                len(text))
+                -len(text))
     return set(sorted(cids, key=rank)[:SHOULD_FIRE_CAP])
 
 
