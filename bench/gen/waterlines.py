@@ -26,7 +26,9 @@ def fold(path: Path) -> dict | None:
     if not m:
         return None
     d = json.loads(path.read_text())
-    results = d["results"] if isinstance(d, dict) else d
+    results = d.get("results") if isinstance(d, dict) else d
+    if not results:
+        return None          # experiment snapshots (M1) are not suite runs
     cases = {}
     for r in results:
         # E carries a continuous score; T and L are binary
