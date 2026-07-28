@@ -139,10 +139,14 @@ def _content_jaccard(a: str, b: str) -> float:
 
 def check_i10(constraints) -> list[str]:
     """Semantic-neighbour gate: textually near but graph-INDEPENDENT pairs
-    are exactly what a key split produces. Cheap, and it catches the failure
-    I4 was structurally blind to."""
+    are exactly what a KEY SPLIT produces. Same-key pairs are exempt — a
+    same-key pair that reads INDEPENDENT got there through deliberately
+    disjoint scopes (the fleet's manufactured-disjointness admission), which
+    is intended construction, not a lost edge."""
     errs = []
     for a, b in _pairs(constraints):
+        if a.coords.key == b.coords.key:
+            continue
         if relate(a, b) == INDEPENDENT \
                 and _content_jaccard(a.text, b.text) >= I10_JACCARD:
             errs.append(f"I10: {a.cid} / {b.cid} textually near "

@@ -1,0 +1,3852 @@
+{
+ "id": "e-05",
+ "schema_version": "E1",
+ "seed": 46,
+ "protocol_version": 2,
+ "persona": {
+  "id": "techwriter-en",
+  "who": "technical writer maintaining developer docs",
+  "lang": "en",
+  "register": "precise but casual in chat",
+  "domain": "docs",
+  "quirks": "quotes style guides from memory"
+ },
+ "catalogue": [
+  {
+   "cid": "e05-c00",
+   "text": "when listing skills include general skills that are neutral or common to many jobs 14 items",
+   "clause": "when listing skills include general skills that are neutral or common to many jobs 14 items",
+   "alt_clause": "when listing skills include general skills that are neutral or common to many jobs 14 items",
+   "distinctive": "14",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 14.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 5 -> 14"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c01",
+   "text": "when generating a list include 10 items 23 items",
+   "clause": "when generating a list include 10 items 23 items",
+   "alt_clause": "when generating a list include 10 items 23 items",
+   "distinctive": "10",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 23.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 10 -> 23"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c02",
+   "text": "when writing paragraphs inside a block comment separate paragraphs",
+   "clause": "when writing paragraphs inside a block comment separate paragraphs",
+   "alt_clause": "when writing paragraphs inside a block comment separate paragraphs",
+   "distinctive": "paragraphs",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.lists",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "paragraphs"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c03",
+   "text": "when writing narrative maintain suspense",
+   "clause": "no suspense in narrative",
+   "alt_clause": "keep it dry and factual, no storytelling",
+   "distinctive": "suspense",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "style.voice",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "suspense"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c04",
+   "text": "when using wiki-style links encourage double square brackets [[",
+   "clause": "use double square brackets [[ for wiki-style links, not single brackets [",
+   "alt_clause": "always go with [[ for links, never [",
+   "distinctive": "brackets",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.markdown",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "double square brackets [["
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c05",
+   "text": "when writing comprehensions or generator expressions use comprehensions and generator expressions 16 items",
+   "clause": "when writing comprehensions or generator expressions use comprehensions and generator expressions 16 items",
+   "alt_clause": "when writing comprehensions or generator expressions use comprehensions and generator expressions 16 items",
+   "distinctive": "16",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.naming",
+    "polarity": "prefer",
+    "binding": "soft",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 1 -> 16"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c06",
+   "text": "when using a trailing backslash use trailing backslash 22 items",
+   "clause": "when using a trailing backslash use trailing backslash 22 items",
+   "alt_clause": "when using a trailing backslash use trailing backslash 22 items",
+   "distinctive": "22",
+   "coords": {
+    "bucket": "execution_policy",
+    "key": "workflow.tools",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 22.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 0 -> 22"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c07",
+   "text": "when writing a file include top-level comment with brief overview",
+   "clause": "no top-level overview comment",
+   "alt_clause": "don't include a brief summary comment at the top",
+   "distinctive": "top-level overview comment",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "code.comments",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "top-level comment with brief overview"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c08",
+   "text": "when writing a table separate columns",
+   "clause": "no separating columns with lines",
+   "alt_clause": "don't put vertical lines between columns",
+   "distinctive": "columns",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.tables",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "columns"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c09",
+   "text": "when writing one liner docstrings keep closing triple quotes",
+   "clause": "when writing one liner docstrings keep closing triple quotes",
+   "alt_clause": "when writing one liner docstrings keep closing triple quotes",
+   "distinctive": "quotes",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.code_blocks",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "closing triple quotes"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c10",
+   "text": "when referring to the European Commission write out in full European Commission 16 mentions full name before abbreviation 'the Commission'",
+   "clause": "when referring to the European Commission write out in full European Commission 16 mentions full name before abbreviation 'the Commission'",
+   "alt_clause": "when referring to the European Commission write out in full European Commission 16 mentions full name before abbreviation 'the Commission'",
+   "distinctive": "16",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "language.terminology",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "mentions",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 1 -> 16"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c11",
+   "text": "when generating an outline for a drama denote three-act structure",
+   "clause": "from now on, when generating an outline for a drama, don't denote the three-act structure",
+   "alt_clause": "never mark the three-act structure when outlining a drama from now on",
+   "distinctive": "three-act structure",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "research.task_verb",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "verb",
+     "val": "generate",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c12",
+   "text": "when writing shell code avoid brace-delimiting single character shell specials / positional parameters",
+   "clause": "when writing shell code, avoid braces around single character specials",
+   "alt_clause": "for shell code, don't wrap single char positional params in braces",
+   "distinctive": "single character specials",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.error_handling",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "single character shell specials / positional parameters"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c13",
+   "text": "when referring to the programme itself use initial capitals or abbreviation",
+   "clause": "when referring to the programme itself use initial capitals or abbreviation",
+   "alt_clause": "when referring to the programme itself use initial capitals or abbreviation",
+   "distinctive": "abbreviation",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.emphasis",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "initial capitals or abbreviation"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c14",
+   "text": "when writing about large numbers of people use billions in phrases",
+   "clause": "don't use billions in phrases",
+   "alt_clause": "avoid vague large-number phrases like 'billions'",
+   "distinctive": "billions",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "analysis.units",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "billions in phrases"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c15",
+   "text": "when writing a document use a single H1 heading 16 items",
+   "clause": "when writing a document use a single H1 heading 16 items",
+   "alt_clause": "when writing a document use a single H1 heading 16 items",
+   "distinctive": "16",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.headings",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 1 -> 16"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c16",
+   "text": "when citing naming conventions cite source of naming conventions",
+   "clause": "when citing naming conventions cite source of naming conventions",
+   "alt_clause": "when citing naming conventions cite source of naming conventions",
+   "distinctive": "conventions",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "evidence.sources",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "source of naming conventions"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c17",
+   "text": "in her dialogue use playful feigned innocence",
+   "clause": "in her dialogue use playful feigned innocence",
+   "alt_clause": "in her dialogue use playful feigned innocence",
+   "distinctive": "innocence",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "tone.register",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "register",
+     "val": "formal",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c18",
+   "text": "when reverting code consider complexity of reverting multiple commits",
+   "clause": "when reverting code consider complexity of reverting multiple commits",
+   "alt_clause": "when reverting code consider complexity of reverting multiple commits",
+   "distinctive": "commits",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "workflow.scope_of_change",
+    "polarity": "avoid",
+    "binding": "soft",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "complexity of reverting multiple commits"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "conventional-commits",
+     "license": "CC-BY-3.0",
+     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c19",
+   "text": "when writing commit footers follow git trailer format convention",
+   "clause": "when writing commit footers, avoid the git trailer format convention",
+   "alt_clause": "for commit footers, don't use the git trailer format",
+   "distinctive": "git trailer format convention",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "commit.style",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "git trailer format convention"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "conventional-commits",
+     "license": "CC-BY-3.0",
+     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c20",
+   "text": "when including an explanation in JSON include explanation of choices",
+   "clause": "don't include explanation of choices in JSON",
+   "alt_clause": "never put an explanation of choices key in JSON output",
+   "distinctive": "explanation of choices",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "code.explanation",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "explanation of choices"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c21",
+   "text": "when evaluating generated text check if list of phrases",
+   "clause": "when evaluating generated text check if list of phrases",
+   "alt_clause": "when evaluating generated text check if list of phrases",
+   "distinctive": "phrases",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "workflow.verification",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "list of phrases"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c22",
+   "text": "when evaluating a sentence after applying suggestions check grammatical correctness",
+   "clause": "do not check grammatical correctness",
+   "alt_clause": "skip any grammar evaluation",
+   "distinctive": "grammatical correctness",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "explanation.steps",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "grammatical correctness"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c23",
+   "text": "when wrapping code avoid default wrapping",
+   "clause": "when wrapping code avoid default wrapping",
+   "alt_clause": "when wrapping code avoid default wrapping",
+   "distinctive": "wrapping",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "workflow.fidelity",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "default wrapping"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c24",
+   "text": "when summarizing in generated text compose summarization 17 sentences",
+   "clause": "when summarizing in generated text compose summarization 17 sentences",
+   "alt_clause": "when summarizing in generated text compose summarization 17 sentences",
+   "distinctive": "17",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "summary.length",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 17.0,
+     "unit": "sentences",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 2 -> 17"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c25",
+   "text": "when writing an archaeological site report not exceed word count 559 words",
+   "clause": "when writing an archaeological site report not exceed word count 559 words",
+   "alt_clause": "when writing an archaeological site report not exceed word count 559 words",
+   "distinctive": "559",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "report.length",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 559.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 400 -> 559"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c26",
+   "text": "when evaluating generated text check list of products",
+   "clause": "when evaluating generated text check list of products",
+   "alt_clause": "when evaluating generated text check list of products",
+   "distinctive": "products",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "research.comparison",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "verb",
+     "val": "evaluate",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c27",
+   "text": "when writing shell scripts avoid striving for POSIX-compatibility",
+   "clause": "when writing shell scripts avoid striving for POSIX-compatibility",
+   "alt_clause": "when writing shell scripts avoid striving for POSIX-compatibility",
+   "distinctive": "compatibility",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.language",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "striving for POSIX-compatibility"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c28",
+   "text": "when generating text ensure first list word count 18 words",
+   "clause": "when generating text ensure first list word count 18 words",
+   "alt_clause": "when generating text ensure first list word count 18 words",
+   "distinctive": "18",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.min",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 18.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 6 -> 18"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c29",
+   "text": "when generating a prologue keep length 111 words",
+   "clause": "keep prologues to exactly 111 words",
+   "alt_clause": "limit each prologue to 111 words maximum",
+   "distinctive": "111",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.length",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 111.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "editor",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 150 -> 111"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c30",
+   "text": "when ordering versions place latest version older versions before latest version",
+   "clause": "when ordering versions place latest version older versions before latest version",
+   "alt_clause": "when ordering versions place latest version older versions before latest version",
+   "distinctive": "version",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "review.ordering",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "ordering",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "older versions",
+     "after": "latest version"
+    },
+    "scope": {
+     "app": "email-client",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "keep-a-changelog",
+     "license": "MIT",
+     "url": "https://keepachangelog.com/en/1.1.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "order swapped: latest version<->older versions"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c31",
+   "text": "when using arithmetic operators use better judgment for insertion of spaces around arithmetic operators",
+   "clause": "when using arithmetic operators use better judgment for insertion of spaces around arithmetic operators",
+   "alt_clause": "when using arithmetic operators use better judgment for insertion of spaces around arithmetic operators",
+   "distinctive": "operators",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.line_width",
+    "polarity": "avoid",
+    "binding": "soft",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "arithmetic operators"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "email-client",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-c32",
+   "text": "when writing a paper or article incorporate quotes with in-text citations 16 items",
+   "clause": "when writing a paper or article incorporate quotes with in-text citations 16 items",
+   "alt_clause": "when writing a paper or article incorporate quotes with in-text citations 16 items",
+   "distinctive": "16",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "citation.count",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "slack",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 4 -> 16"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e05-s00",
+   "text": "when generating a prologue keep length 181 words",
+   "clause": "keep prologues under 181 words",
+   "alt_clause": "prologues must not exceed 181 words",
+   "distinctive": "181",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.length",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 111.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "editor",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 111 -> 181"
+   },
+   "anchor_weak": false,
+   "successor_of": "e05-c29"
+  },
+  {
+   "cid": "e05-s01",
+   "text": "when generating text ensure first list word count 11 words",
+   "clause": "keep the first list word count to 11 words max",
+   "alt_clause": "limit the first item in any list to 11 words",
+   "distinctive": "11",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.min",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 18.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 18 -> 11"
+   },
+   "anchor_weak": false,
+   "successor_of": "e05-c28"
+  },
+  {
+   "cid": "e05-s02",
+   "text": "when wrapping code avoid default wrapping",
+   "clause": "avoid default wrapping when wrapping code",
+   "alt_clause": "don't use the default wrapping on code blocks",
+   "distinctive": "default wrapping",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "workflow.fidelity",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "default wrapping"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": "e05-c23"
+  },
+  {
+   "cid": "e05-s03",
+   "text": "when writing an archaeological site report not exceed word count 698 words",
+   "clause": "when writing an archaeological site report not exceed word count 698 words",
+   "alt_clause": "when writing an archaeological site report not exceed word count 698 words",
+   "distinctive": "698",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "report.length",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 559.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 559 -> 698"
+   },
+   "anchor_weak": false,
+   "successor_of": "e05-c25"
+  },
+  {
+   "cid": "e05-s04",
+   "text": "when writing a paper or article incorporate quotes with in-text citations 14 items",
+   "clause": "when writing a paper or article incorporate quotes with in-text citations 14 items",
+   "alt_clause": "when writing a paper or article incorporate quotes with in-text citations 14 items",
+   "distinctive": "14",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "citation.count",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "slack",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 16 -> 14"
+   },
+   "anchor_weak": false,
+   "successor_of": "e05-c32"
+  },
+  {
+   "cid": "e05-s05",
+   "text": "when writing comprehensions or generator expressions use comprehensions and generator expressions 21 items",
+   "clause": "when writing comprehensions or generator expressions use comprehensions and generator expressions 21 items",
+   "alt_clause": "when writing comprehensions or generator expressions use comprehensions and generator expressions 21 items",
+   "distinctive": "21",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.naming",
+    "polarity": "prefer",
+    "binding": "soft",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 16 -> 21"
+   },
+   "anchor_weak": false,
+   "successor_of": "e05-c05"
+  },
+  {
+   "cid": "e05-s06",
+   "text": "when using a trailing backslash use trailing backslash 19 items",
+   "clause": "when using a trailing backslash use trailing backslash 19 items",
+   "alt_clause": "when using a trailing backslash use trailing backslash 19 items",
+   "distinctive": "19",
+   "coords": {
+    "bucket": "execution_policy",
+    "key": "workflow.tools",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 22.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 22 -> 19"
+   },
+   "anchor_weak": false,
+   "successor_of": "e05-c06"
+  }
+ ],
+ "effects": [
+  {
+   "seq": 2,
+   "kind": "assert",
+   "cid": "e05-c00",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 3,
+   "kind": "assert",
+   "cid": "e05-c01",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 4,
+   "kind": "assert",
+   "cid": "e05-c02",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 4,
+   "kind": "assert",
+   "cid": "e05-c03",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 6,
+   "kind": "assert",
+   "cid": "e05-c04",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 7,
+   "kind": "assert",
+   "cid": "e05-c05",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 7,
+   "kind": "assert",
+   "cid": "e05-c06",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 8,
+   "kind": "assert",
+   "cid": "e05-c07",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 9,
+   "kind": "assert",
+   "cid": "e05-c08",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 9,
+   "kind": "assert",
+   "cid": "e05-c09",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 11,
+   "kind": "assert",
+   "cid": "e05-c10",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 12,
+   "kind": "assert",
+   "cid": "e05-c11",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 12,
+   "kind": "assert",
+   "cid": "e05-c12",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 13,
+   "kind": "assert",
+   "cid": "e05-c13",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 14,
+   "kind": "assert",
+   "cid": "e05-c14",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 14,
+   "kind": "assert",
+   "cid": "e05-c15",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 16,
+   "kind": "assert",
+   "cid": "e05-c16",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 17,
+   "kind": "assert",
+   "cid": "e05-c17",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 17,
+   "kind": "assert",
+   "cid": "e05-c18",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 18,
+   "kind": "assert",
+   "cid": "e05-c19",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 19,
+   "kind": "assert",
+   "cid": "e05-c20",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 19,
+   "kind": "assert",
+   "cid": "e05-c21",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 21,
+   "kind": "assert",
+   "cid": "e05-c22",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 22,
+   "kind": "assert",
+   "cid": "e05-c23",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 22,
+   "kind": "assert",
+   "cid": "e05-c24",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 23,
+   "kind": "assert",
+   "cid": "e05-c25",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 32,
+   "kind": "assert",
+   "cid": "e05-c26",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 32,
+   "kind": "assert",
+   "cid": "e05-c27",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 33,
+   "kind": "assert",
+   "cid": "e05-c28",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 34,
+   "kind": "assert",
+   "cid": "e05-c29",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 34,
+   "kind": "assert",
+   "cid": "e05-c30",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 36,
+   "kind": "assert",
+   "cid": "e05-c31",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 37,
+   "kind": "assert",
+   "cid": "e05-c32",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 41,
+   "kind": "contradict",
+   "cid": "e05-s00",
+   "target": "e05-c29",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 42,
+   "kind": "contradict",
+   "cid": "e05-s01",
+   "target": "e05-c28",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 43,
+   "kind": "contradict",
+   "cid": "e05-s02",
+   "target": "e05-c23",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 45,
+   "kind": "contradict",
+   "cid": "e05-s03",
+   "target": "e05-c25",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 46,
+   "kind": "contradict",
+   "cid": "e05-s04",
+   "target": "e05-c32",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 47,
+   "kind": "contradict",
+   "cid": "e05-s05",
+   "target": "e05-c05",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 49,
+   "kind": "contradict",
+   "cid": "e05-s06",
+   "target": "e05-c06",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 50,
+   "kind": "retire",
+   "cid": "",
+   "target": "e05-c01",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 51,
+   "kind": "retire",
+   "cid": "",
+   "target": "e05-c19",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 53,
+   "kind": "retire",
+   "cid": "",
+   "target": "e05-c10",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 54,
+   "kind": "retire",
+   "cid": "",
+   "target": "e05-c04",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 55,
+   "kind": "retire",
+   "cid": "",
+   "target": "e05-c17",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 57,
+   "kind": "retire",
+   "cid": "",
+   "target": "e05-c15",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 58,
+   "kind": "retire",
+   "cid": "",
+   "target": "e05-c00",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 41,
+   "kind": "retire",
+   "cid": "",
+   "target": "e05-c27",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 42,
+   "kind": "retire",
+   "cid": "",
+   "target": "e05-c24",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 43,
+   "kind": "retire",
+   "cid": "",
+   "target": "e05-c08",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 45,
+   "kind": "retire",
+   "cid": "",
+   "target": "e05-c13",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 15,
+   "kind": "reinforce",
+   "cid": "",
+   "target": "e05-c11",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 33,
+   "kind": "reinforce",
+   "cid": "",
+   "target": "e05-c21",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 38,
+   "kind": "reinforce",
+   "cid": "",
+   "target": "e05-c20",
+   "targets": [],
+   "delta": 0
+  }
+ ],
+ "rounds": [
+  {
+   "seq": 1,
+   "type": "N",
+   "text": "推荐工具的时候优先开源的啊，闭源的我们过不了审",
+   "context": {},
+   "distractor_kind": "content-preference",
+   "effects": []
+  },
+  {
+   "seq": 2,
+   "type": "C",
+   "text": "Hey, can you draft a short email to the API team asking for clarification on the new rate limit headers? I need to update the docs but the docs say 'X-RateLimit-Remaining' and the response looks like it's using a different key now.。when listing skills include general skills that are neutral or common to many jobs 14 items",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 2,
+     "kind": "assert",
+     "cid": "e05-c00",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 3,
+   "type": "C",
+   "text": "Can you pull together a quick report on the most common API errors we've seen this month, with the frequency counts and a short description of each?。when generating a list include 10 items 23 items",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 3,
+     "kind": "assert",
+     "cid": "e05-c01",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 4,
+   "type": "C",
+   "text": "write a Python function that takes a list of dicts and a key, and returns a new list sorted by that key's value, with missing keys treated as 0。when writing paragraphs inside a block comment separate paragraphs。Hey, that last function you wrote for the sorted list thing was okay, but the docstring you added was way too dramatic. You literally wrote 'the suspense builds as the list awaits its ordering' — that's not helpful for a developer API. Keep it dry and factual, please. No suspense, no narrative flair. Just the facts.",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 4,
+     "kind": "assert",
+     "cid": "e05-c02",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 4,
+     "kind": "assert",
+     "cid": "e05-c03",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 5,
+   "type": "R",
+   "text": "Draft a changelog entry for the new API rate‑limiting endpoint. Keep it factual, no buildup.",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e05-c00",
+    "e05-c03"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c01",
+    "e05-c02",
+    "e05-c03"
+   ],
+   "should_fire": [
+    "e05-c03"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 6,
+   "type": "C",
+   "text": "Hey, can you draft a short email to the dev team about the new API endpoint docs being ready for review on the staging site? Keep it casual but clear.。Hey, that last output used single square brackets [like this] for a link. That's a no-go per the Google style guide — we always use double square brackets [[like this]] for wiki-style links. Can you please fix that? Also, while you're at it, can you draft a short email to the dev team about the new API endpoint docs being ready for review on the staging site? Keep it casual but clear.",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 6,
+     "kind": "assert",
+     "cid": "e05-c04",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 7,
+   "type": "S",
+   "text": "when writing comprehensions or generator expressions use comprehensions and generator expressions 16 items，when using a trailing backslash use trailing backslash 22 items",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 7,
+     "kind": "assert",
+     "cid": "e05-c05",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 7,
+     "kind": "assert",
+     "cid": "e05-c06",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 8,
+   "type": "C",
+   "text": "Hey, can you write a quick Python function that takes a GitHub repo URL and returns the repo name and owner? I need it for a doc snippet.。Hey, that function you just wrote for the repo URL — it had a big comment block at the top with a summary. I don't want that. Per the Google style guide, we keep comments minimal in snippet code. So please, no top-level overview comments from now on. Can you rewrite it clean?",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 8,
+     "kind": "assert",
+     "cid": "e05-c07",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 9,
+   "type": "S",
+   "text": "Hey, that table you wrote for the postmortem looks okay, but the columns are all merged together. Can you please not separate columns with lines? I know the Microsoft Manual of Style says to keep tables clean, but merging columns like that makes it hard to scan. Stick to plain columns without vertical lines, okay?，when writing one liner docstrings keep closing triple quotes",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 9,
+     "kind": "assert",
+     "cid": "e05-c08",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 9,
+     "kind": "assert",
+     "cid": "e05-c09",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 10,
+   "type": "R",
+   "text": "Can you draft a block comment for the config parser module explaining how the fallback logic works? Use a paragraph inside the comment.",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e05-c02",
+    "e05-c06"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c01",
+    "e05-c02",
+    "e05-c03",
+    "e05-c04",
+    "e05-c05",
+    "e05-c06",
+    "e05-c07",
+    "e05-c08",
+    "e05-c09"
+   ],
+   "should_fire": [
+    "e05-c02"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 11,
+   "type": "S",
+   "text": "when referring to the European Commission write out in full European Commission 16 mentions full name before abbreviation 'the Commission'",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 11,
+     "kind": "assert",
+     "cid": "e05-c10",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 12,
+   "type": "C",
+   "text": "Write a Python function that takes a list of Markdown headings and returns a structured table of contents as a nested dictionary, with each heading's level inferred from the number of `#` symbols.。Hey, also — from now on, when you're generating an outline for a drama, don't denote the three-act structure. I've seen too many templates that force it, and it's not always relevant. For the current task, write a Python function that takes a list of Markdown headings and returns a structured table of contents as a nested dictionary, with each heading's level inferred from the number of `#` symbols.。Hey, while you're at it, could you write a Python function that takes a list of Markdown headings and returns a structured table of contents as a nested dictionary, with each heading's level inferred from the number of `#` symbols? Also, one thing: when writing shell code, don't use braces around single character specials like $1, $2, etc. The POSIX spec says they're only needed for multi-character parameters, and it's a common style guide rule.",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 12,
+     "kind": "assert",
+     "cid": "e05-c11",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 12,
+     "kind": "assert",
+     "cid": "e05-c12",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 13,
+   "type": "S",
+   "text": "when referring to the programme itself use initial capitals or abbreviation",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 13,
+     "kind": "assert",
+     "cid": "e05-c13",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 14,
+   "type": "C",
+   "text": "Hey, draft an email to the dev team asking them to review the new API endpoint docs before the Friday release. Keep it short and reference the Google Developer Documentation Style Guide for the tone.。Hey, that email draft you just sent — it's fine, but you used 'billions of users' twice. That's way too vague. The Google Developer Documentation Style Guide says to avoid vague large-number phrases like 'billions' or 'millions' because they're meaningless and can mislead. Can you rewrite it without that? And for future reference, just don't use 'billions in phrases' at all, okay?。when writing a document use a single H1 heading 16 items",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 14,
+     "kind": "assert",
+     "cid": "e05-c14",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 14,
+     "kind": "assert",
+     "cid": "e05-c15",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 15,
+   "type": "S",
+   "text": "对了，from now on, when generating an outline for a drama, don't denote the three-act structure这条继续保持啊",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 15,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e05-c11",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 16,
+   "type": "C",
+   "text": "Hey, can you write a Python function that takes a list of dictionaries and returns a Markdown table string? Each dict should map to a row, keys become headers. Keep it clean and PEP 8-friendly please.。when citing naming conventions cite source of naming conventions",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 16,
+     "kind": "assert",
+     "cid": "e05-c16",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 17,
+   "type": "C",
+   "text": "Hey, can you draft a postmortem for the API outage last Tuesday? I'll fill in the timeline and root cause, just need the structure and a template for the lessons learned section.。in her dialogue use playful feigned innocence。when reverting code consider complexity of reverting multiple commits",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 17,
+     "kind": "assert",
+     "cid": "e05-c17",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 17,
+     "kind": "assert",
+     "cid": "e05-c18",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 18,
+   "type": "C",
+   "text": "Hey, could you draft a short email to the Dev team reminding them to add inline comments to their API code before the next release? Copy's from the Google style guide on self-documenting code.。Hey, also — from now on, when you write commit footers, please avoid the git trailer format convention. I keep having to fix them in the changelog. Anyway, could you draft a short email to the Dev team reminding them to add inline comments to their API code before the next release? Copy's from the Google style guide on self-documenting code.",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 18,
+     "kind": "assert",
+     "cid": "e05-c19",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 19,
+   "type": "C",
+   "text": "Can you run a quick check on the API reference for the auth endpoints? I need a report on any missing or inconsistent parameter descriptions, especially around the token refresh flow.。Hey, one more thing: from now on, when you're outputting JSON, don't include an 'explanation of choices' field. I've seen that creeping into recent responses and it's not part of our spec. The Chicago Manual of Style would say 'omit needless words' — and that goes double for extra keys in structured data. Can you run a quick check on the API reference for the auth endpoints? I need a report on any missing or inconsistent parameter descriptions, especially around the token refresh flow.。when evaluating generated text check if list of phrases",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 19,
+     "kind": "assert",
+     "cid": "e05-c20",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 19,
+     "kind": "assert",
+     "cid": "e05-c21",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 20,
+   "type": "R",
+   "text": "write a bash script that checks if a given file path exists and is readable, then prints its size in human-readable format; exit with non-zero if not found or not readable.",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e05-c18",
+    "e05-c08"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c01",
+    "e05-c02",
+    "e05-c03",
+    "e05-c04",
+    "e05-c05",
+    "e05-c06",
+    "e05-c07",
+    "e05-c08",
+    "e05-c09",
+    "e05-c10",
+    "e05-c11",
+    "e05-c12",
+    "e05-c13",
+    "e05-c14",
+    "e05-c15",
+    "e05-c16",
+    "e05-c17",
+    "e05-c18"
+   ],
+   "should_fire": [
+    "e05-c12"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 21,
+   "type": "C",
+   "text": "hey, can you draft a postmortem for the API outage last tuesday? i'll fill in the details, just need the skeleton with sections for timeline, root cause, impact, and action items.。hey, that last draft you sent had a couple of grammar hiccups — nothing major, but it bugs me. can you please not run a grammar check on my sentences? i know the style guides, i'm fine. just draft the postmortem skeleton for the API outage last tuesday, with timeline, root cause, impact, and action items.",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 21,
+     "kind": "assert",
+     "cid": "e05-c22",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 22,
+   "type": "S",
+   "text": "when wrapping code avoid default wrapping，when summarizing in generated text compose summarization 17 sentences",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 22,
+     "kind": "assert",
+     "cid": "e05-c23",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 22,
+     "kind": "assert",
+     "cid": "e05-c24",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 23,
+   "type": "C",
+   "text": "Hey, can you pull together a quick report on all the API endpoints we've deprecated in the last quarter? I need the endpoint path, the deprecation date, and the suggested replacement if we have one. Format it as a table, and check the Google Developer Documentation Style Guide for the preferred deprecation notice wording — I think it's 'Deprecated' with a date, but double-check me.。when writing an archaeological site report not exceed word count 559 words",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 23,
+     "kind": "assert",
+     "cid": "e05-c25",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 24,
+   "type": "R",
+   "text": "Draft the release notes for v3.2.1, focusing on the bug fixes in the auth module and the new rate-limiting endpoint. Keep it in our standard changelog format.",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e05-c25",
+    "e05-c19"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c01",
+    "e05-c02",
+    "e05-c03",
+    "e05-c04",
+    "e05-c05",
+    "e05-c06",
+    "e05-c07",
+    "e05-c08",
+    "e05-c09",
+    "e05-c10",
+    "e05-c11",
+    "e05-c12",
+    "e05-c13",
+    "e05-c14",
+    "e05-c15",
+    "e05-c16",
+    "e05-c17",
+    "e05-c18",
+    "e05-c22",
+    "e05-c23"
+   ],
+   "should_fire": [
+    "e05-c15"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 25,
+   "type": "R",
+   "text": "hey, draft a release note for the new auth flow, keep it tight and consistent with the Google Developer Style Guide",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e05-c14",
+    "e05-c08"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c01",
+    "e05-c02",
+    "e05-c03",
+    "e05-c04",
+    "e05-c05",
+    "e05-c06",
+    "e05-c07",
+    "e05-c08",
+    "e05-c09",
+    "e05-c10",
+    "e05-c11",
+    "e05-c12",
+    "e05-c13",
+    "e05-c14",
+    "e05-c15",
+    "e05-c16",
+    "e05-c17",
+    "e05-c18",
+    "e05-c19",
+    "e05-c20",
+    "e05-c21",
+    "e05-c22",
+    "e05-c23",
+    "e05-c24",
+    "e05-c25"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 26,
+   "type": "N",
+   "text": "这次这份写详细一点，季度 review 要用",
+   "context": {},
+   "distractor_kind": "one-off",
+   "effects": []
+  },
+  {
+   "seq": 27,
+   "type": "N",
+   "text": "先把日志按天切开再统计，别一把梭",
+   "context": {},
+   "distractor_kind": "task-step",
+   "effects": []
+  },
+  {
+   "seq": 28,
+   "type": "R",
+   "text": "Can you draft a changelog summary for the v3.2.1 release? Include the fixes for the auth timeout bug and the new pagination endpoint.",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e05-c24",
+    "e05-c11"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c01",
+    "e05-c02",
+    "e05-c03",
+    "e05-c04",
+    "e05-c05",
+    "e05-c06",
+    "e05-c07",
+    "e05-c08",
+    "e05-c09",
+    "e05-c10",
+    "e05-c11",
+    "e05-c12",
+    "e05-c13",
+    "e05-c14",
+    "e05-c15",
+    "e05-c16",
+    "e05-c17",
+    "e05-c18",
+    "e05-c19",
+    "e05-c20",
+    "e05-c21",
+    "e05-c22",
+    "e05-c23",
+    "e05-c24",
+    "e05-c25"
+   ],
+   "should_fire": [
+    "e05-c24"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 29,
+   "type": "N",
+   "text": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」",
+   "context": {},
+   "distractor_kind": "pasted-material",
+   "effects": []
+  },
+  {
+   "seq": 30,
+   "type": "R",
+   "text": "Write a quick reference card for our new CLI tool, listing the ten most common commands with their flags and a short example for each.",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e05-c04",
+    "e05-c12"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c01",
+    "e05-c02",
+    "e05-c03",
+    "e05-c04",
+    "e05-c05",
+    "e05-c06",
+    "e05-c07",
+    "e05-c08",
+    "e05-c09",
+    "e05-c10",
+    "e05-c11",
+    "e05-c12",
+    "e05-c13",
+    "e05-c14",
+    "e05-c15",
+    "e05-c16",
+    "e05-c17",
+    "e05-c18",
+    "e05-c22",
+    "e05-c23"
+   ],
+   "should_fire": [
+    "e05-c01",
+    "e05-c15"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 31,
+   "type": "N",
+   "text": "我老板要求他们组的周报全用 bullet，真够呛",
+   "context": {},
+   "distractor_kind": "third-party-obligation",
+   "effects": []
+  },
+  {
+   "seq": 32,
+   "type": "S",
+   "text": "when evaluating generated text check list of products，when writing shell scripts avoid striving for POSIX-compatibility",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 32,
+     "kind": "assert",
+     "cid": "e05-c26",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 32,
+     "kind": "assert",
+     "cid": "e05-c27",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 33,
+   "type": "C",
+   "text": "hey, can you draft a postmortem for the API rate limit outage we had on Tuesday? include the timeline, root cause, and action items.。when generating text ensure first list word count 18 words。对了，when evaluating generated text check if list of phrases这条继续保持啊",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 33,
+     "kind": "assert",
+     "cid": "e05-c28",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 33,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e05-c21",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 34,
+   "type": "S",
+   "text": "Hey, quick one: from now on, when you're writing a prologue for any doc section, keep it to exactly 111 words. I'm serious—I've been trimming your last three intros and they keep ballooning. The Chicago Manual says 'a prologue should be a single breath,' and 111 words is that breath. Anyway, can you draft a short email to the API team asking them to review the new WebSocket endpoint docs before I publish? Keep it friendly but clear.，when ordering versions place latest version older versions before latest version",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 34,
+     "kind": "assert",
+     "cid": "e05-c29",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 34,
+     "kind": "assert",
+     "cid": "e05-c30",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 35,
+   "type": "R",
+   "text": "Write a summary of the new API authentication flow for the onboarding chapter.",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e05-c24",
+    "e05-c14"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c01",
+    "e05-c02",
+    "e05-c03",
+    "e05-c04",
+    "e05-c05",
+    "e05-c06",
+    "e05-c07",
+    "e05-c08",
+    "e05-c09",
+    "e05-c10",
+    "e05-c11",
+    "e05-c12",
+    "e05-c13",
+    "e05-c14",
+    "e05-c15",
+    "e05-c16",
+    "e05-c17",
+    "e05-c18",
+    "e05-c22",
+    "e05-c23"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 36,
+   "type": "S",
+   "text": "when using arithmetic operators use better judgment for insertion of spaces around arithmetic operators",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 36,
+     "kind": "assert",
+     "cid": "e05-c31",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 37,
+   "type": "S",
+   "text": "when writing a paper or article incorporate quotes with in-text citations 16 items",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 37,
+     "kind": "assert",
+     "cid": "e05-c32",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 38,
+   "type": "S",
+   "text": "对了，don't include explanation of choices in JSON这条继续保持啊",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 38,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e05-c20",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 39,
+   "type": "N",
+   "text": "又来了，这 API 每次都超时，烦死",
+   "context": {},
+   "distractor_kind": "rule-pattern-no-rule",
+   "effects": []
+  },
+  {
+   "seq": 40,
+   "type": "R",
+   "text": "Write a short section for the API reference explaining how to handle pagination in the list endpoints. Include an example response and link to the main [[pagination guide]].",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e05-c04",
+    "e05-c31"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c01",
+    "e05-c02",
+    "e05-c03",
+    "e05-c04",
+    "e05-c05",
+    "e05-c06",
+    "e05-c07",
+    "e05-c08",
+    "e05-c09",
+    "e05-c10",
+    "e05-c11",
+    "e05-c12",
+    "e05-c13",
+    "e05-c14",
+    "e05-c15",
+    "e05-c16",
+    "e05-c17",
+    "e05-c18",
+    "e05-c22",
+    "e05-c23"
+   ],
+   "should_fire": [
+    "e05-c04",
+    "e05-c23"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 41,
+   "type": "S",
+   "text": "Hey, that prologue you just wrote was way too long. I'm not reading 300 words before getting to the actual content. For future prologues, keep them under 181 words. I'm quoting the Microsoft Manual of Style here: 'A prologue should be a gate, not a hallway.' Can you also draft a short email to the dev team about the new API endpoint docs being ready for review on the staging site? Keep it casual but clear.，之前说的「when writing shell scripts avoid striving for POSIX-compatibility」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 41,
+     "kind": "contradict",
+     "cid": "e05-s00",
+     "target": "e05-c29",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 41,
+     "kind": "retire",
+     "cid": "",
+     "target": "e05-c27",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 42,
+   "type": "S",
+   "text": "Hey, I just read through that last summary you gave me, and it's a mess. You listed a bunch of points but the first item in every list was way too long — like, 15 words or more. That's not how you write a list. Chicago Manual of Style says list items should be parallel and concise, and the first one sets the tone. So, going forward, when you're generating text, make sure the first item in any list is no more than 11 words. Got it? Anyway, I need you to pull the last 30 days of feedback from the docs portal, sort by topic, and give me a one-paragraph summary of the top three complaints — I need to update the troubleshooting guide.，之前说的「when summarizing in generated text compose summarization 17 sentences」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 42,
+     "kind": "contradict",
+     "cid": "e05-s01",
+     "target": "e05-c28",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 42,
+     "kind": "retire",
+     "cid": "",
+     "target": "e05-c24",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 43,
+   "type": "S",
+   "text": "Hey, that Python function you just wrote — the wrapping was a mess. You wrapped the default way, which made the doc snippet look terrible. Please avoid default wrapping when you're wrapping code. It's like the Google style guide says: 'code blocks should not be wrapped by default.' Can you rewrite it without that?，之前说的「no separating columns with lines」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 43,
+     "kind": "contradict",
+     "cid": "e05-s02",
+     "target": "e05-c23",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 43,
+     "kind": "retire",
+     "cid": "",
+     "target": "e05-c08",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 44,
+   "type": "R",
+   "text": "Write a quick script to count lines of code in a repo, excluding node_modules and .git. Use find and wc.",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e05-c12",
+    "e05-c09",
+    "e05-c24",
+    "e05-c23"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c01",
+    "e05-c02",
+    "e05-c03",
+    "e05-c04",
+    "e05-c05",
+    "e05-c06",
+    "e05-c07",
+    "e05-c09",
+    "e05-c10",
+    "e05-c11",
+    "e05-c12",
+    "e05-c13",
+    "e05-c14",
+    "e05-c15",
+    "e05-c16",
+    "e05-c17",
+    "e05-c18"
+   ],
+   "should_fire": [
+    "e05-c12"
+   ],
+   "must_not_fire": [
+    "e05-c27"
+   ]
+  },
+  {
+   "seq": 45,
+   "type": "S",
+   "text": "when writing an archaeological site report not exceed word count 698 words，之前说的「when referring to the programme itself use initial capitals or abbreviation」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 45,
+     "kind": "contradict",
+     "cid": "e05-s03",
+     "target": "e05-c25",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 45,
+     "kind": "retire",
+     "cid": "",
+     "target": "e05-c13",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 46,
+   "type": "S",
+   "text": "when writing a paper or article incorporate quotes with in-text citations 14 items",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 46,
+     "kind": "contradict",
+     "cid": "e05-s04",
+     "target": "e05-c32",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 47,
+   "type": "S",
+   "text": "when writing comprehensions or generator expressions use comprehensions and generator expressions 21 items",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 47,
+     "kind": "contradict",
+     "cid": "e05-s05",
+     "target": "e05-c05",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 48,
+   "type": "R",
+   "text": "Hey, can you draft a postmortem for the API v2 outage last Tuesday? I'll fill in the timeline and root cause later, just get the structure and standard sections down.",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e05-c15",
+    "e05-c31",
+    "e05-c24",
+    "e05-c29"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c01",
+    "e05-c02",
+    "e05-c03",
+    "e05-c04",
+    "e05-c06",
+    "e05-c07",
+    "e05-c09",
+    "e05-c10",
+    "e05-c11",
+    "e05-c12",
+    "e05-c14",
+    "e05-c15",
+    "e05-c16",
+    "e05-c17",
+    "e05-c18",
+    "e05-c19",
+    "e05-c20",
+    "e05-c21",
+    "e05-c22",
+    "e05-c26",
+    "e05-c30",
+    "e05-c31",
+    "e05-s00",
+    "e05-s01",
+    "e05-s02",
+    "e05-s03",
+    "e05-s04",
+    "e05-s05"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 49,
+   "type": "S",
+   "text": "when using a trailing backslash use trailing backslash 19 items",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 49,
+     "kind": "contradict",
+     "cid": "e05-s06",
+     "target": "e05-c06",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 50,
+   "type": "S",
+   "text": "之前说的「when generating a list include 10 items 23 items」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 50,
+     "kind": "retire",
+     "cid": "",
+     "target": "e05-c01",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 51,
+   "type": "S",
+   "text": "之前说的「when writing commit footers, avoid the git trailer format convention」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 51,
+     "kind": "retire",
+     "cid": "",
+     "target": "e05-c19",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 52,
+   "type": "R",
+   "text": "Draft the release notes for v3.2 of the API, linking to the updated endpoint reference pages.",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e05-s04",
+    "e05-c04",
+    "e05-c25",
+    "e05-c19"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c02",
+    "e05-c03",
+    "e05-c04",
+    "e05-c07",
+    "e05-c09",
+    "e05-c10",
+    "e05-c11",
+    "e05-c12",
+    "e05-c14",
+    "e05-c15",
+    "e05-c16",
+    "e05-c17",
+    "e05-c18",
+    "e05-c22",
+    "e05-s02",
+    "e05-s05",
+    "e05-s06"
+   ],
+   "should_fire": [
+    "e05-c00",
+    "e05-c02",
+    "e05-c07",
+    "e05-c10",
+    "e05-c15",
+    "e05-c16"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 53,
+   "type": "S",
+   "text": "之前说的「when referring to the European Commission write out in full European Commission 16 mentions full name before abbreviation 'the Commission'」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 53,
+     "kind": "retire",
+     "cid": "",
+     "target": "e05-c10",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 54,
+   "type": "S",
+   "text": "之前说的「use double square brackets [[ for wiki-style links, not single brackets [」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 54,
+     "kind": "retire",
+     "cid": "",
+     "target": "e05-c04",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 55,
+   "type": "S",
+   "text": "之前说的「in her dialogue use playful feigned innocence」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 55,
+     "kind": "retire",
+     "cid": "",
+     "target": "e05-c17",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 56,
+   "type": "R",
+   "text": "Update the quickstart guide with the new v4.0 API endpoints and add a code sample for the paginated list call.",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e05-c30",
+    "e05-s02",
+    "e05-c05",
+    "e05-c08"
+   ],
+   "may_fire": [
+    "e05-c00",
+    "e05-c02",
+    "e05-c03",
+    "e05-c07",
+    "e05-c09",
+    "e05-c11",
+    "e05-c12",
+    "e05-c14",
+    "e05-c15",
+    "e05-c16",
+    "e05-c18",
+    "e05-c20",
+    "e05-c21",
+    "e05-c22",
+    "e05-c26",
+    "e05-c30",
+    "e05-c31",
+    "e05-s00",
+    "e05-s01",
+    "e05-s02",
+    "e05-s03",
+    "e05-s04",
+    "e05-s05",
+    "e05-s06"
+   ],
+   "should_fire": [
+    "e05-c15",
+    "e05-s04"
+   ],
+   "must_not_fire": [
+    "e05-c32"
+   ]
+  },
+  {
+   "seq": 57,
+   "type": "S",
+   "text": "之前说的「when writing a document use a single H1 heading 16 items」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 57,
+     "kind": "retire",
+     "cid": "",
+     "target": "e05-c15",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 58,
+   "type": "S",
+   "text": "之前说的「when listing skills include general skills that are neutral or common to many jobs 14 items」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 58,
+     "kind": "retire",
+     "cid": "",
+     "target": "e05-c00",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 59,
+   "type": "R",
+   "text": "write a Python script that fetches the latest three blog posts from a given RSS feed URL and outputs them as a simple markdown list in the terminal",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e05-c02",
+    "e05-s06",
+    "e05-c13",
+    "e05-c00"
+   ],
+   "may_fire": [
+    "e05-c02",
+    "e05-c03",
+    "e05-c07",
+    "e05-c09",
+    "e05-c11",
+    "e05-c12",
+    "e05-c14",
+    "e05-c16",
+    "e05-c18",
+    "e05-c20",
+    "e05-c21",
+    "e05-c22",
+    "e05-c26",
+    "e05-c30",
+    "e05-c31",
+    "e05-s00",
+    "e05-s01",
+    "e05-s02",
+    "e05-s03",
+    "e05-s04",
+    "e05-s05",
+    "e05-s06"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 60,
+   "type": "R",
+   "text": "Draft a prologue for the new API migration guide, then list the top three breaking changes in a short bullet list.",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e05-c20",
+    "e05-s01",
+    "e05-c29",
+    "e05-c10"
+   ],
+   "may_fire": [
+    "e05-c02",
+    "e05-c03",
+    "e05-c07",
+    "e05-c09",
+    "e05-c11",
+    "e05-c12",
+    "e05-c14",
+    "e05-c16",
+    "e05-c18",
+    "e05-c20",
+    "e05-c21",
+    "e05-c22",
+    "e05-c26",
+    "e05-c30",
+    "e05-c31",
+    "e05-s00",
+    "e05-s01",
+    "e05-s02",
+    "e05-s03",
+    "e05-s04",
+    "e05-s05",
+    "e05-s06"
+   ],
+   "should_fire": [
+    "e05-s00"
+   ],
+   "must_not_fire": [
+    "e05-c29"
+   ]
+  },
+  {
+   "seq": 61,
+   "type": "R",
+   "text": "Draft a short email to the dev team reminding them to update the API reference comments before the sprint ends – per Google's developer doc style guide, inline comments should match the parameter names exactly.",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e05-c07",
+    "e05-c09",
+    "e05-c29",
+    "e05-c10"
+   ],
+   "may_fire": [
+    "e05-c02",
+    "e05-c03",
+    "e05-c07",
+    "e05-c09",
+    "e05-c11",
+    "e05-c12",
+    "e05-c14",
+    "e05-c16",
+    "e05-c18",
+    "e05-c21",
+    "e05-c26",
+    "e05-s01",
+    "e05-s03",
+    "e05-s05",
+    "e05-s06"
+   ],
+   "should_fire": [
+    "e05-c16"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 62,
+   "type": "R",
+   "text": "Can you draft a quick API reference for the new user authentication endpoint? I need the method, path, request body, and response fields.",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e05-c31",
+    "e05-s02",
+    "e05-c17",
+    "e05-c00"
+   ],
+   "may_fire": [
+    "e05-c02",
+    "e05-c03",
+    "e05-c07",
+    "e05-c09",
+    "e05-c11",
+    "e05-c12",
+    "e05-c14",
+    "e05-c16",
+    "e05-c18",
+    "e05-c22",
+    "e05-s02",
+    "e05-s05",
+    "e05-s06"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  }
+ ],
+ "checkpoints": [
+  8,
+  16,
+  24,
+  32,
+  40,
+  46,
+  53,
+  62
+ ],
+ "dup_pairs": [],
+ "stats": {
+  "nodes": 40,
+  "dead_final": 18,
+  "peak_gold_active": 33,
+  "gate_drops": 26,
+  "i11_pruned_traps": 0,
+  "lint_errors": [
+   "I10: e05-c21 / e05-c26 textually near (J≥0.5) but INDEPENDENT — key split?"
+  ]
+ }
+}

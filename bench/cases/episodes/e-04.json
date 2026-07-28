@@ -1,0 +1,3946 @@
+{
+ "id": "e-04",
+ "schema_version": "E1",
+ "seed": 45,
+ "protocol_version": 2,
+ "persona": {
+  "id": "researcher-mixed",
+  "who": "在读博士，论文和代码来回切",
+  "lang": "zh/en 混",
+  "register": "中英混杂，学术腔混口语",
+  "domain": "科研",
+  "quirks": "术语用英文，其余用中文"
+ },
+ "catalogue": [
+  {
+   "cid": "e04-c00",
+   "text": "always be polite and friendly",
+   "clause": "保持polite and friendly",
+   "alt_clause": "语气要客气友好",
+   "distinctive": "polite and friendly",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "tone.register",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "register",
+     "val": "formal",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "prism/system_string",
+     "license": "CC-BY-4.0",
+     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c01",
+   "text": "when interacting with a person be polite",
+   "clause": "以后跟人说话都保持polite",
+   "alt_clause": "跟人交流时注意礼貌，别太冲",
+   "distinctive": "polite",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "tone.register",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "register",
+     "val": "formal",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "prism/system_string",
+     "license": "CC-BY-4.0",
+     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c02",
+   "text": "when writing a eulogy segment highlighting the deceased's achievements contain adjectives depicting personality and character 14 adjectives",
+   "clause": "when writing a eulogy segment highlighting the deceased's achievements contain adjectives depicting personality and character 14 adjectives",
+   "alt_clause": "when writing a eulogy segment highlighting the deceased's achievements contain adjectives depicting personality and character 14 adjectives",
+   "distinctive": "14",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 14.0,
+     "unit": "adjectives",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 5 -> 14"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c03",
+   "text": "when giving answers limit answer length 22 words",
+   "clause": "答案控制在22个词以内",
+   "alt_clause": "回答不超过22个词",
+   "distinctive": "22",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 22.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 2 -> 22"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c04",
+   "text": "always include descriptions",
+   "clause": "以后都记得把描述写详细点",
+   "alt_clause": "每次都要附上详细的描述说明",
+   "distinctive": "描述",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "code.comments",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "descriptions"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c05",
+   "text": "when writing sequences of items recommend trailing commas",
+   "clause": "避免 trailing commas，closing token 不要跟最后一个元素放同一行",
+   "alt_clause": "别用 trailing commas，把 closing token 另起一行放",
+   "distinctive": "trailing commas",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.lists",
+    "polarity": "avoid",
+    "binding": "suggestion",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "trailing commas"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c06",
+   "text": "when writing Markdown links use explicit paths for links",
+   "clause": "写 Markdown 链接时用 explicit paths",
+   "alt_clause": "Markdown 链接里直接写完整路径，别用相对路径",
+   "distinctive": "explicit paths",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.markdown",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "explicit paths for links"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c07",
+   "text": "when writing about companies avoid using 'plc' to mean private limited company",
+   "clause": "when writing about companies avoid using 'plc' to mean private limited company",
+   "alt_clause": "when writing about companies avoid using 'plc' to mean private limited company",
+   "distinctive": "company",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "language.terminology",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "using 'plc' to mean private limited company"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c08",
+   "text": "when writing command-line snippets escape newlines",
+   "clause": "写命令行snippet时escape newlines",
+   "alt_clause": "命令行片段里newlines必须转义",
+   "distinctive": "newlines",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.code_blocks",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "newlines"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c09",
+   "text": "when writing geographical directions or regions use lower case for compass directions and regions",
+   "clause": "when writing geographical directions or regions use lower case for compass directions and regions",
+   "alt_clause": "when writing geographical directions or regions use lower case for compass directions and regions",
+   "distinctive": "regions",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "style.voice",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "lower case for compass directions and regions"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c10",
+   "text": "when writing code with subclasses avoid attribute name collisions",
+   "clause": "写子类时避免 attribute name 碰撞",
+   "alt_clause": "继承类里不要重名属性",
+   "distinctive": "attribute name 碰撞",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.naming",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "case_style",
+     "val": "snake",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c11",
+   "text": "when writing a biography write biography",
+   "clause": "写 biography 的时候别写",
+   "alt_clause": "不要写任何 biography 内容",
+   "distinctive": "biography",
+   "coords": {
+    "bucket": "task_goal",
+    "key": "research.task_verb",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "biography"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c12",
+   "text": "when writing about A level grades use symbol *",
+   "clause": "提到 A level grades 时用 * 不用 star",
+   "alt_clause": "说 A level grades 的时候用星号 * 替代 star",
+   "distinctive": "提到",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.emphasis",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "symbol *"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c13",
+   "text": "when building a set of command arguments use arrays",
+   "clause": "用数组，避免引号问题",
+   "alt_clause": "直接传数组，别搞引号嵌套",
+   "distinctive": "数组",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.error_handling",
+    "polarity": "avoid",
+    "binding": "soft",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "arrays"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c14",
+   "text": "always use .py filename extension",
+   "clause": "禁止使用.py文件名后缀",
+   "alt_clause": "不要加.py后缀在文件名里",
+   "distinctive": "文件名后缀",
+   "coords": {
+    "bucket": "execution_policy",
+    "key": "workflow.fidelity",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      ".py filename extension"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c15",
+   "text": "when writing a sequence of numbers indicate number of digits",
+   "clause": "以后写数字序列时别标位数",
+   "alt_clause": "数字序列里不要写digit count",
+   "distinctive": "位数",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "analysis.units",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "number of digits"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c16",
+   "text": "when writing lambda functions limit lambda functions 22 lines",
+   "clause": "lambda函数不超过22行",
+   "alt_clause": "multi-line lambda控制在22行以内",
+   "distinctive": "22",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.line_length",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 22.0,
+     "unit": "lines",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 1 -> 22"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c17",
+   "text": "when sequencing subtopics sequence subtopics importance before relevance",
+   "clause": "按importance和relevance排序subtopics",
+   "alt_clause": "subtopics的顺序要基于importance和relevance",
+   "distinctive": "importance",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "research.tradeoff_axes",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "ordering",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "importance",
+     "after": "relevance"
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "order swapped: relevance<->importance"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c18",
+   "text": "when writing dialogue or actions avoid performing actions or dialogue for other characters",
+   "clause": "以后写对话或动作时，别替其他角色做动作或说话",
+   "alt_clause": "从现在起，你只写我角色的台词和动作，别管其他角色",
+   "distinctive": "其他角色",
+   "coords": {
+    "bucket": "execution_policy",
+    "key": "workflow.scope_of_change",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "performing actions or dialogue for other characters"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c19",
+   "text": "when summarizing limit summary length 347 characters",
+   "clause": "以后每次总结时字数控制在347字符以内",
+   "alt_clause": "以后你概括任何内容都别超过347个字符",
+   "distinctive": "347",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "summary.length",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 347.0,
+     "unit": "characters",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 280 -> 347"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c20",
+   "text": "when ending a prompt end with the exact words 'sticker, trending on ArtStation'",
+   "clause": "when ending a prompt end with the exact words 'sticker, trending on ArtStation'",
+   "alt_clause": "when ending a prompt end with the exact words 'sticker, trending on ArtStation'",
+   "distinctive": "ArtStation",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "chat.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "the exact words 'sticker, trending on ArtStation'"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c21",
+   "text": "when listing holidays or events on a calendar page have description 11 words",
+   "clause": "每个条目至少11个words的description",
+   "alt_clause": "每个holiday或event的描述不能少于11个词",
+   "distinctive": "11",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.length",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 11.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 10 -> 11"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c22",
+   "text": "when writing a paragraph express everything as an assumption",
+   "clause": "express everything as an assumption",
+   "alt_clause": "用假设的语气写，别说得太肯定",
+   "distinctive": "assumption",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "analysis.assumptions",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "everything as an assumption"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c23",
+   "text": "when evaluating generated text check sentence completeness",
+   "clause": "每个句子必须完整，不能有fragment",
+   "alt_clause": "所有句子都要是完整句，不允许出现不完整的句子片段",
+   "distinctive": "完整",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "evidence.grounding",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "sentence completeness"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c24",
+   "text": "when generating a CSV file write entries under the 'Name' column",
+   "clause": "生成CSV文件时不要写'Name'这一列",
+   "alt_clause": "CSV里'Name'列就别写了",
+   "distinctive": "文件时不要写",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "format.tables",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "entries under the 'Name' column"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c25",
+   "text": "when writing Python code avoid backslash for explicit line continuation",
+   "clause": "写Python代码时避免用反斜杠换行",
+   "alt_clause": "Python代码里别用反斜杠做行续，改用括号或隐式换行",
+   "distinctive": "反斜杠",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.language",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "backslash for explicit line continuation"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c26",
+   "text": "when writing a commit message include description and breaking change footer",
+   "clause": "when writing a commit message include description and breaking change footer",
+   "alt_clause": "when writing a commit message include description and breaking change footer",
+   "distinctive": "footer",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "commit.style",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "description and breaking change footer"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "conventional-commits",
+     "license": "CC-BY-3.0",
+     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c27",
+   "text": "when writing text or titles use lower case in text, title case in titles",
+   "clause": "正文用小写，标题用 Title Case",
+   "alt_clause": "正文一律小写，只有标题用 Title Case",
+   "distinctive": "Title Case",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.headings",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "lower case in text, title case in titles"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c28",
+   "text": "when publishing legal jargon write plain English summary",
+   "clause": "禁止直接复制 legal jargon，必须写 plain English summary",
+   "alt_clause": "法律术语的部分不能用原文，要转成通俗的英文摘要",
+   "distinctive": "plain English summary",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "plain English summary"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c29",
+   "text": "when writing a document incorporate primary keywords",
+   "clause": "写文档时不要自动incorporate primary keywords",
+   "alt_clause": "写文档时禁止擅自加入primary keywords",
+   "distinctive": "primary keywords",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "primary keywords"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c30",
+   "text": "for each restaurant extract name and first 3 sentences of description 11 sentences name before first 3 sentences of description",
+   "clause": "for each restaurant extract name and first 3 sentences of description 11 sentences name before first 3 sentences of description",
+   "alt_clause": "for each restaurant extract name and first 3 sentences of description 11 sentences name before first 3 sentences of description",
+   "distinctive": "11",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 11.0,
+     "unit": "sentences",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 3 -> 11"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c31",
+   "text": "when writing descriptions in the second table limit descriptions for each rock type 71 words",
+   "clause": "每种rock type的描述限制在71 words以内",
+   "alt_clause": "每个rock type的描述不超过71个词",
+   "distinctive": "71",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 71.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 50 -> 71"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-c32",
+   "text": "when providing insights from a note limit insight length 67 words",
+   "clause": "insight长度控制在67 words以内",
+   "alt_clause": "每个insight写满67 words就收住",
+   "distinctive": "67",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 67.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 50 -> 67"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e04-s00",
+   "text": "when writing about companies avoid using 'plc' to mean private limited company",
+   "clause": "when writing about companies avoid using 'plc' to mean private limited company",
+   "alt_clause": "when writing about companies avoid using 'plc' to mean private limited company",
+   "distinctive": "company",
+   "coords": {
+    "bucket": "communication_style",
+    "key": "language.terminology",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "using 'plc' to mean private limited company"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": "e04-c07"
+  },
+  {
+   "cid": "e04-s01",
+   "text": "when writing Markdown links use explicit paths for links",
+   "clause": "写Markdown链接时用绝对路径",
+   "alt_clause": "Markdown链接里路径必须写完整",
+   "distinctive": "绝对路径",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.markdown",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "explicit paths for links"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e04-c06"
+  },
+  {
+   "cid": "e04-s02",
+   "text": "when writing a eulogy segment highlighting the deceased's achievements contain adjectives depicting personality and character 21 adjectives",
+   "clause": "至少包含21个adjectives depicting personality and character",
+   "alt_clause": "不少于21个描述personality和character的adjectives",
+   "distinctive": "21",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 14.0,
+     "unit": "adjectives",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 14 -> 21"
+   },
+   "anchor_weak": false,
+   "successor_of": "e04-c02"
+  },
+  {
+   "cid": "e04-s03",
+   "text": "when providing insights from a note limit insight length 81 words",
+   "clause": "when providing insights from a note limit insight length 81 words",
+   "alt_clause": "when providing insights from a note limit insight length 81 words",
+   "distinctive": "81",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 67.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 67 -> 81"
+   },
+   "anchor_weak": false,
+   "successor_of": "e04-c32"
+  },
+  {
+   "cid": "e04-s04",
+   "text": "when writing about A level grades use symbol *",
+   "clause": "写 A level 成绩时用 * 不用 'star'",
+   "alt_clause": "提到 A level 成绩必须用星号 * 而不是单词 star",
+   "distinctive": "成绩时用",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.emphasis",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "symbol *"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": "e04-c12"
+  },
+  {
+   "cid": "e04-s05",
+   "text": "when sequencing subtopics sequence subtopics relevance before importance",
+   "clause": "按relevance和importance排序subtopics",
+   "alt_clause": "subtopics必须按相关性和重要性来排",
+   "distinctive": "relevance和importance",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "research.tradeoff_axes",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "ordering",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "importance",
+     "after": "relevance"
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "order swapped: importance<->relevance"
+   },
+   "anchor_weak": false,
+   "successor_of": "e04-c17"
+  },
+  {
+   "cid": "e04-s06",
+   "text": "for each restaurant extract name and first 3 sentences of description 16 sentences name before first 3 sentences of description",
+   "clause": "for each restaurant extract name and first 3 sentences of description 16 sentences name before first 3 sentences of description",
+   "alt_clause": "for each restaurant extract name and first 3 sentences of description 16 sentences name before first 3 sentences of description",
+   "distinctive": "16",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.structure",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 11.0,
+     "unit": "sentences",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 11 -> 16"
+   },
+   "anchor_weak": false,
+   "successor_of": "e04-c30"
+  }
+ ],
+ "effects": [
+  {
+   "seq": 2,
+   "kind": "assert",
+   "cid": "e04-c00",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 3,
+   "kind": "assert",
+   "cid": "e04-c01",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 4,
+   "kind": "assert",
+   "cid": "e04-c02",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 4,
+   "kind": "assert",
+   "cid": "e04-c03",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 6,
+   "kind": "assert",
+   "cid": "e04-c04",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 7,
+   "kind": "assert",
+   "cid": "e04-c05",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 7,
+   "kind": "assert",
+   "cid": "e04-c06",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 8,
+   "kind": "assert",
+   "cid": "e04-c07",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 9,
+   "kind": "assert",
+   "cid": "e04-c08",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 9,
+   "kind": "assert",
+   "cid": "e04-c09",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 11,
+   "kind": "assert",
+   "cid": "e04-c10",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 12,
+   "kind": "assert",
+   "cid": "e04-c11",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 12,
+   "kind": "assert",
+   "cid": "e04-c12",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 13,
+   "kind": "assert",
+   "cid": "e04-c13",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 14,
+   "kind": "assert",
+   "cid": "e04-c14",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 14,
+   "kind": "assert",
+   "cid": "e04-c15",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 16,
+   "kind": "assert",
+   "cid": "e04-c16",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 17,
+   "kind": "assert",
+   "cid": "e04-c17",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 17,
+   "kind": "assert",
+   "cid": "e04-c18",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 18,
+   "kind": "assert",
+   "cid": "e04-c19",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 19,
+   "kind": "assert",
+   "cid": "e04-c20",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 19,
+   "kind": "assert",
+   "cid": "e04-c21",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 21,
+   "kind": "assert",
+   "cid": "e04-c22",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 22,
+   "kind": "assert",
+   "cid": "e04-c23",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 22,
+   "kind": "assert",
+   "cid": "e04-c24",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 23,
+   "kind": "assert",
+   "cid": "e04-c25",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 32,
+   "kind": "assert",
+   "cid": "e04-c26",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 32,
+   "kind": "assert",
+   "cid": "e04-c27",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 33,
+   "kind": "assert",
+   "cid": "e04-c28",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 34,
+   "kind": "assert",
+   "cid": "e04-c29",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 34,
+   "kind": "assert",
+   "cid": "e04-c30",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 36,
+   "kind": "assert",
+   "cid": "e04-c31",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 37,
+   "kind": "assert",
+   "cid": "e04-c32",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 41,
+   "kind": "contradict",
+   "cid": "e04-s00",
+   "target": "e04-c07",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 42,
+   "kind": "contradict",
+   "cid": "e04-s01",
+   "target": "e04-c06",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 43,
+   "kind": "contradict",
+   "cid": "e04-s02",
+   "target": "e04-c02",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 45,
+   "kind": "contradict",
+   "cid": "e04-s03",
+   "target": "e04-c32",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 46,
+   "kind": "contradict",
+   "cid": "e04-s04",
+   "target": "e04-c12",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 47,
+   "kind": "contradict",
+   "cid": "e04-s05",
+   "target": "e04-c17",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 49,
+   "kind": "contradict",
+   "cid": "e04-s06",
+   "target": "e04-c30",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 50,
+   "kind": "retire",
+   "cid": "",
+   "target": "e04-c22",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 51,
+   "kind": "retire",
+   "cid": "",
+   "target": "e04-c23",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 53,
+   "kind": "retire",
+   "cid": "",
+   "target": "e04-c28",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 54,
+   "kind": "retire",
+   "cid": "",
+   "target": "e04-c31",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 55,
+   "kind": "retire",
+   "cid": "",
+   "target": "e04-c19",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 57,
+   "kind": "retire",
+   "cid": "",
+   "target": "e04-c00",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 58,
+   "kind": "retire",
+   "cid": "",
+   "target": "e04-c03",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 41,
+   "kind": "retire",
+   "cid": "",
+   "target": "e04-c05",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 42,
+   "kind": "retire",
+   "cid": "",
+   "target": "e04-c21",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 43,
+   "kind": "retire",
+   "cid": "",
+   "target": "e04-c13",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 45,
+   "kind": "retire",
+   "cid": "",
+   "target": "e04-c16",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 33,
+   "kind": "reinforce",
+   "cid": "",
+   "target": "e04-c24",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 39,
+   "kind": "reinforce",
+   "cid": "",
+   "target": "e04-c29",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 38,
+   "kind": "reinforce",
+   "cid": "",
+   "target": "e04-c18",
+   "targets": [],
+   "delta": 0
+  }
+ ],
+ "rounds": [
+  {
+   "seq": 1,
+   "type": "N",
+   "text": "推荐工具的时候优先开源的啊，闭源的我们过不了审",
+   "context": {},
+   "distractor_kind": "content-preference",
+   "effects": []
+  },
+  {
+   "seq": 2,
+   "type": "S",
+   "text": "对了，顺便帮我写封邮件给合作者，说我们最新的实验results很promising，但需要他们再跑一遍那个baseline comparison，deadline是下周五。哦还有，以后都别用那种特别生硬的语气，保持polite and friendly，别搞得像在命令人一样。",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 2,
+     "kind": "assert",
+     "cid": "e04-c00",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 3,
+   "type": "C",
+   "text": "帮我写一段实验报告，说明我们新提出的Attention机制在ImageNet上的top-1 accuracy比baseline高了1.2%，但参数量只增加了3%。。对了，以后都注意点，跟人说话的时候别太rude，保持polite。另外帮我写一段实验报告，说明我们新提出的Attention机制在ImageNet上的top-1 accuracy比baseline高了1.2%，但参数量只增加了3%。",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 3,
+     "kind": "assert",
+     "cid": "e04-c01",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 4,
+   "type": "S",
+   "text": "when writing a eulogy segment highlighting the deceased's achievements contain adjectives depicting personality and character 14 adjectives，你刚才那个回答太长了，我一边看论文一边切代码，哪有时间读那么一大段。以后给答案的时候，能不能控制在22个词以内？简洁点，直接说重点。",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 4,
+     "kind": "assert",
+     "cid": "e04-c02",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 4,
+     "kind": "assert",
+     "cid": "e04-c03",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 5,
+   "type": "R",
+   "text": "write a eulogy segment for a deceased scientist highlighting their achievements with personality adjectives",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e04-c02",
+    "e04-c03"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c02",
+    "e04-c03"
+   ],
+   "should_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c02",
+    "e04-c03"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 6,
+   "type": "C",
+   "text": "帮我写封邮件催一下合作者，他上周说好要给我revised manuscript里的figure，现在还没动静。语气要formal但别太pushy，提一下deadline是这周五。。对了，以后都这样——你每次回复我，记得把描述写详细点，别光给结论。比如刚才那个邮件，你直接说‘已写’就完了，但我需要你展开讲清楚语气怎么把握、用了哪些措辞。现在帮我写封邮件催一下合作者，他上周说好要给我revised manuscript里的figure，现在还没动静。语气要formal但别太pushy，提一下deadline是这周五。",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 6,
+     "kind": "assert",
+     "cid": "e04-c04",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 7,
+   "type": "S",
+   "text": "对了，顺便帮我把这个 ablation study 的表格跑一下，然后写一段分析，把对比 baseline 的 improvement 用百分比标出来。还有，以后写代码或者列序列的时候，trailing commas 能避免就避免，别把 closing token 跟最后一个元素放同一行，看着乱。，对了，顺便你写 Markdown 链接的时候别用相对路径，直接给 explicit paths，不然我每次从不同目录打开都得手动改。然后帮我跑一下这个 ablation study 的表格，再写段分析，把对比 baseline 的 improvement 标成百分比。",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 7,
+     "kind": "assert",
+     "cid": "e04-c05",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 7,
+     "kind": "assert",
+     "cid": "e04-c06",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 8,
+   "type": "C",
+   "text": "帮我写一个Python脚本来处理这个实验数据，把每个trial的response time和accuracy提取出来，然后跑一个简单的统计检验。。when writing about companies avoid using 'plc' to mean private limited company",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 8,
+     "kind": "assert",
+     "cid": "e04-c07",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 9,
+   "type": "C",
+   "text": "帮我写个postmortem，关于昨天那个实验，batch size设太大直接爆显存了，然后我debug了一下午才发现是dataloader的worker数量设了0，导致数据加载巨慢。从root cause到lessons learned都写一下，语气不要太严肃，但technical details要准确。。对了，顺便，以后写命令行snippet的时候，别把newlines直接嵌进去，escape一下，不然copy-paste到terminal直接炸。帮我写个postmortem，关于昨天那个实验，batch size设太大直接爆显存了，然后我debug了一下午才发现是dataloader的worker数量设了0，导致数据加载巨慢。从root cause到lessons learned都写一下，语气不要太严肃，但technical details要准确。。when writing geographical directions or regions use lower case for compass directions and regions",
+   "context": {
+    "app": "editor",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 9,
+     "kind": "assert",
+     "cid": "e04-c08",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 9,
+     "kind": "assert",
+     "cid": "e04-c09",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 10,
+   "type": "R",
+   "text": "帮我写个bash snippet，把实验结果里所有带'error'的行过滤出来，然后统计每个error type的出现次数，最后输出成CSV。注意多行命令要连成一行，方便我直接粘贴到terminal跑。",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e04-c08",
+    "e04-c09"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c04",
+    "e04-c05",
+    "e04-c06",
+    "e04-c07",
+    "e04-c08",
+    "e04-c09"
+   ],
+   "should_fire": [
+    "e04-c08"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 11,
+   "type": "S",
+   "text": "对了，顺便，你写报告的时候注意一下，以后写代码有子类继承的时候，尽量避免 attribute name 撞车，比如 parent 和 child 都叫同样的变量名，容易出 bug。然后这个报告帮我写一下，重点看 performance metrics 和 anomalies，谢谢。",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 11,
+     "kind": "assert",
+     "cid": "e04-c10",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 12,
+   "type": "S",
+   "text": "对了，顺便帮我写个 PyTorch dataloader，load 一个 3D point cloud 的 .npy 文件，然后随机 sample 1024 个点，再 normalize 到单位球里。另外，以后写 biography 的时候别写，我不需要那种东西。，对了，顺便帮我写一个 PyTorch 的 dataloader，load 一个 3D point cloud 的 .npy 文件，然后随机 sample 1024 个点，再 normalize 到单位球里。还有，以后提到 A level grades 的时候，别用 star 这个词，用 * 符号代替，不然歧义太大。",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 12,
+     "kind": "assert",
+     "cid": "e04-c11",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 12,
+     "kind": "assert",
+     "cid": "e04-c12",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 13,
+   "type": "S",
+   "text": "哎，你上次给我那个命令参数生成，一堆引号嵌套搞得我头都大了，根本没法直接复制跑。以后别再用那种字符串拼接了，直接上数组吧，省得我每次还要手动修引号。对了，顺便帮我把这个实验的postmortem写一下，重点是这次training为啥爆显存了，我想知道是batch size太大还是memory leak，顺便把loss curve和memory usage timeline贴图一起分析。",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 13,
+     "kind": "assert",
+     "cid": "e04-c13",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 14,
+   "type": "S",
+   "text": "对了，顺便帮我写封邮件给合作者，ask if they have time to review the draft of our paper before the deadline next Friday. 还有，以后都别用.py文件名后缀了，直接写脚本名就行，看着烦。，对了，以后都别在数字序列里写位数了，比如“3-digit number”这种，直接写数字就行，我看着烦。然后帮我写封邮件给合作者，ask if they have time to review the draft of our paper before the deadline next Friday.",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 14,
+     "kind": "assert",
+     "cid": "e04-c14",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 14,
+     "kind": "assert",
+     "cid": "e04-c15",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 15,
+   "type": "R",
+   "text": "帮我写一个关于这个实验的 short report，重点放在结果和可能的改进上，code 部分我之后再补。",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e04-c09",
+    "e04-c11"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c02",
+    "e04-c03",
+    "e04-c04",
+    "e04-c05",
+    "e04-c06",
+    "e04-c07",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c12",
+    "e04-c13",
+    "e04-c14",
+    "e04-c15"
+   ],
+   "should_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c03"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 16,
+   "type": "S",
+   "text": "对了，顺便帮我写一个函数，计算两个三维点云之间的Chamfer distance，用PyTorch实现，点云是batch输入的。另外以后写lambda函数的时候，别搞超过22行的multi-line lambda，太长了可读性太差，直接写个def不好吗。",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 16,
+     "kind": "assert",
+     "cid": "e04-c16",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 17,
+   "type": "C",
+   "text": "刚跑完这个实验，结果有点奇怪，帮我写个postmortem分析一下可能哪里出了问题，尤其是loss曲线和gradient norm那块。。你刚才那个输出里，subtopics的顺序排得乱七八糟的，明明importance高的先讲才对，你按什么乱七八糟的排的？以后排序subtopics的时候，按importance和relevance来排，别自己瞎搞。。刚跑完这个实验，结果有点奇怪，帮我写个postmortem分析一下可能哪里出了问题，尤其是loss曲线和gradient norm那块。对了，以后都注意：你写对话或者动作的时候，别替其他角色做动作或说话，只写我这边的内容。",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 17,
+     "kind": "assert",
+     "cid": "e04-c17",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 17,
+     "kind": "assert",
+     "cid": "e04-c18",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 18,
+   "type": "C",
+   "text": "帮我写封邮件给合作者，remind他下周due的实验数据，语气要polite但别太软，cc我导师。。对了，以后都这样：每次你帮我总结东西的时候，字数压到347个字符以内，别超。现在先帮我写封邮件给合作者，remind他下周due的实验数据，语气要polite但别太软，cc我导师。",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 18,
+     "kind": "assert",
+     "cid": "e04-c19",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 19,
+   "type": "C",
+   "text": "帮我写个brief report，总结一下我这周跑的三组experiment，特别是那个attention ablation的结果，跟baseline对比一下performance drop，最后给个结论要不要继续finetune。。when ending a prompt end with the exact words 'sticker, trending on ArtStation'。对了，顺便，以后在日历页上列holiday或者event的时候，每个条目都得有description，而且不能少于11个words哈。那帮我写个brief report，总结一下我这周跑的三组experiment，特别是那个attention ablation的结果，跟baseline对比一下performance drop，最后给个结论要不要继续finetune。",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 19,
+     "kind": "assert",
+     "cid": "e04-c20",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 19,
+     "kind": "assert",
+     "cid": "e04-c21",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 20,
+   "type": "R",
+   "text": "写一个PyTorch dataloader，从hdf5文件里读batch，顺便做一点online augmentation。",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e04-c16",
+    "e04-c11"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c04",
+    "e04-c05",
+    "e04-c06",
+    "e04-c07",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c12",
+    "e04-c13",
+    "e04-c14",
+    "e04-c15",
+    "e04-c16",
+    "e04-c17",
+    "e04-c18",
+    "e04-c19"
+   ],
+   "should_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c04",
+    "e04-c08",
+    "e04-c13",
+    "e04-c14",
+    "e04-c16"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 21,
+   "type": "S",
+   "text": "你刚才写的那段太绝对了，什么‘the model fails to converge’——这种说法搞得好像板上钉钉一样。我三天实验做出来全是负的，结果还没完全分析清楚呢，你就帮我写个postmortem，从数据预处理到模型结构都过一遍，但以后写段落的时候，please express everything as an assumption，别给我直接下结论，行不？",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 21,
+     "kind": "assert",
+     "cid": "e04-c22",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 22,
+   "type": "C",
+   "text": "帮我写封简短的email给导师，问一下他能不能这周五下午meet一下，讨论一下实验的preliminary results。。对了，以后都注意一下：你写的东西里每个句子都得是完整的，别给我整那种fragment或者缺主谓宾的。比如刚才那个email，句子得是完整的，别搞半截话。。对了，以后你生成CSV文件的时候，别写'Name'这一列。我每次都要手动删一遍，麻烦死了。",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 22,
+     "kind": "assert",
+     "cid": "e04-c23",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 22,
+     "kind": "assert",
+     "cid": "e04-c24",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 23,
+   "type": "S",
+   "text": "对了，以后写Python代码的时候，别再用反斜杠来换行了，看着太乱。用括号或者隐式换行就行。",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 23,
+     "kind": "assert",
+     "cid": "e04-c25",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 24,
+   "type": "R",
+   "text": "Hey, could you write a quick script to parse the .csv log from the last experiment and extract the mean accuracy per epoch? I need to see the trend before my meeting.",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e04-c04",
+    "e04-c00"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c02",
+    "e04-c03",
+    "e04-c04",
+    "e04-c05",
+    "e04-c06",
+    "e04-c07",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c12",
+    "e04-c13",
+    "e04-c14",
+    "e04-c15",
+    "e04-c16",
+    "e04-c17",
+    "e04-c18",
+    "e04-c19",
+    "e04-c20",
+    "e04-c21",
+    "e04-c22",
+    "e04-c23",
+    "e04-c24",
+    "e04-c25"
+   ],
+   "should_fire": [
+    "e04-c25"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 25,
+   "type": "R",
+   "text": "帮我写一个 postmortem 关于上周那个实验 failure，记得把 link 到 log 的路径写清楚",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e04-c06",
+    "e04-c19"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c02",
+    "e04-c03",
+    "e04-c04",
+    "e04-c05",
+    "e04-c06",
+    "e04-c07",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c12",
+    "e04-c13",
+    "e04-c14",
+    "e04-c15",
+    "e04-c16",
+    "e04-c17",
+    "e04-c18",
+    "e04-c19",
+    "e04-c20",
+    "e04-c21",
+    "e04-c22",
+    "e04-c23",
+    "e04-c24",
+    "e04-c25"
+   ],
+   "should_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c03",
+    "e04-c04",
+    "e04-c06",
+    "e04-c17",
+    "e04-c19",
+    "e04-c22",
+    "e04-c23"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 26,
+   "type": "N",
+   "text": "这次这份写详细一点，季度 review 要用",
+   "context": {},
+   "distractor_kind": "one-off",
+   "effects": []
+  },
+  {
+   "seq": 27,
+   "type": "N",
+   "text": "先把日志按天切开再统计，别一把梭",
+   "context": {},
+   "distractor_kind": "task-step",
+   "effects": []
+  },
+  {
+   "seq": 28,
+   "type": "R",
+   "text": "帮我写一封给合作者的邮件，简单介绍一下我们最近在ICLR的paper里那个method的改进，顺便问问他能不能跑个ablation study on our new dataset.",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e04-c11",
+    "e04-c00"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c02",
+    "e04-c03",
+    "e04-c04",
+    "e04-c05",
+    "e04-c06",
+    "e04-c07",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c12",
+    "e04-c13",
+    "e04-c14",
+    "e04-c15",
+    "e04-c16",
+    "e04-c17",
+    "e04-c18",
+    "e04-c19",
+    "e04-c20",
+    "e04-c21",
+    "e04-c22",
+    "e04-c23",
+    "e04-c24",
+    "e04-c25"
+   ],
+   "should_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c03",
+    "e04-c04",
+    "e04-c18",
+    "e04-c22",
+    "e04-c23"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 29,
+   "type": "N",
+   "text": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」",
+   "context": {},
+   "distractor_kind": "pasted-material",
+   "effects": []
+  },
+  {
+   "seq": 30,
+   "type": "R",
+   "text": "帮我写一个postmortem分析一下这个实验为什么没跑出预期结果，把关键失败点和后续改进列出来",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e04-c12",
+    "e04-c19"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c04",
+    "e04-c05",
+    "e04-c06",
+    "e04-c07",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c12",
+    "e04-c13",
+    "e04-c14",
+    "e04-c15",
+    "e04-c16",
+    "e04-c17",
+    "e04-c18",
+    "e04-c20",
+    "e04-c21"
+   ],
+   "should_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c04",
+    "e04-c21"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 31,
+   "type": "N",
+   "text": "我老板要求他们组的周报全用 bullet，真够呛",
+   "context": {},
+   "distractor_kind": "third-party-obligation",
+   "effects": []
+  },
+  {
+   "seq": 32,
+   "type": "C",
+   "text": "帮我写一个 Python 函数，能从一个 json 文件里把 data 读出来，然后转成 pandas DataFrame，顺便处理一下 missing value 和 nested keys。。when writing a commit message include description and breaking change footer。顺便，以后写东西的时候，正文里别用大写，保持小写，标题才用 Title Case。对了，帮我写一个 Python 函数，能从一个 json 文件里把 data 读出来，然后转成 pandas DataFrame，顺便处理一下 missing value 和 nested keys。",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 32,
+     "kind": "assert",
+     "cid": "e04-c26",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 32,
+     "kind": "assert",
+     "cid": "e04-c27",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 33,
+   "type": "S",
+   "text": "你刚给我写的那个总结，legal jargon 那部分你直接用了原文，我根本看不懂啊。我让你写 plain English summary，你倒好，给我整一堆术语。以后发这种法律术语的时候，禁止直接复制原文，必须给我写个 plain English summary。，对了，生成CSV文件时不要写'Name'这一列这条继续保持啊",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 33,
+     "kind": "assert",
+     "cid": "e04-c28",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 33,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e04-c24",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 34,
+   "type": "C",
+   "text": "帮我写封邮件给合作者，说我们实验的baseline results终于跑出来了，比之前好，但有个trick的部分需要他们double-check implementation，附上我们这边的log文件。。欸，你刚才那封邮件里怎么把primary keywords全塞进去了？我明明没让你提这些术语啊。写文档的时候别自动给我加primary keywords，我自己会控制。。for each restaurant extract name and first 3 sentences of description 11 sentences name before first 3 sentences of description",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 34,
+     "kind": "assert",
+     "cid": "e04-c29",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 34,
+     "kind": "assert",
+     "cid": "e04-c30",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 35,
+   "type": "R",
+   "text": "帮我写一个从Yelp数据里提取餐厅信息的脚本，每个餐厅要提取名字和描述的前三句，数据格式是JSON，输出到CSV。",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e04-c30",
+    "e04-c01"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c02",
+    "e04-c03",
+    "e04-c04",
+    "e04-c05",
+    "e04-c06",
+    "e04-c07",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c12",
+    "e04-c13",
+    "e04-c14",
+    "e04-c15",
+    "e04-c16",
+    "e04-c17",
+    "e04-c18",
+    "e04-c19",
+    "e04-c20",
+    "e04-c21",
+    "e04-c22",
+    "e04-c23",
+    "e04-c24",
+    "e04-c25",
+    "e04-c26",
+    "e04-c27",
+    "e04-c28",
+    "e04-c29",
+    "e04-c30"
+   ],
+   "should_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c03",
+    "e04-c04",
+    "e04-c13",
+    "e04-c17",
+    "e04-c21",
+    "e04-c23",
+    "e04-c24",
+    "e04-c30"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 36,
+   "type": "C",
+   "text": "帮我写封邮件给合作者，说我们最新的实验results很promising，但需要他们再跑一遍那个baseline comparison，deadline是下周五。。你上次写第二张表的时候，每种rock type的描述都写了快一百词，太长了。能不能限制在71 words以内？另外，帮我写封邮件给合作者，说我们最新的实验results很promising，但需要他们再跑一遍那个baseline comparison，deadline是下周五。",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 36,
+     "kind": "assert",
+     "cid": "e04-c31",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 37,
+   "type": "S",
+   "text": "哎，刚才那个insight写得也太长了吧，我读着读着就忘了开头在说啥。能不能以后从笔记里提炼insight的时候，控制在67 words以内？一句话说清楚核心，别绕来绕去的。对了，帮我写一段实验报告，说明我们新提出的Attention机制在ImageNet上的top-1 accuracy比baseline高了1.2%，但参数量只增加了3%。",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 37,
+     "kind": "assert",
+     "cid": "e04-c32",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 38,
+   "type": "S",
+   "text": "对了，以后写对话或动作时，别替其他角色做动作或说话这条继续保持啊",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 38,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e04-c18",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 39,
+   "type": "S",
+   "text": "对了，写文档时不要自动incorporate primary keywords这条继续保持啊",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 39,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e04-c29",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 40,
+   "type": "R",
+   "text": "帮我写个 PyTorch Dataset 子类，用来加载我那个多模态实验数据，注意 attribute 别跟父类重了",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e04-c10",
+    "e04-c19"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c04",
+    "e04-c05",
+    "e04-c06",
+    "e04-c07",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c12",
+    "e04-c13",
+    "e04-c14",
+    "e04-c15",
+    "e04-c16",
+    "e04-c17",
+    "e04-c18",
+    "e04-c19",
+    "e04-c22",
+    "e04-c24",
+    "e04-c25",
+    "e04-c29",
+    "e04-c32"
+   ],
+   "should_fire": [
+    "e04-c10"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 41,
+   "type": "S",
+   "text": "when writing about companies avoid using 'plc' to mean private limited company，之前说的「避免 trailing commas，closing token 不要跟最后一个元素放同一行」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 41,
+     "kind": "contradict",
+     "cid": "e04-s00",
+     "target": "e04-c07",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 41,
+     "kind": "retire",
+     "cid": "",
+     "target": "e04-c05",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 42,
+   "type": "S",
+   "text": "你刚才那个Markdown链接又写了个相对路径，我每次都得手动改成绝对路径才能用，烦死了。以后写Markdown链接的时候，路径给我写全了，别偷懒。还有，帮我写一个Python脚本来处理这个实验数据，把每个trial的response time和accuracy提取出来，然后跑一个简单的统计检验。，之前说的「每个条目至少11个words的description」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 42,
+     "kind": "contradict",
+     "cid": "e04-s01",
+     "target": "e04-c06",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 42,
+     "kind": "retire",
+     "cid": "",
+     "target": "e04-c21",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 43,
+   "type": "S",
+   "text": "你上次帮我写的那个eulogy部分，提到achievements的时候，personality和character的形容词就给了几个，完全不够啊。我这边需要至少21个adjectives depicting personality and character，这样才能全面覆盖他的多面性。你下次写的时候注意一下，别偷懒。另外，顺便帮我写个postmortem，关于昨天那个实验，batch size设太大直接爆显存了，然后我debug了一下午才发现是dataloader的worker数量设了0，导致数据加载巨慢。从root cause到lessons learned都写一下，语气不要太严肃，但technical details要准确。，之前说的「用数组，避免引号问题」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 43,
+     "kind": "contradict",
+     "cid": "e04-s02",
+     "target": "e04-c02",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 43,
+     "kind": "retire",
+     "cid": "",
+     "target": "e04-c13",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 44,
+   "type": "R",
+   "text": "帮我写封email给合作者，催一下他那边pending的experiment results，顺带attach一下我们刚跑出来的preliminary data，语气要professional but friendly。",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e04-c00",
+    "e04-c27",
+    "e04-c13",
+    "e04-c02"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c03",
+    "e04-c04",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c12",
+    "e04-c14",
+    "e04-c15",
+    "e04-c16",
+    "e04-c17",
+    "e04-c18",
+    "e04-c23",
+    "e04-c26",
+    "e04-c27",
+    "e04-s00",
+    "e04-s01",
+    "e04-s02"
+   ],
+   "should_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c03"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 45,
+   "type": "S",
+   "text": "when providing insights from a note limit insight length 81 words，之前说的「lambda函数不超过22行」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 45,
+     "kind": "contradict",
+     "cid": "e04-s03",
+     "target": "e04-c32",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 45,
+     "kind": "retire",
+     "cid": "",
+     "target": "e04-c16",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 46,
+   "type": "S",
+   "text": "刚才那个 dataloader 输出里写的是 'star' 而不是 '*'，这不对啊。A level 成绩里我们说的是 'A*'，不是 'A star'。以后写 A level 成绩的时候，请用符号 *，别用单词 'star'。另外，帮我写一个 PyTorch 的 dataloader，load 一个 3D point cloud 的 .npy 文件，然后随机 sample 1024 个点，再 normalize 到单位球里。",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 46,
+     "kind": "contradict",
+     "cid": "e04-s04",
+     "target": "e04-c12",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 47,
+   "type": "S",
+   "text": "你上次那个postmortem写得太散了，subtopics的顺序完全没逻辑。我要求你以后按relevance和importance来排，别给我乱排。现在帮我把这个实验的postmortem写一下，重点是这次training为啥爆显存了，我想知道是batch size太大还是memory leak，顺便把loss curve和memory usage timeline贴图一起分析。",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 47,
+     "kind": "contradict",
+     "cid": "e04-s05",
+     "target": "e04-c17",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 48,
+   "type": "R",
+   "text": "帮我写个postmortem分析一下上周那个实验跑挂的原因，把关键发现和要改的地方列出来",
+   "context": {
+    "app": "editor",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e04-s05",
+    "e04-c15",
+    "e04-c32",
+    "e04-c16"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c04",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c14",
+    "e04-c15",
+    "e04-c18",
+    "e04-c20",
+    "e04-c30",
+    "e04-s00",
+    "e04-s01",
+    "e04-s04",
+    "e04-s05"
+   ],
+   "should_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c04",
+    "e04-s05"
+   ],
+   "must_not_fire": [
+    "e04-c17",
+    "e04-c21"
+   ]
+  },
+  {
+   "seq": 49,
+   "type": "S",
+   "text": "for each restaurant extract name and first 3 sentences of description 16 sentences name before first 3 sentences of description",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 49,
+     "kind": "contradict",
+     "cid": "e04-s06",
+     "target": "e04-c30",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 50,
+   "type": "S",
+   "text": "之前说的「express everything as an assumption」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 50,
+     "kind": "retire",
+     "cid": "",
+     "target": "e04-c22",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 51,
+   "type": "S",
+   "text": "之前说的「每个句子必须完整，不能有fragment」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 51,
+     "kind": "retire",
+     "cid": "",
+     "target": "e04-c23",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 52,
+   "type": "R",
+   "text": "帮我从这堆餐厅的description里抽name和前3个句子，然后生成CSV，不要写'Name'列。",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e04-s06",
+    "e04-c24",
+    "e04-c06",
+    "e04-c23"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c03",
+    "e04-c04",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c14",
+    "e04-c15",
+    "e04-c18",
+    "e04-c19",
+    "e04-c20",
+    "e04-c24",
+    "e04-c25",
+    "e04-c26",
+    "e04-c27",
+    "e04-c28",
+    "e04-c29",
+    "e04-c31",
+    "e04-s00",
+    "e04-s01",
+    "e04-s02",
+    "e04-s03",
+    "e04-s04",
+    "e04-s05",
+    "e04-s06"
+   ],
+   "should_fire": [
+    "e04-c24"
+   ],
+   "must_not_fire": [
+    "e04-c30"
+   ]
+  },
+  {
+   "seq": 53,
+   "type": "S",
+   "text": "之前说的「禁止直接复制 legal jargon，必须写 plain English summary」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 53,
+     "kind": "retire",
+     "cid": "",
+     "target": "e04-c28",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 54,
+   "type": "S",
+   "text": "之前说的「每种rock type的描述限制在71 words以内」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 54,
+     "kind": "retire",
+     "cid": "",
+     "target": "e04-c31",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 55,
+   "type": "S",
+   "text": "之前说的「以后每次总结时字数控制在347字符以内」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 55,
+     "kind": "retire",
+     "cid": "",
+     "target": "e04-c19",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 56,
+   "type": "R",
+   "text": "帮我写封简短的email给导师，问一下他能不能这周五下午meet一下，讨论一下实验的preliminary results。",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e04-c26",
+    "e04-c00",
+    "e04-c07",
+    "e04-c05"
+   ],
+   "may_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c03",
+    "e04-c04",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c14",
+    "e04-c15",
+    "e04-c18",
+    "e04-c26",
+    "e04-c27",
+    "e04-s00",
+    "e04-s01",
+    "e04-s02",
+    "e04-s04",
+    "e04-s05"
+   ],
+   "should_fire": [
+    "e04-c00",
+    "e04-c01",
+    "e04-c03"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 57,
+   "type": "S",
+   "text": "之前说的「保持polite and friendly」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 57,
+     "kind": "retire",
+     "cid": "",
+     "target": "e04-c00",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 58,
+   "type": "S",
+   "text": "之前说的「答案控制在22个词以内」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 58,
+     "kind": "retire",
+     "cid": "",
+     "target": "e04-c03",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 59,
+   "type": "R",
+   "text": "上次那个实验，batch size 设太大直接 OOM 了，后来改小才跑通。你帮我写个 postmortem，总结一下 root cause 和 fix，以后别再踩这个坑了。",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e04-c08",
+    "e04-c18",
+    "e04-c16",
+    "e04-c22"
+   ],
+   "may_fire": [
+    "e04-c01",
+    "e04-c04",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c14",
+    "e04-c15",
+    "e04-c18",
+    "e04-c20",
+    "e04-s00",
+    "e04-s01",
+    "e04-s04",
+    "e04-s05",
+    "e04-s06"
+   ],
+   "should_fire": [
+    "e04-c01",
+    "e04-c04"
+   ],
+   "must_not_fire": [
+    "e04-c00"
+   ]
+  },
+  {
+   "seq": 60,
+   "type": "R",
+   "text": "帮我写封email给导师，explain 一下我最近在实验里遇到的一个issue，就是那个dataloader memory leak的问题，想跟他约个time discuss一下possible solutions。",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e04-c14",
+    "e04-c20",
+    "e04-c17",
+    "e04-c00"
+   ],
+   "may_fire": [
+    "e04-c01",
+    "e04-c04",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c14",
+    "e04-c15",
+    "e04-c18",
+    "e04-c26",
+    "e04-c27",
+    "e04-s00",
+    "e04-s01",
+    "e04-s02",
+    "e04-s04",
+    "e04-s05"
+   ],
+   "should_fire": [
+    "e04-c01",
+    "e04-c04"
+   ],
+   "must_not_fire": [
+    "e04-c00",
+    "e04-c03",
+    "e04-c23"
+   ]
+  },
+  {
+   "seq": 61,
+   "type": "R",
+   "text": "帮我写一个lambda函数来parse这个实验的log文件，输出每个trial的mean latency和std，然后写一个bash snippet来batch跑所有子目录的log",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e04-c09",
+    "e04-c08",
+    "e04-c16",
+    "e04-c23"
+   ],
+   "may_fire": [
+    "e04-c01",
+    "e04-c04",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c14",
+    "e04-c15",
+    "e04-c18",
+    "e04-c24",
+    "e04-c25",
+    "e04-c29",
+    "e04-s00",
+    "e04-s01",
+    "e04-s03",
+    "e04-s04",
+    "e04-s05"
+   ],
+   "should_fire": [
+    "e04-c10",
+    "e04-c14",
+    "e04-c25"
+   ],
+   "must_not_fire": [
+    "e04-c13",
+    "e04-c16"
+   ]
+  },
+  {
+   "seq": 62,
+   "type": "R",
+   "text": "帮我写一个postmortem，分析一下这个实验为什么跑出来的结果全是nan。我怀疑是data preprocessing或者model initialization的问题，但不确定。",
+   "context": {
+    "app": "editor",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e04-c09",
+    "e04-c08",
+    "e04-c28",
+    "e04-c02"
+   ],
+   "may_fire": [
+    "e04-c01",
+    "e04-c04",
+    "e04-c08",
+    "e04-c09",
+    "e04-c10",
+    "e04-c11",
+    "e04-c14",
+    "e04-c15",
+    "e04-c18",
+    "e04-c20",
+    "e04-s00",
+    "e04-s01",
+    "e04-s04",
+    "e04-s05",
+    "e04-s06"
+   ],
+   "should_fire": [
+    "e04-c01",
+    "e04-c04"
+   ],
+   "must_not_fire": [
+    "e04-c00"
+   ]
+  }
+ ],
+ "checkpoints": [
+  8,
+  16,
+  24,
+  32,
+  40,
+  46,
+  53,
+  62
+ ],
+ "dup_pairs": [
+  [
+   "atom-0703",
+   "atom-0315"
+  ]
+ ],
+ "stats": {
+  "nodes": 40,
+  "dead_final": 18,
+  "peak_gold_active": 33,
+  "gate_drops": 9,
+  "i11_pruned_traps": 0,
+  "lint_errors": []
+ }
+}

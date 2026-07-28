@@ -1,0 +1,3880 @@
+{
+ "id": "e-07",
+ "schema_version": "E1",
+ "seed": 48,
+ "protocol_version": 2,
+ "persona": {
+  "id": "backend-en",
+  "who": "backend engineer on a payments team",
+  "lang": "en",
+  "register": "terse, code-adjacent",
+  "domain": "backend",
+  "quirks": "hates prose, loves constraints"
+ },
+ "catalogue": [
+  {
+   "cid": "e07-c00",
+   "text": "when generating a resume limit each page word count 277 words",
+   "clause": "max 277 words per page",
+   "alt_clause": "no more than 277 words on each page",
+   "distinctive": "277",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.max",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 277.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 200 -> 277"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c01",
+   "text": "when signing in to a service use Sign in with GOV.UK One Login",
+   "clause": "never use 'Sign in with GOV.UK One Login'",
+   "alt_clause": "don't ever suggest 'Sign in with GOV.UK One Login'",
+   "distinctive": "Sign in with GOV.UK One Login",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.lists",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "Sign in with GOV.UK One Login"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c02",
+   "text": "when referring to ethnic minority groups refer to ethnic minority groups individually",
+   "clause": "when referring to ethnic minority groups refer to ethnic minority groups individually",
+   "alt_clause": "when referring to ethnic minority groups refer to ethnic minority groups individually",
+   "distinctive": "individually",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "style.voice",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "ethnic minority groups individually"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c03",
+   "text": "when writing a changelog or NEWS file follow GNU style guide or guideline",
+   "clause": "when writing a changelog or NEWS file follow GNU style guide or guideline",
+   "alt_clause": "when writing a changelog or NEWS file follow GNU style guide or guideline",
+   "distinctive": "guideline",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "doc.structure",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "GNU style guide or guideline"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "keep-a-changelog",
+     "license": "MIT",
+     "url": "https://keepachangelog.com/en/1.1.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c04",
+   "text": "when separating groups of related functions use extra blank lines 18 lines",
+   "clause": "when separating groups of related functions use extra blank lines 18 lines",
+   "alt_clause": "when separating groups of related functions use extra blank lines 18 lines",
+   "distinctive": "18",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.code_blocks",
+    "polarity": "prefer",
+    "binding": "soft",
+    "value": {
+     "type": "numeric",
+     "num": 18.0,
+     "unit": "lines",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 1 -> 18"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c05",
+   "text": "when referring to the information you sign in with use 'sign in details'",
+   "clause": "use 'sign in details' instead of 'GOV.UK One Login details'",
+   "alt_clause": "refer to it as 'sign in details', not 'GOV.UK One Login details'",
+   "distinctive": "sign in details",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "language.terminology",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "'sign in details'"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c06",
+   "text": "when wrapping long lines use implied line continuation inside parentheses, brackets and braces",
+   "clause": "when wrapping long lines use implied line continuation inside parentheses, brackets and braces",
+   "alt_clause": "when wrapping long lines use implied line continuation inside parentheses, brackets and braces",
+   "distinctive": "braces",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.line_length",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "implied line continuation inside parentheses, brackets and braces"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c07",
+   "text": "when writing a sentence make one sentence phonetically rhythmically beautiful",
+   "clause": "never make one sentence phonetically rhythmically beautiful",
+   "alt_clause": "don't ever craft a sentence to sound phonetically rhythmically beautiful",
+   "distinctive": "phonetically rhythmically beautiful",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "tone.register",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "one sentence phonetically rhythmically beautiful"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c08",
+   "text": "when breaking lines use trailing backslash",
+   "clause": "never use trailing backslash for line breaks",
+   "alt_clause": "don't break lines with trailing backslash",
+   "distinctive": "trailing backslash",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.line_width",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "trailing backslash"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c09",
+   "text": "when using lexical scoping use lexical scoping",
+   "clause": "avoid lexical scoping",
+   "alt_clause": "don't use lexical scoping",
+   "distinctive": "lexical scoping",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "research.task_verb",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "verb",
+     "val": "explain",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c10",
+   "text": "when arranging links in source view place link destination",
+   "clause": "when arranging links in source view place link destination",
+   "alt_clause": "when arranging links in source view place link destination",
+   "distinctive": "destination",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.markdown",
+    "polarity": "avoid",
+    "binding": "soft",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "link destination"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c11",
+   "text": "when not using asyncio use threading module and its locking primitives",
+   "clause": "when not using asyncio use threading module and its locking primitives",
+   "alt_clause": "when not using asyncio use threading module and its locking primitives",
+   "distinctive": "primitives",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "workflow.fidelity",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "threading module and its locking primitives"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c12",
+   "text": "for numeric comparisons use (( … ))",
+   "clause": "avoid (( … )) and [[ … ]] in numeric comparisons",
+   "alt_clause": "don't wrap numeric comparisons in double parens or double brackets",
+   "distinctive": "(( … ))",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "analysis.units",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "(( … ))"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/shellguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c13",
+   "text": "when writing titles capitalize Shadow Secretary of State for XXX and shortened versions",
+   "clause": "when writing titles capitalize Shadow Secretary of State for XXX and shortened versions",
+   "alt_clause": "when writing titles capitalize Shadow Secretary of State for XXX and shortened versions",
+   "distinctive": "versions",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.emphasis",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "Shadow Secretary of State for XXX and shortened versions"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c14",
+   "text": "when naming functions and variables use lowercase with underscores",
+   "clause": "when naming functions and variables use lowercase with underscores",
+   "alt_clause": "when naming functions and variables use lowercase with underscores",
+   "distinctive": "underscores",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "code.naming",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "case_style",
+     "val": "snake",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c15",
+   "text": "when evaluating generated text ensure claims",
+   "clause": "no unsubstantiated claims",
+   "alt_clause": "only make claims you can support with evidence",
+   "distinctive": "unsubstantiated claims",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "evidence.grounding",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "claims"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c16",
+   "text": "when generating a response consist of emojis",
+   "clause": "no emojis",
+   "alt_clause": "zero emojis allowed",
+   "distinctive": "emojis",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "tone.emoji",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "emojis"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c17",
+   "text": "when writing avoid explaining abbreviations",
+   "clause": "when writing avoid explaining abbreviations",
+   "alt_clause": "when writing avoid explaining abbreviations",
+   "distinctive": "abbreviations",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "code.comments",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "explaining abbreviations"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c18",
+   "text": "when accumulating a string within a loop avoid `+` and `+=` operators",
+   "clause": "don't use `+` or `+=` in a loop",
+   "alt_clause": "never concatenate with `+` or `+=` inside a loop",
+   "distinctive": "`+` or `+=`",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.error_handling",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "`+` and `+=` operators"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c19",
+   "text": "when defining module dependencies avoid circular dependencies",
+   "clause": "when defining module dependencies avoid circular dependencies",
+   "alt_clause": "when defining module dependencies avoid circular dependencies",
+   "distinctive": "dependencies",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.dependencies",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "circular dependencies"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c20",
+   "text": "when generating text include 10x2 table containing 20 numbers 16 numbers",
+   "clause": "when generating text include 10x2 table containing 20 numbers 16 numbers",
+   "alt_clause": "when generating text include 10x2 table containing 20 numbers 16 numbers",
+   "distinctive": "10",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "format.tables",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "numbers",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 20 -> 16"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c21",
+   "text": "when making a decision use decision okay",
+   "clause": "never use \"decision okay\" when making a decision",
+   "alt_clause": "don't say \"decision okay\" for any decision",
+   "distinctive": "decision okay",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "workflow.confirmation",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "decision okay"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "code-write",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c22",
+   "text": "for signing in to your GOV.UK One Login use 'Sign in to your GOV.UK One Login'",
+   "clause": "for signing in to your GOV.UK One Login use 'Sign in to your GOV.UK One Login'",
+   "alt_clause": "for signing in to your GOV.UK One Login use 'Sign in to your GOV.UK One Login'",
+   "distinctive": "Login",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "email.subject",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "'Sign in to your GOV.UK One Login'"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c23",
+   "text": "when a breaking change is used omit BREAKING CHANGE: from footer",
+   "clause": "when a breaking change is used omit BREAKING CHANGE: from footer",
+   "alt_clause": "when a breaking change is used omit BREAKING CHANGE: from footer",
+   "distinctive": "footer",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "commit.style",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "BREAKING CHANGE: from footer"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "conventional-commits",
+     "license": "CC-BY-3.0",
+     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c24",
+   "text": "always avoid mentioning ethics or using the word 'controversial'",
+   "clause": "always avoid mentioning ethics or using the word 'controversial'",
+   "alt_clause": "always avoid mentioning ethics or using the word 'controversial'",
+   "distinctive": "controversial",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "tone.hedging",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "register",
+     "val": "neutral",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prohibit -> require"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c25",
+   "text": "when summarizing a bill provide topics 16 items",
+   "clause": "when summarizing a bill provide topics 16 items",
+   "alt_clause": "when summarizing a bill provide topics 16 items",
+   "distinctive": "16",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "summary.length",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 3 -> 16"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c26",
+   "text": "when evaluating a drama outline ensure conciseness",
+   "clause": "when evaluating a drama outline, keep it concise",
+   "alt_clause": "when you review a drama outline, make sure it's tight and to the point",
+   "distinctive": "evaluating",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "explanation.depth",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "depth",
+     "val": "brief",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c27",
+   "text": "when writing Python type annotations use | union type expressions",
+   "clause": "use | union syntax instead of Optional and Union in python type annotations",
+   "alt_clause": "prefer | union expressions over Optional and Union in type hints",
+   "distinctive": "| union syntax",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.type_hints",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "| union type expressions"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/pyguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c28",
+   "text": "when providing information provide answers 16 words",
+   "clause": "when providing information provide answers 16 words",
+   "alt_clause": "when providing information provide answers 16 words",
+   "distinctive": "16",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.min",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 2 -> 16"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c29",
+   "text": "when interacting with the user avoid excessive personality",
+   "clause": "no personality, just facts",
+   "alt_clause": "keep it dry and factual, skip the character",
+   "distinctive": "personality",
+   "coords": {
+    "bucket": "execution_policy",
+    "key": "tone.directness",
+    "polarity": "prefer",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "include",
+     "items": [
+      "excessive personality"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "email-client",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "prism/system_string",
+     "license": "CC-BY-4.0",
+     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c30",
+   "text": "when placing [TOC] directive in documentation place [TOC] directive",
+   "clause": "never use [TOC] in docs",
+   "alt_clause": "avoid [TOC] directive entirely",
+   "distinctive": "[TOC]",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.toc",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "enum",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "position",
+     "val": "none",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "slack",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity prefer -> avoid"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c31",
+   "text": "when listing skills list 5 general skills 14 items",
+   "clause": "when listing skills list 5 general skills 14 items",
+   "alt_clause": "when listing skills list 5 general skills 14 items",
+   "distinctive": "14",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "doc.length",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 14.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "editor",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 5 -> 14"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-c32",
+   "text": "when writing titles and headers follow capitalization guidance",
+   "clause": "follow the capitalization guidance for titles and headers",
+   "alt_clause": "stick to the existing capitalization rules in headers and titles",
+   "distinctive": "capitalization guidance",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.headings",
+    "polarity": "prohibit",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "capitalization guidance"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "slack",
+     "task": "email",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "google-styleguide/docguide",
+     "license": "CC-BY-3.0",
+     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity require -> prohibit"
+   },
+   "anchor_weak": false,
+   "successor_of": null
+  },
+  {
+   "cid": "e07-s00",
+   "text": "when generating text include 10x2 table containing 20 numbers 27 numbers",
+   "clause": "when generating text include 10x2 table containing 20 numbers 27 numbers",
+   "alt_clause": "when generating text include 10x2 table containing 20 numbers 27 numbers",
+   "distinctive": "10",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "format.tables",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "numbers",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "infobench",
+     "license": "MIT",
+     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 16 -> 27"
+   },
+   "anchor_weak": false,
+   "successor_of": "e07-c20"
+  },
+  {
+   "cid": "e07-s01",
+   "text": "when wrapping long lines use implied line continuation inside parentheses, brackets and braces",
+   "clause": "use implied line continuation inside parens, brackets, or braces when wrapping long lines",
+   "alt_clause": "prefer implicit continuation inside (), [], or {} for line breaks",
+   "distinctive": "parens, brackets, or braces",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "code.line_length",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "implied line continuation inside parentheses, brackets and braces"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": "e07-c06"
+  },
+  {
+   "cid": "e07-s02",
+   "text": "when providing information provide answers 29 words",
+   "clause": "keep answers under 29 words",
+   "alt_clause": "answers must be 29 words or fewer",
+   "distinctive": "29",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "length.min",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "words",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 16 -> 29"
+   },
+   "anchor_weak": false,
+   "successor_of": "e07-c28"
+  },
+  {
+   "cid": "e07-s03",
+   "text": "when referring to ethnic minority groups refer to ethnic minority groups individually",
+   "clause": "when referring to ethnic minority groups refer to ethnic minority groups individually",
+   "alt_clause": "when referring to ethnic minority groups refer to ethnic minority groups individually",
+   "distinctive": "individually",
+   "coords": {
+    "bucket": "reasoning_policy",
+    "key": "style.voice",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "ethnic minority groups individually"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "govuk-a-to-z",
+     "license": "OGL-3.0",
+     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": "e07-c02"
+  },
+  {
+   "cid": "e07-s04",
+   "text": "when a breaking change is used omit BREAKING CHANGE: from footer",
+   "clause": "when a breaking change is used omit BREAKING CHANGE: from footer",
+   "alt_clause": "when a breaking change is used omit BREAKING CHANGE: from footer",
+   "distinctive": "footer",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "commit.style",
+    "polarity": "avoid",
+    "binding": "hard",
+    "value": {
+     "type": "set",
+     "num": null,
+     "unit": "",
+     "cmp": "",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "exclude",
+     "items": [
+      "BREAKING CHANGE: from footer"
+     ],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "postmortem",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "conventional-commits",
+     "license": "CC-BY-3.0",
+     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "polarity avoid -> prefer"
+   },
+   "anchor_weak": false,
+   "successor_of": "e07-c23"
+  },
+  {
+   "cid": "e07-s05",
+   "text": "when summarizing a bill provide topics 23 items",
+   "clause": "when summarizing a bill provide topics 23 items",
+   "alt_clause": "when summarizing a bill provide topics 23 items",
+   "distinctive": "23",
+   "coords": {
+    "bucket": "deliverables",
+    "key": "summary.length",
+    "polarity": "require",
+    "binding": "hard",
+    "value": {
+     "type": "numeric",
+     "num": 16.0,
+     "unit": "items",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "report",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "wild-if-eval",
+     "license": "Apache-2.0",
+     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 16 -> 23"
+   },
+   "anchor_weak": false,
+   "successor_of": "e07-c25"
+  },
+  {
+   "cid": "e07-s06",
+   "text": "when separating groups of related functions use extra blank lines 22 lines",
+   "clause": "when separating groups of related functions use extra blank lines 22 lines",
+   "alt_clause": "when separating groups of related functions use extra blank lines 22 lines",
+   "distinctive": "22",
+   "coords": {
+    "bucket": "output_contract",
+    "key": "format.code_blocks",
+    "polarity": "prefer",
+    "binding": "soft",
+    "value": {
+     "type": "numeric",
+     "num": 18.0,
+     "unit": "lines",
+     "cmp": "max",
+     "domain": "",
+     "val": "",
+     "tag": "",
+     "bool_val": null,
+     "op": "",
+     "items": [],
+     "before": "",
+     "after": ""
+    },
+    "scope": {
+     "app": "ANY",
+     "task": "ANY",
+     "code_lang": "ANY",
+     "nat_lang": "ANY"
+    }
+   },
+   "atom": {
+    "provenance": {
+     "source": "pep8",
+     "license": "public-domain",
+     "url": "https://peps.python.org/pep-0008/",
+     "use": "skeleton-derived"
+    },
+    "mutation": "threshold 18 -> 22"
+   },
+   "anchor_weak": false,
+   "successor_of": "e07-c04"
+  }
+ ],
+ "effects": [
+  {
+   "seq": 2,
+   "kind": "assert",
+   "cid": "e07-c00",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 3,
+   "kind": "assert",
+   "cid": "e07-c01",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 4,
+   "kind": "assert",
+   "cid": "e07-c02",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 4,
+   "kind": "assert",
+   "cid": "e07-c03",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 6,
+   "kind": "assert",
+   "cid": "e07-c04",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 7,
+   "kind": "assert",
+   "cid": "e07-c05",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 7,
+   "kind": "assert",
+   "cid": "e07-c06",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 8,
+   "kind": "assert",
+   "cid": "e07-c07",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 9,
+   "kind": "assert",
+   "cid": "e07-c08",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 9,
+   "kind": "assert",
+   "cid": "e07-c09",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 11,
+   "kind": "assert",
+   "cid": "e07-c10",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 12,
+   "kind": "assert",
+   "cid": "e07-c11",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 12,
+   "kind": "assert",
+   "cid": "e07-c12",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 13,
+   "kind": "assert",
+   "cid": "e07-c13",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 14,
+   "kind": "assert",
+   "cid": "e07-c14",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 14,
+   "kind": "assert",
+   "cid": "e07-c15",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 16,
+   "kind": "assert",
+   "cid": "e07-c16",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 17,
+   "kind": "assert",
+   "cid": "e07-c17",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 17,
+   "kind": "assert",
+   "cid": "e07-c18",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 18,
+   "kind": "assert",
+   "cid": "e07-c19",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 19,
+   "kind": "assert",
+   "cid": "e07-c20",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 19,
+   "kind": "assert",
+   "cid": "e07-c21",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 21,
+   "kind": "assert",
+   "cid": "e07-c22",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 22,
+   "kind": "assert",
+   "cid": "e07-c23",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 22,
+   "kind": "assert",
+   "cid": "e07-c24",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 23,
+   "kind": "assert",
+   "cid": "e07-c25",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 32,
+   "kind": "assert",
+   "cid": "e07-c26",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 32,
+   "kind": "assert",
+   "cid": "e07-c27",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 33,
+   "kind": "assert",
+   "cid": "e07-c28",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 34,
+   "kind": "assert",
+   "cid": "e07-c29",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 34,
+   "kind": "assert",
+   "cid": "e07-c30",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 36,
+   "kind": "assert",
+   "cid": "e07-c31",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 37,
+   "kind": "assert",
+   "cid": "e07-c32",
+   "target": "",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 41,
+   "kind": "contradict",
+   "cid": "e07-s00",
+   "target": "e07-c20",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 42,
+   "kind": "contradict",
+   "cid": "e07-s01",
+   "target": "e07-c06",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 43,
+   "kind": "contradict",
+   "cid": "e07-s02",
+   "target": "e07-c28",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 45,
+   "kind": "contradict",
+   "cid": "e07-s03",
+   "target": "e07-c02",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 46,
+   "kind": "contradict",
+   "cid": "e07-s04",
+   "target": "e07-c23",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 47,
+   "kind": "contradict",
+   "cid": "e07-s05",
+   "target": "e07-c25",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 49,
+   "kind": "contradict",
+   "cid": "e07-s06",
+   "target": "e07-c04",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 50,
+   "kind": "retire",
+   "cid": "",
+   "target": "e07-c32",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 51,
+   "kind": "retire",
+   "cid": "",
+   "target": "e07-c31",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 53,
+   "kind": "retire",
+   "cid": "",
+   "target": "e07-c17",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 54,
+   "kind": "retire",
+   "cid": "",
+   "target": "e07-c26",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 55,
+   "kind": "retire",
+   "cid": "",
+   "target": "e07-c10",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 57,
+   "kind": "retire",
+   "cid": "",
+   "target": "e07-c07",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 58,
+   "kind": "retire",
+   "cid": "",
+   "target": "e07-c03",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 41,
+   "kind": "retire",
+   "cid": "",
+   "target": "e07-c21",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 42,
+   "kind": "retire",
+   "cid": "",
+   "target": "e07-c16",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 43,
+   "kind": "retire",
+   "cid": "",
+   "target": "e07-c18",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 45,
+   "kind": "retire",
+   "cid": "",
+   "target": "e07-c00",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 33,
+   "kind": "reinforce",
+   "cid": "",
+   "target": "e07-c24",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 22,
+   "kind": "reinforce",
+   "cid": "",
+   "target": "e07-c01",
+   "targets": [],
+   "delta": 0
+  },
+  {
+   "seq": 38,
+   "kind": "reinforce",
+   "cid": "",
+   "target": "e07-c22",
+   "targets": [],
+   "delta": 0
+  }
+ ],
+ "rounds": [
+  {
+   "seq": 1,
+   "type": "N",
+   "text": "推荐工具的时候优先开源的啊，闭源的我们过不了审",
+   "context": {},
+   "distractor_kind": "content-preference",
+   "effects": []
+  },
+  {
+   "seq": 2,
+   "type": "S",
+   "text": "That resume you just spit out has way too many words per page. 277 words max per page, got it? Also, draft an email to the platform team asking them to confirm the retry policy for idempotency keys on the /charge endpoint.",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 2,
+     "kind": "assert",
+     "cid": "e07-c00",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 3,
+   "type": "S",
+   "text": "That last output was a mess. Stop using 'Sign in with GOV.UK One Login' when we're hitting the payment gateway — it's not a login flow. Pull the last 24h of failed txn logs from payment-gateway, group by error code, and give me a count per code as a table.",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 3,
+     "kind": "assert",
+     "cid": "e07-c01",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 4,
+   "type": "C",
+   "text": "write a func that retries an HTTP POST up to 3 times with exponential backoff, returning the response or an error.。when referring to ethnic minority groups refer to ethnic minority groups individually。when writing a changelog or NEWS file follow GNU style guide or guideline",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 4,
+     "kind": "assert",
+     "cid": "e07-c02",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 4,
+     "kind": "assert",
+     "cid": "e07-c03",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 5,
+   "type": "R",
+   "text": "generate a changelog entry for the new idempotency key retry logic",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c03",
+    "e07-c02"
+   ],
+   "may_fire": [
+    "e07-c00",
+    "e07-c01",
+    "e07-c02",
+    "e07-c03"
+   ],
+   "should_fire": [
+    "e07-c03"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 6,
+   "type": "C",
+   "text": "draft an email to the infrastructure team asking them to spin up a new staging environment for the payment processor migration. keep it short, no pleasantries. just the env name, the required DB schema version, and the SLA.。when separating groups of related functions use extra blank lines 18 lines",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 6,
+     "kind": "assert",
+     "cid": "e07-c04",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 7,
+   "type": "C",
+   "text": "generate a report of all failed payment retries in the last 24h, grouped by gateway and error code, with counts and timestamps.。That last response kept saying 'GOV.UK One Login details' when it should've just said 'sign in details'. Don't use that long government branding. Just call it 'sign in details' going forward.。when wrapping long lines use implied line continuation inside parentheses, brackets and braces",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 7,
+     "kind": "assert",
+     "cid": "e07-c05",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 7,
+     "kind": "assert",
+     "cid": "e07-c06",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 8,
+   "type": "C",
+   "text": "write a function that takes a list of payment intents and returns a dict grouping them by currency code, sorted by total amount descending。that last sentence was way too flowery. 'cascading symphony of settlement'? come on. just write the function: group payment intents by currency, sort groups by total descending. and never make one sentence phonetically rhythmically beautiful again.",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 8,
+     "kind": "assert",
+     "cid": "e07-c07",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 9,
+   "type": "C",
+   "text": "draft postmortem for the 3m payment timeout spike yesterday. include root cause, timeline, fix, and any action items. keep it factual, no fluff.。draft postmortem for the 3m payment timeout spike yesterday. include root cause, timeline, fix, and any action items. keep it factual, no fluff. also, never use trailing backslash for line breaks — that's shell junk, not code.。hey, that postmortem draft you just sent — way too much prose. also, you keep leaning on lexical scoping in the code snippets, which makes it harder to follow the timeline. avoid lexical scoping when you write those examples, just use flat closures or something. rewrite the whole thing: root cause, timeline, fix, action items. no fluff.",
+   "context": {
+    "app": "editor",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 9,
+     "kind": "assert",
+     "cid": "e07-c08",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 9,
+     "kind": "assert",
+     "cid": "e07-c09",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 10,
+   "type": "R",
+   "text": "draft a changelog entry for the new idempotency key retry logic",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e07-c08",
+    "e07-c03"
+   ],
+   "may_fire": [
+    "e07-c00",
+    "e07-c01",
+    "e07-c02",
+    "e07-c03",
+    "e07-c04",
+    "e07-c05",
+    "e07-c06",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09"
+   ],
+   "should_fire": [
+    "e07-c03"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 11,
+   "type": "S",
+   "text": "when arranging links in source view place link destination",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 11,
+     "kind": "assert",
+     "cid": "e07-c10",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 12,
+   "type": "C",
+   "text": "write a Go function that parses an ISO 8601 duration string like 'P1Y2M3DT4H5M6S' into hours as a float64. no external libs, no regex, just a byte loop.。when not using asyncio use threading module and its locking primitives。from now on, when you write code that compares numbers, don't use double parentheses like (( … )) or double brackets [[ … ]]. just use plain comparisons. that clutter is for lisp, not go.",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 12,
+     "kind": "assert",
+     "cid": "e07-c11",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 12,
+     "kind": "assert",
+     "cid": "e07-c12",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 13,
+   "type": "S",
+   "text": "when writing titles capitalize Shadow Secretary of State for XXX and shortened versions",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 13,
+     "kind": "assert",
+     "cid": "e07-c13",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 14,
+   "type": "C",
+   "text": "draft an email to the fraud team about the new 3DS timeout threshold — keep it under 5 lines, no fluff, just the change and the deadline.。when naming functions and variables use lowercase with underscores。From now on, when you're writing anything — emails, docs, whatever — don't make claims you can't back up. No hand-wavy assertions. Just the facts.",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 14,
+     "kind": "assert",
+     "cid": "e07-c14",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 14,
+     "kind": "assert",
+     "cid": "e07-c15",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 15,
+   "type": "R",
+   "text": "write a thread-safe rate limiter for the payment API – sliding window, per-tenant, no asyncio",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c15",
+    "e07-c11"
+   ],
+   "may_fire": [
+    "e07-c00",
+    "e07-c01",
+    "e07-c02",
+    "e07-c03",
+    "e07-c04",
+    "e07-c05",
+    "e07-c06",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c10",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15"
+   ],
+   "should_fire": [
+    "e07-c11"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 16,
+   "type": "S",
+   "text": "Ugh, the last response you gave me was full of emojis. Just don't. I need code, not a party. Now write a function that takes a list of transactions and returns a map from user_id to total amount, ignoring any where amount is null or negative.",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 16,
+     "kind": "assert",
+     "cid": "e07-c16",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 17,
+   "type": "C",
+   "text": "Draft a postmortem for the outages in payment processing that occurred between 14:00–14:47 UTC on 2024-11-02. Root cause: a deadlock cascade in the ledger service after a schema migration. Include timeline, impact, detection, and fix actions. Keep it to bullet points.。when writing avoid explaining abbreviations。draft that postmortem for the payment outages 14:00–14:47 UTC on 2024-11-02 — ledger deadlock cascade after schema migration. timeline, impact, detection, fix actions. bullet points. and btw, when you're building a string in a loop, don't use `+` or `+=`. ever.",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 17,
+     "kind": "assert",
+     "cid": "e07-c17",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 17,
+     "kind": "assert",
+     "cid": "e07-c18",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 18,
+   "type": "S",
+   "text": "when defining module dependencies avoid circular dependencies",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 18,
+     "kind": "assert",
+     "cid": "e07-c19",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 19,
+   "type": "S",
+   "text": "when generating text include 10x2 table containing 20 numbers 16 numbers，from now on, never use \"decision okay\" when making a decision. just say yes or no. also, give me a summary of failed transactions in the last 24h, grouped by error code, with counts and p99 latency per group.",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 19,
+     "kind": "assert",
+     "cid": "e07-c20",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 19,
+     "kind": "assert",
+     "cid": "e07-c21",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 20,
+   "type": "R",
+   "text": "Write a function that validates credit card numbers using Luhn's algorithm. Return a boolean.",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c00",
+    "e07-c12"
+   ],
+   "may_fire": [
+    "e07-c00",
+    "e07-c01",
+    "e07-c02",
+    "e07-c03",
+    "e07-c04",
+    "e07-c05",
+    "e07-c06",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c10",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c16",
+    "e07-c17",
+    "e07-c18",
+    "e07-c19",
+    "e07-c21"
+   ],
+   "should_fire": [
+    "e07-c14"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 21,
+   "type": "S",
+   "text": "for signing in to your GOV.UK One Login use 'Sign in to your GOV.UK One Login'",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 21,
+     "kind": "assert",
+     "cid": "e07-c22",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 22,
+   "type": "C",
+   "text": "draft an email to the fraud team about a spike in declined transactions from Brazil, attach the query results from yesterday's run, and schedule it to go out at 10am UTC。when a breaking change is used omit BREAKING CHANGE: from footer。always avoid mentioning ethics or using the word 'controversial'。对了，never use 'Sign in with GOV.UK One Login'这条继续保持啊",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 22,
+     "kind": "assert",
+     "cid": "e07-c23",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 22,
+     "kind": "assert",
+     "cid": "e07-c24",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 22,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e07-c01",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 23,
+   "type": "S",
+   "text": "when summarizing a bill provide topics 16 items",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 23,
+     "kind": "assert",
+     "cid": "e07-c25",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 24,
+   "type": "R",
+   "text": "write a function that validates a payment callback payload, returns a PaymentResult struct",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e07-c14",
+    "e07-c01"
+   ],
+   "may_fire": [
+    "e07-c00",
+    "e07-c01",
+    "e07-c02",
+    "e07-c03",
+    "e07-c04",
+    "e07-c05",
+    "e07-c06",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c10",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c16",
+    "e07-c17",
+    "e07-c18",
+    "e07-c19",
+    "e07-c20",
+    "e07-c21",
+    "e07-c22",
+    "e07-c23",
+    "e07-c24",
+    "e07-c25"
+   ],
+   "should_fire": [
+    "e07-c14"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 25,
+   "type": "R",
+   "text": "refactor the payment router: group all validation functions together, then all auth functions, then all execution functions. use blank lines to separate the groups.",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c04",
+    "e07-c09"
+   ],
+   "may_fire": [
+    "e07-c00",
+    "e07-c01",
+    "e07-c02",
+    "e07-c03",
+    "e07-c04",
+    "e07-c05",
+    "e07-c06",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c10",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c16",
+    "e07-c17",
+    "e07-c18",
+    "e07-c19",
+    "e07-c21"
+   ],
+   "should_fire": [
+    "e07-c04"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 26,
+   "type": "N",
+   "text": "这次这份写详细一点，季度 review 要用",
+   "context": {},
+   "distractor_kind": "one-off",
+   "effects": []
+  },
+  {
+   "seq": 27,
+   "type": "N",
+   "text": "先把日志按天切开再统计，别一把梭",
+   "context": {},
+   "distractor_kind": "task-step",
+   "effects": []
+  },
+  {
+   "seq": 28,
+   "type": "R",
+   "text": "draft a changelog entry for the latest release, covering the new idempotency key on retries and the fix for the stalled-webhook deadlock",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c03",
+    "e07-c16"
+   ],
+   "may_fire": [
+    "e07-c00",
+    "e07-c01",
+    "e07-c02",
+    "e07-c03",
+    "e07-c04",
+    "e07-c05",
+    "e07-c06",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c10",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c16",
+    "e07-c17",
+    "e07-c18",
+    "e07-c20",
+    "e07-c22",
+    "e07-c24",
+    "e07-c25"
+   ],
+   "should_fire": [
+    "e07-c03"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 29,
+   "type": "N",
+   "text": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」",
+   "context": {},
+   "distractor_kind": "pasted-material",
+   "effects": []
+  },
+  {
+   "seq": 30,
+   "type": "R",
+   "text": "give me a one-paragraph summary of today's payment-failure rate per gateway, grouped by error code, sorted by volume descending",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c22",
+    "e07-c24"
+   ],
+   "may_fire": [
+    "e07-c00",
+    "e07-c01",
+    "e07-c02",
+    "e07-c03",
+    "e07-c04",
+    "e07-c05",
+    "e07-c06",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c10",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c16",
+    "e07-c17",
+    "e07-c18",
+    "e07-c20",
+    "e07-c22",
+    "e07-c24",
+    "e07-c25"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 31,
+   "type": "N",
+   "text": "我老板要求他们组的周报全用 bullet，真够呛",
+   "context": {},
+   "distractor_kind": "third-party-obligation",
+   "effects": []
+  },
+  {
+   "seq": 32,
+   "type": "C",
+   "text": "write a go function that takes a payment amount and currency code, then returns the amount in the smallest currency unit (e.g., cents, pence) as an int64. error on unsupported currencies or negative amounts.。That last drama outline was way too wordy. I don't need a novel—just the facts. So from now on, when you evaluate a drama outline, keep it concise. No fluff, no extra scenes, no adjectives. Got it?。yo, write a go function that takes a payment amount and currency code, returns the amount in smallest unit (cents, pence) as int64, error on unsupported or negative. also, when you're doing python type annotations, stop using Optional and Union — just use | union syntax from now on.",
+   "context": {
+    "app": "slack",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 32,
+     "kind": "assert",
+     "cid": "e07-c26",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 32,
+     "kind": "assert",
+     "cid": "e07-c27",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 33,
+   "type": "C",
+   "text": "draft a postmortem for the 5-min auth latency spike on prod payment-api yesterday at 14:32 UTC. root cause: redis pool exhaustion from a bad config push. include timeline, impact, and fix.。when providing information provide answers 16 words。对了，always avoid mentioning ethics or using the word 'controversial'这条继续保持啊",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "effects": [
+    {
+     "seq": 33,
+     "kind": "assert",
+     "cid": "e07-c28",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 33,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e07-c24",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 34,
+   "type": "S",
+   "text": "draft that compliance email on 3ds fallback — keep it under 4 sentences, no fluff. also, just don't be so chatty or personality-heavy in general. stick to facts.，That last email draft had a [TOC] directive in it. Don't do that. Those break our markdown renderer. Rewrite it without any [TOC].",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 34,
+     "kind": "assert",
+     "cid": "e07-c29",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 34,
+     "kind": "assert",
+     "cid": "e07-c30",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 35,
+   "type": "R",
+   "text": "gimme a one-pager on the last 3 failed ACH batches — just error codes, counts, and timestamps.",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c12",
+    "e07-c04"
+   ],
+   "may_fire": [
+    "e07-c00",
+    "e07-c01",
+    "e07-c02",
+    "e07-c03",
+    "e07-c04",
+    "e07-c05",
+    "e07-c06",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c10",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c16",
+    "e07-c17",
+    "e07-c18",
+    "e07-c20",
+    "e07-c22",
+    "e07-c24",
+    "e07-c25",
+    "e07-c28",
+    "e07-c29"
+   ],
+   "should_fire": [
+    "e07-c00",
+    "e07-c15",
+    "e07-c16",
+    "e07-c29"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 36,
+   "type": "S",
+   "text": "when listing skills list 5 general skills 14 items",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 36,
+     "kind": "assert",
+     "cid": "e07-c31",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 37,
+   "type": "C",
+   "text": "Pull the last 24h of failed txn logs from the payment-gateway service, group by error code, and spit out a count per code as a table.。Can you pull the last 24h of failed txn logs from payment-gateway, group by error code, and give me a count per code as a table? Also, don't capitalize anything in titles or headers unless the style guide says so — just follow the capitalization guidance we already have.",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 37,
+     "kind": "assert",
+     "cid": "e07-c32",
+     "target": "",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 38,
+   "type": "S",
+   "text": "对了，for signing in to your GOV.UK One Login use 'Sign in to your GOV.UK One Login'这条继续保持啊",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 38,
+     "kind": "reinforce",
+     "cid": "",
+     "target": "e07-c22",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 39,
+   "type": "N",
+   "text": "又来了，这 API 每次都超时，烦死",
+   "context": {},
+   "distractor_kind": "rule-pattern-no-rule",
+   "effects": []
+  },
+  {
+   "seq": 40,
+   "type": "R",
+   "text": "refactor the payment retry loop to use asyncio.gather and add a timeout",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c06",
+    "e07-c24"
+   ],
+   "may_fire": [
+    "e07-c00",
+    "e07-c01",
+    "e07-c02",
+    "e07-c03",
+    "e07-c04",
+    "e07-c05",
+    "e07-c06",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c10",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c16",
+    "e07-c17",
+    "e07-c18",
+    "e07-c19",
+    "e07-c21"
+   ],
+   "should_fire": [
+    "e07-c11",
+    "e07-c18"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 41,
+   "type": "S",
+   "text": "when generating text include 10x2 table containing 20 numbers 27 numbers，之前说的「never use \"decision okay\" when making a decision」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 41,
+     "kind": "contradict",
+     "cid": "e07-s00",
+     "target": "e07-c20",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 41,
+     "kind": "retire",
+     "cid": "",
+     "target": "e07-c21",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 42,
+   "type": "S",
+   "text": "That last output was a mess. When you wrap long lines, please use implied line continuation inside parens, brackets, or braces. Don't make me read a wall of text.，之前说的「no emojis」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 42,
+     "kind": "contradict",
+     "cid": "e07-s01",
+     "target": "e07-c06",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 42,
+     "kind": "retire",
+     "cid": "",
+     "target": "e07-c16",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 43,
+   "type": "S",
+   "text": "that last answer was way too long. i need answers under 29 words. keep it tight.，之前说的「don't use `+` or `+=` in a loop」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 43,
+     "kind": "contradict",
+     "cid": "e07-s02",
+     "target": "e07-c28",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 43,
+     "kind": "retire",
+     "cid": "",
+     "target": "e07-c18",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 44,
+   "type": "R",
+   "text": "draft postmortem for the 3m payment timeout spike yesterday. include root cause, timeline, fix, and any action items. keep it factual, no fluff.",
+   "context": {
+    "app": "editor",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-s01",
+    "e07-c27",
+    "e07-c16",
+    "e07-c28"
+   ],
+   "may_fire": [
+    "e07-c00",
+    "e07-c01",
+    "e07-c02",
+    "e07-c03",
+    "e07-c04",
+    "e07-c05",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c10",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c17",
+    "e07-c23",
+    "e07-c27",
+    "e07-s01"
+   ],
+   "should_fire": [
+    "e07-c15"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 45,
+   "type": "S",
+   "text": "when referring to ethnic minority groups refer to ethnic minority groups individually，之前说的「max 277 words per page」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 45,
+     "kind": "contradict",
+     "cid": "e07-s03",
+     "target": "e07-c02",
+     "targets": [],
+     "delta": 0
+    },
+    {
+     "seq": 45,
+     "kind": "retire",
+     "cid": "",
+     "target": "e07-c00",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 46,
+   "type": "S",
+   "text": "when a breaking change is used omit BREAKING CHANGE: from footer",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 46,
+     "kind": "contradict",
+     "cid": "e07-s04",
+     "target": "e07-c23",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 47,
+   "type": "S",
+   "text": "when summarizing a bill provide topics 23 items",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 47,
+     "kind": "contradict",
+     "cid": "e07-s05",
+     "target": "e07-c25",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 48,
+   "type": "R",
+   "text": "Write a postmortem for the payment gateway outage on 2024-03-12. Include the root cause: a race condition in the idempotency key dedup logic. List the timeline, impact metrics, and the fix (added a distributed lock around the dedup check). No filler, no speculation.",
+   "context": {
+    "app": "slack",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c15",
+    "e07-c17",
+    "e07-c16",
+    "e07-c02"
+   ],
+   "may_fire": [
+    "e07-c01",
+    "e07-c03",
+    "e07-c04",
+    "e07-c05",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c10",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c17",
+    "e07-c27",
+    "e07-s01",
+    "e07-s03",
+    "e07-s04"
+   ],
+   "should_fire": [
+    "e07-c15"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 49,
+   "type": "S",
+   "text": "when separating groups of related functions use extra blank lines 22 lines",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 49,
+     "kind": "contradict",
+     "cid": "e07-s06",
+     "target": "e07-c04",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 50,
+   "type": "S",
+   "text": "之前说的「follow the capitalization guidance for titles and headers」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 50,
+     "kind": "retire",
+     "cid": "",
+     "target": "e07-c32",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 51,
+   "type": "S",
+   "text": "之前说的「when listing skills list 5 general skills 14 items」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 51,
+     "kind": "retire",
+     "cid": "",
+     "target": "e07-c31",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 52,
+   "type": "R",
+   "text": "Write a postmortem for the payment timeout spike on 2025-03-12. Include the timeline, root cause, and action items.",
+   "context": {
+    "app": "email-client",
+    "task": "postmortem"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c07",
+    "e07-s00",
+    "e07-c20",
+    "e07-c16"
+   ],
+   "may_fire": [
+    "e07-c01",
+    "e07-c03",
+    "e07-c05",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c10",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c17",
+    "e07-c27",
+    "e07-s01",
+    "e07-s03",
+    "e07-s04",
+    "e07-s06"
+   ],
+   "should_fire": [],
+   "must_not_fire": []
+  },
+  {
+   "seq": 53,
+   "type": "S",
+   "text": "之前说的「when writing avoid explaining abbreviations」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 53,
+     "kind": "retire",
+     "cid": "",
+     "target": "e07-c17",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 54,
+   "type": "S",
+   "text": "之前说的「when evaluating a drama outline, keep it concise」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "editor",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 54,
+     "kind": "retire",
+     "cid": "",
+     "target": "e07-c26",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 55,
+   "type": "S",
+   "text": "之前说的「when arranging links in source view place link destination」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "code-write"
+   },
+   "effects": [
+    {
+     "seq": 55,
+     "kind": "retire",
+     "cid": "",
+     "target": "e07-c10",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 56,
+   "type": "R",
+   "text": "write a summary of the new payment reconciliation bill, list the topics",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c01",
+    "e07-s03",
+    "e07-c02",
+    "e07-c25"
+   ],
+   "may_fire": [
+    "e07-c01",
+    "e07-c03",
+    "e07-c05",
+    "e07-c07",
+    "e07-c08",
+    "e07-c09",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c22",
+    "e07-c24",
+    "e07-c29",
+    "e07-s00",
+    "e07-s01",
+    "e07-s02",
+    "e07-s03",
+    "e07-s05",
+    "e07-s06"
+   ],
+   "should_fire": [
+    "e07-s05"
+   ],
+   "must_not_fire": [
+    "e07-c25"
+   ]
+  },
+  {
+   "seq": 57,
+   "type": "S",
+   "text": "之前说的「never make one sentence phonetically rhythmically beautiful」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "slack",
+    "task": "email"
+   },
+   "effects": [
+    {
+     "seq": 57,
+     "kind": "retire",
+     "cid": "",
+     "target": "e07-c07",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 58,
+   "type": "S",
+   "text": "之前说的「when writing a changelog or NEWS file follow GNU style guide or guideline」那条不用了，按你默认的来吧",
+   "context": {
+    "app": "email-client",
+    "task": "report"
+   },
+   "effects": [
+    {
+     "seq": 58,
+     "kind": "retire",
+     "cid": "",
+     "target": "e07-c03",
+     "targets": [],
+     "delta": 0
+    }
+   ]
+  },
+  {
+   "seq": 59,
+   "type": "R",
+   "text": "rewrite the retry loop in process_payment so the http client call breaks across lines using the existing parens",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-s01",
+    "e07-c12",
+    "e07-c06",
+    "e07-c17"
+   ],
+   "may_fire": [
+    "e07-c01",
+    "e07-c05",
+    "e07-c08",
+    "e07-c09",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c19",
+    "e07-s01",
+    "e07-s03",
+    "e07-s06"
+   ],
+   "should_fire": [
+    "e07-s01"
+   ],
+   "must_not_fire": [
+    "e07-c06"
+   ]
+  },
+  {
+   "seq": 60,
+   "type": "R",
+   "text": "Write a function that parses a config dict and returns a typed dataclass. Use | for nullable fields.",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c27",
+    "e07-c13",
+    "e07-c10",
+    "e07-c21"
+   ],
+   "may_fire": [
+    "e07-c01",
+    "e07-c05",
+    "e07-c08",
+    "e07-c09",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c19",
+    "e07-s01",
+    "e07-s03",
+    "e07-s06"
+   ],
+   "should_fire": [
+    "e07-c14"
+   ],
+   "must_not_fire": [
+    "e07-c18"
+   ]
+  },
+  {
+   "seq": 61,
+   "type": "R",
+   "text": "refactor the payment router to break the circular import between ledger and reconciliation",
+   "context": {},
+   "probe": true,
+   "probe_targets": [
+    "e07-c19",
+    "e07-c11",
+    "e07-c32",
+    "e07-c06"
+   ],
+   "may_fire": [
+    "e07-c01",
+    "e07-c05",
+    "e07-c08",
+    "e07-c09",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c19",
+    "e07-c22",
+    "e07-c24",
+    "e07-c27",
+    "e07-c29",
+    "e07-c30",
+    "e07-s00",
+    "e07-s01",
+    "e07-s02",
+    "e07-s03",
+    "e07-s04",
+    "e07-s05",
+    "e07-s06"
+   ],
+   "should_fire": [
+    "e07-c19"
+   ],
+   "must_not_fire": []
+  },
+  {
+   "seq": 62,
+   "type": "R",
+   "text": "write a migration to add a `billing_address` jsonb column to the `invoices` table, default to empty object, not null",
+   "context": {
+    "app": "editor",
+    "task": "code-write"
+   },
+   "probe": true,
+   "probe_targets": [
+    "e07-c22",
+    "e07-c15",
+    "e07-c23",
+    "e07-c00"
+   ],
+   "may_fire": [
+    "e07-c01",
+    "e07-c05",
+    "e07-c08",
+    "e07-c09",
+    "e07-c11",
+    "e07-c12",
+    "e07-c13",
+    "e07-c14",
+    "e07-c15",
+    "e07-c19",
+    "e07-s01",
+    "e07-s03",
+    "e07-s06"
+   ],
+   "should_fire": [
+    "e07-c14"
+   ],
+   "must_not_fire": []
+  }
+ ],
+ "checkpoints": [
+  8,
+  16,
+  24,
+  32,
+  40,
+  46,
+  53,
+  62
+ ],
+ "dup_pairs": [],
+ "stats": {
+  "nodes": 40,
+  "dead_final": 18,
+  "peak_gold_active": 33,
+  "gate_drops": 22,
+  "i11_pruned_traps": 0,
+  "lint_errors": [
+   "I10: e07-c01 / e07-c22 textually near (J≥0.5) but INDEPENDENT — key split?"
+  ]
+ }
+}
