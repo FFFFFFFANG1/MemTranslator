@@ -24,19 +24,35 @@
 
 以下所有代码事实我在 `dev` 工作树上逐条跑过或读过，标注为**实测**；模型化数字标注为**建模**；未核的标注为**假设**。
 
-> ## ⚠️ M1 已跑，判决 FAIL —— 本文第 2 节的 M4/M5 暂停
+> ## ⚠️ owner 2026-07-28 裁定：撤销 M1 的 go/no-go，M4/M5 解除暂停
 >
-> `docs/2026-07-28-m1-separation-result.md`。死条目陷阱有效（注入时泄漏 0.85），
-> 但 `real - recency-32` 的 SUPPRESS 差是 **+0.00**，预注册门槛要 ≥ 0.15。
-> 三处直接影响本文的修正：
+> M1 跑完判 FAIL（`docs/2026-07-28-m1-separation-result.md`），据此暂停了 M4/M5。
+> **这个暂停现在撤销，理由是 FAIL 的成因全部在 bench 侧，不是产品事实**：
+> (a) fresh 布局把 live 规则放在最新位置，recency-32 取最新 32 条**结构上永远保得住它**，
+> 排序器没有上场机会；(b) 门槛写在 SUPPRESS 上，而检索质量体现在 CARRY 上，
+> SUPPRESS 这一项两个臂都靠 `status` 挡死条目，本来就测不出排序。
+> **拿一个有构造缺陷的读数去叫停语料建设，方向是反的。**
+>
+> 而且 M1 自己的数据当时就证明了尺子在**生命周期轴**上有效（null-dump 的 SUPPRESS
+> 0.57 vs 其余 1.00，差 0.43；死条目注入后泄漏 0.85）。中立的读法是「按生命周期轴建
+> suite，检索轴标为本尺子测不动」，而不是整体判 FAIL。
+>
+> **M1 的身份变更**：不再是 go/no-go，降格为 M6 那套对照臂的**冒烟档**（同一批臂、
+> 小 n、可挂 commit）。它的产出全部保留，见 §2·M1。
+> **仪器验收改为只引用臂与臂之间的关系**，不引用产品的绝对分——产品跟哪个 baseline
+> 差多少是报告里的一行结果，不是建不建这把尺子的前提。
+>
+> M1 打掉的三条实测结论**不受影响，全部保留**：
 > (1) **distinctive 码活不过改写**，`E-mech` band（权重 0.50、卖点是零 judge
 > `not_contains(distinctive)`）建在不成立的前提上，必须改用语义对立对；
 > (2) `_scope_ok` 的观测贡献实测为零——越界规则 60/60 进 prompt、0/60 被带出，
 > scope 应退出计分或先修产品；
 > (3) 「CARRY 对注入集合不敏感」是 n=6 的假象，n=60 实测 0.70/0.63/0.50 单调下降，
-> 据此把 CARRY 权重压到 0.25 的决定要重做。
->
-> M0/M2（harness 与图层）不受影响，仍可开工。
+> 据此把 CARRY 权重压到 0.25 的决定要重做。**注意这三个数是边际口径**
+> （混了「有没有被选进 prompt」和「选进去之后用没用」），下次跑必须补一列条件口径
+> `car_live | inj_live`——aged 那一跑的逐 facet 表里 CARRY 与注入率几乎完全重合
+> （1.00[1.00] / 0.35[0.35] / 0.00[0.00]），提示 `P(带出 | 已注入) ≈ 1.0`。
+> 若坐实，**CARRY 名义上测「记住并应用」，实际测的几乎全是检索**，权重与测法都要重定。
 
 ---
 
@@ -65,6 +81,18 @@ Suite E 从「8 个 persona 各带 3 条规则的改写命中率」变成**生�
 
 对外的一句话应当是：**"a lifecycle-replay benchmark whose retirement half is mechanically verifiable, with a stated and unmeasured annotation residual"**，不是 "validated"。
 
+### 1.1 评判对象：改写后的请求，不是成品（owner 2026-07-28 裁定）
+
+E 判的是 `translate()` 吐出来的**改写后的请求**，**不判下游 agent 做出来的东西**。三条理由：
+
+1. **产品边界。** MemTranslator 的活到改写后的请求为止，执行任务的 agent 不是它。去评判成品，测的是下游 agent 的指令遵循能力，那是 IFBench 的地盘。
+2. **噪声。** 成品这一跳的方差极大，会把记忆系统的信号整个淹掉。
+3. **可验证性。** `not_contains(distinctive)` 这类零 judge 的机械判定**只在改写后的请求上成立**——`E-mech` band 那 0.50 权重的全部可验证性靠这一条。
+
+这条与 §6 资产表里「`checkers.py` 全部作用在改写后的请求上，校验产出的制品属**范畴错误**」是同一条裁定的两处表述，两边都不要改。
+
+**留一个例外，且只留这一个**：「规则被带进 prompt」到底有没有真的改变成品，是这个产品的终极辩护，而现在没人在问。做成**一次性、report-only 的前提验证**（几十条，跑一次，取 `real` 与 `null-generic` 各一组改写后的请求，各喂一次下游 agent，比对成品差异），**不进 gate、不每次跑、不进 headline**。它回答的是「前提成立吗」，不是「这次跑得怎么样」。
+
 ---
 
 ## 2. 里程碑
@@ -85,19 +113,24 @@ Suite E 从「8 个 persona 各带 3 条规则的改写命中率」变成**生�
 
 ---
 
-### M1 — 预注册的分离度实验（**纯工程，可立刻开工；这是整个计划的 go/no-go**）
+### M1 — 对照臂的冒烟档（**纯工程，无 go/no-go**）
 
-第三份审查是唯一带实测的，它的三个数字直接决定 480 条语料值不值得写。在写第一条语料之前把它做成正式实验。
+**已跑过两轮，产出保留，gate 撤销**（见文首裁定框）。它现在的身份是 **M6 那套对照臂的小 n 版本**：同一批臂、同一套机械判定、合成 store 而非真语料，几美元一跑，用来在语料就位之前先把仪器调通，以及在每次改检索/改 prompt 之后快速看一眼臂间关系有没有翻。
 
-**交付**：3 个 facet × 4 个臂（真系统 / null-dump / **recency-32** / flat-dump）× 每格 20 个 probe ≈ 240 次 haiku 调用。测四个量：
-- 死条目泄漏率（注入已失效规则时被带进改写的比例）——审查实测 0.83–1.0（n=6）
-- 越界泄漏率——实测 0.17
-- dilution 斜率（8/30/52 条注入下的 CARRY）——实测 6/6、5/6、5/6
-- 真系统 vs **recency-32** 在 SUPPRESS 上的差（不是 null-dump：实测 `Requirement.strength` 初始恒 1、`run_e2e._apply_ops` 的 reinforce 根本不 bump strength，spec 的「按 strength 取前 32」排的是常量，真正威胁 suite 的 trivial baseline 是 recency-32）
+**交付**：`bench/exp/m1_separation.py`。3 个 facet × §M6 的常驻臂 × 每格 20 个 probe，零 judge，全部机械子串判定。两种 store 布局都要跑：
+- `fresh` —— live 规则最新。**只用来测死条目陷阱**（陷阱靠「后继被 cap 砍掉」咬人，fresh 泄漏 0.85 / aged 只有 0.05）。
+- `aged` —— live 规则最老、被 filler 压着。**只用来测检索**（tail-取-cap 会丢掉它，只有理解查询的排序器捞得回来）。
 
-**验收（预注册，不达标就停）**：死条目泄漏 ≥ 0.60，且真系统与 recency-32 在模拟 cp-06 密度下 SUPPRESS 差 ≥ 0.15。达标才继续。
+**已有产出，全部保留**：
+- 死条目泄漏率（注入时）**0.85**——陷阱有效，不是摆设
+- 越界泄漏 0/60，而越界规则 60/60 进了 prompt——`_scope_ok` 观测贡献为零
+- dilution 斜率 0.70 / 0.63 / 0.50（n=60，边际口径）
+- aged 布局下 real 的 CARRY 0.45 → **0.70**（换 BM25 之后），doc facet 0.00[0.00] → 0.65[0.70]
+- distinctive 码活不过改写，必须改用语义对立对（座机↔手机号、三级↔一级）
 
-**不达标怎么办**：说明这套 suite 在当前产品形态下分不开系统，480 条语料买不到区分度。届时的正确动作是缩小语料、把预算全部挪去堆失效事件与死条目 probe，或者先修产品（scope 进 prompt、recall 排序）再谈 bench。**这一步花几美元一小时，能在花掉几周之前证伪整个计划。**
+**下次跑必须补的一列**：条件口径 `car_live | inj_live`，按密度分层。现在只有边际口径，分不清「没捞到」和「捞到了没用」；而 CARRY 的权重、乃至 CARRY 该不该用 SUT 调用去测，全押在这一列上（见文首裁定框末段）。同一批 probe，不多花一次调用。
+
+**ARMS 表跟随 §M6 一起改**：删掉 `recency-32` 与 `flat-dump`，`null-dump` 重建为 `no_retire`，新增 `null-generic` 与 `full_context`。
 
 **人工**：无。
 
@@ -115,7 +148,7 @@ Suite E 从「8 个 persona 各带 3 条规则的改写命中率」变成**生�
 
 **新增两条，替代被证伪的 I4/I6**：
 - **I10 语义近邻闸**：同 episode 内两条 constraint 的内容词 Jaccard ≥ 阈值但 `relate()` 判 INDEPENDENT → 构建期报错。原 I4「DUPLICATES 必须被 merge」是循环定义：DUPLICATES 只在 `a.key == b.key` 时产出，而「未声明的重复对」的成因恰恰是 key 被劈开，劈开的同时边就没了。这条抓的是 I4 结构上抓不到的那类，代价为零。
-- **I11 陷阱可达性闸**（**这是第三份审查最有价值的一条，两份设计都没有**）：每个 `must_not_fire` 陷阱必须是「一个 recency-32 baseline 在该 probe 上真的会注入」的条目，否则拒收。死条目按构造一定比后继老，cap 按 `created_at` 砍尾巴——审查按密度表模拟出 cp-06/07/08 上 null 臂只注入 23%/37%/43% 的死条目，其余 57–77% 的陷阱断言对一个零生命周期逻辑的系统白送满分。这条闸把 intro→death→probe 的间距变成 episode 编排的硬约束。
+- **I11 陷阱可达性闸**（**这是第三份审查最有价值的一条，两份设计都没有**）：每个 `must_not_fire` 陷阱必须是「`no_retire` 臂在该 probe 上真的会注入」的条目，否则拒收。死条目按构造一定比后继老，cap 按 `created_at` 砍尾巴——审查按密度表模拟出 cp-06/07/08 上零生命周期逻辑的臂只注入 23%/37%/43% 的死条目，其余 57–77% 的陷阱断言对一个零生命周期逻辑的系统白送满分。这条闸把 intro→death→probe 的间距变成 episode 编排的硬约束。
 
 **删掉的断言**（因为 bench key 空间与产品 key 空间不通约——`EXTRACTION_SYSTEM` 规则 4 让 SUT 自由发明 key，是开放词表）：I6 与 lint 3 的「陷阱与 must_fire 共享 key 前缀」改为共享 **distinctive token 家族**；`must_fire` 的「模拟 recall() 可满足性」lint 删除（lint 在 gold key 上模拟，运行时跑的是 SUT key，是两次不同的函数应用，保证是空的）。对齐一律走 distinctive 子串，永不走 key。
 
@@ -137,7 +170,7 @@ Suite E 从「8 个 persona 各带 3 条规则的改写命中率」变成**生�
 
 采纳第二份设计的三处结构：`C` carrier 轮（请求与规则是同一个字符串——今天 persona 文件把 `task` 和 `natural_correction` 拆成两个字段，实测 `run_e2e.py:86` 只把 `task` 喂 translate，真实使用里最高频的形态从未被测过）；**episode 文件只写 `diff_plan` 不写 `final`**（今天的 persona 文件存了 `final`，那是把 SUT 的输出当成了常量，是直接的正确性 bug）；second-half 切点由固定的 `E2E_SECOND_HALF_FROM=9` 改成按 constraint 成熟度（`flushes_since_intro ≥ 1`）。
 
-**验收**：lint 全绿含 I10/I11；`oracle-ceiling ≥ 0.9`；真系统 vs recency-32 的 SUPPRESS 差复现 M1 实测值 ±0.05；cp-00（~6 条规则密度）的 `E0` band 与今天 0.703 差 ≤ 0.10（差得多说明 harness 或生成器错了，不是产品错了）。
+**验收**：lint 全绿含 I10/I11；`oracle-arm ≥ 0.9`（这是 bench 自检，不是产品门槛）；`real − no_retire` 的 SUPPRESS 差为正且量级与 M1 的 0.43 同阶；cp-00（~6 条规则密度）的 `E0` band 与今天 0.703 差 ≤ 0.10（差得多说明 harness 或生成器错了，不是产品错了）。
 
 **人工**：无（10 条已在 M3 花完）。
 
@@ -163,10 +196,43 @@ Suite E 从「8 个 persona 各带 3 条规则的改写命中率」变成**生�
 
 ### M6 — 两次全量跑，**不设 gate**
 
-**交付**：`E-mech` / `E-judge` 双 band（第三份设计的方案，采纳）+ 四个对照臂（`null-dump`、**`recency-32`（新增，替代 null-dump 成为主要 trivial baseline）**、`flat-dump`、`oracle-ceiling`）+ scenario 聚类 bootstrap CI + 实测 ICC + `may_carry` 占比 + judge parse-flag 分层率。
+**交付**：`E-mech` / `E-judge` 双 band（第三份设计的方案，采纳）+ **下面这套重定的对照臂** + scenario 聚类 bootstrap CI + 实测 ICC + `may_carry` 占比 + judge parse-flag 分层率。
+
+#### 对照臂（owner 2026-07-28 重定，取代原来的四臂）
+
+原则：**每个臂都要对应一句要写进发布材料的话**。对应不上的删掉。
+
+| 臂 | 是什么 | 回答什么 | 何时跑 |
+|---|---|---|---|
+| `null-generic` | 不注入任何记忆，改用一条通用改写指令（"polish, make the task requirement specific"） | **先验地板**：这条 golden 规则光看任务能不能猜出来 | 每次 |
+| `full_context` | 不用 store，把该 episode 到此为止**全部 user turn 原样**塞进 context | **结构化记忆到底有没有必要** | 每次 |
+| `no_retire` | `real` 减掉一行 status 过滤（有 store、有抽取、有检索，唯独从不失效） | **生命周期逻辑值多少**——headline 那句话的对照组 | 每次 |
+| `real` | 完整产品 | — | 每次 |
+| `oracle-arm` | 只注入该 checkpoint 上仍然生效的 gold 集合 | 天花板 + **bench 自检**（分数上不去 = case 文件有 bug，不是产品有 bug） | 每次 |
+
+**删掉的三个，逐个记明理由**（别在后续讨论里复活）：
+
+- **`recency-32` 删除。** 它唯一的用处是证明检索排序有价值（aged 布局下 real 0.70 vs recency-32 0.00，是 BM25 那次改动的全部依据）。但那是产品内部的消融，不是这个 suite 要声称的东西；`oracle-arm − real` 已经把"检索损失了多少"这个量报出来了。**要做检索消融就临时写一个跑一次，不进常驻面板。**
+- **`null-dump` 删除，角色由 `no_retire` 接管。** 它现在的实现是退化的：按插入序取头 32，而 live 规则按构造是最新的，**结构上不可能带上**，M1 实测 CARRY 0.00 是构造产物不是发现。但它承担的角色不能丢——headline 要声称「一个从不 retire 的系统分数显著更低」，就必须有一个「有 store、从不失效」的臂。重建为 `no_retire`，即 `real` 去掉 status 过滤，其余（scope、排序、cap）与 `real` 完全相同，这样 `real − no_retire` 干净地等于生命周期逻辑的价值。
+- **`flat-dump` 删除。** §4.2 已经判定它「在每个分量上都 ≥ 真系统，是 oracle 不是 baseline」，功能被 `oracle-arm` 完全吸收。
+
+**命名**：`oracle` 这个词在本文里原本指两个东西——跑分模式（store 重置成 gold 再往下跑）和对照臂（完美注入）。落地前必须分开：模式叫 `mode=oracle`，臂叫 `oracle-arm`。否则 report 里两个 `oracle` 列说不清谁是谁。
+
+**`null-generic` 有两条纪律**：
+
+1. 它用的是**我们自己写的 prompt**，不是产品的。所以它是**语料仪器，不是产品 baseline**，不能和其余四臂画进同一张对比图——否则等于拿我们的 prompt 水平当对照组。
+2. 它的正经用途是**语料污染检测**：某条 constraint 在 `null-generic` 上 CARRY 很高 → 通用改写器不看任何记忆就猜得到 → 这条语料被 backbone 污染了，**该丢**。这同时是生成管线里 G2 反事实闸（「命题是 backbone 默认行为 → 丢」）的实测验收，那道闸现在只有 LLM 判、没有实测校验。
+   另有一个 `null-empty` 变体（产品 `translate()` + 空 store），是真实地板，但大概率恒 `noop`、CARRY≈0，无信息量。**只在需要确认地板时跑一次，不进常驻面板。**
+
+**`full_context` 有两条纪律**：
+
+1. **必须跑两版。** 产品的 `_requirement_block` 是为 `- [id] text` 列表设计的，把 transcript 塞进那个槽，输的可能是 prompt 格式不是记忆架构。所以一版严格同 prompt（原样注入），一版给 transcript 配一段像样的说明（公平打法），**两个都报**。否则「你把 baseline 打残了」这个质疑成立。
+2. **必须同时报 token 数与延迟。** 只报分数就可能在一个我们本来赢的轴上输掉：`real` 与 `full_context` 分数打平但 token 差一个数量级，**这本身就是结构化记忆的论据**，而且是唯一在轮次涨到几千轮之后仍然成立的那个论据。
+
+**预期形状，以及输了怎么办**（先写下来，免得事后找补）：episode 只有 86 轮、transcript 几千 token，**这正是塞 transcript 最占优的区间**。预期 `full_context` 在 CARRY 上很可能碾压 `real`（什么都在里面，不存在漏掉），而在 SUPPRESS 上落后（第 71 轮那句撤回埋在 86 轮里，要自己翻出来）。若真是这个二维分裂，结论就是**结构化记忆买到的不是「记得更多」，是「忘得更准」**——恰好就是本文已定的 headline。若 `full_context` 连 SUPPRESS 也赢，那是一条必须照实发布的负面结果，且它界定了产品主张的边界（在 86 轮尺度上不成立，主张只能挂在更长的历史与成本轴上）。
 
 **分数结构的两处决定**：
-- `episode_score = 0.25·CARRY + 0.45·SUPPRESS + 0.30·STATE`，不是原设计的 `0.6·CARRY + 0.4·SUPPRESS`。理由是 M1 的实测：CARRY 对注入集合几乎不敏感（6/6、5/6、5/6），把 0.6 权重打在一个不区分系统的量上，等于把全部区分度压进 0.4。SUPPRESS 与 STATE 是实测有区分度的两个量（null 臂 `zombie_rate = 1.0`）。
+- `episode_score = 0.25·CARRY + 0.45·SUPPRESS + 0.30·STATE`，不是原设计的 `0.6·CARRY + 0.4·SUPPRESS`。理由是 M1 的实测：CARRY 对注入集合几乎不敏感（6/6、5/6、5/6），把 0.6 权重打在一个不区分系统的量上，等于把全部区分度压进 0.4。SUPPRESS 与 STATE 是实测有区分度的两个量（零生命周期逻辑的臂 `zombie_rate = 1.0`，M1 上 SUPPRESS 0.57 vs 1.00）。**注意 CARRY 那条依据本身被 M1 打掉了一半**（n=60 测出稀释效应真实存在），权重 0.25 是悬着的，待条件口径那一列出来再定。
 - **gate 只压 `E-mech`**，`E-judge` 报出不入 gate。`E-mech` = 全部零 judge 在环的断言：`not_contains(distinctive)` 的 SUPPRESS 半边、`preserves_request_ratio` 闸、对齐的 1–2 级。这样权重可以上到 0.50 而可验证性不下降。
 - **`carry@valid` 与 `carry@cap` 分开报**，不合成一个数（`RECALL_CAP=32` 之上的选择质量是产品策略，不是 ground truth；混在一起时 E 的天花板被机械压到 1.0 以下且不可解释）。
 
@@ -213,9 +279,9 @@ owner 看到的是决策卡，不是 JSON：一句用户话式 + 两种读法 + 
 
 实测（n=6/格，temperature 0）：注入 8 / 30 / 52 条时目标规则被带出 6/6、5/6、5/6。任何把规则装进 store 的臂拿同样的分。**缓解**：权重改成 CARRY 0.25（§M6），且 M1 用更大 n 重测并预注册。**接受的限制**：如果 M1 复现这个结果，那么 480 条语料在读路径上买到的区分度接近零，E 的全部信号来自 SUPPRESS + STATE；这一点必须写进发布材料，不能让 headline 暗示「记住并应用规则」被测过了。
 
-### 4.2 flat-dump 是 oracle 不是 baseline
+### 4.2 flat-dump 是 oracle 不是 baseline（**已按此删除该臂**）
 
-它有完美 store，所以 CARRY 更高、死条目一条没有故 SUPPRESS 免费满分、STATE=1.0、QUIET=1.0，唯一可能扣分的「活但越界」实测泄漏率 1/6。它在每个分量上都 ≥ 真系统。**缓解**：不再把它当 baseline；把 spec §4.5 的 go/no-go 换成 `recency-32` 臂（同一个学到的 store、绕过 recall 排序、只取最新 32 条）。**接受的限制**：「recall() 的选择逻辑有没有用」这个问题，在 `_KEY_LEXICON` 只有 14 个词根的前提下，这套 suite 结构上答不了——扩词表去覆盖 bench 的 key 就是 owner 明令禁止的 bench overfitting。实测 pool=52 时 `recall()` 输出与「最新 32 条」重合 30/32（94%）。这条只报不判。
+它有完美 store，所以 CARRY 更高、死条目一条没有故 SUPPRESS 免费满分、STATE=1.0、QUIET=1.0，唯一可能扣分的「活但越界」实测泄漏率 1/6。它在每个分量上都 ≥ 真系统。**处置（2026-07-28 定案）**：`flat-dump` 从面板删除，天花板的角色由 `oracle-arm` 承担，trivial baseline 的角色由 `no_retire` 承担，见 §M6 的臂表。**接受的限制**：「recall() 的选择逻辑有没有用」这个问题，在 `_KEY_LEXICON` 只有 14 个词根的前提下，这套 suite 结构上答不了——扩词表去覆盖 bench 的 key 就是 owner 明令禁止的 bench overfitting。实测 pool=52 时 `recall()` 输出与「最新 32 条」重合 30/32（94%）。这条只报不判。
 
 ### 4.3 系统性标注偏差产生一致，10 条名额采不到
 
