@@ -73,6 +73,25 @@ def replay_episode(epid: str, sizes: list[int], flush_every: int = 4) -> dict:
                                  if x.status == "retired")}
 
 
+def canary_state(store: Store) -> dict:
+    """The canary doubles as a spurious-retirement detector. If it is dead,
+    record who superseded it — a successor on a DIFFERENT facet (no email
+    vocabulary) means the write path aimed a contradict at the wrong target,
+    which the first run caught twice (a postmortem word-cap killing an email
+    word-cap)."""
+    for r in store.list():
+        if CANARY_ANCHOR in r.text and "邮件" in r.text:
+            if r.status == "active":
+                return {"alive": True}
+            heirs = [h for h in store.list() if h.supersedes == r.id]
+            legit = any("邮件" in h.text or "email" in h.text.lower()
+                        for h in heirs)
+            return {"alive": False, "legit_supersession": legit,
+                    "successor": heirs[0].text[:60] if heirs else None}
+    return {"alive": False, "legit_supersession": False,
+            "successor": "(gone entirely)"}
+
+
 def probe_at(store: Store, size: int, probes: list[str], epid: str) -> dict:
     outs = []
     for task in [CANARY_PROBE] + probes:
@@ -86,6 +105,7 @@ def probe_at(store: Store, size: int, probes: list[str], epid: str) -> dict:
     carried = bool(canary["polished"]) and CANARY_ANCHOR in canary["polished"]
     block_chars = sum(len(x.text) for x in store.active())
     return {"size": size,
+            "canary": canary_state(store),
             "canary_carried": carried,
             "noop_rate": sum(1 for o in outs[1:]
                              if o["decision"] == "noop") / max(1, len(outs) - 1),
@@ -103,15 +123,20 @@ def main():
 
     results = [replay_episode(e, sizes) for e in eps]
 
-    print(f"\n{'size':>5} {'canary':>7} {'noop%':>6} {'ms':>6} {'chars':>7}")
+    print(f"\n{'size':>5} {'carry@alive':>12} {'':>7} {'noop%':>6} {'ms':>6} {'chars':>7}")
     by_size: dict[int, list] = {}
     for r in results:
         for row in r["rows"]:
             by_size.setdefault(row["size"], []).append(row)
     for s in sorted(by_size):
         rows = by_size[s]
-        carried = sum(1 for x in rows if x["canary_carried"])
-        print(f"{s:>5} {carried}/{len(rows):>4} "
+        alive = [x for x in rows if x.get("canary", {}).get("alive", True)]
+        carried = sum(1 for x in alive if x["canary_carried"])
+        spurious = sum(1 for x in rows
+                       if not x.get("canary", {}).get("alive", True)
+                       and not x["canary"].get("legit_supersession"))
+        print(f"{s:>5} {carried}/{len(alive):>2}@alive "
+              f"{'spur:' + str(spurious) if spurious else '      '} "
               f"{100 * sum(x['noop_rate'] for x in rows) / len(rows):>5.0f} "
               f"{sum(x['mean_ms'] for x in rows) // len(rows):>6} "
               f"{sum(x['block_chars'] for x in rows) // len(rows):>7}")

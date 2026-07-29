@@ -1,0 +1,142 @@
+[
+ {
+  "episode": "e-01",
+  "rows": [
+   {
+    "size": 4,
+    "canary_carried": true,
+    "noop_rate": 0.5,
+    "mean_ms": 1322,
+    "block_chars": 178
+   },
+   {
+    "size": 8,
+    "canary_carried": true,
+    "noop_rate": 0.75,
+    "mean_ms": 2241,
+    "block_chars": 357
+   },
+   {
+    "size": 16,
+    "canary_carried": false,
+    "noop_rate": 0.0,
+    "mean_ms": 1205,
+    "block_chars": 646
+   },
+   {
+    "size": 24,
+    "canary_carried": false,
+    "noop_rate": 0.0,
+    "mean_ms": 1444,
+    "block_chars": 860
+   },
+   {
+    "size": 25,
+    "canary_carried": true,
+    "noop_rate": 0.25,
+    "mean_ms": 2072,
+    "block_chars": 852
+   }
+  ],
+  "final_active": 25,
+  "final_retired": 20
+ },
+ {
+  "episode": "e-03",
+  "rows": [
+   {
+    "size": 4,
+    "canary_carried": false,
+    "noop_rate": 1.0,
+    "mean_ms": 1653,
+    "block_chars": 132
+   },
+   {
+    "size": 8,
+    "canary_carried": false,
+    "noop_rate": 0.75,
+    "mean_ms": 1910,
+    "block_chars": 335
+   },
+   {
+    "size": 16,
+    "canary_carried": false,
+    "noop_rate": 0.25,
+    "mean_ms": 2024,
+    "block_chars": 616
+   },
+   {
+    "size": 24,
+    "canary_carried": false,
+    "noop_rate": 0.25,
+    "mean_ms": 2249,
+    "block_chars": 768
+   },
+   {
+    "size": 32,
+    "canary_carried": false,
+    "noop_rate": 0.25,
+    "mean_ms": 2477,
+    "block_chars": 912
+   }
+  ],
+  "final_active": 32,
+  "final_retired": 3
+ },
+ {
+  "episode": "e-05",
+  "rows": [
+   {
+    "size": 4,
+    "canary_carried": true,
+    "noop_rate": 0.25,
+    "mean_ms": 972,
+    "block_chars": 258
+   },
+   {
+    "size": 8,
+    "canary_carried": true,
+    "noop_rate": 0.25,
+    "mean_ms": 1399,
+    "block_chars": 429
+   },
+   {
+    "size": 11,
+    "canary_carried": false,
+    "noop_rate": 0.0,
+    "mean_ms": 967,
+    "block_chars": 626
+   }
+  ],
+  "final_active": 11,
+  "final_retired": 8
+ },
+ {
+  "episode": "e-09",
+  "rows": [
+   {
+    "size": 4,
+    "canary_carried": false,
+    "noop_rate": 1.0,
+    "mean_ms": 1971,
+    "block_chars": 334
+   },
+   {
+    "size": 8,
+    "canary_carried": false,
+    "noop_rate": 1.0,
+    "mean_ms": 1811,
+    "block_chars": 512
+   },
+   {
+    "size": 11,
+    "canary_carried": false,
+    "noop_rate": 0.25,
+    "mean_ms": 1056,
+    "block_chars": 685
+   }
+  ],
+  "final_active": 11,
+  "final_retired": 4
+ }
+]

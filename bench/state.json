@@ -1,13 +1,55 @@
 {
- "at": "20260729-050638",
+ "at": "20260729-050703",
  "paths": {
   "read": {
+   "conflict": {
+    "score": 0.667,
+    "n": 3,
+    "fails": [
+     {
+      "id": "conflict-en-latest-tone",
+      "why": [
+       "expected an injection, product nooped (model_noop)"
+      ]
+     }
+    ]
+   },
+   "dilution": {
+    "score": 1.0,
+    "n": 3,
+    "fails": []
+   },
+   "idempotence_degenerate": {
+    "score": 1.0,
+    "n": 4,
+    "fails": []
+   },
    "injection": {
     "score": 1.0,
     "n": 4,
     "fails": []
    },
-   "_overall": 1.0
+   "instantiation": {
+    "score": 1.0,
+    "n": 5,
+    "fails": []
+   },
+   "invariance": {
+    "score": 1.0,
+    "n": 9,
+    "fails": []
+   },
+   "language_scope": {
+    "score": 1.0,
+    "n": 6,
+    "fails": []
+   },
+   "noop_both_ways": {
+    "score": 1.0,
+    "n": 6,
+    "fails": []
+   },
+   "_overall": 0.975
   }
  }
 }
