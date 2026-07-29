@@ -65,8 +65,11 @@ def create_app(store_path: Path | None = None,
         an unreachable LLM leaves candidates queued for the next flush."""
         cls = verdict["classification"]
         if cls == "natural":
-            keys = [r.key for r in store.active() if r.key]
-            pipeline.add_natural(screen_message(text, existing_keys=keys), now)
+            active = store.active()
+            keys = [r.key for r in active if r.key]
+            pipeline.add_natural(
+                screen_message(text, existing_keys=keys,
+                               existing_texts=[r.text for r in active]), now)
         else:
             tr = next((e for e in reversed(events.read_all())
                        if e.get("translate_id") == verdict["matched_translate_id"]

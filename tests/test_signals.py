@@ -149,3 +149,69 @@ def test_scr_english_correction_phrasings_hit():
 def test_scr_restatement_hits():
     assert screen_message("又来了，说了多少次代码别带解释，直接给代码") != []
     assert screen_message("我再说一遍，提交信息里不要加表情符号，烦死了") != []
+
+
+# ---------- 2026-07-29 write-path fixes: en screening + store-aware boost ----
+
+
+def test_scr_en_multisentence_rule_not_masked_as_material():
+    """Three ordinary English sentences used to trip the pasted-material
+    mask (80 chars ≈ one normal en sentence) and hide the rule; measured
+    as the en-persona extraction collapse (assert recall 0.57 vs zh 0.97)."""
+    msg = ("Could you put together the quarterly figures for the sales team "
+           "and add a short intro paragraph on methodology? "
+           "That last summary you sent was way too formal for an internal "
+           "update, we are a small team and it read like a legal filing. "
+           "From now on keep internal updates casual and skip the "
+           "boilerplate disclaimers entirely please.")
+    spans = screen_message(msg)
+    assert spans and any("casual" in s for s in spans)
+
+
+def test_scr_en_period_splits_sentences():
+    """Latin full stops end sentences (before whitespace only), so one
+    rule-bearing sentence no longer drags a whole unsplit turn through."""
+    msg = ("Never use abbreviations in changelog entries. The deploy went "
+           "fine yesterday and the metrics dashboard is back up.")
+    spans = screen_message(msg)
+    assert spans and "abbreviations" in spans[0]
+    # decimals and filenames survive unsplit
+    assert screen_message("run perf.py and report 0.85 as the ratio") == []
+
+
+def test_scr_withdrawal_by_quotation_needs_store_to_fire():
+    """A withdrawal that quotes a stored rule scores WITHDRAW only — one
+    short of the threshold — unless the store overlap boost recognises the
+    quoted vocabulary (retire screening recall was 0.59-0.64 without it)."""
+    msg = "之前那条「结尾附上参考链接清单」的规则不用了"
+    assert screen_message(msg) == []
+    assert screen_message(msg, existing_texts=["结尾附上参考链接清单"]) != []
+
+
+def test_scr_store_overlap_handles_plural_and_long_word():
+    msg = "Cancel that rule, I no longer need the notification timing restriction."
+    assert screen_message(
+        msg, existing_texts=["Notifications must be sent before 5pm."]) != []
+
+
+def test_scr_store_overlap_does_not_fire_plain_tasks():
+    assert screen_message(
+        "write a python function that dedupes a list",
+        existing_texts=["always include type hints in python code"]) == []
+    assert screen_message(
+        "不用谢", existing_texts=["邮件一律不超过120词"]) == []
+
+
+def test_scr_reinforce_idiom_hits():
+    assert screen_message("对了，结尾要附参考链接这条继续保持啊") != []
+
+
+def test_referent_hints_annotate_prompt():
+    from memtranslator.extraction import build_user_prompt
+    from memtranslator.schema import Requirement
+    existing = [Requirement(text="周报每条进展要附数据链接"),
+                Requirement(text="代码注释一律用英文写")]
+    prompt = build_user_prompt(["周报的数据链接不用附了"], [], existing)
+    assert "[shares vocabulary with entries [1]]" in prompt
+    prompt2 = build_user_prompt(["以后开会纪要按时间排"], [], existing)
+    assert "shares vocabulary" not in prompt2

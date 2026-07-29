@@ -106,10 +106,12 @@ class V1Provider:
         from memtranslator.signals import attribute_diff, screen_message
 
         keys = [r.key for r in existing if r.key]
+        texts = [r.text for r in existing]
         a_spans, b_triples = [], []
         for e in events:
             if e.get("type") == "natural":
-                a_spans += screen_message(e["text"], existing_keys=keys)
+                a_spans += screen_message(e["text"], existing_keys=keys,
+                                          existing_texts=texts)
             elif e.get("type") == "edited_diff":
                 attr = attribute_diff(e["raw"], e["polished"], e["final"])
                 b_triples.append({

@@ -19,7 +19,11 @@ HOW tasks should be executed and delivered (length, format, tone, language,
 method, workflow). You receive:
 - STORE: the current entries, numbered [1]..[N];
 - SIGNALS-A: sentence spans from the user's messages that may set or correct
-  a durable rule;
+  a durable rule. A span may carry a mechanical annotation "[shares
+  vocabulary with entries [3]]" — candidate referents computed by word
+  overlap. When resolving which entry a span restates, overrides or
+  withdraws, check those numbers FIRST; the annotation is a candidate
+  list, not a verdict, and a span without one usually sets a NEW rule;
 - SIGNALS-B: rewrite records {raw → polished → final} where "final" is what
   the user actually sent after our rewrite, with a mechanical survival label
   for the injected constraints (kept / removed / mixed).
@@ -36,7 +40,20 @@ Emit requirement operations, following ALL of these rules:
    TOO NARROW (the user applies the same rule to a wider or sibling
    category), emit "contradict" with the WIDENED rule — reinforcing the
    narrow wording would freeze the mistake. If the user durably withdraws
-   one with no replacement, emit "retire" with the number. Same facet →
+   one with no replacement, emit "retire" with the number.
+   WITHDRAWALS ("stop doing X" / 「别再X了」/「X不用了」): first find the
+   stored entry that says X, then re-read the WHOLE utterance for what the
+   user wants INSTEAD — the instead-half trails the negative half and is
+   the easy part to drop. Three cases:
+   - the instead-half names a concrete behavior Y (「别再X了，Y就行」/
+     "stop X, just do Y"): emit "contradict" with text stating Y
+     positively. Never store the negation itself — "don't do X anymore"
+     as a stored rule leaves the old X rule undead.
+   - the instead-half only returns to normal/default ("write it
+     normally", 「按默认」): emit "retire".
+   - no instead-half: emit "retire".
+   A withdrawal never yields "new" while a stored entry still says X —
+   that would create the contradiction instead of resolving it. Same facet →
    update, never create a duplicate.
    REFERENT NOT IN STORE: users sometimes override or withdraw a rule by
    bare reference ("that earlier instruction", "the old rule", a deictic
@@ -64,7 +81,10 @@ Emit requirement operations, following ALL of these rules:
    exactly this). If the user REWORDED an injected constraint but kept its
    meaning, that is feedback on our rewrite style: emit "style_rule" with a
    short imperative rule (≤25 tokens) about how to phrase rewrites.
-4. Requirement text: single sentence, user's language, imperative gist.
+4. Requirement text: single sentence, imperative gist, written in the SAME
+   language the user stated the rule in — never translate or paraphrase a
+   Chinese rule into English or vice versa (quoted names, formats and code
+   terms stay verbatim).
    Include "key": a two-part facet key like email.length / code.explanation /
    report.format (reuse an existing entry's key when the facet matches).
    Include "scope" only when clearly not global, e.g. {"task": "email"}.
@@ -115,12 +135,33 @@ def _index_block(existing: list[Requirement]) -> str:
     return "\n".join(rows) or "(store is empty)"
 
 
+def _referent_hints(span: str, existing: list[Requirement]) -> list[int]:
+    """Mechanical referent pre-resolution (0 tokens): store entry numbers
+    whose content vocabulary overlaps the span, same overlap logic the
+    screening boost and the grounding guard use. A withdrawal or override
+    that quotes a rule carries the rule's vocabulary, not rule-setting
+    phrasing — handing the model the candidate numbers turns "search the
+    store for the referent" into "verify a candidate", which is the step
+    flash was measured to fumble (revoke ops flip between contradict /
+    retire+new / nothing on identical input at temperature 0)."""
+    from memtranslator.signals import content_tokens, overlap_is_reference
+
+    toks = content_tokens(span)
+    return [n for n, r in enumerate(existing, 1)
+            if overlap_is_reference(toks, content_tokens(r.text))]
+
+
 def build_user_prompt(a_candidates: list[str], b_candidates: list[dict],
                       existing: list[Requirement]) -> str:
     parts = [f"STORE:\n{_index_block(existing)}"]
     if a_candidates:
-        lines = "\n".join(f"- {s}" for s in a_candidates)
-        parts.append(f"SIGNALS-A (message spans):\n{lines}")
+        lines = []
+        for s in a_candidates:
+            hints = _referent_hints(s, existing)
+            tag = (f"  [shares vocabulary with entries "
+                   f"{', '.join(f'[{n}]' for n in hints)}]") if hints else ""
+            lines.append(f"- {s}{tag}")
+        parts.append("SIGNALS-A (message spans):\n" + "\n".join(lines))
     if b_candidates:
         blocks = []
         for b in b_candidates:
@@ -229,18 +270,15 @@ def _ground_destructive_ops(ops: list[dict], a_candidates: list[str],
     subject; this check makes that mechanical. Shared function-word bigrams
     can still ground a wrong target (the guard is conservative, not
     complete) — but zero overlap is zero justification, and that is exactly
-    the repro's shape."""
-    from memtranslator.bm25 import tokenize
-    from memtranslator.signals import _KEY_LEXICON
+    the repro's shape.
 
-    # Rule-scaffolding tokens appear in half of all rules and half of all
-    # signals ("一律…", "以后都…", "always…") and carry zero facet
-    # information. The perf canary died a second death over exactly one
-    # shared token — 一律 — bridging a geography rule's signal to a
-    # meeting-notes rule. Grounding must run on CONTENT vocabulary only.
-    _SCAFFOLD = {"一律", "以后", "每次", "必须", "不要", "不用", "别再",
-                 "别用", "记住", "记得", "都要", "使用", "时候", "直接",
-                 "always", "never", "must", "please", "don", "使い"}
+    Token computation is signals.content_tokens — the SAME set the
+    screening boost and the referent hints use. The three must agree: the
+    perf canary died over one scaffold token (一律) bridging unrelated
+    rules, and l-rvk-004 died the opposite death when this guard, still on
+    raw tokens, saw zero overlap between "notifications" (stored) and
+    "notification" (withdrawal) and dropped a retire the model got right."""
+    from memtranslator.signals import _KEY_LEXICON, content_tokens
 
     def roots(text: str) -> set:
         """Cross-language facet bridge: 'emails' and 「邮件」 share no token
@@ -257,14 +295,16 @@ def _ground_destructive_ops(ops: list[dict], a_candidates: list[str],
     signal_text = " ".join(a_candidates) + " " + " ".join(
         f"{b.get('raw', '')} {b.get('polished', '')} {b.get('final', '')}"
         for b in b_candidates)
-    sig = set(tokenize(signal_text)) - _SCAFFOLD
+    sig = content_tokens(signal_text)
     sig_roots = roots(signal_text)
     by_id = {r.id: r for r in existing}
     kept, flags = [], []
     for o in ops:
         if o["kind"] in ("contradict", "retire"):
             tgt = by_id.get(o.get("target_id") or "")
-            if tgt is not None                     and not (set(tokenize(tgt.text)) & sig)                     and not (roots(tgt.text) & sig_roots):
+            if tgt is not None \
+                    and not (content_tokens(tgt.text) & sig) \
+                    and not (roots(tgt.text) & sig_roots):
                 flags.append(
                     f"ungrounded {o['kind']} dropped: target "
                     f"{tgt.text[:30]!r} shares no vocabulary with the "
