@@ -91,11 +91,44 @@ E1 复跑给出关键新证据：**store 20+ 条时 real 臂 CARRY 掉到 ≈0 �
 臂 0.58-0.77**——瓶颈已从"学不到"搬到"读不出"。cap 策略 / 条目压缩 /
 recall 精度是 ③ 的头三个抓手,前端仍是 v0 FastAPI shell + hotkey。
 
+### 第三轮（同日，commit `e32870c`）：CRUD 大修（owner 四项指令全落地）
+
+owner 指令：结构化注入、注入 32→8、dedup/冲突消除前移写路径 CRUD
+（改写模型只当最后防线）、**存储语言统一英文**（匹配/去重单语言化，
+改写时再渲染回用户语言）。
+
+- **结构化注入**：编号条目 + (applies / aspect / force) 类型字段——store
+  本就有的元数据首次进 prompt；输出契约改编号引用。
+- **注入预筛 INJECT_CAP=8**：BM25 双侧词根桥（zh 查询 × en 规则零表面
+  重叠,「会议纪要」和 "meeting minutes" 共享 root:meeting）+ 新近平局 +
+  同 key 保新守卫。依据：全场景同时应织入最大 3 条；32 条平铺注入曾致
+  决策瘫痪（该动 5/5 拒动）而 context 仅 ~1.1k tok——是选择难度不是长度。
+- **scopes.py**：受控 scope 词表（仅拼写级归一,blog≠article 类目保持
+  独立）,写入/匹配/展示三处生效。
+- **consolidation 实战化**：冲突消除成为规则 2（同面向不相容 → 从新弃旧,
+  写入时 retire）；content_tokens 重叠聚类跨 key/bucket 抓近重复
+  （实测三胞胎邮件维护窗口规则对 key 分组不可见）；触发收紧 48/16→24/8。
+- **bench 升难**：dilution +2（40 干扰且适用规则最老——选择器+新近陷阱
+  合一；en 规则 × zh 任务 × 40 干扰复合）,noop_both_ways +1（40 干扰
+  无适用 → 必须 noop）。
+
+**裁判终态（全部真模型）**：
+- **robustness 46/46 全绿——conflict-revocation-shaped（此前唯一读侧
+  红灯）首次转绿**（结构化字段做到了两轮 prompt 修补没做到的事）。
+  跨语言复合 check 首跑抓出 BM25 语言盲区,词根桥修复后族内 5/5。
+- L 套件 0.981（英文存储口径；revoke 1.00、noise-reject 双 1.00,
+  仅剩 l-diff-001 已知半红）。
+- perf 重放 **carry@alive 9/9 全尺寸**（此前 12/14,两个大 store miss
+  消失）,canary 零误杀,e-02 19/11、e-01 32/2。
+- 离线 425 绿（scopes/跨 key 聚类/保新守卫/编号引用新测试）。
+
 ## 建议的下一步
 
-**进入 ③**,从读路径织入 @ 大 store 开刀（残余 #1）：recall 精度实验
-（BM25 排序质量 vs cap 32 的取舍）、注入条目压缩、延迟预算。尺子现成：
-E1 real vs oracle 的 CARRY 差距、perf 稀释曲线。
+**进入 ③**。读侧决策质量的机制活（预筛/结构化）已在本轮做完,③ 剩余
+议程：E1 舰队全量复跑确认 CARRY 位移（real vs oracle 差距应收窄,
+单集 run 已不足以入账）、prompt 瘦身（system ~1k tok 与规则块同量级）、
+延迟预算、前端交互。存量 store 的英文迁移（旧 zh 条目）随 consolidation
+自然换血,不做一次性迁移。
 
 ## 基建备忘
 
