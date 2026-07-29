@@ -46,35 +46,61 @@ bench_archive 468 条语料作原料库，L 套件 54 case 是写路径单元裁
 （探针 9/9）。读侧 check 本身是固定 store 的回归尺，保留原样继续测；
 它红不红只反映读路径对既有僵尸形态的容忍度，不再是写路径欠账。
 
+### 第二轮（同日，commit `9e0d1d5`）：E1 确认 + noop 归因 + 两个新修复
+
+**E1 舰队复跑入账**（en 三集 + zh 对照，单跑，按 M7 分频段报出）：
+- **STATE（写路径直接频段）：en 0.15-0.27 → 0.54 / 0.60 / 0.61**；
+  SUPPRESS 四集全 1.00；en peak active 5-11 → 18-22。
+- headline：e-02 0.419/0.418 → **0.513**、e-05 0.556/0.556 → **0.756**
+  （两集基线纹丝不动，位移双双超 0.06 入账线）；e-09 0.537（追平其好跑，
+  0.298 的链式塌陷未复现）；e-01 对照 0.578（噪声带内，zh 无回归）。
+- **下一瓶颈实锤搬家**：real 臂 CARRY 0.00-0.10 vs oracle 臂 0.58-0.77——
+  store 变大后读路径织入乏力，这是 ③ 开局的直接证据。
+
+**noop bias ~27% 完成归因，欠账拆解**（逐 probe 真 store 诊断）：
+- 残余 noop = (a) 类目桥接裁量题（"billing usage report" 算不算
+  "product health report"——需 owner gold 才能计分）+ (b) store 污染
+  诱发的瘫痪/误织。perf 的 noop 率指标本身无 applicability gold，
+  27% 不能全记为病。
+- (b) 的写侧根因当场抓到并修掉两个：**批次丢失 bug**（flash 把用户弯引号
+  回显成直引号 → JSON 失效 → 整批正确 ops 被丢；parse_ops 现在带引号
+  修复通道）；**task-spec 升格**（「写个X…别用nmap用socket超时3秒」被
+  存成所有 Python 脚本的类级规则,污染读决策——rule 1 补判别，复现 3/3 干净）。
+
+**route-B 宽度绑定半修复**：rule 3 补「新增约束落自己的 facet」后
+l-diff-001 缺失的 scoped tone 规则已正确产出；语言并入长度规则的
+spurious 半边仍在——prompt 一击已用，按两击纪律停手，留作回归尺。
+
+**裁判终态**：L 套件两连跑 **0.963 / 0.981**（revoke 双 1.00、
+noise-reject 双 1.00，l-sup-002 单次翻红复跑回绿属方差）；离线 418 绿。
+
 **残余欠账（重排后）**：
-1. noop bias ~27%（干净 prompt 下仍拒动）——本次 e-02 重放 noop 率 0.50
-   仍可见；尺子在 perf 重放，下一主攻
-2. route-B 宽度绑定（l-diff-001 形态：用户加的约束该 new-scoped 却
-   contradict 进了老规则）
-3. 跨语言存储：prompt 已钉死「用用户陈述规则的语言存」，未系统复测
-4. consolidation：ACTIVE 分支死代码；只囤不并（e-01 终态 32 active 仍未并）
-5. 卡8 母题：凭证据升宽（owner 已裁定语义，产品未实现）
-6. 新观察：perf 重放 carry@alive 12/14，两个 miss 出现在 en store 长到
-   18-23 条之后——写路径学得多了，稀释问题从理论变成实测（与 ③ 的 cap
-   策略同题）
+1. **读路径织入 @ 大 store**（E1 实锤：real CARRY ≈ 0 vs oracle 0.58-0.77）
+   ——③ 的 cap/压缩开局题,与稀释同题
+2. l-diff-001 的 spurious 半边（异 facet 并入）——prompt 已停手，
+   需要机制层方案（如 facet 一致性机械校验）
+3. 类目桥接 noop 的计分 gold——owner 裁量题
+4. 跨语言存储：prompt 已钉死「用用户陈述规则的语言存」，未系统复测
+5. consolidation：只囤不并（本轮 adds 触发 5 次但 merge 产出少）
+6. 卡8 母题：凭证据升宽（owner 已裁定语义，产品未实现）
 
-## ③ latency / cost / 前端 —— 有基线，未动工
+## ③ latency / cost / 前端 —— 有基线，开局证据已到位
 
-注入体积随 store 线性涨（本次 e-09@24 条已 1900 chars），单次改写 1.6-2.5s。
-en store 现在能长到 20+ 条，cap 策略/条目压缩从"将来"变成"下一个瓶颈"。
-前端仍是 v0 FastAPI shell + hotkey。
+注入体积随 store 线性涨（e-09@24 条已 1900 chars），单次改写 1.6-2.5s。
+E1 复跑给出关键新证据：**store 20+ 条时 real 臂 CARRY 掉到 ≈0 而 oracle
+臂 0.58-0.77**——瓶颈已从"学不到"搬到"读不出"。cap 策略 / 条目压缩 /
+recall 精度是 ③ 的头三个抓手,前端仍是 v0 FastAPI shell + hotkey。
 
-## 建议的下一步（顺序）
+## 建议的下一步
 
-1. **E1 舰队复跑**（en 三集 e-02/05/09 + zh 对照）：写路径修完后 STATE/CARRY
-   频段应显著位移，这是攻坚成果的 suite 级确认（run 间噪声基线 0.03，
-   位移 < 0.06 不入账）。
-2. **noop bias 攻坚**（残余 #1）+ route-B 宽度绑定（#2）。
-3. **进入 ③**：稀释已实测（残余 #6），cap/压缩实验接上。
+**进入 ③**,从读路径织入 @ 大 store 开刀（残余 #1）：recall 精度实验
+（BM25 排序质量 vs cap 32 的取舍）、注入条目压缩、延迟预算。尺子现成：
+E1 real vs oracle 的 CARRY 差距、perf 稀释曲线。
 
 ## 基建备忘
 
-- 本次全部落在 `5bdee98`（signals/extraction/server/providers + 7 测试 +
-  3 份 L snapshot + perf_results）
-- backlog 不变：E1 跨 run 塌陷闸、Ark 404 重试策略；21-28 桶 noop 88% 的
-  旧复测项被本次重放覆盖（该桶本次 noop 8%，n 仍小）
+- 本 session 两个 commit：`5bdee98`（筛选层机制修 + 撤回归一化）、
+  `9e0d1d5`（parse 修复 + durability/breadth prompt + E1/L 证据）
+- 可视化机制报告（框图/流程图/数据）已发布为 Artifact，随攻坚数据更新
+- backlog：E1 跨 run 塌陷闸、Ark 404 重试策略；21-28 桶 noop 88% 旧复测
+  项被 perf 重放覆盖（该桶本次 noop 8%，n 仍小）
