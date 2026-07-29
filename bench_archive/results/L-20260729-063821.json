@@ -1,0 +1,950 @@
+{
+ "suite": "L",
+ "at": "20260729-063821",
+ "metric_version": 2,
+ "judge_model": "deepseek-v4-pro",
+ "cases_file": "/home/meme/MemTranslator/bench_archive/cases/extraction/cases.jsonl",
+ "cases_hash": "9e5a6f7d1a60",
+ "score": 0.8888888888888888,
+ "score_detail": {
+  "headline": 0.8888888888888888,
+  "micro": 0.8888888888888888,
+  "macro": 0.8888888888888888,
+  "gap": 0.0
+ },
+ "expected_shards": 54,
+ "completed_shards": 54,
+ "complete": true,
+ "category_rates": {
+  "dedup": 1.0,
+  "diff-new-constraint": 0.8333333333333334,
+  "diff-supersede": 1.0,
+  "natural-correction": 0.8333333333333334,
+  "natural-explicit": 1.0,
+  "noise-reject-content": 1.0,
+  "noise-reject-task": 1.0,
+  "relation": 0.8333333333333334,
+  "revoke": 0.5
+ },
+ "strata": {},
+ "collapse_flags": [],
+ "judge_parse_flags": 0,
+ "results": [
+  {
+   "id": "l-exp-001",
+   "category": "natural-explicit",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Write weekly reports using bullet points, never in long paragraphs.",
+     "key": "report.format",
+     "scope": {
+      "task": "weekly report"
+     },
+     "salience": 5,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_a_001"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-corr-001",
+   "category": "natural-correction",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Provide critical analysis that identifies weaknesses in methods, not praise.",
+     "key": "analysis.approach",
+     "scope": {},
+     "salience": 5,
+     "bucket": "reasoning_policy",
+     "polarity": "require",
+     "evidence_id": "sig_a_001"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-diff-001",
+   "category": "diff-new-constraint",
+   "pass": false,
+   "ops": [
+    {
+     "kind": "reinforce",
+     "target_id": "req-21c78159",
+     "text": "Emails I ask you to draft must stay under 120 words."
+    },
+    {
+     "kind": "new",
+     "text": "Write emails in English.",
+     "key": "email.language",
+     "scope": {},
+     "salience": 5,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_b_1"
+    },
+    {
+     "kind": "new",
+     "text": "Use a firm, assertive tone.",
+     "key": "email.tone",
+     "scope": {},
+     "salience": 4,
+     "bucket": "communication_style",
+     "polarity": "require",
+     "evidence_id": "sig_b_1"
+    }
+   ],
+   "failures": [
+    {
+     "why": "expected op not produced: {'kind': 'new', 'target': None, 'gist': 'emails to the landlord in English, with a firm tone'}"
+    },
+    {
+     "why": "spurious op: {'kind': 'reinforce', 'target_id': 'req-21c78159', 'text': 'Emails I ask you to draft must stay under 120 words.'}"
+    },
+    {
+     "why": "spurious op: {'kind': 'new', 'text': 'Write emails in English.', 'key': 'email.language', 'scope': {}, 'salience': 5, 'bucket': 'output_contract', 'polarity': 'require', 'evidence_id': 'sig_b_1'}"
+    },
+    {
+     "why": "spurious op: {'kind': 'new', 'text': 'Use a firm, assertive tone.', 'key': 'email.tone', 'scope': {}, 'salience': 4, 'bucket': 'communication_style', 'polarity': 'require', 'evidence_id': 'sig_b_1'}"
+    }
+   ],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noisec-001",
+   "category": "noise-reject-content",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noiset-001",
+   "category": "noise-reject-task",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rel-001",
+   "category": "relation",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "reinforce",
+     "target_id": "req-f9f5e526",
+     "text": "代码类回答只给代码，不要解释。"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-exp-002",
+   "category": "natural-explicit",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Always CC my manager on emails about project updates.",
+     "key": "email.recipients",
+     "scope": {
+      "task": "email",
+      "subject": "project updates"
+     },
+     "salience": 5,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_a_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-exp-003",
+   "category": "natural-explicit",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Always include unit tests when submitting code.",
+     "key": "code.deliverables",
+     "scope": {
+      "task": "code submission"
+     },
+     "salience": 5,
+     "bucket": "deliverables",
+     "polarity": "require",
+     "evidence_id": "sig_a_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-exp-004",
+   "category": "natural-explicit",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Always use Google Docs for collaborative editing, never Word documents.",
+     "key": "collaboration.tool",
+     "scope": {},
+     "salience": 5,
+     "bucket": "execution_policy",
+     "polarity": "require",
+     "evidence_id": "sig_a_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-exp-005",
+   "category": "natural-explicit",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Use APA citation format for all papers.",
+     "key": "paper.citation_format",
+     "scope": {
+      "task": "paper"
+     },
+     "salience": 5,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_a_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-exp-006",
+   "category": "natural-explicit",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Schedule all team meetings for Tuesdays at 10 AM.",
+     "key": "meeting.scheduling",
+     "scope": {
+      "task": "team meetings"
+     },
+     "salience": 5,
+     "bucket": "execution_policy",
+     "polarity": "require",
+     "evidence_id": "sig_a_001"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-corr-002",
+   "category": "natural-correction",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Provide logic review and analysis, not just typo correction.",
+     "key": "code_review.scope",
+     "scope": {
+      "task": "code review"
+     },
+     "salience": 4,
+     "bucket": "reasoning_policy",
+     "polarity": "require",
+     "evidence_id": "sig_a_001"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-corr-003",
+   "category": "natural-correction",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Deliver key points only, not comprehensive summaries; be concise.",
+     "key": "output.length",
+     "scope": {},
+     "salience": 4,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_a_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-corr-004",
+   "category": "natural-correction",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Write in a friendly tone.",
+     "key": "communication_style.tone",
+     "scope": {},
+     "salience": 4,
+     "bucket": "communication_style",
+     "polarity": "require",
+     "evidence_id": "sig-a-1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-corr-005",
+   "category": "natural-correction",
+   "pass": false,
+   "ops": [],
+   "failures": [
+    {
+     "why": "expected op not produced: {'kind': 'new', 'target': None, 'gist': 'algorithm explanations for non-technical audience should be high-level and avoid technical jargon'}"
+    }
+   ],
+   "judge_flags": []
+  },
+  {
+   "id": "l-corr-006",
+   "category": "natural-correction",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Outline only top-level parts, never nested subsections.",
+     "key": "outline.structure",
+     "scope": {
+      "task": "outline"
+     },
+     "salience": 4,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_a_001"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-diff-002",
+   "category": "diff-new-constraint",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Write summaries of meeting notes in French.",
+     "key": "summary.language",
+     "scope": {
+      "task": "meeting note summary"
+     },
+     "salience": 5,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_b_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-diff-003",
+   "category": "diff-new-constraint",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Use a formal tone in responses to client complaints.",
+     "key": "complaint_response.tone",
+     "scope": {
+      "task": "complaint_response"
+     },
+     "salience": 4,
+     "bucket": "communication_style",
+     "polarity": "require",
+     "evidence_id": "signals_b_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-diff-004",
+   "category": "diff-new-constraint",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Include deadlines in parentheses for action items.",
+     "key": "actionitems.content",
+     "scope": {
+      "task": "action items"
+     },
+     "salience": 4,
+     "bucket": "deliverables",
+     "polarity": "require",
+     "evidence_id": "sig_b_001"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-diff-005",
+   "category": "diff-new-constraint",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Write summaries in one paragraph, no more than 100 words.",
+     "key": "summary.length",
+     "scope": {
+      "task": "summary"
+     },
+     "salience": 4,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_b_summary_001"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-diff-006",
+   "category": "diff-new-constraint",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "new",
+     "text": "Output script results as JSON.",
+     "key": "script.output_format",
+     "scope": {
+      "task": "script"
+     },
+     "salience": 4,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_b_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noisec-002",
+   "category": "noise-reject-content",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noisec-003",
+   "category": "noise-reject-content",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noisec-004",
+   "category": "noise-reject-content",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noisec-005",
+   "category": "noise-reject-content",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noisec-006",
+   "category": "noise-reject-content",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noiset-002",
+   "category": "noise-reject-task",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noiset-003",
+   "category": "noise-reject-task",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noiset-004",
+   "category": "noise-reject-task",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noiset-005",
+   "category": "noise-reject-task",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-noiset-006",
+   "category": "noise-reject-task",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rel-002",
+   "category": "relation",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "reinforce",
+     "target_id": "req-c07ad206",
+     "text": "Commit messages must not contain emojis."
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rel-003",
+   "category": "relation",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "contradict",
+     "target_id": "req-0fb94790",
+     "text": "Send all notification messages to Slack instead of email.",
+     "key": "notification.delivery_channel",
+     "scope": {},
+     "salience": 5,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_a_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rel-004",
+   "category": "relation",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "reinforce",
+     "target_id": "req-e3d41350",
+     "text": "All documentation must be written in Markdown."
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rel-005",
+   "category": "relation",
+   "pass": false,
+   "ops": [
+    {
+     "kind": "retire",
+     "target_id": "req-d1b83507"
+    }
+   ],
+   "failures": [
+    {
+     "why": "expected op not produced: {'kind': 'contradict', 'target': 0, 'gist': 'meetings allowed on weekends as well'}"
+    },
+    {
+     "why": "spurious op: {'kind': 'retire', 'target_id': 'req-d1b83507'}"
+    }
+   ],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rel-006",
+   "category": "relation",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "reinforce",
+     "target_id": "req-a51dafef",
+     "text": "Reply to all messages within 2 hours."
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rvk-001",
+   "category": "revoke",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "retire",
+     "target_id": "req-4cd16c73"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-sup-001",
+   "category": "diff-supersede",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "contradict",
+     "target_id": "req-11365478",
+     "text": "Emails must stay under 80 words.",
+     "key": "email.length",
+     "scope": {},
+     "salience": 5,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_b_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-ddp-001",
+   "category": "dedup",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "merge",
+     "target_ids": [
+      "req-7ed71b97",
+      "req-83353bee"
+     ],
+     "text": "Keep emails under 120 words.",
+     "key": "email.length",
+     "scope": {},
+     "salience": 4,
+     "bucket": "",
+     "polarity": "",
+     "evidence_id": ""
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rvk-002",
+   "category": "revoke",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "retire",
+     "target_id": "req-cd45f223"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rvk-003",
+   "category": "revoke",
+   "pass": false,
+   "ops": [],
+   "failures": [
+    {
+     "why": "expected op not produced: {'kind': 'retire', 'target': 0}"
+    }
+   ],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rvk-004",
+   "category": "revoke",
+   "pass": false,
+   "ops": [],
+   "failures": [
+    {
+     "why": "expected op not produced: {'kind': 'retire', 'target': 0}"
+    }
+   ],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rvk-005",
+   "category": "revoke",
+   "pass": true,
+   "ops": [],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-rvk-006",
+   "category": "revoke",
+   "pass": false,
+   "ops": [
+    {
+     "kind": "retire",
+     "target_id": "req-4b1d3add"
+    }
+   ],
+   "failures": [
+    {
+     "why": "spurious op: {'kind': 'retire', 'target_id': 'req-4b1d3add'}"
+    }
+   ],
+   "judge_flags": []
+  },
+  {
+   "id": "l-sup-002",
+   "category": "diff-supersede",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "contradict",
+     "target_id": "req-9d129fca",
+     "text": "Reply to emails in Chinese.",
+     "key": "email.language",
+     "scope": {},
+     "salience": 5,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_b_001"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-sup-003",
+   "category": "diff-supersede",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "contradict",
+     "target_id": "req-a897ba04",
+     "text": "Meeting notes must be formatted as a table.",
+     "key": "meeting_notes.format",
+     "scope": {},
+     "salience": 5,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_b_standup_001"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-sup-004",
+   "category": "diff-supersede",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "contradict",
+     "target_id": "req-7ed18b70",
+     "text": "Task descriptions may use casual wording.",
+     "key": "task_description.tone",
+     "scope": {},
+     "salience": 4,
+     "bucket": "communication_style",
+     "polarity": "prefer",
+     "evidence_id": "sig_b_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-sup-005",
+   "category": "diff-supersede",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "contradict",
+     "target_id": "req-226f060e",
+     "text": "Documentation examples should be under 100 words.",
+     "key": "documentation.length",
+     "scope": {},
+     "salience": 5,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_b_1"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-sup-006",
+   "category": "diff-supersede",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "contradict",
+     "target_id": "req-ef30868c",
+     "text": "Weekly reports must use short narrative paragraphs.",
+     "key": "report.format",
+     "scope": {
+      "task": "weekly_report"
+     },
+     "salience": 5,
+     "bucket": "output_contract",
+     "polarity": "require",
+     "evidence_id": "sig_b_001"
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-ddp-002",
+   "category": "dedup",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "merge",
+     "target_ids": [
+      "req-fb8ea92e",
+      "req-615853fc"
+     ],
+     "text": "All code reviews must be completed within 24 hours.",
+     "key": "process.review_time",
+     "scope": {},
+     "salience": 4,
+     "bucket": "",
+     "polarity": "",
+     "evidence_id": ""
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-ddp-003",
+   "category": "dedup",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "merge",
+     "target_ids": [
+      "req-c2add11e",
+      "req-4d4bccbd"
+     ],
+     "text": "Numbers in reports must carry units.",
+     "key": "reporting.format",
+     "scope": {},
+     "salience": 3,
+     "bucket": "",
+     "polarity": "",
+     "evidence_id": ""
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-ddp-004",
+   "category": "dedup",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "merge",
+     "target_ids": [
+      "req-5d512656",
+      "req-cb6dc3e3"
+     ],
+     "text": "Response must be in JSON format only.",
+     "key": "output.format",
+     "scope": {},
+     "salience": 4,
+     "bucket": "",
+     "polarity": "",
+     "evidence_id": ""
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-ddp-005",
+   "category": "dedup",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "merge",
+     "target_ids": [
+      "req-33de2655",
+      "req-7b1b2ee0",
+      "req-af423342"
+     ],
+     "text": "All meetings must be recorded.",
+     "key": "meetings.recording",
+     "scope": {},
+     "salience": 4,
+     "bucket": "",
+     "polarity": "",
+     "evidence_id": ""
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  },
+  {
+   "id": "l-ddp-006",
+   "category": "dedup",
+   "pass": true,
+   "ops": [
+    {
+     "kind": "merge",
+     "target_ids": [
+      "req-807f159e",
+      "req-9ff47a0b"
+     ],
+     "text": "Answers must be in Chinese.",
+     "key": "response.language",
+     "scope": {},
+     "salience": 4,
+     "bucket": "",
+     "polarity": "",
+     "evidence_id": ""
+    }
+   ],
+   "failures": [],
+   "judge_flags": []
+  }
+ ]
+}

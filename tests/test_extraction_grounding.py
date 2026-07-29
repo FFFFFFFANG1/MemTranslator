@@ -65,3 +65,33 @@ def test_non_destructive_ops_untouched():
            {"kind": "reinforce", "target_id": store[0].id}]
     kept, flags = _ground_destructive_ops(ops, ["随便什么信号"], [], store)
     assert len(kept) == 2 and flags == []
+
+
+def test_cross_language_supersede_grounds_via_lexicon_root():
+    store = [Requirement(text="Emails I ask you to draft must stay under "
+                              "120 words.", key="email.length")]
+    ops = [{"kind": "contradict", "target_id": store[0].id,
+            "text": "给房东的邮件不超过80词", "key": "email.length",
+            "scope": {}, "salience": 4, "bucket": "", "polarity": "",
+            "evidence_id": ""}]
+    kept, flags = _ground_destructive_ops(
+        ops, [], [{"raw": "给房东写封邮件催修暖气",
+                   "polished": "给房东写封不超过120词的邮件，催他尽快修暖气",
+                   "final": "给房东写封不超过80词的邮件，催他尽快修暖气"}], store)
+    assert flags == [] and kept[0]["kind"] == "contradict"
+
+
+def test_route_b_polished_grounds_the_edited_rule():
+    store = [Requirement(text="All task descriptions must be written in a "
+                              "formal tone.", key="tone.register")]
+    ops = [{"kind": "contradict", "target_id": store[0].id,
+            "text": "task descriptions in casual tone", "key": "tone.register",
+            "scope": {}, "salience": 4, "bucket": "", "polarity": "",
+            "evidence_id": ""}]
+    kept, flags = _ground_destructive_ops(
+        ops, [], [{"raw": "Fix the login bug",
+                   "polished": "Fix the login bug (formal tone: please "
+                               "address the authentication issue).",
+                   "final": "Fix the login bug, keep the wording casual "
+                            "please."}], store)
+    assert flags == [] and kept[0]["kind"] == "contradict"

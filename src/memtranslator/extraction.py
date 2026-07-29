@@ -231,15 +231,31 @@ def _ground_destructive_ops(ops: list[dict], a_candidates: list[str],
     complete) — but zero overlap is zero justification, and that is exactly
     the repro's shape."""
     from memtranslator.bm25 import tokenize
+    from memtranslator.signals import _KEY_LEXICON
+
+    def roots(text: str) -> set:
+        """Cross-language facet bridge: 'emails' and 「邮件」 share no token
+        but share the `email` lexicon root. Without this the guard blocked
+        legitimate supersedes whenever store and signal spoke different
+        languages — the same cross-language failure this codebase has now
+        hit three times."""
+        low = text.lower()
+        return {root for root, surfaces in _KEY_LEXICON.items()
+                if any(s.lower() in low for s in surfaces)}
+
+    # route-B grounding includes POLISHED: the user was editing OUR
+    # injection, so every rule woven into that exchange was visibly in play
     signal_text = " ".join(a_candidates) + " " + " ".join(
-        f"{b.get('raw', '')} {b.get('final', '')}" for b in b_candidates)
+        f"{b.get('raw', '')} {b.get('polished', '')} {b.get('final', '')}"
+        for b in b_candidates)
     sig = set(tokenize(signal_text))
+    sig_roots = roots(signal_text)
     by_id = {r.id: r for r in existing}
     kept, flags = [], []
     for o in ops:
         if o["kind"] in ("contradict", "retire"):
             tgt = by_id.get(o.get("target_id") or "")
-            if tgt is not None and not (set(tokenize(tgt.text)) & sig):
+            if tgt is not None                     and not (set(tokenize(tgt.text)) & sig)                     and not (roots(tgt.text) & sig_roots):
                 flags.append(
                     f"ungrounded {o['kind']} dropped: target "
                     f"{tgt.text[:30]!r} shares no vocabulary with the "
