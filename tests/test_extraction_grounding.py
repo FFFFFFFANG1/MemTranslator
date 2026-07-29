@@ -95,3 +95,14 @@ def test_route_b_polished_grounds_the_edited_rule():
                    "final": "Fix the login bug, keep the wording casual "
                             "please."}], store)
     assert flags == [] and kept[0]["kind"] == "contradict"
+
+
+def test_scaffold_token_does_not_ground():
+    """一律 alone bridged a geography-rule signal to a meeting-notes rule and
+    killed it (perf canary, second death). Scaffolding vocabulary is not
+    evidence."""
+    store = _store()                     # 会议纪要一律按时间倒序排列
+    ops = [{"kind": "retire", "target_id": store[0].id}]
+    kept, flags = _ground_destructive_ops(
+        ops, ["以后地理方向和区域名称的方位词一律使用小写"], [], store)
+    assert kept == [] and flags and "ungrounded retire" in flags[0]

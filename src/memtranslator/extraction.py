@@ -233,6 +233,15 @@ def _ground_destructive_ops(ops: list[dict], a_candidates: list[str],
     from memtranslator.bm25 import tokenize
     from memtranslator.signals import _KEY_LEXICON
 
+    # Rule-scaffolding tokens appear in half of all rules and half of all
+    # signals ("一律…", "以后都…", "always…") and carry zero facet
+    # information. The perf canary died a second death over exactly one
+    # shared token — 一律 — bridging a geography rule's signal to a
+    # meeting-notes rule. Grounding must run on CONTENT vocabulary only.
+    _SCAFFOLD = {"一律", "以后", "每次", "必须", "不要", "不用", "别再",
+                 "别用", "记住", "记得", "都要", "使用", "时候", "直接",
+                 "always", "never", "must", "please", "don", "使い"}
+
     def roots(text: str) -> set:
         """Cross-language facet bridge: 'emails' and 「邮件」 share no token
         but share the `email` lexicon root. Without this the guard blocked
@@ -248,7 +257,7 @@ def _ground_destructive_ops(ops: list[dict], a_candidates: list[str],
     signal_text = " ".join(a_candidates) + " " + " ".join(
         f"{b.get('raw', '')} {b.get('polished', '')} {b.get('final', '')}"
         for b in b_candidates)
-    sig = set(tokenize(signal_text))
+    sig = set(tokenize(signal_text)) - _SCAFFOLD
     sig_roots = roots(signal_text)
     by_id = {r.id: r for r in existing}
     kept, flags = [], []

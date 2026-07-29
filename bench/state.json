@@ -1,5 +1,5 @@
 {
- "at": "20260729-050703",
+ "at": "20260729-064316",
  "paths": {
   "read": {
    "conflict": {
@@ -9,7 +9,8 @@
      {
       "id": "conflict-en-latest-tone",
       "why": [
-       "expected an injection, product nooped (model_noop)"
+       "expected an injection, product nooped (model_noop)",
+       "judge: The rewritten request asks for a casual, warm tone and does NOT ask for a formal"
       ]
      }
     ]

@@ -1,199 +1,60 @@
 [
  {
-  "episode": "e-01",
-  "canary": "会议纪要一律按时间倒序排列",
-  "rows": [
-   {
-    "size": 6,
-    "canary": {
-     "alive": true
-    },
-    "canary_carried": true,
-    "noop_rate": 1.0,
-    "mean_ms": 1862,
-    "block_chars": 187
-   },
-   {
-    "size": 11,
-    "canary": {
-     "alive": true
-    },
-    "canary_carried": true,
-    "noop_rate": 0.75,
-    "mean_ms": 1994,
-    "block_chars": 415
-   },
-   {
-    "size": 19,
-    "canary": {
-     "alive": true
-    },
-    "canary_carried": true,
-    "noop_rate": 0.75,
-    "mean_ms": 2056,
-    "block_chars": 782
-   },
-   {
-    "size": 24,
-    "canary": {
-     "alive": true
-    },
-    "canary_carried": true,
-    "noop_rate": 0.25,
-    "mean_ms": 1861,
-    "block_chars": 995
-   },
-   {
-    "size": 32,
-    "canary": {
-     "alive": true
-    },
-    "canary_carried": true,
-    "noop_rate": 0.0,
-    "mean_ms": 1943,
-    "block_chars": 1241
-   }
-  ],
-  "final_active": 32,
-  "final_retired": 7
- },
- {
   "episode": "e-03",
   "canary": "会议纪要一律按时间倒序排列",
   "rows": [
    {
     "size": 4,
     "canary": {
-     "alive": false,
-     "successor": "实验设计和postmortem分析直接给结论，不用免责声明和冗长结构。"
+     "alive": true
     },
-    "canary_carried": false,
-    "noop_rate": 0.5,
-    "mean_ms": 1344,
-    "block_chars": 125
+    "canary_carried": true,
+    "noop_rate": 0.75,
+    "mean_ms": 2052,
+    "block_chars": 82
    },
    {
-    "size": 12,
+    "size": 10,
     "canary": {
-     "alive": false,
-     "successor": "实验设计和postmortem分析直接给结论，不用免责声明和冗长结构。"
+     "alive": true
     },
-    "canary_carried": false,
-    "noop_rate": 0.0,
-    "mean_ms": 1617,
-    "block_chars": 359
-   },
-   {
-    "size": 17,
-    "canary": {
-     "alive": false,
-     "successor": "实验设计和postmortem分析直接给结论，不用免责声明和冗长结构。"
-    },
-    "canary_carried": false,
+    "canary_carried": true,
     "noop_rate": 0.25,
-    "mean_ms": 1847,
-    "block_chars": 537
+    "mean_ms": 1409,
+    "block_chars": 218
    },
    {
-    "size": 29,
-    "canary": {
-     "alive": false,
-     "successor": "实验设计和postmortem分析直接给结论，不用免责声明和冗长结构。"
-    },
-    "canary_carried": false,
-    "noop_rate": 0.5,
-    "mean_ms": 3315,
-    "block_chars": 890
-   },
-   {
-    "size": 32,
-    "canary": {
-     "alive": false,
-     "successor": "实验设计和postmortem分析直接给结论，不用免责声明和冗长结构。"
-    },
-    "canary_carried": false,
-    "noop_rate": 0.5,
-    "mean_ms": 2891,
-    "block_chars": 1013
-   }
-  ],
-  "final_active": 32,
-  "final_retired": 4
- },
- {
-  "episode": "e-05",
-  "canary": "报销单里的金额一律保留两位小数",
-  "rows": [
-   {
-    "size": 5,
+    "size": 16,
     "canary": {
      "alive": true
     },
     "canary_carried": true,
-    "noop_rate": 0.75,
-    "mean_ms": 1420,
-    "block_chars": 280
+    "noop_rate": 0.25,
+    "mean_ms": 2246,
+    "block_chars": 380
    },
    {
-    "size": 8,
+    "size": 28,
     "canary": {
      "alive": true
     },
     "canary_carried": true,
     "noop_rate": 0.5,
-    "mean_ms": 1513,
-    "block_chars": 529
+    "mean_ms": 3490,
+    "block_chars": 680
    },
    {
-    "size": 11,
+    "size": 35,
     "canary": {
      "alive": true
     },
     "canary_carried": true,
-    "noop_rate": 0.0,
-    "mean_ms": 1202,
-    "block_chars": 828
+    "noop_rate": 0.5,
+    "mean_ms": 2237,
+    "block_chars": 821
    }
   ],
-  "final_active": 11,
-  "final_retired": 7
- },
- {
-  "episode": "e-09",
-  "canary": "报销单里的金额一律保留两位小数",
-  "rows": [
-   {
-    "size": 4,
-    "canary": {
-     "alive": true
-    },
-    "canary_carried": true,
-    "noop_rate": 0.75,
-    "mean_ms": 1359,
-    "block_chars": 197
-   },
-   {
-    "size": 8,
-    "canary": {
-     "alive": true
-    },
-    "canary_carried": true,
-    "noop_rate": 0.75,
-    "mean_ms": 1177,
-    "block_chars": 415
-   },
-   {
-    "size": 13,
-    "canary": {
-     "alive": true
-    },
-    "canary_carried": true,
-    "noop_rate": 0.0,
-    "mean_ms": 1419,
-    "block_chars": 764
-   }
-  ],
-  "final_active": 13,
+  "final_active": 35,
   "final_retired": 1
  }
 ]
