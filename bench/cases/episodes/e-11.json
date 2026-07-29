@@ -2385,8 +2385,7 @@
     "e11-c09"
    ],
    "should_fire": [
-    "e11-c00",
-    "e11-c06",
+    "e11-c02",
     "e11-c09"
    ],
    "must_not_fire": []
@@ -2725,9 +2724,7 @@
     "e11-c22",
     "e11-c25"
    ],
-   "should_fire": [
-    "e11-c22"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2809,7 +2806,7 @@
     "e11-c16"
    ],
    "should_fire": [
-    "e11-c00",
+    "e11-c09",
     "e11-c16"
    ],
    "must_not_fire": []
@@ -2853,7 +2850,8 @@
     "e11-c16"
    ],
    "should_fire": [
-    "e11-c02"
+    "e11-c00",
+    "e11-c16"
    ],
    "must_not_fire": []
   },
@@ -2982,7 +2980,7 @@
     "e11-c30"
    ],
    "should_fire": [
-    "e11-c00",
+    "e11-c21",
     "e11-c22"
    ],
    "must_not_fire": []
@@ -3202,8 +3200,7 @@
     "e11-s02"
    ],
    "should_fire": [
-    "e11-c09",
-    "e11-c20"
+    "e11-c09"
    ],
    "must_not_fire": []
   },
@@ -3287,9 +3284,21 @@
     "e11-c18"
    ],
    "may_fire": [
+    "e11-c06",
+    "e11-c10",
+    "e11-c11",
+    "e11-c12",
+    "e11-c13",
+    "e11-c15",
+    "e11-c16",
     "e11-c17",
     "e11-c19",
-    "e11-c31"
+    "e11-c24",
+    "e11-c27",
+    "e11-c31",
+    "e11-s00",
+    "e11-s03",
+    "e11-s04"
    ],
    "should_fire": [],
    "must_not_fire": []
@@ -3367,8 +3376,19 @@
     "e11-c19"
    ],
    "may_fire": [
+    "e11-c06",
+    "e11-c10",
+    "e11-c12",
+    "e11-c13",
+    "e11-c15",
+    "e11-c16",
     "e11-c17",
-    "e11-c31"
+    "e11-c24",
+    "e11-c27",
+    "e11-c31",
+    "e11-s00",
+    "e11-s03",
+    "e11-s04"
    ],
    "should_fire": [],
    "must_not_fire": []
@@ -3462,7 +3482,7 @@
     "e11-s04"
    ],
    "should_fire": [
-    "e11-s04"
+    "e11-c28"
    ],
    "must_not_fire": []
   },
@@ -3538,9 +3558,7 @@
     "e11-s04",
     "e11-s05"
    ],
-   "should_fire": [
-    "e11-s00"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -3614,8 +3632,12 @@
     "e11-s04",
     "e11-s05"
    ],
-   "should_fire": [],
-   "must_not_fire": []
+   "should_fire": [
+    "e11-s00"
+   ],
+   "must_not_fire": [
+    "e11-c22"
+   ]
   },
   {
    "seq": 62,
@@ -3644,7 +3666,9 @@
     "e11-s05"
    ],
    "should_fire": [],
-   "must_not_fire": []
+   "must_not_fire": [
+    "e11-c14"
+   ]
   }
  ],
  "checkpoints": [

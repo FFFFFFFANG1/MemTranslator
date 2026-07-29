@@ -2302,7 +2302,9 @@
     "e02-c02",
     "e02-c03"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e02-c00"
+   ],
    "must_not_fire": []
   },
   {
@@ -2637,12 +2639,19 @@
     "e02-c19"
    ],
    "may_fire": [
+    "e02-c00",
+    "e02-c01",
+    "e02-c10",
+    "e02-c11",
+    "e02-c14",
+    "e02-c15",
+    "e02-c16",
+    "e02-c17",
+    "e02-c18",
     "e02-c19",
     "e02-c20"
    ],
-   "should_fire": [
-    "e02-c19"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2774,7 +2783,8 @@
     "e02-c24"
    ],
    "should_fire": [
-    "e02-c16"
+    "e02-c16",
+    "e02-c24"
    ],
    "must_not_fire": []
   },
@@ -3204,7 +3214,9 @@
     "e02-c16",
     "e02-s01"
    ],
-   "must_not_fire": []
+   "must_not_fire": [
+    "e02-c14"
+   ]
   },
   {
    "seq": 45,
@@ -3393,9 +3405,7 @@
     "e02-s03",
     "e02-s06"
    ],
-   "should_fire": [
-    "e02-s01"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -3482,10 +3492,11 @@
     "e02-c18",
     "e02-s01"
    ],
-   "should_fire": [],
-   "must_not_fire": [
-    "e02-c16"
-   ]
+   "should_fire": [
+    "e02-c04",
+    "e02-s01"
+   ],
+   "must_not_fire": []
   },
   {
    "seq": 57,
@@ -3552,6 +3563,7 @@
     "e02-s01"
    ],
    "must_not_fire": [
+    "e02-c16",
     "e02-c23"
    ]
   },
@@ -3582,9 +3594,11 @@
     "e02-s03",
     "e02-s06"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e02-s01"
+   ],
    "must_not_fire": [
-    "e02-c27"
+    "e02-c14"
    ]
   },
   {
@@ -3602,13 +3616,18 @@
     "e02-c19"
    ],
    "may_fire": [
+    "e02-c00",
+    "e02-c11",
+    "e02-c15",
     "e02-c20",
-    "e02-c25"
+    "e02-c25",
+    "e02-c28",
+    "e02-c30",
+    "e02-c32",
+    "e02-s01"
    ],
    "should_fire": [],
-   "must_not_fire": [
-    "e02-c19"
-   ]
+   "must_not_fire": []
   },
   {
    "seq": 62,
@@ -3647,8 +3666,7 @@
    ],
    "should_fire": [],
    "must_not_fire": [
-    "e02-c14",
-    "e02-c23"
+    "e02-c14"
    ]
   }
  ],

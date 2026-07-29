@@ -2350,9 +2350,7 @@
     "e12-c02",
     "e12-c03"
    ],
-   "should_fire": [
-    "e12-c01"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2596,7 +2594,7 @@
     "e12-c15"
    ],
    "should_fire": [
-    "e12-c02",
+    "e12-c07",
     "e12-c12"
    ],
    "must_not_fire": []
@@ -2723,8 +2721,7 @@
     "e12-c21"
    ],
    "should_fire": [
-    "e12-c06",
-    "e12-c09"
+    "e12-c07"
    ],
    "must_not_fire": []
   },
@@ -2867,9 +2864,7 @@
     "e12-c24",
     "e12-c25"
    ],
-   "should_fire": [
-    "e12-c21"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2926,10 +2921,7 @@
     "e12-c24",
     "e12-c25"
    ],
-   "should_fire": [
-    "e12-c12",
-    "e12-c25"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2956,10 +2948,25 @@
    "may_fire": [
     "e12-c00",
     "e12-c01",
+    "e12-c06",
+    "e12-c07",
+    "e12-c08",
+    "e12-c09",
     "e12-c11",
-    "e12-c20"
+    "e12-c12",
+    "e12-c13",
+    "e12-c14",
+    "e12-c15",
+    "e12-c16",
+    "e12-c19",
+    "e12-c20",
+    "e12-c22",
+    "e12-c25"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e12-c01",
+    "e12-c16"
+   ],
    "must_not_fire": []
   },
   {
@@ -3083,12 +3090,25 @@
    "may_fire": [
     "e12-c00",
     "e12-c01",
+    "e12-c06",
+    "e12-c07",
+    "e12-c08",
+    "e12-c09",
     "e12-c11",
+    "e12-c12",
+    "e12-c13",
+    "e12-c14",
+    "e12-c15",
+    "e12-c16",
+    "e12-c19",
     "e12-c20",
+    "e12-c22",
+    "e12-c25",
     "e12-c28"
    ],
    "should_fire": [
-    "e12-c01"
+    "e12-c07",
+    "e12-c28"
    ],
    "must_not_fire": []
   },
@@ -3177,10 +3197,7 @@
     "e12-c29",
     "e12-c32"
    ],
-   "should_fire": [
-    "e12-c06",
-    "e12-c09"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -3300,9 +3317,7 @@
    "should_fire": [
     "e12-s02"
    ],
-   "must_not_fire": [
-    "e12-c02"
-   ]
+   "must_not_fire": []
   },
   {
    "seq": 45,
@@ -3405,7 +3420,9 @@
    "should_fire": [
     "e12-s03"
    ],
-   "must_not_fire": []
+   "must_not_fire": [
+    "e12-c18"
+   ]
   },
   {
    "seq": 49,
@@ -3494,7 +3511,6 @@
     "e12-s01"
    ],
    "should_fire": [
-    "e12-c06",
     "e12-c07",
     "e12-c19"
    ],
@@ -3649,9 +3665,15 @@
    "may_fire": [
     "e12-c00",
     "e12-c01",
+    "e12-c06",
+    "e12-c07",
+    "e12-c08",
+    "e12-c12",
     "e12-c20",
+    "e12-c25",
     "e12-c28",
-    "e12-c31"
+    "e12-c31",
+    "e12-s04"
    ],
    "should_fire": [],
    "must_not_fire": []
@@ -3688,10 +3710,7 @@
    "should_fire": [
     "e12-s02"
    ],
-   "must_not_fire": [
-    "e12-c02",
-    "e12-c19"
-   ]
+   "must_not_fire": []
   },
   {
    "seq": 61,
@@ -3723,7 +3742,7 @@
     "e12-c06"
    ],
    "must_not_fire": [
-    "e12-c21"
+    "e12-c09"
    ]
   },
   {
@@ -3752,12 +3771,8 @@
     "e12-c27",
     "e12-s06"
    ],
-   "should_fire": [
-    "e12-c06"
-   ],
-   "must_not_fire": [
-    "e12-c21"
-   ]
+   "should_fire": [],
+   "must_not_fire": []
   }
  ],
  "checkpoints": [

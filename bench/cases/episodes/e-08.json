@@ -2292,9 +2292,7 @@
     "e08-c02",
     "e08-c03"
    ],
-   "should_fire": [
-    "e08-c02"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -2749,7 +2747,8 @@
     "e08-c23"
    ],
    "should_fire": [
-    "e08-c17"
+    "e08-c17",
+    "e08-c23"
    ],
    "must_not_fire": []
   },
@@ -2886,9 +2885,7 @@
     "e08-c24",
     "e08-c25"
    ],
-   "should_fire": [
-    "e08-c21"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -3000,9 +2997,7 @@
     "e08-c26",
     "e08-c29"
    ],
-   "should_fire": [
-    "e08-c06"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -3084,13 +3079,25 @@
     "e08-c15"
    ],
    "may_fire": [
+    "e08-c07",
     "e08-c08",
     "e08-c09",
+    "e08-c10",
+    "e08-c11",
+    "e08-c12",
+    "e08-c13",
+    "e08-c14",
     "e08-c15",
+    "e08-c18",
+    "e08-c21",
+    "e08-c24",
+    "e08-c27",
     "e08-c30",
     "e08-c32"
    ],
-   "should_fire": [],
+   "should_fire": [
+    "e08-c21"
+   ],
    "must_not_fire": []
   },
   {
@@ -3201,9 +3208,7 @@
     "e08-s00",
     "e08-s02"
    ],
-   "should_fire": [
-    "e08-c19"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -3313,12 +3318,10 @@
     "e08-s04",
     "e08-s05"
    ],
-   "should_fire": [
-    "e08-c05",
-    "e08-c21",
-    "e08-c26"
-   ],
-   "must_not_fire": []
+   "should_fire": [],
+   "must_not_fire": [
+    "e08-c22"
+   ]
   },
   {
    "seq": 49,
@@ -3417,12 +3420,8 @@
     "e08-s05",
     "e08-s06"
    ],
-   "should_fire": [
-    "e08-c29"
-   ],
-   "must_not_fire": [
-    "e08-c19"
-   ]
+   "should_fire": [],
+   "must_not_fire": []
   },
   {
    "seq": 53,
@@ -3497,14 +3496,19 @@
     "e08-c15"
    ],
    "may_fire": [
+    "e08-c07",
     "e08-c08",
     "e08-c09",
+    "e08-c11",
+    "e08-c12",
+    "e08-c21",
+    "e08-c27",
     "e08-c32",
+    "e08-s00",
+    "e08-s04",
     "e08-s06"
    ],
-   "should_fire": [
-    "e08-s06"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
@@ -3627,9 +3631,7 @@
     "e08-s01",
     "e08-s04"
    ],
-   "should_fire": [
-    "e08-c11"
-   ],
+   "should_fire": [],
    "must_not_fire": []
   },
   {
