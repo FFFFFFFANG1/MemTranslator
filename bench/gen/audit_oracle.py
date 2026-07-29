@@ -19,23 +19,37 @@ key, so a contaminated key contaminates the whole panel at 5x the cost.
 import argparse
 import json
 import re
+import time
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import bench.runner.run_episodes as R
+from bench.runner.config import RESULTS
 from bench.runner.judge import judge
 
 EPISODES = Path(__file__).resolve().parents[1] / "cases" / "episodes"
 
+# Owner-calibrated 2026-07-29 (14 adjudication cards): the test is whether a
+# VIOLATION of the rule could surface in this output's MEDIUM AND FORM — not
+# whether the default output would probably comply. A postmortem's
+# improvement section naturally drifts into future tense, so "never use
+# future tense" IS obliged there; markdown cannot surface in an email and
+# first person has no room in a bare timeline list, so those are not.
 ADJUDICATOR = (
     "A rewriter sits between a user and an assistant. It may only ADD "
     "constraints that a stored rule requires. Decide: given this exact "
     "request, was the rewriter OBLIGED to weave this stored rule into it? "
-    "Answer no if the rule does not apply to this kind of work, if the "
-    "request already states or satisfies it, if the rule is about what to "
-    "say rather than how to deliver it (topics, opinions, values, safety, "
-    "persona), if it is vacuous, or if it is garbled.")
+    "The test: could a VIOLATION of the rule plausibly surface in this "
+    "output's medium and form? If yes, a standing rule the user stated is "
+    "obliged EVEN IF a good default would often comply anyway (word caps on "
+    "short reports, tense rules on postmortems, verb-placement in prose "
+    "emails all qualify). Answer no only if: the medium or form cannot "
+    "express the violation at all (markdown in a plain email, first person "
+    "in a bare list, emoji in source code); the rule does not apply to this "
+    "kind of work; the request already states or satisfies it; it is about "
+    "what to say rather than how to deliver (topics, opinions, values, "
+    "safety, persona); it is vacuous; or it is garbled.")
 
 # mechanical corpus smells, kept because they need no call and name the cause
 _FALLBACK = lambda zh, c: zh and not re.search(r"[一-鿿]", c)
@@ -152,6 +166,14 @@ def main():
     print(f"  CARRY if gold defects were removed  : "
           f"{carried / max(1, n - gold_bad):.3f}  "
           f"(would leave {n - gold_bad} decisions)")
+
+    # Persist EVERY decision. Printing the first 8 and reasoning about the
+    # rest is how a sample of 8 became an estimate for 33 — the full list has
+    # to be inspectable without paying for the run again.
+    out = RESULTS / f"oracle-audit-{time.strftime('%Y%m%d-%H%M%S')}.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(rows, ensure_ascii=False, indent=1))
+    print(f"\nall {len(rows)} decisions -> {out}")
 
     print(f"\n--- worst offenders (up to {args.show}) ---")
     for r in [x for x in rows if x["verdict"].startswith("gold")][:args.show]:

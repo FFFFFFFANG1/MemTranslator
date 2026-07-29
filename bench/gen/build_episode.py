@@ -794,7 +794,7 @@ APPLIES_SYSTEM = """You judge which of a user's stored delivery rules a rewriter
 Include a rule only when ALL THREE hold:
 (a) it applies — a reasonable user who stated that rule would expect it honoured in the response to this request, judged by the KIND of work requested, not by shared vocabulary; AND
 (b) the request as written does NOT already state or satisfy it — if the user already said it, adding it again is redundant and the rewriter is right to leave it alone; AND
-(c) it is OPERATIVE here — the default answer to this request could plausibly violate it, and someone reading the answer could tell whether it was honoured. A rule the output would satisfy anyway (no emoji in a Python script, no legal citations in a commit message) is vacuous for this request: adding it is noise, not memory.
+(c) it is OPERATIVE here — a VIOLATION could plausibly surface in this output's medium and form. Judge the medium, not the probability: word caps, tense rules and verb-placement rules ARE operative on prose outputs even when a good default would often comply (a postmortem's improvement section drifts into future tense; that is exactly why the rule must ride along). Answer no only when the medium or form cannot express the violation at all: markdown in a plain email, first person in a bare timeline list, emoji in source code.
 
 Exclude a rule when it is about WHAT to say rather than HOW to deliver (topics, opinions, values, safety, persona), when it is vacuous, or when it is garbled and you cannot tell what compliance would look like.
 Output exactly: {"applies": [<number>, ...]} (possibly empty). Numbers only from the list."""
@@ -804,7 +804,7 @@ CONFIRM_SYSTEM = """A rewriter sits between a user and an assistant. It may only
 Decide whether the rewriter MUST weave this ONE stored rule into this ONE request. Answer yes only when all three hold:
 (a) the rule applies to this kind of work;
 (b) the request does not already state, paraphrase or satisfy it — if the user already said it, there is nothing to add;
-(c) the default answer could plausibly violate it and a reader could tell whether it was honoured.
+(c) a violation could plausibly surface in this output's medium and form — judge the medium, not the probability; a standing stylistic rule is obliged on prose outputs even when defaults often comply. No only when the medium cannot express the violation at all (markdown in plain email, first person in a bare list, emoji in code).
 Output exactly: {"must_add": true|false, "why": "<short phrase>"}"""
 
 
