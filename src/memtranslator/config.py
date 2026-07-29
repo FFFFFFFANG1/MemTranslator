@@ -17,12 +17,26 @@ MODELS = {
 # anchor §4 context budget: only the newest N active requirements reach the prompt
 RECALL_CAP = 32
 
+# Injection pre-screen (2026-07-29): above this many candidates, recall ranks
+# and injects only the top slice. Measured motivation: at 32 flat-injected
+# rules the flash translator refused 5/5 on a task with two squarely
+# applicable rules, while the same task over 2 injected rules applied 3/3 —
+# the failure is selection difficulty across competing conditional rules,
+# not context length (32 rules ≈ 1.1k tokens). Every current scenario needs
+# at most 3 rules woven simultaneously (E1 probe max should_fire), so 8
+# keeps 2.5x headroom.
+INJECT_CAP = 8
+
 # v1 pipeline knobs (design 2026-07-24 R5 — proposal defaults, single point)
 BATCH_N = 8               # extraction fires at N queued candidates...
 FLUSH_IDLE_S = 30 * 60    # ...or 30min after the oldest one
 SALIENCE_MIN = 3          # extraction ops below this are dropped
-CONSOLIDATE_ACTIVE = 48   # consolidation fires above this many active reqs...
-CONSOLIDATE_ADDS = 16     # ...or after this many ADDs since the last pass
+# Tightened 2026-07-29: at 48/16 the ACTIVE branch never fired in practice
+# (11/12 episodes) and stores accumulated visible triplicates ("只囤不并").
+# Dedup and conflict elimination are the WRITE path's job — the rewrite
+# model's newest-wins rule is a last line of defense, not the mechanism.
+CONSOLIDATE_ACTIVE = 24   # consolidation fires above this many active reqs...
+CONSOLIDATE_ADDS = 8      # ...or after this many ADDs since the last pass
 STYLE_RULE_CAP = 10       # style_rule entries kept after curation
 INDEX_ROW_TOKENS = 20     # per-entry text budget in numbered indexes
 

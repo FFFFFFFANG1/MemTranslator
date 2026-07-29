@@ -4,6 +4,7 @@ import json
 import memtranslator.llm as llm
 from memtranslator.config import CONSOLIDATE_ACTIVE, CONSOLIDATE_ADDS, STYLE_RULE_CAP
 from memtranslator.consolidate import buckets, run_consolidation, should_consolidate
+from memtranslator.schema import Requirement
 from memtranslator.store import Store
 
 
@@ -80,3 +81,31 @@ def test_style_curation_retires_over_cap(monkeypatch, tmp_path):
     active_styles = [r for r in s.active() if r.kind == "style_rule"]
     assert len(active_styles) == STYLE_RULE_CAP
     assert s.get(rules[0].id).status == "retired"
+
+
+def test_cross_key_overlap_clusters_near_duplicates():
+    """Three same-obligation rules under different keys/buckets must still
+    reach the merge prompt as one group (the measured miss: triplicate
+    email maintenance-window rules invisible to key grouping)."""
+    from memtranslator.consolidate import buckets
+    a = Requirement(text="Emails must state the maintenance window start and end times.",
+                    key="email.content", bucket="deliverables", created_at=1.0)
+    b = Requirement(text="State the maintenance window and impact scope in emails.",
+                    key="email.maintenance", bucket="output_contract", created_at=2.0)
+    c = Requirement(text="Unrelated: keep commit subjects under 60 characters.",
+                    key="commit.length", bucket="output_contract", created_at=3.0)
+    groups = buckets([a, b, c])
+    joined = [{r.id for r in g} for g in groups]
+    assert any({a.id, b.id} <= g for g in joined)
+    assert not any(c.id in g and len(g) > 1 for g in joined)
+
+
+def test_overlap_groups_are_oldest_first():
+    from memtranslator.consolidate import buckets
+    newer = Requirement(text="Reports end with a summary table of findings.",
+                        key="report.x", bucket="", created_at=9.0)
+    older = Requirement(text="End every report with a findings summary table.",
+                        key="report.y", bucket="", created_at=1.0)
+    groups = buckets([newer, older])
+    grp = next(g for g in groups if len(g) >= 2)
+    assert grp[0].created_at <= grp[-1].created_at

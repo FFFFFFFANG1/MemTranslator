@@ -2,7 +2,7 @@
 import json
 
 import memtranslator.llm as llm
-from memtranslator.config import RECALL_CAP
+from memtranslator.config import INJECT_CAP, RECALL_CAP
 from memtranslator.recall import recall, style_block
 from memtranslator.schema import Requirement
 from memtranslator.translate import translate
@@ -38,8 +38,20 @@ def test_over_cap_prefers_key_hits_then_recency():
     fillers = [_r(f"规则{i}", key=f"f{i}.a", created_at=100.0 + i)
                for i in range(RECALL_CAP)]
     got = recall([old_hit] + fillers, query="帮我写封邮件给教授")
-    assert len(got) == RECALL_CAP
+    assert len(got) == INJECT_CAP
     assert old_hit in got                     # key hit beats pure recency
+
+
+def test_facet_freshness_swap_keeps_newest_of_key():
+    """An older same-key entry must never be injected while its newer
+    sibling is cut — newest-wins in the prompt only works on visible
+    entries."""
+    old = _r("邮件不超过120词", key="email.length", created_at=1.0)
+    new = _r("邮件放宽到200词", key="email.length", created_at=999.0)
+    fillers = [_r(f"填充规则{i}", key=f"f{i}.a", created_at=100.0 + i)
+               for i in range(INJECT_CAP + 4)]
+    got = recall([old, new] + fillers, query="帮我写封邮件")
+    assert new in got
 
 
 def test_style_block_caps_and_formats():

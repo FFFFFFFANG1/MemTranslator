@@ -1,6 +1,6 @@
 {
- "at": "20260729-083531",
- "episodes": "e-02,e-09,e-01",
+ "at": "20260729-105556",
+ "episodes": "e-02,e-01",
  "results": [
   {
    "episode": "e-02",
@@ -13,8 +13,8 @@
      },
      "canary_carried": true,
      "noop_rate": 0.25,
-     "mean_ms": 1292,
-     "block_chars": 292
+     "mean_ms": 1546,
+     "block_chars": 284
     },
     {
      "size": 8,
@@ -23,8 +23,8 @@
      },
      "canary_carried": true,
      "noop_rate": 0.5,
-     "mean_ms": 1779,
-     "block_chars": 678
+     "mean_ms": 1952,
+     "block_chars": 662
     },
     {
      "size": 16,
@@ -32,105 +32,9 @@
       "alive": true
      },
      "canary_carried": true,
-     "noop_rate": 0.5,
-     "mean_ms": 2525,
-     "block_chars": 1192
-    },
-    {
-     "size": 17,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": true,
-     "noop_rate": 0.5,
-     "mean_ms": 1256,
-     "block_chars": 1296
-    }
-   ],
-   "final_active": 17,
-   "final_retired": 15
-  },
-  {
-   "episode": "e-09",
-   "canary": "报销单里的金额一律保留两位小数",
-   "rows": [
-    {
-     "size": 6,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": false,
      "noop_rate": 0.25,
-     "mean_ms": 2454,
-     "block_chars": 511
-    },
-    {
-     "size": 9,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": true,
-     "noop_rate": 0.0,
-     "mean_ms": 1090,
-     "block_chars": 737
-    },
-    {
-     "size": 18,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": false,
-     "noop_rate": 0.0,
-     "mean_ms": 1427,
-     "block_chars": 1462
-    },
-    {
-     "size": 24,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": true,
-     "noop_rate": 0.0,
-     "mean_ms": 1235,
-     "block_chars": 1900
-    },
-    {
-     "size": 23,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": true,
-     "noop_rate": 0.0,
-     "mean_ms": 1845,
-     "block_chars": 1826
-    }
-   ],
-   "final_active": 23,
-   "final_retired": 13
-  },
-  {
-   "episode": "e-01",
-   "canary": "会议纪要一律按时间倒序排列",
-   "rows": [
-    {
-     "size": 6,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": true,
-     "noop_rate": 0.25,
-     "mean_ms": 1204,
-     "block_chars": 171
-    },
-    {
-     "size": 10,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": true,
-     "noop_rate": 0.75,
-     "mean_ms": 1971,
-     "block_chars": 336
+     "mean_ms": 1862,
+     "block_chars": 1165
     },
     {
      "size": 19,
@@ -138,19 +42,57 @@
       "alive": true
      },
      "canary_carried": true,
-     "noop_rate": 0.25,
-     "mean_ms": 2114,
-     "block_chars": 649
-    },
+     "noop_rate": 0.5,
+     "mean_ms": 1967,
+     "block_chars": 1415
+    }
+   ],
+   "final_active": 19,
+   "final_retired": 11
+  },
+  {
+   "episode": "e-01",
+   "canary": "会议纪要一律按时间倒序排列",
+   "rows": [
     {
-     "size": 24,
+     "size": 5,
      "canary": {
       "alive": true
      },
      "canary_carried": true,
      "noop_rate": 0.25,
-     "mean_ms": 2162,
-     "block_chars": 842
+     "mean_ms": 1691,
+     "block_chars": 475
+    },
+    {
+     "size": 9,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.25,
+     "mean_ms": 1664,
+     "block_chars": 840
+    },
+    {
+     "size": 18,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.0,
+     "mean_ms": 1620,
+     "block_chars": 2078
+    },
+    {
+     "size": 26,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.75,
+     "mean_ms": 2488,
+     "block_chars": 2828
     },
     {
      "size": 32,
@@ -158,13 +100,13 @@
       "alive": true
      },
      "canary_carried": true,
-     "noop_rate": 0.25,
-     "mean_ms": 2488,
-     "block_chars": 1040
+     "noop_rate": 0.5,
+     "mean_ms": 2206,
+     "block_chars": 3472
     }
    ],
    "final_active": 32,
-   "final_retired": 6
+   "final_retired": 2
   }
  ]
 }

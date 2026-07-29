@@ -23,7 +23,7 @@ CASES = Path(__file__).resolve().parents[1] / "bench_archive" / "cases"
 
 # Files whose string literals become prompt or lexicon content.
 GUARDED = ["extraction.py", "consolidate.py", "signals.py", "translate.py",
-           "recall.py"]
+           "recall.py", "scopes.py"]
 
 # A lifted phrase is distinctive; a shared word is not. CJK packs far more
 # meaning per character, hence the two thresholds.

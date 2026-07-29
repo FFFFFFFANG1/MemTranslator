@@ -15,17 +15,25 @@ from memtranslator.schema import Requirement
 from memtranslator.store import Store
 
 CONSOLIDATE_SYSTEM = """You tidy a store of a user's delivery requirements. You receive numbered
-entries grouped into BUCKETS of possibly-redundant rules, and possibly a
-STYLE section of rewrite-style rules exceeding its cap.
+entries grouped into GROUPS of possibly-redundant rules, and possibly a
+STYLE section of rewrite-style rules exceeding its cap. Within each group,
+numbers run OLDEST first — a later number is a more recent statement.
 
 Rules:
-1. Within a bucket, entries that express the SAME durable rule (near
-   duplicates, translations of each other) → emit one "merge" with their
-   numbers and a single merged text (clearest phrasing, user's language).
-   Entries that are genuinely different rules → leave alone. When unsure,
-   do NOT merge.
-2. Never invent rules, never change meaning while merging.
-3. STYLE section: keep the most broadly useful rules within the stated cap;
+1. Entries in one group that express the SAME durable rule (near
+   duplicates, translations of each other, the same obligation phrased
+   twice) → emit one "merge" with their numbers and a single merged text
+   (clearest phrasing, user's language). Entries that are genuinely
+   different rules → leave alone. When unsure, do NOT merge.
+2. Entries in one group that CONFLICT — they govern the same aspect of the
+   same kind of work but demand incompatible things (different caps,
+   opposite tones, contradictory formats) → do NOT merge them: the LATEST
+   number is the user's current preference; emit "retire" for each older
+   conflicting number. Resolving the conflict here is the point — a store
+   that keeps both sides forces every later rewrite to re-litigate it.
+3. Never invent rules, never change meaning while merging, and never
+   retire an entry that neither duplicates nor conflicts with a newer one.
+4. STYLE section: keep the most broadly useful rules within the stated cap;
    emit "retire" for the numbers to drop (most redundant / narrowest first).
 
 Output STRICTLY a JSON array (possibly empty), nothing else:
@@ -48,8 +56,18 @@ def buckets(reqs: list[Requirement]) -> list[list[Requirement]]:
     one. Grouping within a bucket makes that impossible by construction
     (docs/2026-07-26-bucket-taxonomy.md). Entries with no bucket keep the old
     key-only behaviour so pre-taxonomy records still deduplicate.
-    Only groups of ≥2 come back.
+
+    Pass 2 (2026-07-29): vocabulary-overlap clustering across keys AND
+    buckets. Measured miss that motivated it: one replay store held three
+    near-identical "email must state the maintenance window and impact"
+    rules under different keys/buckets — invisible to key grouping, obvious
+    to content_tokens overlap. LLM extraction never spells keys
+    consistently enough for exact-match grouping to be the only net.
+    Only groups of ≥2 come back; each group is oldest-first (the prompt's
+    conflict rule depends on that ordering).
     """
+    from memtranslator.signals import content_tokens, overlap_is_reference
+
     reqs = [r for r in reqs if r.kind == "requirement"]
     out: list[list[Requirement]] = []
     for bucket in sorted({r.bucket for r in reqs}):
@@ -67,6 +85,30 @@ def buckets(reqs: list[Requirement]) -> list[list[Requirement]]:
         unkeyed = [r for r in pool if not r.key]
         if len(unkeyed) >= 2:
             out.append(unkeyed)
+
+    # pass 2: overlap clusters among entries no earlier group covers
+    grouped = {r.id for grp in out for r in grp}
+    rest = [r for r in reqs if r.id not in grouped]
+    toks = {r.id: content_tokens(r.text) for r in rest}
+    parent = {r.id: r.id for r in rest}
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    for i, a in enumerate(rest):
+        for b in rest[i + 1:]:
+            if overlap_is_reference(toks[a.id], toks[b.id]):
+                parent[find(a.id)] = find(b.id)
+    clusters: dict[str, list[Requirement]] = {}
+    for r in rest:
+        clusters.setdefault(find(r.id), []).append(r)
+    out += [grp for grp in clusters.values() if len(grp) >= 2]
+
+    for grp in out:
+        grp.sort(key=lambda r: r.created_at)
     return out
 
 

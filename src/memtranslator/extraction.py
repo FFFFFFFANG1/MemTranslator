@@ -12,6 +12,7 @@ from memtranslator import llm
 from memtranslator.config import (GEN_TEMPERATURE, INDEX_ROW_TOKENS,
                                   MODELS, SALIENCE_MIN)
 from memtranslator.schema import BUCKETS, POLARITIES
+from memtranslator.scopes import normalize_scope
 from memtranslator.schema import Requirement
 
 EXTRACTION_SYSTEM = """You maintain a store of a user's delivery requirements — durable rules about
@@ -89,10 +90,13 @@ Emit requirement operations, following ALL of these rules:
    exactly this). If the user REWORDED an injected constraint but kept its
    meaning, that is feedback on our rewrite style: emit "style_rule" with a
    short imperative rule (≤25 tokens) about how to phrase rewrites.
-4. Requirement text: single sentence, imperative gist, written in the SAME
-   language the user stated the rule in — never translate or paraphrase a
-   Chinese rule into English or vice versa (quoted names, formats and code
-   terms stay verbatim).
+4. Requirement text: single sentence, imperative gist, written in ENGLISH
+   regardless of the user's language — English is the store's canonical
+   language (owner ruling 2026-07-29: one storage language keeps matching
+   and dedup single-lingual; the rewrite step renders rules back into the
+   user's language). Quoted names, file formats and code terms stay
+   verbatim. A rule ABOUT output language is still stored in English
+   ("reply in Chinese"), never in the language it mandates.
    Include "key": a two-part facet key like email.length / code.explanation /
    report.format (reuse an existing entry's key when the facet matches).
    Include "scope" only when clearly not global, e.g. {"task": "email"}.
@@ -267,7 +271,7 @@ def parse_ops(raw: str, existing: list[Requirement]) -> tuple[list[dict], list[s
         if op == "new" and isinstance(it.get("text"), str):
             ops.append({"kind": "new", "text": it["text"],
                         "key": it.get("key", ""),
-                        "scope": it.get("scope") or {}, "salience": salience,
+                        "scope": normalize_scope(it.get("scope")), "salience": salience,
                         **meta})
         elif op == "style_rule" and isinstance(it.get("text"), str):
             ops.append({"kind": "new", "text": it["text"], "key": "",
@@ -278,7 +282,7 @@ def parse_ops(raw: str, existing: list[Requirement]) -> tuple[list[dict], list[s
         elif op == "contradict" and target_id and isinstance(it.get("text"), str):
             ops.append({"kind": "contradict", "target_id": target_id,
                         "text": it["text"], "key": it.get("key", ""),
-                        "scope": it.get("scope") or {}, "salience": salience,
+                        "scope": normalize_scope(it.get("scope")), "salience": salience,
                         **meta})
         elif op == "retire" and target_id:
             ops.append({"kind": "retire", "target_id": target_id})
@@ -291,7 +295,7 @@ def parse_ops(raw: str, existing: list[Requirement]) -> tuple[list[dict], list[s
                 ops.append({"kind": "merge",
                             "target_ids": [existing[t - 1].id for t in ts],
                             "text": it["text"], "key": it.get("key", ""),
-                            "scope": it.get("scope") or {},
+                            "scope": normalize_scope(it.get("scope")),
                             "salience": salience, **meta})
             else:
                 flags.append(f"malformed merge: {ts!r}")

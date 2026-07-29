@@ -16,8 +16,14 @@ class _FakeLLM:
                  temperature=None):
         block = user.split(":\n", 1)[-1].split("\n\nUser request:")[0]
         req = user.split("User request:\n")[-1].split("\n\nJSON:")[0]
-        rules = [l[l.find("]") + 1:].strip() for l in block.splitlines()
-                 if l.strip().startswith("- [")]
+        rules = []
+        for l in block.splitlines():
+            l = l.strip()
+            if l.startswith("[") and "]" in l:
+                text = l[l.find("]") + 1:].strip()
+                if "  (" in text:          # strip structured field suffix
+                    text = text[:text.find("  (")]
+                rules.append(text)
         if not rules or "帮我" not in req and "draft" not in req:
             return json.dumps({"decision": "noop"})
         return json.dumps({"decision": "apply", "applied_ids": [],

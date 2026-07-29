@@ -1,22 +1,15 @@
 {
- "at": "20260729-074216",
+ "at": "20260729-105437",
  "paths": {
   "read": {
    "conflict": {
-    "score": 0.833,
+    "score": 1.0,
     "n": 6,
-    "fails": [
-     {
-      "id": "conflict-revocation-shaped",
-      "why": [
-       "expected an injection, product nooped (model_noop)"
-      ]
-     }
-    ]
+    "fails": []
    },
    "dilution": {
     "score": 1.0,
-    "n": 3,
+    "n": 5,
     "fails": []
    },
    "idempotence_degenerate": {
@@ -46,10 +39,10 @@
    },
    "noop_both_ways": {
     "score": 1.0,
-    "n": 6,
+    "n": 7,
     "fails": []
    },
-   "_overall": 0.977
+   "_overall": 1.0
   }
  }
 }

@@ -16,6 +16,14 @@ from memtranslator.schema import Requirement
 
 TRANSLATOR_SYSTEM = """You are a translator sitting between a user and their AI agent.
 You receive the user's raw request plus the user's stored requirements — rules about HOW they want tasks executed and delivered (format, length, style, method, workflow).
+Requirements are numbered [1]..[N] and may carry structured fields:
+- (applies: task=email …) — the ONLY contexts the rule applies in; no
+  "applies" field means the rule is global;
+- (aspect: …) — which facet of delivery it governs (output_contract,
+  communication_style, deliverables, reasoning_policy, execution_policy,
+  task_goal);
+- (force: require|prefer|avoid|prohibit) — how hard the rule binds;
+  "prohibit" admits no exception.
 Rewrite the request ONLY when a stored requirement clearly applies to it, so the agent satisfies the user without ever seeing the requirements.
 
 Rules:
@@ -23,7 +31,7 @@ Rules:
 1a. The no-op bias above is about having nothing to go on — it does NOT apply when a stored requirement covers exactly this situation. If the request states a topic but no task ("bm25 vs embeddings for memory, the tradeoffs") and a stored requirement says what this user wants done with such input ("when I raise a tradeoff, compare the options"), then supply that task verb. You are not guessing: the user told you in advance how to read requests like this one.
 2. Never invent constraints out of thin air: every constraint you add must be backed by a stored requirement. Backing does not require copying — you may SPECIALIZE a stored requirement into task-specific specifics beyond its literal wording, as long as any output satisfying your added constraint would also satisfy the stored requirement it came from. A constraint that no stored requirement implies is still forbidden.
 3. Never change the core task the user is asking for; only make implicit, requirement-backed constraints explicit.
-4. Keep the rewritten request natural, as if the user had typed it themselves, and in the language the user wrote in. Do not mention requirements, memory, or this translation step.
+4. Keep the rewritten request natural, as if the user had typed it themselves, and in the language the user wrote the REQUEST in. Stored requirements are written in English regardless of that language — render every constraint you weave in into the request's language; never let the stored wording drag the rewrite into English. Do not mention requirements, memory, or this translation step.
 5. Your output is ALWAYS the user's REQUEST, addressed to the agent — never your answer to it. If the user asked a question, the rewritten text is still that question. Never answer, explain, or solve anything here.
 6. Requirements are instructions for the AGENT, not for you. A requirement that describes how the ANSWER should look ("keep answers short", "no bullet points", "don't restate my question", "conclusion first") is satisfied by WRITING IT INTO the request as an instruction — never by producing an answer in that shape yourself, and never by editing the user's own words to match it.
 7. The rewrite only ADDS. Every word of the user's original request survives in it; you may append or weave in constraint clauses, but you may not delete or replace what the user typed.
@@ -32,7 +40,7 @@ Rules:
 Output strictly one JSON object, nothing else:
 {"decision": "noop"}
 or
-{"decision": "apply", "applied_ids": ["req-1a2b3c4d"], "polished": "..."}"""
+{"decision": "apply", "applied": [<numbers of the requirements you wove in>], "polished": "..."}"""
 
 
 def _estimate_tokens(text: str) -> int:
@@ -79,18 +87,26 @@ def preserves_request(original: str, polished: str) -> bool:
 
 
 def _requirement_block(requirements: list[Requirement]) -> str:
-    """Scope rides along with the text. `recall()` already drops entries whose
-    scope contradicts a KNOWN context dimension, but it keeps everything the
-    context is silent about — and until now the model was never told which of
-    those entries were conditional, so a rule the user scoped to one task read
-    exactly like a global one."""
+    """Numbered, structured entries (2026-07-29). Numbers instead of hex ids
+    (design R6: hex ids are not robust through a flash model; numbers are);
+    the store's own metadata — scope, bucket, polarity — travels with each
+    entry so the model judges applicability on typed fields instead of
+    reverse-engineering them from prose. Fields the store has but the prompt
+    used to discard were the cheapest structure available."""
+    from memtranslator.scopes import normalize_scope
     lines = []
-    for r in requirements:
-        line = f"- [{r.id}] {r.text}"
-        if r.scope:
-            where = ", ".join(f"{k}={v}" for k, v in sorted(r.scope.items()))
-            line += f"  (only when {where})"
-        lines.append(line)
+    for n, r in enumerate(requirements, 1):
+        fields = []
+        scope = normalize_scope(r.scope)
+        if scope:
+            fields.append("applies: " + ", ".join(
+                f"{k}={v}" for k, v in sorted(scope.items())))
+        if r.bucket:
+            fields.append(f"aspect: {r.bucket}")
+        if r.polarity:
+            fields.append(f"force: {r.polarity}")
+        suffix = f"  ({'; '.join(fields)})" if fields else ""
+        lines.append(f"[{n}] {r.text}{suffix}")
     return "\n".join(lines)
 
 
@@ -123,8 +139,13 @@ def parse_patch(raw: str) -> tuple[dict, bool]:
     if (patch.get("decision") == "apply"
             and isinstance(patch.get("polished"), str)
             and patch["polished"].strip()):
+        # "applied" carries entry numbers (current contract); "applied_ids"
+        # is the legacy id form — accepted so old transcripts still parse
+        applied = patch.get("applied", patch.get("applied_ids", []))
+        if not isinstance(applied, list):
+            applied = []
         return {"decision": "apply",
-                "applied_ids": patch.get("applied_ids", []),
+                "applied": applied,
                 "polished": patch["polished"].strip()}, False
     return {"decision": "noop"}, True
 
@@ -147,8 +168,15 @@ def translate(text: str, requirements: list[Requirement],
                        temperature=GEN_TEMPERATURE)
     latency_ms = int((time.time() - t0) * 1000)
     patch, parse_error = parse_patch(raw)
+    # Entry numbers → ids (out-of-range numbers are dropped, never guessed);
+    # legacy id strings are filtered against the recalled set.
     known = {r.id for r in recalled}
-    applied = [i for i in patch.get("applied_ids", []) if i in known]
+    applied = []
+    for ref in patch.get("applied", []):
+        if isinstance(ref, int) and 1 <= ref <= len(recalled):
+            applied.append(recalled[ref - 1].id)
+        elif isinstance(ref, str) and ref in known:
+            applied.append(ref)
     if (patch["decision"] == "apply"
             and patch["polished"] == text.strip()):
         # An apply that changes nothing IS a noop — downstream the composer

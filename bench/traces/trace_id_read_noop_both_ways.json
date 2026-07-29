@@ -1,74 +1,259 @@
 {
-  "family": "noop_both_ways",
-  "description": "noop must fire when nothing applies AND must NOT fire when something clearly does — the archive measured a 27% wrongful-noop rate, so the act-direction is the sharp edge",
-  "checks": [
+ "family": "noop_both_ways",
+ "description": "noop must fire when nothing applies AND must NOT fire when something clearly does — the archive measured a 27% wrongful-noop rate, so the act-direction is the sharp edge",
+ "checks": [
+  {
+   "id": "empty-store-noop",
+   "store": [],
+   "task": {
+    "text": "帮我写封邮件给物业，说电梯又坏了，这周第三次了"
+   },
+   "expect": {
+    "behavior": "noop"
+   }
+  },
+  {
+   "id": "all-irrelevant-noop",
+   "store": [
     {
-      "id": "empty-store-noop",
-      "store": [],
-      "task": {"text": "帮我写封邮件给物业，说电梯又坏了，这周第三次了"},
-      "expect": {"behavior": "noop"}
+     "text": "会议纪要按时间倒序排列"
     },
     {
-      "id": "all-irrelevant-noop",
-      "store": [
-        {"text": "会议纪要按时间倒序排列"},
-        {"text": "周报里的数字必须带环比"},
-        {"text": "给客户的邮件结尾加公司落款"}
-      ],
-      "task": {"text": "写个 python 脚本，把 logs/ 目录下所有 .gz 解压到 raw/ 里"},
-      "expect": {"behavior": "noop"}
+     "text": "周报里的数字必须带环比"
     },
     {
-      "id": "task-already-states-it-noop",
-      "store": [
-        {"text": "我要的摘要都控制在78词以内"}
-      ],
-      "task": {"text": "把这篇论文的方法部分总结一下，控制在78词以内"},
-      "expect": {
-        "behavior": "noop"
-      }
-    },
-    {
-      "id": "clearly-applicable-must-act-zh",
-      "store": [
-        {"text": "我让你写的邮件一律不超过78词"}
-      ],
-      "task": {"text": "帮我写封邮件给房东，热水器坏了让他找人来修"},
-      "expect": {
-        "behavior": "act",
-        "must_contain": ["78"]
-      }
-    },
-    {
-      "id": "clearly-applicable-must-act-en",
-      "store": [
-        {"text": "replies I ask you to draft must stay under 47 words"}
-      ],
-      "task": {"text": "draft a reply to the recruiter saying I'm interested but need to push the interview to next week"},
-      "expect": {
-        "behavior": "act",
-        "must_contain": ["47"]
-      }
-    },
-    {
-      "id": "applicable-under-density-must-act",
-      "store": [
-        {"text": "会议纪要按时间倒序排列"},
-        {"text": "周报里的数字必须带环比"},
-        {"text": "代码注释统一用英文"},
-        {"text": "调研结论开头先给一句话结论"},
-        {"text": "对外文档用简体中文"},
-        {"text": "说明文档用主动语态"},
-        {"text": "步骤类内容用有序列表"},
-        {"text": "解释技术概念时先给类比"},
-        {"text": "引用统一用 APA 格式"},
-        {"text": "我让你写的邮件一律不超过78词"}
-      ],
-      "task": {"text": "帮我写封邮件给供应商，催一下上个月的发票"},
-      "expect": {
-        "behavior": "act",
-        "must_contain": ["78"]
-      }
+     "text": "给客户的邮件结尾加公司落款"
     }
-  ]
+   ],
+   "task": {
+    "text": "写个 python 脚本，把 logs/ 目录下所有 .gz 解压到 raw/ 里"
+   },
+   "expect": {
+    "behavior": "noop"
+   }
+  },
+  {
+   "id": "task-already-states-it-noop",
+   "store": [
+    {
+     "text": "我要的摘要都控制在78词以内"
+    }
+   ],
+   "task": {
+    "text": "把这篇论文的方法部分总结一下，控制在78词以内"
+   },
+   "expect": {
+    "behavior": "noop"
+   }
+  },
+  {
+   "id": "clearly-applicable-must-act-zh",
+   "store": [
+    {
+     "text": "我让你写的邮件一律不超过78词"
+    }
+   ],
+   "task": {
+    "text": "帮我写封邮件给房东，热水器坏了让他找人来修"
+   },
+   "expect": {
+    "behavior": "act",
+    "must_contain": [
+     "78"
+    ]
+   }
+  },
+  {
+   "id": "clearly-applicable-must-act-en",
+   "store": [
+    {
+     "text": "replies I ask you to draft must stay under 47 words"
+    }
+   ],
+   "task": {
+    "text": "draft a reply to the recruiter saying I'm interested but need to push the interview to next week"
+   },
+   "expect": {
+    "behavior": "act",
+    "must_contain": [
+     "47"
+    ]
+   }
+  },
+  {
+   "id": "applicable-under-density-must-act",
+   "store": [
+    {
+     "text": "会议纪要按时间倒序排列"
+    },
+    {
+     "text": "周报里的数字必须带环比"
+    },
+    {
+     "text": "代码注释统一用英文"
+    },
+    {
+     "text": "调研结论开头先给一句话结论"
+    },
+    {
+     "text": "对外文档用简体中文"
+    },
+    {
+     "text": "说明文档用主动语态"
+    },
+    {
+     "text": "步骤类内容用有序列表"
+    },
+    {
+     "text": "解释技术概念时先给类比"
+    },
+    {
+     "text": "引用统一用 APA 格式"
+    },
+    {
+     "text": "我让你写的邮件一律不超过78词"
+    }
+   ],
+   "task": {
+    "text": "帮我写封邮件给供应商，催一下上个月的发票"
+   },
+   "expect": {
+    "behavior": "act",
+    "must_contain": [
+     "78"
+    ]
+   }
+  },
+  {
+   "id": "noop-under-40-distractors",
+   "store": [
+    {
+     "text": "周报里的数字必须带环比"
+    },
+    {
+     "text": "代码注释统一用英文"
+    },
+    {
+     "text": "调研结论开头先给一句话结论"
+    },
+    {
+     "text": "对外文档用简体中文"
+    },
+    {
+     "text": "说明文档用主动语态"
+    },
+    {
+     "text": "解释技术概念时先给类比"
+    },
+    {
+     "text": "引用统一用 APA 格式"
+    },
+    {
+     "text": "摘要控制在 200 字以内"
+    },
+    {
+     "text": "步骤类内容用有序列表"
+    },
+    {
+     "text": "给客户的邮件结尾加公司落款"
+    },
+    {
+     "text": "报表里的金额保留两位小数"
+    },
+    {
+     "text": "翻译时保留原文里的英文术语"
+    },
+    {
+     "text": "标题不超过 15 个字"
+    },
+    {
+     "text": "别在正文里用感叹号"
+    },
+    {
+     "text": "代码片段要带语言标注"
+    },
+    {
+     "text": "季度总结先写风险再写成绩"
+    },
+    {
+     "text": "面向新人的文档要有前置知识清单"
+    },
+    {
+     "text": "commit message 用英文祈使句"
+    },
+    {
+     "text": "PPT 每页只讲一个论点"
+    },
+    {
+     "text": "数据图表的坐标轴必须标单位"
+    },
+    {
+     "text": "对外声明先过一遍法务措辞"
+    },
+    {
+     "text": "招聘 JD 里不写年龄要求"
+    },
+    {
+     "text": "回复投诉邮件先道歉再解释"
+    },
+    {
+     "text": "文件命名用小写加连字符"
+    },
+    {
+     "text": "Slide decks open with a summary slide."
+    },
+    {
+     "text": "SQL queries in docs use uppercase keywords."
+    },
+    {
+     "text": "Changelog entries start with the affected component."
+    },
+    {
+     "text": "API examples show the curl command first."
+    },
+    {
+     "text": "Budget tables list amounts in thousands."
+    },
+    {
+     "text": "User-facing error messages avoid stack traces."
+    },
+    {
+     "text": "Design docs include a rollback plan section."
+    },
+    {
+     "text": "Test names describe the expected behavior."
+    },
+    {
+     "text": "README files list prerequisites before install steps."
+    },
+    {
+     "text": "Press releases spell out acronyms on first use."
+    },
+    {
+     "text": "Dashboards default to the last 30 days."
+    },
+    {
+     "text": "Contracts quote payment terms in calendar days."
+    },
+    {
+     "text": "Onboarding guides link the glossary at the top."
+    },
+    {
+     "text": "Postmortem action items name a single owner."
+    },
+    {
+     "text": "Survey questions avoid double negatives."
+    },
+    {
+     "text": "Release notes group changes by severity."
+    }
+   ],
+   "task": {
+    "text": "帮我查一下明天上海的天气怎么样"
+   },
+   "expect": {
+    "behavior": "noop"
+   }
+  }
+ ]
 }

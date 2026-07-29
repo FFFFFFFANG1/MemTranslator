@@ -287,7 +287,14 @@ def content_tokens(text: str) -> set:
     bm25 tokens minus scaffold, with one trailing latin plural 's'
     stripped so "notifications" (stored rule) meets "notification
     restriction" (withdrawal). Shared by the screening boost, extraction's
-    referent hints and nothing else — BM25 ranking keeps raw tokens."""
+    referent hints, the grounding guard and consolidation's overlap
+    clustering — BM25 ranking keeps raw tokens.
+
+    Lexicon roots ride along as pseudo-tokens ("root:email"): with English
+    as the store's canonical language (owner ruling 2026-07-29) a Chinese
+    quotation of a rule shares no surface token with its stored English
+    text — digits and format terms bridge naturally, the lexicon bridges
+    the rest ("邮件" and "emails" both contribute root:email)."""
     from memtranslator.bm25 import tokenize
     out = set()
     for t in tokenize(text):
@@ -296,6 +303,10 @@ def content_tokens(text: str) -> set:
         if len(t) >= 4 and t.endswith("s") and not t.endswith("ss"):
             t = t[:-1]
         out.add(t)
+    low = text.lower()
+    for root, surfaces in _KEY_LEXICON.items():
+        if any(s.lower() in low for s in surfaces):
+            out.add(f"root:{root}")
     return out
 
 
