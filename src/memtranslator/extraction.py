@@ -38,6 +38,13 @@ Emit requirement operations, following ALL of these rules:
    narrow wording would freeze the mistake. If the user durably withdraws
    one with no replacement, emit "retire" with the number. Same facet →
    update, never create a duplicate.
+   REFERENT NOT IN STORE: users sometimes override or withdraw a rule by
+   bare reference ("that earlier instruction", "the old rule", a deictic
+   phrase with no subject matter). If NO stored entry is about the subject
+   being referenced, the referent predates the store — it is NOT here. Emit "new" with the corrected rule (or
+   nothing, for a bare withdrawal). NEVER aim contradict or retire at an
+   unrelated entry just because a number must be chosen; a wrong target
+   destroys a healthy rule.
 3. SIGNALS-B: ops may come ONLY from text the user ADDED into "final"
    relative to "polished". An added delivery constraint (format, language,
    tone, length, method) COUNTS as a durable signal even when seen once —
@@ -207,10 +214,51 @@ def parse_ops(raw: str, existing: list[Requirement]) -> tuple[list[dict], list[s
     return ops, flags
 
 
+def _ground_destructive_ops(ops: list[dict], a_candidates: list[str],
+                            b_candidates: list[dict],
+                            existing: list[Requirement]
+                            ) -> tuple[list[dict], list[str]]:
+    """Zero-LLM guard: a contradict/retire must be GROUNDED — its target's
+    text must share vocabulary with what the user actually said this batch.
+
+    Found by the bench's collision-free canary (2026-07-29, deterministic
+    3/3 repro in bench/repro_deixis_kill.py): a withdrawal referencing, by a
+    bare deictic phrase, a rule that predates the store made the model
+    resolve the dangling reference to the only numbered entry it could see
+    and kill an unrelated rule. The user had never mentioned that rule's
+    subject; this check makes that mechanical. Shared function-word bigrams
+    can still ground a wrong target (the guard is conservative, not
+    complete) — but zero overlap is zero justification, and that is exactly
+    the repro's shape."""
+    from memtranslator.bm25 import tokenize
+    signal_text = " ".join(a_candidates) + " " + " ".join(
+        f"{b.get('raw', '')} {b.get('final', '')}" for b in b_candidates)
+    sig = set(tokenize(signal_text))
+    by_id = {r.id: r for r in existing}
+    kept, flags = [], []
+    for o in ops:
+        if o["kind"] in ("contradict", "retire"):
+            tgt = by_id.get(o.get("target_id") or "")
+            if tgt is not None and not (set(tokenize(tgt.text)) & sig):
+                flags.append(
+                    f"ungrounded {o['kind']} dropped: target "
+                    f"{tgt.text[:30]!r} shares no vocabulary with the "
+                    f"signals")
+                if o["kind"] == "contradict" and o.get("text"):
+                    # the corrected rule itself is still user-grounded —
+                    # keep the content, lose the kill
+                    kept.append({**o, "kind": "new", "target_id": None})
+                continue
+        kept.append(o)
+    return kept, flags
+
+
 def run_extraction(a_candidates: list[str], b_candidates: list[dict],
                    existing: list[Requirement]) -> dict:
     user = build_user_prompt(a_candidates, b_candidates, existing)
     raw = llm.complete(MODELS["translator"], EXTRACTION_SYSTEM, user,
                        max_tokens=1500, temperature=GEN_TEMPERATURE)
     ops, flags = parse_ops(raw, existing)
-    return {"ops": ops, "flags": flags}
+    ops, gflags = _ground_destructive_ops(ops, a_candidates, b_candidates,
+                                          existing)
+    return {"ops": ops, "flags": flags + gflags}
