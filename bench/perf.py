@@ -194,9 +194,15 @@ def main():
             if not row["canary"]["alive"]:
                 print(f"  KILL in {r['episode']} at size {row['size']}: "
                       f"canary superseded by: {row['canary']['successor']}")
-    out = BENCH / "perf_results.json"
-    out.write_text(json.dumps(results, ensure_ascii=False, indent=1))
-    print(f"-> {out}")
+    stamp = time.strftime("%Y%m%d-%H%M%S")
+    payload = {"at": stamp, "episodes": args.episodes,
+               "results": results}
+    archive = BENCH / "results" / f"perf-{stamp}.json"
+    archive.parent.mkdir(exist_ok=True)
+    archive.write_text(json.dumps(payload, ensure_ascii=False, indent=1))
+    latest = BENCH / "perf_results.json"
+    latest.write_text(json.dumps(payload, ensure_ascii=False, indent=1))
+    print(f"-> {archive} (+ latest pointer {latest.name})")
 
 
 if __name__ == "__main__":

@@ -10,3 +10,4 @@ bench/results/
 bench/gen/probes/extraction_old.py
 bench/gen/harvest/
 AutoMemory/
+bench/results/

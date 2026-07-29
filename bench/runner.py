@@ -233,7 +233,12 @@ def main():
     if not families:
         raise SystemExit("no trace files matched")
 
+    # merge into the existing state: a --trace filtered run must not wipe
+    # the other families' scores (it did — twice)
     state = {"at": time.strftime("%Y%m%d-%H%M%S"), "paths": {"read": {}}}
+    if STATE.exists():
+        old = json.loads(STATE.read_text())
+        state["paths"]["read"] = old.get("paths", {}).get("read", {})
     total_pass = total_n = 0
     for fam_path in families:
         fam = json.loads(fam_path.read_text())
@@ -253,7 +258,11 @@ def main():
             if not r["pass"]:
                 print(f"    ✗ {r['id']}: {'; '.join(map(str, r['fails'][:2]))[:120]}")
 
-    state["paths"]["read"]["_overall"] = round(total_pass / total_n, 3)
+    fam_scores = [v for k, v in state["paths"]["read"].items()
+                  if k != "_overall" and isinstance(v, dict)]
+    state["paths"]["read"]["_overall"] = round(
+        sum(f["score"] * f["n"] for f in fam_scores)
+        / max(1, sum(f["n"] for f in fam_scores)), 3)
     STATE.write_text(json.dumps(state, ensure_ascii=False, indent=1))
     print(f"\nread path: {total_pass}/{total_n} = {total_pass / total_n:.3f}")
     print(f"state -> {STATE}")
