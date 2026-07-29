@@ -57,3 +57,20 @@ prompt 瘦身）。前端仍是 v0 FastAPI shell + hotkey，交互优化未开�
 - 全部推送至 origin/dev（tag `checkpoint-20260729-deixis-fix`）；测试 408 绿
 - state.json 合并写入、perf 时间戳存档已修
 - backlog：E1 跨 run 塌陷闸、Ark 404 重试策略、21-28 桶 noop 88% 待复测（n=2）
+
+## 契约裁定（owner，2026-07-29，本 session 收尾）
+
+**adapt vs no-invention：全面放开。** 任何已存规则都允许"意图内展开"——改写可以
+引入规则文本之外的具体内容，只要满足蕴含关系：**遵守展开后约束的输出必然也遵守
+原规则**。具体规则（数字上限、具名格式）同样适用，不做分层限制。
+
+落地清单（下一 session 执行）：
+1. `TRANSLATOR_SYSTEM` 规则 2 改写：no-invention 松弛为 no-*ungrounded*-invention
+   ——新增约束必须蕴含-有出处（specializes a stored requirement），
+   无出处约束仍然禁止。
+2. Suite T `AUTO_NO_INVENTION` 判据改三元：逐字有出处 / 蕴含有出处 / 无出处，
+   前两者过。**metric_version 随之 bump**（T 历史分数不可比）。
+3. ADAPT 频段从 report-only 进入 robustness 计分（instantiation 族已就位）。
+4. 风险记录：可预测性是 position anchor 第一优先级，全面放开后同请求同库的
+   改写方差可能上升——robustness invariance 族是哨兵，若 equiv-group 开始失败，
+   回到分层方案。
