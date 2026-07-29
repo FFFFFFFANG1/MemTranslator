@@ -1,11 +1,18 @@
 {
- "at": "20260729-073119",
+ "at": "20260729-074216",
  "paths": {
   "read": {
    "conflict": {
-    "score": 1.0,
-    "n": 3,
-    "fails": []
+    "score": 0.833,
+    "n": 6,
+    "fails": [
+     {
+      "id": "conflict-revocation-shaped",
+      "why": [
+       "expected an injection, product nooped (model_noop)"
+      ]
+     }
+    ]
    },
    "dilution": {
     "score": 1.0,
@@ -42,7 +49,7 @@
     "n": 6,
     "fails": []
    },
-   "_overall": 1.0
+   "_overall": 0.977
   }
  }
 }
