@@ -90,3 +90,19 @@ prompt 瘦身）。前端仍是 v0 FastAPI shell + hotkey，交互优化未开�
 回归：离线测试 408 绿；robustness 全量 39/40 = 0.975，与放开前基线持平——
 唯一红灯仍是 conflict-en-latest-tone（欠账 #1 的冲突诱发 noop，非本次引入），
 invariance 9/9（方差哨兵绿）、instantiation 5/5。松弛规则 2 未引起任何回退。
+
+### 续：欠账 #1（冲突诱发 noop）修复（同 session）
+
+- 根因：recall 本就按 created_at 升序排（[recall.py:41]），但 prompt 从未告知
+  模型列表顺序的时间含义，也没有冲突处理规则——两条活冲突偏好并存时模型走
+  noop 兜底。
+- 修法（都在 translate prompt 层）：新增规则 8（越靠后越新；冲突从新弃旧、
+  绝不双注入、绝不因冲突 noop）+ user prompt 标注 "oldest first"。
+- 修后全量暴露一个新边缘行为：idempotence 场景偶发 apply 但产物与输入逐字
+  相同。产品层加机械护栏：polished == 输入 → 降级 noop（reason
+  `rewrite_unchanged`），附离线测试。
+- 结果：**robustness 40/40 = 1.000（首次全绿）**，离线 409 绿。
+  按 README 纪律，全 1.0 = 该给套件升难度了（Critic 加 trace，不删旧），
+  尤其 conflict 族该扩：en/zh 混合冲突、三条链式取代、scope 限定冲突。
+- 欠账重排：#1 已清；#2 noop bias 的尺子在 perf 重放（robustness
+  noop_both_ways 全绿测不出 27% 偏置），归入写路径攻坚一并做。

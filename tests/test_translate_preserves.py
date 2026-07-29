@@ -67,6 +67,14 @@ def test_translate_degrades_to_noop_on_destroyed_request(monkeypatch):
     assert out["reason"] == "rewrite_dropped_user_text"
 
 
+def test_translate_degrades_unchanged_apply_to_noop(monkeypatch):
+    original = "帮我写封邮件给房东，热水器坏了让他找人来修，全文控制在78词以内"
+    _patch(monkeypatch, original)
+    out = translate(original, _reqs("我让你写的邮件一律不超过78词"))
+    assert out["decision"] == "noop" and out["polished"] is None
+    assert out["reason"] == "rewrite_unchanged"
+
+
 def test_translate_keeps_a_legitimate_rewrite(monkeypatch):
     _patch(monkeypatch, "给房东写封不超过120词的邮件，催他尽快修暖气")
     out = translate("给房东写封邮件催修暖气", _reqs("邮件不超过120词"))

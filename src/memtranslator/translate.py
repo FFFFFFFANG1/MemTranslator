@@ -27,6 +27,7 @@ Rules:
 5. Your output is ALWAYS the user's REQUEST, addressed to the agent — never your answer to it. If the user asked a question, the rewritten text is still that question. Never answer, explain, or solve anything here.
 6. Requirements are instructions for the AGENT, not for you. A requirement that describes how the ANSWER should look ("keep answers short", "no bullet points", "don't restate my question", "conclusion first") is satisfied by WRITING IT INTO the request as an instruction — never by producing an answer in that shape yourself, and never by editing the user's own words to match it.
 7. The rewrite only ADDS. Every word of the user's original request survives in it; you may append or weave in constraint clauses, but you may not delete or replace what the user typed.
+8. Stored requirements are listed oldest first — the later an entry, the more recently the user stated it. If two applicable requirements contradict each other on the same aspect, the LATER one is the user's current preference: apply it and ignore the older one. Never weave in both sides of a contradiction, and never no-op because of one — a conflict means the user changed their mind, not that you have nothing to go on.
 
 Output strictly one JSON object, nothing else:
 {"decision": "noop"}
@@ -137,7 +138,8 @@ def translate(text: str, requirements: list[Requirement],
                 "parse_error": False, "latency_ms": 0,
                 "reason": "no_active_requirements"}
     system = TRANSLATOR_SYSTEM + style_block(requirements)
-    user = (f"Stored requirements:\n{_requirement_block(recalled)}\n\n"
+    user = (f"Stored requirements (oldest first):\n"
+            f"{_requirement_block(recalled)}\n\n"
             f"User request:\n{text}\n\nJSON:")
     t0 = time.time()
     raw = llm.complete(MODELS["translator"], system, user,
@@ -147,6 +149,15 @@ def translate(text: str, requirements: list[Requirement],
     patch, parse_error = parse_patch(raw)
     known = {r.id for r in recalled}
     applied = [i for i in patch.get("applied_ids", []) if i in known]
+    if (patch["decision"] == "apply"
+            and patch["polished"] == text.strip()):
+        # An apply that changes nothing IS a noop — downstream the composer
+        # text would be replaced with itself. Observed on the idempotence
+        # bench: fed its own rewrite back, the model sometimes says "apply"
+        # with the input verbatim instead of nooping.
+        return {"decision": "noop", "polished": None, "applied_ids": [],
+                "parse_error": parse_error, "latency_ms": latency_ms,
+                "reason": "rewrite_unchanged"}
     if (patch["decision"] == "apply"
             and not preserves_request(text, patch["polished"])):
         return {"decision": "noop", "polished": None, "applied_ids": [],

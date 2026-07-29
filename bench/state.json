@@ -1,19 +1,11 @@
 {
- "at": "20260729-072546",
+ "at": "20260729-073119",
  "paths": {
   "read": {
    "conflict": {
-    "score": 0.667,
+    "score": 1.0,
     "n": 3,
-    "fails": [
-     {
-      "id": "conflict-en-latest-tone",
-      "why": [
-       "expected an injection, product nooped (model_noop)",
-       "judge: The rewritten request asks for a casual, warm tone and does NOT ask for a formal"
-      ]
-     }
-    ]
+    "fails": []
    },
    "dilution": {
     "score": 1.0,
@@ -50,7 +42,7 @@
     "n": 6,
     "fails": []
    },
-   "_overall": 0.975
+   "_overall": 1.0
   }
  }
 }
