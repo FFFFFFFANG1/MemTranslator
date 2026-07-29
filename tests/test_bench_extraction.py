@@ -1,6 +1,6 @@
-import bench.runner.run_extraction as rx
-from bench.runner.providers import NullProvider
-from bench.runner.schema import ExtractionCase
+import bench_archive.runner.run_extraction as rx
+from bench_archive.runner.providers import NullProvider
+from bench_archive.runner.schema import ExtractionCase
 
 
 def _case(**kw):
@@ -112,7 +112,7 @@ def test_merge_wrong_target_set_fails(monkeypatch):
 
 def test_schema_rejects_bad_retire_and_merge(tmp_path):
     import json
-    from bench.runner.schema import load_extraction_cases
+    from bench_archive.runner.schema import load_extraction_cases
     base = dict(category="revoke", source="handwritten", existing=["x"],
                 events=[], expect_ops=[{"kind": "retire", "target": None}])
     p = tmp_path / "bad.jsonl"

@@ -1,4 +1,4 @@
-from bench.runner.checkers import run_check
+from bench_archive.runner.checkers import run_check
 
 
 def test_contains_all():

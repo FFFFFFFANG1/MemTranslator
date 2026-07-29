@@ -19,7 +19,7 @@ import re
 from pathlib import Path
 
 SRC = Path(__file__).resolve().parents[1] / "src" / "memtranslator"
-CASES = Path(__file__).resolve().parents[1] / "bench" / "cases"
+CASES = Path(__file__).resolve().parents[1] / "bench_archive" / "cases"
 
 # Files whose string literals become prompt or lexicon content.
 GUARDED = ["extraction.py", "consolidate.py", "signals.py", "translate.py",

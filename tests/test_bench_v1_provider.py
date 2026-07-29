@@ -2,7 +2,7 @@
 import json
 
 import memtranslator.llm as llm
-from bench.runner.providers import V1Provider
+from bench_archive.runner.providers import V1Provider
 from memtranslator.schema import Requirement
 
 

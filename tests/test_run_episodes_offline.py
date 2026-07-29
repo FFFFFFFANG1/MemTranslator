@@ -7,8 +7,8 @@ import json
 
 import pytest
 
-import bench.runner.run_episodes as re_mod
-from bench.graph.schema import ANY
+import bench_archive.runner.run_episodes as re_mod
+from bench_archive.graph.schema import ANY
 
 
 def _episode():

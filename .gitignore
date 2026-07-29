@@ -9,3 +9,4 @@ __pycache__/
 bench/results/
 bench/gen/probes/extraction_old.py
 bench/gen/harvest/
+AutoMemory/
