@@ -21,11 +21,19 @@ from bench_archive.runner.config import CASES, RESULTS
 from bench_archive.runner.run_translate import AUTO_NO_INVENTION, AUTO_TASK_INTACT
 from bench_archive.runner.schema import load_translate_cases
 
-# Pre-rewording phrasing (snapshots taken before 2026-07-24 store this text
-# in their judge failures); map it onto the current criterion when recovering
-# verdicts so old snapshots audit correctly.
+# Pre-rewording phrasings (snapshots taken before the 2026-07-24 and
+# 2026-07-29 rewordings store these texts in their judge failures); map them
+# onto the current criterion when recovering verdicts so old snapshots audit
+# correctly.
 AUTO_NO_INVENTION_V1 = ("The rewritten request adds no constraint that is "
                         "not grounded in the listed stored requirements.")
+AUTO_NO_INVENTION_V2 = (
+    "Compare the rewritten request against the original request and list "
+    "every constraint the rewrite ADDED (length, format, tone, language, "
+    "method, audience...). For each added constraint, check whether it is "
+    "grounded in one of the stored requirements. Verdict yes ONLY if every "
+    "added constraint is grounded; verdict no if at least one added "
+    "constraint has no grounding requirement, and name it in the reason.")
 
 
 def criteria_for(case, result) -> list[str]:
@@ -67,7 +75,7 @@ def main():
             continue
         judged_no = {f["why"] for f in r["failures"]
                      if f.get("layer") == "judge"}
-        if AUTO_NO_INVENTION_V1 in judged_no:
+        if judged_no & {AUTO_NO_INVENTION_V1, AUTO_NO_INVENTION_V2}:
             judged_no.add(AUTO_NO_INVENTION)
         for crit in criteria_for(case, r):
             pool.append({

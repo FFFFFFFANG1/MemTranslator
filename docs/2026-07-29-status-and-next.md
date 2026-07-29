@@ -74,3 +74,19 @@ prompt 瘦身）。前端仍是 v0 FastAPI shell + hotkey，交互优化未开�
 4. 风险记录：可预测性是 position anchor 第一优先级，全面放开后同请求同库的
    改写方差可能上升——robustness invariance 族是哨兵，若 equiv-group 开始失败，
    回到分层方案。
+
+### 落地执行记录（2026-07-29，裁定后 session）
+
+1. ✅ `TRANSLATOR_SYSTEM` 规则 2 改写：invent 禁令松弛为「新增必须有出处，
+   出处不要求逐字——允许 specialize（蕴含式展开），无出处仍禁止」。
+2. ✅ Suite T `AUTO_NO_INVENTION` 改三元（(a) 逐字有出处 / (b) 蕴含有出处 /
+   (c) 无出处，a+b 过）；`bench_archive` METRIC_VERSION 2→3；make_audit
+   增加 v2 措辞映射，旧 snapshot 仍可复审。注意：archive 已封存，T 不重跑，
+   新判据对未来 T 运行生效。
+3. ✅ ADAPT 计分口径写进 bench/README 计分节（instantiation 族本就在
+   state.json 计分，此处消掉 report-only 的暧昧，正式背书）。
+4. ✅ 方差哨兵（invariance equiv-group，失败即回退分层）记入 bench/README。
+
+回归：离线测试 408 绿；robustness 全量 39/40 = 0.975，与放开前基线持平——
+唯一红灯仍是 conflict-en-latest-tone（欠账 #1 的冲突诱发 noop，非本次引入），
+invariance 9/9（方差哨兵绿）、instantiation 5/5。松弛规则 2 未引起任何回退。

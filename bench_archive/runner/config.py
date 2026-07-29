@@ -21,9 +21,12 @@ RUN_DIR = Path(os.environ.get("BENCH_RUN_DIR")
 
 # Version of the scoring semantics. Bumped whenever a change makes numbers
 # incomparable with previous snapshots (e.g. v2: suite headline became
-# min(micro, macro) and shard-completeness gating landed). The gate refuses to
-# aggregate snapshots whose metric_version differs from the current one.
-METRIC_VERSION = 2
+# min(micro, macro) and shard-completeness gating landed; v3: T's
+# AUTO_NO_INVENTION went ternary per the 2026-07-29 owner ruling — entailed
+# specialization of a stored requirement now passes, so v2 T scores read
+# strictly lower on the same behavior). The gate refuses to aggregate
+# snapshots whose metric_version differs from the current one.
+METRIC_VERSION = 3
 
 
 def _load_env(path: Path) -> dict[str, str]:

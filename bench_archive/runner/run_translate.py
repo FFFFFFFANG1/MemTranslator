@@ -15,15 +15,20 @@ from bench_archive.runner.parallel import run_items
 from bench_archive.runner.retry import with_retry
 from bench_archive.runner.schema import load_translate_cases
 
-# v2 wording (2026-07-24 sign-off): decomposed so a human auditor can replay
-# the exact same check — list added constraints, ground each one, then decide.
+# v3 wording (owner ruling 2026-07-29): grounding is ternary. Verbatim carry
+# and entailed specialization both pass — the read path is ALLOWED to expand a
+# stored rule into task-specific specifics, provided satisfying the expansion
+# necessarily satisfies the rule. Only ungrounded additions fail. Scores are
+# not comparable with v2 snapshots (METRIC_VERSION bumped alongside).
 AUTO_NO_INVENTION = (
     "Compare the rewritten request against the original request and list "
     "every constraint the rewrite ADDED (length, format, tone, language, "
-    "method, audience...). For each added constraint, check whether it is "
-    "grounded in one of the stored requirements. Verdict yes ONLY if every "
-    "added constraint is grounded; verdict no if at least one added "
-    "constraint has no grounding requirement, and name it in the reason.")
+    "method, audience...). Classify each added constraint: (a) stated in a "
+    "stored requirement, (b) a SPECIALIZATION of a stored requirement — any "
+    "output satisfying the added constraint would necessarily also satisfy "
+    "that requirement, or (c) backed by no stored requirement. Verdict yes "
+    "if every added constraint is (a) or (b); verdict no if at least one is "
+    "(c), and name it in the reason.")
 AUTO_TASK_INTACT = ("The core task of the original request is unchanged in "
                     "the rewritten request.")
 

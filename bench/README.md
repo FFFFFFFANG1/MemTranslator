@@ -75,6 +75,14 @@ probe 任务测：适配质量、noop 率、稀释曲线、延迟/token — 全�
   2. 词源（新增含规则外的任务域词 → tier2 候选）——机械
   3. 窄蕴含 judge（「遵守新增者必遵守原规则？」）——唯一 LLM 判定，
      预注册：此判定过不了 oracle 式审计则 tier2 降为只报不判
+- **契约裁定（owner 2026-07-29）**：adapt 的「意图内展开」全面合法——新增
+  约束只需**蕴含-有出处**（specializes 某条已存规则），不限抽象/具体规则。
+  instantiation 族据此正式计分（不再有 report-only 的暧昧）；Suite T 的
+  `AUTO_NO_INVENTION` 同步改三元判据（逐字有出处 / 蕴含有出处 / 无出处，
+  前两者过），`bench_archive` METRIC_VERSION 2→3，T 历史分数不可比。
+- **方差哨兵**：可预测性是 position anchor 第一优先级，展开全面放开后同请求
+  同库的改写方差可能上升。invariance 族（paraphrase/order equiv-group）是
+  哨兵——若 equiv-group 开始失败，回退分层方案（具体规则只 carry 不展开）。
 
 ## 运行
 
