@@ -65,9 +65,8 @@ class _EchoLLM:
 
     def complete(self, model, system, user, max_tokens=1024,
                  temperature=None):
-        if "extract requirement operations" in system.lower() \
-                or "durable" in system.lower():
-            return "[]"
+        if "you are a translator" not in system.lower():
+            return "[]"          # extraction/consolidation calls
         req = user.split("User request:\n")[-1].split("\n\nJSON:")[0]
         block = user.split(":\n", 1)[-1].split("\n\nUser request:")[0]
         return json.dumps({"decision": "apply", "applied_ids": [],
