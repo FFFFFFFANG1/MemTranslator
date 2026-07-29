@@ -1,0 +1,52 @@
+{
+  "family": "idempotence_degenerate",
+  "description": "feeding a polished output back in must not double-inject, and pathological inputs (empty, huge, pure code) must degrade to sane behavior",
+  "checks": [
+    {
+      "id": "idempotence-no-double-injection",
+      "store": [
+        {"text": "我让你写的邮件一律不超过78词"}
+      ],
+      "task": {"text": "帮我写封邮件给房东，热水器坏了让他找人来修，全文控制在78词以内"},
+      "expect": {
+        "behavior": "noop"
+      }
+    },
+    {
+      "id": "idempotence-en",
+      "store": [
+        {"text": "replies I ask you to draft must stay under 47 words"}
+      ],
+      "task": {"text": "draft a reply (under 47 words) telling the vendor we accept the revised quote"},
+      "expect": {
+        "behavior": "noop"
+      }
+    },
+    {
+      "id": "long-task-still-works",
+      "store": [
+        {"text": "调研结论开头先给一句话结论"}
+      ],
+      "task": {"text": "帮我整理一份关于向量数据库选型的调研：我们对比了 Milvus、Qdrant、Weaviate 和 pgvector 四个方案。Milvus 部署最重但生态最全，支持 GPU 索引，运维需要专人；Qdrant 是 Rust 写的，内存占用低，过滤查询的性能在我们的测试里最好，但集群模式还不够成熟；Weaviate 自带模块化的向量化 pipeline，对快速原型友好，可是查询延迟在高并发下波动大；pgvector 最省事，直接躺在我们现有的 Postgres 里，权限和备份体系全部复用，缺点是超过五百万向量之后 HNSW 的构建时间和查询召回都明显吃紧。我们的场景是大约两千万条文档向量、日增五十万、检索 QPS 峰值三百、团队没有专职运维。另外还要考虑混合检索（关键词+向量）的支持程度、多租户隔离、以及跟我们现有的 Airflow 数据管道怎么衔接。请把这些信息整理成一份结构化的调研报告，给出各方案的适用边界和一个明确的推荐。"},
+      "expect": {
+        "behavior": "act",
+        "must_contain": [
+          {"value": "一句话结论", "matcher": "semantic",
+           "criterion": "The rewritten request asks for a one-sentence conclusion at the very beginning of the report."}
+        ],
+        "judge": [
+          "Every substantive detail of the original task survives in the rewrite: all four vector database candidates (Milvus, Qdrant, Weaviate, pgvector) are still present."
+        ]
+      }
+    },
+    {
+      "id": "pure-code-block-noop",
+      "store": [
+        {"text": "调研结论开头先给一句话结论"},
+        {"text": "我让你写的邮件一律不超过78词"}
+      ],
+      "task": {"text": "def dedupe(xs):\n    seen = set()\n    out = []\n    for x in xs:\n        if x not in seen:\n            seen.add(x)\n            out.append(x)\n    return out"},
+      "expect": {"behavior": "noop"}
+    }
+  ]
+}

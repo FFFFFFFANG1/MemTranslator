@@ -1,0 +1,51 @@
+{
+  "family": "conflict",
+  "description": "two live preferences clash (the zombie scenario the write path measurably produces — 31% of retirements go unrecorded). Correct behavior: newest wins, never both",
+  "checks": [
+    {
+      "id": "two-live-caps-newest-wins",
+      "store": [
+        {"text": "我让你写的邮件一律不超过120词", "age_rank": 0},
+        {"text": "邮件放宽点，78词以内就行", "age_rank": 5}
+      ],
+      "task": {"text": "帮我写封邮件给房东，热水器坏了让他找人来修"},
+      "expect": {
+        "behavior": "act",
+        "must_contain": ["78"],
+        "must_not_contain": ["120"]
+      }
+    },
+    {
+      "id": "retired-zombie-stays-dead",
+      "store": [
+        {"text": "周报一律用 bullet point 列要点", "status": "retired", "age_rank": 0},
+        {"text": "周报改成叙述段落，别用 bullet", "age_rank": 5}
+      ],
+      "task": {"text": "帮我把这周的工作整理成周报发给组长"},
+      "expect": {
+        "behavior": "act",
+        "must_contain": [
+          {"value": "叙述段落", "matcher": "semantic",
+           "criterion": "The rewritten request asks for narrative paragraphs (叙述段落/连贯段落) as the weekly report format."}
+        ],
+        "judge": [
+          "The rewritten request does NOT ask for bullet points — the withdrawn bullet-point rule leaves no trace."
+        ]
+      }
+    },
+    {
+      "id": "conflict-en-latest-tone",
+      "store": [
+        {"text": "emails should sound formal and reserved", "age_rank": 0},
+        {"text": "actually make my emails casual and warm from now on", "age_rank": 7}
+      ],
+      "task": {"text": "draft an email to the design team asking them to review the new landing page this week"},
+      "expect": {
+        "behavior": "act",
+        "judge": [
+          "The rewritten request asks for a casual, warm tone and does NOT ask for a formal or reserved tone."
+        ]
+      }
+    }
+  ]
+}
