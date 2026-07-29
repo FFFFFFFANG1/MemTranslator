@@ -68,6 +68,26 @@ def test_garbage_output_yields_empty_with_flag():
     assert ops == [] and flags == ["unparseable"]
 
 
+def test_unescaped_inner_quotes_repaired_not_dropped():
+    """Observed live: flash echoes the user's curly quotes back as ASCII
+    double quotes inside a JSON string value, invalidating the array. The
+    whole batch — all of it correct — was thrown away as unparseable."""
+    raw = ('[{"op": "new", "target": null, '
+           '"text": "避免第一人称（如"我建议"、"我觉得"），改用客观陈述。", '
+           '"key": "style.perspective", "salience": 5}]')
+    ops, flags = parse_ops(raw, [])
+    assert len(ops) == 1
+    assert "我建议" in ops[0]["text"]
+    assert flags == []
+
+
+def test_escaped_quotes_and_clean_json_unaffected_by_repair():
+    raw = ('[{"op": "new", "target": null, '
+           '"text": "use \\"snake_case\\" for tests", "salience": 4}]')
+    ops, flags = parse_ops(raw, [])
+    assert len(ops) == 1 and 'use "snake_case" for tests' == ops[0]["text"]
+
+
 def test_run_extraction_end_to_end(monkeypatch):
     existing = _reqs("周报要用 bullet points")
     seen = {}

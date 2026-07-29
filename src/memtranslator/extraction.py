@@ -32,7 +32,11 @@ Emit requirement operations, following ALL of these rules:
 1. Extract only durable "how the task is done" rules the user expressed.
    NEVER extract: content preferences (what to recommend, personal facts,
    tastes), one-off instructions scoped to a single task ("this time", "这次",
-   "例外", "just this once"), or task content itself.
+   "例外", "just this once"), or task content itself. Constraints attached
+   to a task the user is assigning in the same breath ("写个X，要Y，别用Z" /
+   "write me an X that does Y, no Z") are that task's SPEC, not durable
+   rules — extract nothing from them unless durability phrasing (以后 /
+   每次 / from now on / always) explicitly covers them.
 2. If a signal restates an existing entry, emit "reinforce" with its number.
    If it durably overrides or narrows one, emit "contradict" with the number
    and the corrected text (fold exceptions into the text, e.g. "...— except
@@ -73,7 +77,11 @@ Emit requirement operations, following ALL of these rules:
    breadth: the user's phrasing IS the scope. Only when no category is named,
    infer the task TYPE from the user's own vocabulary, never the specific
    instance (this one file, this one recipient). Interpersonal tone and
-   recipient-specific asks stay scoped to their stated context. NEVER emit ops about constraints that were
+   recipient-specific asks stay scoped to their stated context. Each added
+   constraint lands on its OWN facet: never fold one into an existing
+   entry about a DIFFERENT facet — a language or tone the user added to
+   one email is its own (scoped) "new" rule, not an amendment to a stored
+   length rule. NEVER emit ops about constraints that were
    already in "polished" (our own injections are not user signals — no
    reinforce for them). A deleted or weakened injected constraint is a
    one-off signal: emit NOTHING for it — no retire, no contradict
@@ -180,6 +188,40 @@ def build_user_prompt(a_candidates: list[str], b_candidates: list[dict],
     return "\n\n".join(parts)
 
 
+def _escape_inner_quotes(s: str) -> str:
+    """Repair the one JSON defect flash actually produces: the user's
+    curly quotes (“我建议”) echoed back as ASCII double quotes INSIDE a
+    string value, which invalidates the whole array and silently threw
+    away entire op batches (found live: a batch whose ops were all
+    correct — two durable rules extracted, a task spec rightly refused —
+    died as "unparseable"). Inside a string, a quote whose next
+    non-whitespace character is not a JSON delimiter is content, not a
+    terminator — escape it."""
+    out, in_str, i = [], False, 0
+    while i < len(s):
+        ch = s[i]
+        if not in_str:
+            if ch == '"':
+                in_str = True
+            out.append(ch)
+        elif ch == "\\":
+            out.append(s[i:i + 2])
+            i += 1
+        elif ch == '"':
+            j = i + 1
+            while j < len(s) and s[j] in " \t\r\n":
+                j += 1
+            if j < len(s) and s[j] in ",:]}":
+                in_str = False
+                out.append(ch)
+            else:
+                out.append('\\"')
+        else:
+            out.append(ch)
+        i += 1
+    return "".join(out)
+
+
 def parse_ops(raw: str, existing: list[Requirement]) -> tuple[list[dict], list[str]]:
     """LLM output → store ops. Numbers become ids here; anything malformed
     is dropped with a flag, never guessed."""
@@ -190,7 +232,10 @@ def parse_ops(raw: str, existing: list[Requirement]) -> tuple[list[dict], list[s
     try:
         items = json.loads(s[start:end + 1])
     except json.JSONDecodeError:
-        return [], ["unparseable"]
+        try:
+            items = json.loads(_escape_inner_quotes(s[start:end + 1]))
+        except json.JSONDecodeError:
+            return [], ["unparseable"]
 
     ops, flags = [], []
     for it in items:
