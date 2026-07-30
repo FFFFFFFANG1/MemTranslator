@@ -79,17 +79,19 @@ def kind_matches(kinds: list, tkind: str | None) -> bool:
     return False
 
 
-def annotate_kinds(texts: list[str]) -> list[list[str]]:
-    """One batched flash call tagging each rule text. Any failure — call,
-    parse, unknown label — yields [] (untagged) for the affected entries so
-    the read path degrades to no filtering, never to a wrong drop."""
-    if not texts:
-        return []
+def _annotate_raw(texts: list[str]) -> tuple[list[list[str]], bool]:
+    """Returns (tags, call_failed). call_failed=True only when the LLM call
+    itself raised — a successful reply that parses to nothing is a model
+    answer, not an outage, and is not worth retrying."""
     block = "\n".join(f"[{i + 1}] {t}" for i, t in enumerate(texts))
+    call_failed = False
     try:
         raw = llm.complete(MODELS["translator"], KINDS_SYSTEM,
                            block + "\n\nJSON:",
                            max_tokens=60 * len(texts) + 200, temperature=0)
+    except Exception:
+        raw, call_failed = "", True
+    try:
         m = re.search(r"\{.*\}", raw, re.DOTALL)
         parsed = json.loads(m.group(0)) if m else {}
     except Exception:
@@ -101,21 +103,48 @@ def annotate_kinds(texts: list[str]) -> list[list[str]]:
         if not isinstance(vals, list):
             vals = []
         out.append([v for v in vals if v in allowed])
-    return out
+    return out, call_failed
+
+
+def annotate_kinds(texts: list[str]) -> list[list[str]]:
+    """One batched flash call tagging each rule text. Any failure — call,
+    parse, unknown label — yields [] (untagged) for the affected entries so
+    the read path degrades to no filtering, never to a wrong drop."""
+    if not texts:
+        return []
+    return _annotate_raw(texts)[0]
 
 def backfill_kinds(store) -> int:
     """Tag every active untagged requirement in one batched call — covers
     fresh extractions, consolidation merges, and legacy entries alike
     (self-healing: whatever slipped through gets tagged on the next flush).
-    Returns how many entries were tagged."""
+    Returns how many entries were tagged.
+
+    Retries with backoff, but only when the CALL failed (429/outage): this
+    runs right after an extraction flush, i.e. at the top of a rate-limit
+    burst, and a swallowed 429 here left whole chained stores untagged
+    (measured 2026-07-30: 1-2/17 tagged) — which silently switches off
+    every read-side feature that keys on the tags. The write path is
+    asynchronous; sleeping is free. A successful-but-empty reply is a model
+    answer and is left for the next flush's self-heal instead.
+    """
+    import time as _time
     todo = [r for r in store.active()
             if r.kind == "requirement" and not r.kinds]
     if not todo:
         return 0
-    tags = annotate_kinds([r.text for r in todo])
+    texts = [r.text for r in todo]
+    tags, failed = _annotate_raw(texts)
+    for delay in (1.0, 4.0):
+        if not failed:
+            break
+        _time.sleep(delay)
+        tags, failed = _annotate_raw(texts)
     n = 0
     for r, k in zip(todo, tags):
         if k:
             r.kinds = k
+            if hasattr(store, "persist"):
+                store.persist(r)
             n += 1
     return n

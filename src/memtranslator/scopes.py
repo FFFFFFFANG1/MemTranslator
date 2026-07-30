@@ -67,3 +67,40 @@ def normalize_scope(scope: dict | None) -> dict:
         key = _KEY_ALIASES.get(key, key)
         out[key] = normalize_value(v)
     return out
+
+
+# ---------------------------------------------------------------------------
+# Comparison-side vocabulary (2026-07-30, weak-backbone iteration R6).
+#
+# Measured on a qwen-built chained store: extraction invents free-form task
+# values ("headings_and_subheadings", "client_facing_communications") that
+# no context can ever equal, so the scope filter turned those rules
+# permanently unreachable. Exclusion now requires BOTH sides to speak the
+# controlled vocabulary — an uninterpretable value degrades to "unknown
+# dimension, keep the entry", the same never-exclude-on-missing principle
+# the filter already follows. Storage stays untouched (spelling-level
+# doctrine above); only the comparison relaxes.
+#
+# The code family folds for comparison: a python_script rule governs a
+# code-write task — one activity, many spellings (mirrors kinds.py's
+# taxonomy). Prose genres deliberately stay distinct (blog caps must not
+# fire on articles — the doctrine's original counterexample).
+_TASK_VOCAB = (set(_VALUE_ZH.values()) | set(_VALUE_ALIASES.values())
+               | {"email", "code", "code_write", "script", "doc", "article",
+                  "blog", "report", "weekly_report", "meeting",
+                  "meeting_minutes", "postmortem", "translation", "paper",
+                  "research", "slide", "summary"})
+_CODE_FAMILY = {"code", "code_write", "coding", "script",
+                "python_script", "shell_script"}
+
+
+def task_comparable(want: str, have: str) -> bool | None:
+    """None = cannot compare (either side out of vocabulary) → caller keeps
+    the entry; True/False = a real vocabulary-level verdict."""
+    if want not in _TASK_VOCAB or have not in _TASK_VOCAB:
+        return None
+    if want == have:
+        return True
+    if want in _CODE_FAMILY and have in _CODE_FAMILY:
+        return True
+    return False

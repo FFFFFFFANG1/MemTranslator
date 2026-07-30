@@ -25,7 +25,7 @@ from memtranslator.bm25 import BM25
 from memtranslator.config import INJECT_CAP, STYLE_RULE_CAP
 from memtranslator.kinds import infer_task_kind, kind_matches
 from memtranslator.schema import Requirement
-from memtranslator.scopes import normalize_scope
+from memtranslator.scopes import normalize_scope, task_comparable
 
 
 def _root_terms(text: str) -> list[str]:
@@ -40,7 +40,18 @@ def _scope_ok(scope: dict, context: dict) -> bool:
     context = normalize_scope(context)
     for dim, want in scope.items():
         have = context.get(dim)
-        if have is not None and have != want:
+        if have is None:
+            continue
+        if dim == "task":
+            # Vocabulary-gated comparison (scopes.task_comparable): an
+            # out-of-vocabulary value on either side means "cannot compare",
+            # which keeps the entry — free-form extraction spellings must
+            # not make a rule permanently unreachable.
+            verdict = task_comparable(want, have)
+            if verdict is False:
+                return False
+            continue
+        if have != want:
             return False
     return True
 

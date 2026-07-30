@@ -34,6 +34,7 @@ from memtranslator.bm25 import BM25
 from memtranslator.config import (CONSOLIDATE_ACTIVE, GEN_TEMPERATURE,
                                   MODELS, RECALL_CAP)
 from memtranslator.consolidate import should_consolidate
+from memtranslator.kinds import backfill_kinds
 from memtranslator.schema import Requirement
 from memtranslator.store import Store
 
@@ -275,6 +276,11 @@ def run_chained(ep: dict, flush_every: int = 4) -> dict:
                                                       store.active()),
                              f"{ep['id']}/extract")
             store.apply_ops(ops)
+            # Product parity: the product's Pipeline tags fresh entries with
+            # work kinds after every flush; this seam drives extraction
+            # directly and was skipping the tagging, leaving chained stores
+            # untagged (measured 2026-07-30 — real-arm entries all kinds=[]).
+            backfill_kinds(store)
             adds_since += sum(1 for o in ops
                               if o.get("kind") in ("new", "contradict"))
             pending, rounds_since_flush = [], 0
@@ -286,6 +292,7 @@ def run_chained(ep: dict, flush_every: int = 4) -> dict:
                     lambda: provider.consolidate(store.active()),
                     f"{ep['id']}/consolidate")
                 store.apply_ops(cops)
+                backfill_kinds(store)
                 consolidations.append({"seq": r["seq"], "trigger": trigger,
                                        "n_ops": len(cops)})
                 adds_since = 0

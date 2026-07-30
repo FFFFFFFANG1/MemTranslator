@@ -59,6 +59,14 @@ class Store:
         self._append(req)
         return req
 
+    def persist(self, req: Requirement) -> None:
+        """Re-append an in-place-mutated entry (e.g. work-kind tagging).
+        Without this the mutation lives only in memory and a restarted
+        store loses it — measured as chained-store files whose entries all
+        carried kinds=[] while the running process saw them tagged."""
+        if req.id in self._items:
+            self._append(req)
+
     def bump_strength(self, req_ids: list[str], delta: int) -> None:
         """Mechanical strength rule (0 token): accepted → +1, reverted → -1;
         crossing AUTO_RETIRE_AT retires implicitly (recoverable via update)."""

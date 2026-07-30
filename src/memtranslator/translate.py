@@ -26,7 +26,7 @@ Rules:
 1. No requirement clearly applies → no-op, and prefer no-op when you have nothing to go on — an underspecified request is often intentional. But judge applicability by the TASK, not the words: a requirement naming a kind of work covers every request of that kind, even sharing no vocabulary with it. Never no-op merely because the user did not name the category, or because referenced material ("this week's work", "the notes below") arrives separately — weave the applicable requirement in now.
 1a. The no-op bias is about having nothing to go on. When a requirement covers exactly this situation — the request states a topic but no task, and a stored rule says what this user wants done with such input — supply that task verb: the user told you in advance, you are not guessing.
 1b. Once rewriting, weave in EVERY applicable requirement, not just the most prominent ones. Global limits — length caps, line width, sentence/word/row counts, heading and formatting rules — apply to any deliverable of their kind and are the ones most often lost: if it applies, it goes in, with its numbers kept exact. One carried rule never excuses dropping another that also applies, even when they overlap; and a long requirement list is never itself a reason to no-op.
-2. Never invent constraints: every constraint you add must be backed by a stored requirement. Backing does not require copying — you may SPECIALIZE a requirement into task-specific specifics, as long as any output satisfying your added constraint also satisfies the requirement it came from. No backing → forbidden.
+2. Never invent constraints: every constraint you add must be backed by a stored requirement. Backing does not require copying — you may SPECIALIZE a requirement into task-specific specifics, as long as any output satisfying your added constraint also satisfies the requirement it came from. No backing → forbidden. For an ABSTRACT requirement (no number, no named format), prefer specializing it to this task's material over pasting its sentence; numeric limits stay verbatim with numbers exact.
 3. Never change the core task; only make implicit, requirement-backed constraints explicit.
 4. The rewrite reads as if the user typed it themselves, in the language the REQUEST is written in. Requirements are stored in English — render everything you weave in into the request's language; never let stored wording drag the rewrite into English. Never mention requirements, memory, or this translation step.
 5. Your output is ALWAYS the user's REQUEST, addressed to the agent — never your answer to it. A question stays a question. Never answer, explain, or solve anything here.
@@ -121,6 +121,7 @@ def _requirement_block(requirements: list[Requirement]) -> str:
     entry so the model judges applicability on typed fields instead of
     reverse-engineering them from prose. Fields the store has but the prompt
     used to discard were the cheapest structure available."""
+    from memtranslator.kinds import KIND_ANY, _PROSE
     from memtranslator.scopes import normalize_scope
     lines = []
     for n, r in enumerate(requirements, 1):
@@ -129,6 +130,22 @@ def _requirement_block(requirements: list[Requirement]) -> str:
         if scope:
             fields.append("applies: " + ", ".join(
                 f"{k}={v}" for k, v in sorted(scope.items())))
+        elif r.kinds:
+            # Work-kind tags rendered as applicability (2026-07-30, weak-
+            # backbone iteration R2): "does this rule govern this task?" was
+            # the inference the model dropped rules over — the write path
+            # already knows the answer, so say it. "any" is spelled out
+            # (global caps were exactly the rules lost); the prose family is
+            # expanded so a report-tagged rule is not skipped on a
+            # postmortem the selection layer deliberately kept it for.
+            # Untagged entries render exactly as before.
+            if KIND_ANY in r.kinds:
+                fields.append("applies: any kind of work")
+            else:
+                shown = set(r.kinds)
+                if shown & _PROSE:
+                    shown |= _PROSE
+                fields.append("applies: " + ", ".join(sorted(shown)))
         if r.bucket:
             fields.append(f"aspect: {r.bucket}")
         if r.polarity:
@@ -265,6 +282,9 @@ _ATTACK_PAT = re.compile(
     re.IGNORECASE | re.DOTALL)
 
 
+_DIGITS = re.compile(r"\d+")
+
+
 def translate(text: str, requirements: list[Requirement],
               context: dict | None = None) -> dict:
     """Returns {decision, polished, applied_ids, parse_error, latency_ms}."""
@@ -283,11 +303,19 @@ def translate(text: str, requirements: list[Requirement],
     if wire == "edits" and _estimate_tokens(text) <= EDITS_MIN_TOKENS:
         wire = "full"      # short requests: echo is cheap, caution is banked
 
-    def _run(wire: str) -> dict:
+    from memtranslator.kinds import infer_task_kind
+    tkind = infer_task_kind(text, context)
+    # Naming the task's kind of work lets the model match it against each
+    # entry's applies field by string comparison instead of re-deriving it —
+    # the weak-backbone iteration measured rules dropped exactly over that
+    # derivation. Absent when inference has nothing (prompt unchanged).
+    kind_line = f"Task kind: {tkind}\n\n" if tkind else ""
+
+    def _run(wire: str, followup: str = "") -> dict:
         system = _system_prompt(wire) + style_block(requirements)
         user = (f"Stored requirements (oldest first):\n"
                 f"{_requirement_block(recalled)}\n\n"
-                f"User request:\n{text}\n\nJSON:")
+                f"{kind_line}User request:\n{text}\n\n{followup}JSON:")
         budget = (EDITS_OUTPUT_TOKENS if wire == "edits"
                   else output_budget(text))
         t0 = time.time()
@@ -349,4 +377,28 @@ def translate(text: str, requirements: list[Requirement],
         retry = _run("edits")
         retry["latency_ms"] += result["latency_ms"]
         return retry
+    if result["decision"] == "apply":
+        # Numeric-coverage recheck (weak-backbone iteration R4): rules whose
+        # applicability the WRITE path vouched for (kind-tagged) and whose
+        # numbers are absent from the rewrite are the measured dominant
+        # loss — global caps dropped while showier rules get woven. One
+        # follow-up call names the unaccounted entries; the model still
+        # decides. Untagged entries never trigger (a store of untagged
+        # distractors keeps its banked noop/dilution behavior), so the
+        # extra call fires only when a vouched-for number went missing.
+        polished_digits = set(_DIGITS.findall(result["polished"]))
+        unaccounted = [
+            n for n, r in enumerate(recalled, 1)
+            if r.kinds and _DIGITS.findall(r.text)
+            and not set(_DIGITS.findall(r.text)) <= polished_digits]
+        if unaccounted:
+            nums = ", ".join(f"[{n}]" for n in unaccounted)
+            retry = _run(wire, followup=(
+                f"A first pass produced:\n{result['polished']}\n\n"
+                f"Requirements {nums} are not reflected in it. For each,"
+                f" weave it in if it applies to this request; leave it out"
+                f" only if it does not apply. Output the full JSON again.\n\n"))
+            if retry["decision"] == "apply":
+                retry["latency_ms"] += result["latency_ms"]
+                return retry
     return result

@@ -76,9 +76,31 @@ def test_backfill_tags_only_untagged(monkeypatch):
 
     tagged = Requirement(text="t1", kinds=["code"])
     fresh = Requirement(text="t2")
-    monkeypatch.setattr(K, "annotate_kinds", lambda texts: [["email"]])
+    monkeypatch.setattr(K, "_annotate_raw", lambda texts: ([["email"]], False))
     n = K.backfill_kinds(FakeStore([tagged, fresh]))
     assert n == 1 and fresh.kinds == ["email"] and tagged.kinds == ["code"]
+
+
+def test_backfill_retries_only_on_call_failure(monkeypatch):
+    class FakeStore:
+        def __init__(self, reqs):
+            self._r = reqs
+
+        def active(self):
+            return self._r
+
+    calls = []
+    monkeypatch.setattr(K, "_annotate_raw",
+                        lambda texts: (calls.append(1) or ([[]], False)))
+    monkeypatch.setattr("time.sleep", lambda s: None)
+    K.backfill_kinds(FakeStore([Requirement(text="t")]))
+    assert len(calls) == 1          # successful-but-empty: no retry
+
+    calls.clear()
+    monkeypatch.setattr(K, "_annotate_raw",
+                        lambda texts: (calls.append(1) or ([[]], True)))
+    K.backfill_kinds(FakeStore([Requirement(text="t")]))
+    assert len(calls) == 3          # call failures: two backoff retries
 
 
 # ---------------------------------------------------------------- recall
@@ -97,3 +119,13 @@ def test_recall_unknown_kind_keeps_all():
     rules = [Requirement(text=f"r{i}", kinds=["code"]) for i in range(3)]
     out = recall(rules, query="帮我处理一下", context={})
     assert len(out) == 3
+
+
+def test_backfill_persists_tags(monkeypatch, tmp_path):
+    from memtranslator.store import Store
+    s = Store(tmp_path / "s.jsonl")
+    s.add("emails stay short", key="email.length")
+    monkeypatch.setattr(K, "_annotate_raw", lambda texts: ([["email"]], False))
+    K.backfill_kinds(s)
+    reloaded = Store(tmp_path / "s.jsonl")
+    assert reloaded.active()[0].kinds == ["email"]
