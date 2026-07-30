@@ -1,55 +1,7 @@
 {
- "at": "20260729-105556",
- "episodes": "e-02,e-01",
+ "at": "20260730-125452",
+ "episodes": "e-01,e-03,e-05,e-09",
  "results": [
-  {
-   "episode": "e-02",
-   "canary": "导出的文件一律用小写加连字符命名",
-   "rows": [
-    {
-     "size": 4,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": true,
-     "noop_rate": 0.25,
-     "mean_ms": 1546,
-     "block_chars": 284
-    },
-    {
-     "size": 8,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": true,
-     "noop_rate": 0.5,
-     "mean_ms": 1952,
-     "block_chars": 662
-    },
-    {
-     "size": 16,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": true,
-     "noop_rate": 0.25,
-     "mean_ms": 1862,
-     "block_chars": 1165
-    },
-    {
-     "size": 19,
-     "canary": {
-      "alive": true
-     },
-     "canary_carried": true,
-     "noop_rate": 0.5,
-     "mean_ms": 1967,
-     "block_chars": 1415
-    }
-   ],
-   "final_active": 19,
-   "final_retired": 11
-  },
   {
    "episode": "e-01",
    "canary": "会议纪要一律按时间倒序排列",
@@ -60,9 +12,9 @@
       "alive": true
      },
      "canary_carried": true,
-     "noop_rate": 0.25,
-     "mean_ms": 1691,
-     "block_chars": 475
+     "noop_rate": 0.75,
+     "mean_ms": 2452,
+     "block_chars": 251
     },
     {
      "size": 9,
@@ -70,43 +22,207 @@
       "alive": true
      },
      "canary_carried": true,
-     "noop_rate": 0.25,
-     "mean_ms": 1664,
-     "block_chars": 840
+     "noop_rate": 0.5,
+     "mean_ms": 2660,
+     "block_chars": 733
     },
     {
-     "size": 18,
+     "size": 21,
      "canary": {
       "alive": true
      },
      "canary_carried": true,
      "noop_rate": 0.0,
-     "mean_ms": 1620,
-     "block_chars": 2078
+     "mean_ms": 1590,
+     "block_chars": 2093
     },
     {
-     "size": 26,
+     "size": 25,
      "canary": {
       "alive": true
      },
-     "canary_carried": true,
-     "noop_rate": 0.75,
-     "mean_ms": 2488,
-     "block_chars": 2828
+     "canary_carried": false,
+     "noop_rate": 0.0,
+     "mean_ms": 1760,
+     "block_chars": 2496
     },
     {
      "size": 32,
      "canary": {
       "alive": true
      },
-     "canary_carried": true,
-     "noop_rate": 0.5,
-     "mean_ms": 2206,
-     "block_chars": 3472
+     "canary_carried": false,
+     "noop_rate": 0.25,
+     "mean_ms": 2164,
+     "block_chars": 3191
     }
    ],
    "final_active": 32,
-   "final_retired": 2
+   "final_retired": 3
+  },
+  {
+   "episode": "e-03",
+   "canary": "会议纪要一律按时间倒序排列",
+   "rows": [
+    {
+     "size": 4,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.25,
+     "mean_ms": 2882,
+     "block_chars": 314
+    },
+    {
+     "size": 8,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.5,
+     "mean_ms": 2191,
+     "block_chars": 786
+    },
+    {
+     "size": 21,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": false,
+     "noop_rate": 0.25,
+     "mean_ms": 3531,
+     "block_chars": 2041
+    },
+    {
+     "size": 24,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.25,
+     "mean_ms": 1882,
+     "block_chars": 2370
+    },
+    {
+     "size": 37,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.0,
+     "mean_ms": 1852,
+     "block_chars": 3626
+    }
+   ],
+   "final_active": 37,
+   "final_retired": 6
+  },
+  {
+   "episode": "e-05",
+   "canary": "报销单里的金额一律保留两位小数",
+   "rows": [
+    {
+     "size": 4,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.75,
+     "mean_ms": 1572,
+     "block_chars": 167
+    },
+    {
+     "size": 9,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": false,
+     "noop_rate": 0.5,
+     "mean_ms": 2641,
+     "block_chars": 615
+    },
+    {
+     "size": 17,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.5,
+     "mean_ms": 2257,
+     "block_chars": 1152
+    },
+    {
+     "size": 24,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.25,
+     "mean_ms": 2039,
+     "block_chars": 1682
+    },
+    {
+     "size": 23,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.25,
+     "mean_ms": 1526,
+     "block_chars": 1541
+    }
+   ],
+   "final_active": 23,
+   "final_retired": 12
+  },
+  {
+   "episode": "e-09",
+   "canary": "报销单里的金额一律保留两位小数",
+   "rows": [
+    {
+     "size": 6,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.25,
+     "mean_ms": 1663,
+     "block_chars": 480
+    },
+    {
+     "size": 10,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": false,
+     "noop_rate": 0.25,
+     "mean_ms": 2883,
+     "block_chars": 814
+    },
+    {
+     "size": 16,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.25,
+     "mean_ms": 2063,
+     "block_chars": 1267
+    },
+    {
+     "size": 21,
+     "canary": {
+      "alive": true
+     },
+     "canary_carried": true,
+     "noop_rate": 0.0,
+     "mean_ms": 1369,
+     "block_chars": 1694
+    }
+   ],
+   "final_active": 21,
+   "final_retired": 11
   }
  ]
 }

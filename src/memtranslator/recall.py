@@ -23,6 +23,7 @@ ranking is phase-③ work; the dilution family referees this line.
 """
 from memtranslator.bm25 import BM25
 from memtranslator.config import INJECT_CAP, STYLE_RULE_CAP
+from memtranslator.kinds import infer_task_kind, kind_matches
 from memtranslator.schema import Requirement
 from memtranslator.scopes import normalize_scope
 
@@ -50,16 +51,28 @@ def recall(requirements: list[Requirement], *, query: str = "",
     pool = [r for r in requirements
             if r.status == "active" and r.kind == "requirement"
             and _scope_ok(r.scope, context)]
+    # Work-kind filter (2026-07-30): the write path tags each rule with the
+    # kinds of work it governs; here the request's kind (context, else
+    # zero-LLM lexicon) drops the rules for OTHER kinds of work, and every
+    # survivor is injected. Selection quality lives in the tags, not in a
+    # ranker: measured across the episode suite, style/format rules score
+    # BM25 zero against the tasks they govern, so any lexical top-N is a
+    # recency lottery that drops applicable rules whenever more than N
+    # apply. Untagged entries always survive the filter (legacy stores,
+    # annotation failure) — evidence can narrow, absence cannot.
+    tkind = infer_task_kind(query, context)
+    pool = [r for r in pool if kind_matches(r.kinds, tkind)]
     pool.sort(key=lambda r: r.created_at)
     if len(pool) <= INJECT_CAP:
         return pool
-    # Rank by BM25 over the entry's own words (an old but exactly-on-topic
-    # rule must not be dropped on recency alone — M1 measured that failure
-    # when ranking keyed on a 14-root lexicon; BM25 needs no registry).
-    # With English as the store's canonical language a Chinese query shares
-    # no surface token with the very rule it targets, so both sides are
-    # augmented with lexicon ROOT names — the same bridge content_tokens
-    # uses ("会议纪要" and "meeting minutes" both contribute "meeting").
+    # Safety valve beyond the cap: BM25 over the entry's own words, recency
+    # breaking ties (an old but exactly-on-topic rule must not be dropped
+    # on recency alone — M1 measured that failure when ranking keyed on a
+    # 14-root lexicon). With English as the store's canonical language a
+    # Chinese query shares no surface token with the very rule it targets,
+    # so both sides are augmented with lexicon ROOT names — the same bridge
+    # content_tokens uses ("会议纪要" and "meeting minutes" both contribute
+    # "meeting").
     docs = [f"{r.text} {r.key or ''} {' '.join(_root_terms(r.text))}"
             for r in pool]
     scores = BM25(docs).scores(f"{query} {' '.join(_root_terms(query))}")

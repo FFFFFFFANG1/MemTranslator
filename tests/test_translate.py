@@ -51,7 +51,7 @@ def test_recall_filters_retired_and_caps():
     reqs = _reqs(*[f"r{i}" for i in range(40)])
     reqs += _reqs("retired one", status="retired")
     got = recall(reqs)
-    assert len(got) == 8          # INJECT_CAP pre-screen
+    assert len(got) == 16         # INJECT_CAP safety valve
     assert all(r.status == "active" for r in got)
     assert got[-1].text == "r39"  # newest kept
 

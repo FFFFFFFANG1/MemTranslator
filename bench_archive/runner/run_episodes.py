@@ -73,11 +73,32 @@ def _effects(ep: dict) -> list[Effect]:
             for e in ep["effects"]]
 
 
+_KINDS_CACHE: dict = {}
+
+
+def _gold_kinds(ep: dict) -> dict:
+    """Per-episode work-kind tags for every catalogue clause, annotated once
+    via the product's write-time tagger — a perfect store would carry them.
+    One retry on an all-empty result; still-empty tags degrade to untagged
+    (= recall injects the rule everywhere), never to a wrong drop."""
+    epid = ep.get("id") or id(ep)
+    if epid not in _KINDS_CACHE:
+        from memtranslator.kinds import annotate_kinds
+        clauses = [n["clause"] or n["text"] for n in ep["catalogue"]]
+        tags = annotate_kinds(clauses)
+        if clauses and not any(tags):
+            tags = annotate_kinds(clauses)
+        _KINDS_CACHE[epid] = {n["cid"]: k
+                              for n, k in zip(ep["catalogue"], tags)}
+    return _KINDS_CACHE[epid]
+
+
 def _gold_requirements(ep: dict, seq: int) -> list[Requirement]:
     """The store a perfect system would hold at seq: every introduced node,
     with gold-projected status, clause text, and projected product scope."""
     st = fold(_effects(ep), seq)
     by_cid = {n["cid"]: n for n in ep["catalogue"]}
+    kinds_by_cid = _gold_kinds(ep)
     out = []
     for i, (cid, g) in enumerate(sorted(st.items(),
                                         key=lambda kv: kv[1].since_seq)):
@@ -86,6 +107,7 @@ def _gold_requirements(ep: dict, seq: int) -> list[Requirement]:
             continue
         r = Requirement(text=n["clause"] or n["text"], key=n["coords"]["key"],
                         scope=to_product_scope(n["coords"]["scope"]))
+        r.kinds = kinds_by_cid.get(cid, [])
         r.status = project_status(g)
         r.created_at = 1_000_000 + n_intro_seq(ep, cid) * 60
         r.updated_at = r.created_at

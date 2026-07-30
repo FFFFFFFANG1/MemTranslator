@@ -46,6 +46,8 @@ def test_no_duplicate_buckets_no_call(monkeypatch, tmp_path):
     s = Store(tmp_path / "s.jsonl")
     s.add("邮件写短点", key="email.length")
     s.add("代码只给代码", key="code.explanation")
+    for r in s.active():
+        r.kinds = ["any"]          # tagged store = steady state, zero calls
     out = run_consolidation(s)
     assert calls == [] and out["ops"] == []
 

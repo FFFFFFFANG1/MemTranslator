@@ -264,3 +264,51 @@ verb-buried 类抽象规则 0/4、KPI 前瞻补充、多码规则丢一条、1 �
 已基本消失（仅剩偶发 noop 抖动，均值 25 条 ≈ 1k tok）。**建议：读路径
 注入上限从 8 回调到全量 active（或 24），选择预筛保留为安全阀**——
 需要 owner 对 7-29 "降到 8 条" 裁定的更新授权。
+
+## 第六轮（2026-07-30 傍晚）：写时 kinds 标注落地（owner 批准方案 1，方案 2 弃）
+
+### 实验裁决（先于落地）
+
+- 方案 2（写时触发词扩展 BM25）：161 点选择召回 0.745 → 0.745，**零增益**，
+  弃。漏选规则与任务之间没有可桥接的词面，扩同义词无济于事。
+- 方案 1（写时 kinds 标注）：cap=8 下 0.745 → 0.807，且 miss 拆解证明
+  **cap=8 是组合下限**——多轮真适用规则 10-23 条，recall@8 ≤ 8/n，与
+  选择器无关。kinds 过滤 + 全注：**选择召回 0.963**，块中位 10 条
+  （p90 16，max 23）。
+
+### 落地（commit 本轮）
+
+- `kinds.py`：KINDS_SYSTEM 批量标注（flash，写侧异步）、
+  `infer_task_kind`（context 优先，零 LLM 词表兜底）、`kind_matches`
+  （空 kinds/any/未知任务恒匹配；report↔postmortem prose 家族互通）、
+  `backfill_kinds`（自愈：flush/consolidation 后给所有未标注 active 条目
+  补标，天然覆盖新增/合并/存量回填；失败降级未标注=不过滤）。
+- `schema.Requirement.kinds`（默认 [] 向后兼容）；pipeline/consolidate
+  flush 后接 backfill；recall 换 kind 过滤为主、`INJECT_CAP` 转义为
+  **安全阀 16**（超阀才走 BM25+recency 裁剪）；runner gold 侧
+  `_gold_kinds` 每集懒标注一次。
+
+### 裁判
+
+- offline pytest **445**（新增 kinds 单测 12 个；pipeline/consolidate/
+  recall 测试期望更新：flush 多一次标注调用、阀 16）
+- robustness **46/46**（kinds 过滤живой；trace store 未标注→恒匹配，
+  dilution-40 在阀 16 下仍全绿）
+- L **0.963**（两跑带 0.944-0.981 内；写路径不受影响——一次 null-provider
+  误跑虚惊，v1 正常）
+- oracle 审计（产品配置全链）：**per-task 0.82（32/39）/ per-memory
+  0.86（43/50）**，追平全量注入（0.85/0.86），注入 token 省约一半；
+  vs cap-8 时代 +0.20/+0.20。剩余 7 miss 为织入尾巴+方差
+  （verb-buried 0/n、KPI 前瞻、13句上限на code 任务等）。
+- perf 重放：中位 1862→2063ms（+11%），块字符 +9%（行数不同仅方向参考）；
+  kills 0。
+
+### 残留
+
+- oracle 0.9+ 的最后一段是 flash 织入优先级尾巴，选择已不再是瓶颈；
+  换更强改写骨干前 0.86 是诚实水位。
+- E1 real 臂尚未在 kinds 机制下复跑（real store 走写路径会自动获得标注，
+  预期 CARRY 受益）——下轮跑。
+- kinds 标注质量依赖 flash：错标缩窄会丢规则（audit 中 prose 家族桥已封
+  最大类）；backfill 只补空标注不复核已有标注，错标暂无自愈路径，
+  观察项。

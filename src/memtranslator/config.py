@@ -17,15 +17,18 @@ MODELS = {
 # anchor §4 context budget: only the newest N active requirements reach the prompt
 RECALL_CAP = 32
 
-# Injection pre-screen (2026-07-29): above this many candidates, recall ranks
-# and injects only the top slice. Measured motivation: at 32 flat-injected
-# rules the flash translator refused 5/5 on a task with two squarely
-# applicable rules, while the same task over 2 injected rules applied 3/3 —
-# the failure is selection difficulty across competing conditional rules,
-# not context length (32 rules ≈ 1.1k tokens). Every current scenario needs
-# at most 3 rules woven simultaneously (E1 probe max should_fire), so 8
-# keeps 2.5x headroom.
-INJECT_CAP = 8
+# Injection safety valve (2026-07-30, was a hard top-8 pre-screen). Primary
+# selection is now the work-kind filter (kinds.py): every rule tagged for
+# this request's kind of work is injected, and only a store whose FILTERED
+# pool still exceeds this valve falls back to the BM25 top-slice. Measured
+# motivation for the change: episode rounds routinely carry 10-23 genuinely
+# applicable rules, so any top-8 bounds recall at 8/n no matter how the 8
+# are chosen (both zero-LLM ranking and a flash pre-selector measured 0.80);
+# kind-filtered inject-all measured 0.963 selection recall at a median
+# block of 10 rules. 16 = p90 of filtered pool sizes across the suite; the
+# old 32-rule flat-injection refusal stays covered because the valve still
+# bounds the block.
+INJECT_CAP = 16
 
 # v1 pipeline knobs (design 2026-07-24 R5 — proposal defaults, single point)
 BATCH_N = 8               # extraction fires at N queued candidates...

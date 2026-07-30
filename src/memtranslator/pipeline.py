@@ -7,6 +7,7 @@ same code path (and so the bench adapter can drive it without wall clocks).
 """
 from memtranslator.config import BATCH_N, FLUSH_IDLE_S
 from memtranslator.extraction import run_extraction
+from memtranslator.kinds import backfill_kinds
 from memtranslator.store import Store
 
 
@@ -47,4 +48,5 @@ class Pipeline:
         applied = self.store.apply_ops(out["ops"])
         self.adds_since_consolidate += sum(
             1 for o in out["ops"] if o["kind"] in ("new", "contradict"))
+        backfill_kinds(self.store)
         return {"ops": out["ops"], "flags": out["flags"], "store": applied}

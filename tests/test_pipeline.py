@@ -35,7 +35,8 @@ def test_flush_at_batch_n(monkeypatch, tmp_path):
     for i in range(BATCH_N):
         p.add_natural([f"以后规则{i}"], now=1000.0 + i)
     out = p.maybe_flush(now=1000.0 + BATCH_N)
-    assert out is not None and len(calls) == 1
+    # 2 calls: extraction + work-kind tagging of the fresh entry
+    assert out is not None and len(calls) == 2
     assert out["store"]["applied"] == 1
     assert len(p.store.active()) == 1          # op landed in the store
     assert p.pending_count() == 0              # queue drained
@@ -48,7 +49,7 @@ def test_idle_flush(monkeypatch, tmp_path):
     p.add_natural(["以后邮件写短点"], now=1000.0)
     assert p.maybe_flush(now=1000.0 + 60) is None
     out = p.maybe_flush(now=1000.0 + FLUSH_IDLE_S + 1)
-    assert out is not None and len(calls) == 1
+    assert out is not None and len(calls) == 2
 
 
 def test_diff_candidates_join_the_batch(monkeypatch, tmp_path):
@@ -58,7 +59,7 @@ def test_diff_candidates_join_the_batch(monkeypatch, tmp_path):
     p.add_diff({"raw": "r", "polished": "p", "final": "f",
                 "applied": [], "survival": "mixed"}, now=1000.0)
     out = p.maybe_flush(now=1000.0 + FLUSH_IDLE_S + 1)
-    assert out is not None and len(calls) == 1
+    assert out is not None and len(calls) == 2
 
 
 def test_empty_queue_never_calls(monkeypatch, tmp_path):

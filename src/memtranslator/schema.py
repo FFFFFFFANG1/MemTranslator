@@ -59,6 +59,7 @@ class Requirement:
     polarity: str = ""                  # one of POLARITIES; "" = unstated
     evidence_id: str = ""               # shared by rules atomised from one utterance
     scope: dict = field(default_factory=dict)   # {app?, task?, lang?}; {} = global
+    kinds: list = field(default_factory=list)   # work kinds governed (kinds.py); [] = untagged, always matches
     strength: int = 1
     salience: int = 3                   # extraction-layer score; manual entries keep 3
     supersedes: str | None = None
@@ -78,6 +79,7 @@ class Requirement:
             "polarity": self.polarity,
             "evidence_id": self.evidence_id,
             "scope": self.scope,
+            "kinds": self.kinds,
             "strength": self.strength,
             "salience": self.salience,
             "supersedes": self.supersedes,
@@ -99,6 +101,7 @@ class Requirement:
             polarity=d.get("polarity", ""),
             evidence_id=d.get("evidence_id", ""),
             scope=d.get("scope") or {},
+            kinds=d.get("kinds") or [],
             strength=d.get("strength", 1),
             salience=d.get("salience", 3),
             supersedes=d.get("supersedes"),

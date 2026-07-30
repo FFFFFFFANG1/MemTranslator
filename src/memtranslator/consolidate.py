@@ -192,4 +192,6 @@ def _drop_anchor_losing_merges(ops: list[dict], by_id: dict
 def run_consolidation(store: Store) -> dict:
     out = consolidation_ops(store.active())
     applied = store.apply_ops(out["ops"])
+    from memtranslator.kinds import backfill_kinds
+    backfill_kinds(store)               # merged entries re-enter untagged
     return {"ops": out["ops"], "flags": out["flags"], "store": applied}
