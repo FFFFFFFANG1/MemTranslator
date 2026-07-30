@@ -413,6 +413,32 @@ def main():
                                                           for r in state_rows))
     real = per_arm.get("real", {})
 
+    # Owner ruling 2026-07-30: the two numbers shown FIRST are per-task
+    # and per-memory; everything below them is diagnostics. A task counts
+    # as perfect iff every should-fire memory was woven AND no
+    # must-not-fire one leaked; tasks with zero judgment points are
+    # excluded (nothing to get right or wrong).
+    def owner_metrics(arm: str) -> dict:
+        sub = [r for r in rows if r["arm"] == arm
+               and (r["carry_n"] + r["suppress_n"]) > 0]
+        perfect = sum(1 for r in sub
+                      if r["carry_hits"] == r["carry_n"]
+                      and r["suppress_hits"] == r["suppress_n"])
+        mem_n = sum(r["carry_n"] for r in sub)
+        mem_hit = sum(r["carry_hits"] for r in sub)
+        return {"tasks_perfect": perfect, "tasks_n": len(sub),
+                "memory_hit": mem_hit, "memory_n": mem_n}
+
+    om = owner_metrics("real")
+    if om["tasks_n"]:
+        print(f"\nper-task  (全部要求完美选出): {om['tasks_perfect']}"
+              f"/{om['tasks_n']} = "
+              f"{om['tasks_perfect'] / om['tasks_n']:.2f}")
+    if om["memory_n"]:
+        print(f"per-memory (该提到的记忆命中): {om['memory_hit']}"
+              f"/{om['memory_n']} = "
+              f"{om['memory_hit'] / om['memory_n']:.2f}")
+
     print(f"\n{'arm':<15} {'CARRYj':>7} {'CARRYm#':>8} {'SUPPRESS':>9} "
           f"{'noop':>6} {'chars':>7} {'ms':>6}")
     for arm, s in per_arm.items():
@@ -435,6 +461,7 @@ def main():
     results = [{"id": ep["id"], "category": "episode",
                 "episode": ep["id"], "pass": bool(bands),
                 "score": band_mean, "score_is": "unweighted band mean",
+                "owner_metrics": om,
                 "carry": real.get("carry"), "suppress": real.get("suppress"),
                 "state": state}]
     write_snapshot(f"E1-{ep['id']}", str(CASES / "episodes"), results,
