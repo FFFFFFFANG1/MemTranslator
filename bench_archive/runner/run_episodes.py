@@ -90,7 +90,23 @@ def _gold_requirements(ep: dict, seq: int) -> list[Requirement]:
         r.created_at = 1_000_000 + n_intro_seq(ep, cid) * 60
         r.updated_at = r.created_at
         out.append(r)
-    return out
+    # Conflict elimination mirrors the product's write path (owner ruling:
+    # dedup/conflict is CRUD's job, the translator is only a last line of
+    # defense) — a "perfect store" therefore never holds two active rules on
+    # the same (key, scope); the newest statement wins. Without this the
+    # oracle arm hands the model live contradictions the product would have
+    # retired at write time.
+    from memtranslator.scopes import normalize_scope as _norm
+    best: dict = {}
+    for r in out:
+        if r.status != "active" or not r.key:
+            continue          # keyless entries have no facet identity
+        k = (r.key, tuple(sorted(_norm(r.scope).items())))
+        if k not in best or r.created_at > best[k].created_at:
+            best[k] = r
+    keep = set(id(r) for r in best.values())
+    return [r for r in out
+            if r.status != "active" or not r.key or id(r) in keep]
 
 
 def n_intro_seq(ep: dict, cid: str) -> int:

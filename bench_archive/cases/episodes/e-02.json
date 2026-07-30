@@ -83,7 +83,7 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "ANY",
+     "task": "report",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -3559,9 +3559,7 @@
     "e02-s04",
     "e02-s05"
    ],
-   "should_fire": [
-    "e02-s01"
-   ],
+   "should_fire": [],
    "must_not_fire": [
     "e02-c16",
     "e02-c23"

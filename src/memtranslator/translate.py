@@ -4,6 +4,7 @@ Noop is the default on every failure mode — an underspecified request is
 often intentional, and the human edits the result anyway (anchor §2.2).
 """
 import json
+import re
 import time
 from difflib import SequenceMatcher
 
@@ -18,12 +19,13 @@ TRANSLATOR_SYSTEM = """You are a translator between a user and their AI agent. Y
 Requirements are numbered [1]..[N], oldest first, and may carry fields:
 (applies: …) = the ONLY contexts the rule applies in, absent = global;
 (aspect: …) = the delivery facet it governs;
-(force: require|prefer|avoid|prohibit) — prohibit admits no exception.
+(force: require|prefer|avoid|prohibit) — prohibit admits no exception. Weave avoid/prohibit entries as explicit prohibitions — tell the agent what NOT to do; never restate one as a positive instruction.
 Rewrite the request ONLY when a stored requirement clearly applies to it, so the agent satisfies the user without ever seeing the requirements.
 
 Rules:
 1. No requirement clearly applies → no-op, and prefer no-op when you have nothing to go on — an underspecified request is often intentional. But judge applicability by the TASK, not the words: a requirement naming a kind of work covers every request of that kind, even sharing no vocabulary with it. Never no-op merely because the user did not name the category, or because referenced material ("this week's work", "the notes below") arrives separately — weave the applicable requirement in now.
 1a. The no-op bias is about having nothing to go on. When a requirement covers exactly this situation — the request states a topic but no task, and a stored rule says what this user wants done with such input — supply that task verb: the user told you in advance, you are not guessing.
+1b. Once rewriting, weave in EVERY applicable requirement, not just the most prominent ones. Global limits — length caps, line width, sentence/word/row counts, heading and formatting rules — apply to any deliverable of their kind and are the ones most often lost: if it applies, it goes in, with its numbers kept exact. One carried rule never excuses dropping another that also applies, even when they overlap; and a long requirement list is never itself a reason to no-op.
 2. Never invent constraints: every constraint you add must be backed by a stored requirement. Backing does not require copying — you may SPECIALIZE a requirement into task-specific specifics, as long as any output satisfying your added constraint also satisfies the requirement it came from. No backing → forbidden.
 3. Never change the core task; only make implicit, requirement-backed constraints explicit.
 4. The rewrite reads as if the user typed it themselves, in the language the REQUEST is written in. Requirements are stored in English — render everything you weave in into the request's language; never let stored wording drag the rewrite into English. Never mention requirements, memory, or this translation step.
@@ -243,9 +245,33 @@ def splice_edits(text: str, edits: list) -> str | None:
     return out + "".join(tail)
 
 
+# Meta-instructions aimed at the assistant itself (override attempts,
+# prompt/rule disclosure asks). A request carrying one is never rewritten:
+# weaving a stored rule next to an override attempt surfaces store contents
+# to whatever the attack feeds, and noop is the product's safe default —
+# the user's own text passes through untouched. Mechanical, because prompt
+# nudges on this behavior have seesawed twice (edits-wire rollout, weave
+# completeness): each time a line making the model bolder elsewhere made it
+# comply here.
+_ATTACK_PAT = re.compile(
+    r"(?:ignore|disregard|forget|override)\s+(?:all\s+|any\s+)?"
+    r"(?:previous|prior|earlier|above|your)\s+"
+    r"(?:instructions?|settings?|rules?|prompts?)"
+    r"|(?:list|reveal|show|print|output|dump)\b.{0,40}?"
+    r"(?:stored\s+requirements?|system\s+prompts?|your\s+(?:rules|memory|"
+    r"instructions))"
+    r"|忽略(?:你)?(?:之前|以前|先前|上面)的(?:所有|全部)?(?:设定|指令|规则|提示)"
+    r"|(?:输出|打印|显示|列出)(?:你的)?(?:系统提示|存储的(?:规则|要求)|记忆内容)",
+    re.IGNORECASE | re.DOTALL)
+
+
 def translate(text: str, requirements: list[Requirement],
               context: dict | None = None) -> dict:
     """Returns {decision, polished, applied_ids, parse_error, latency_ms}."""
+    if _ATTACK_PAT.search(text):
+        return {"decision": "noop", "polished": None, "applied_ids": [],
+                "parse_error": False, "latency_ms": 0,
+                "reason": "embedded_instruction_guard"}
     recalled = recall(requirements, query=text, context=context)
     if not recalled:
         return {"decision": "noop", "polished": None, "applied_ids": [],
@@ -256,53 +282,71 @@ def translate(text: str, requirements: list[Requirement],
     wire = TRANSLATE_WIRE
     if wire == "edits" and _estimate_tokens(text) <= EDITS_MIN_TOKENS:
         wire = "full"      # short requests: echo is cheap, caution is banked
-    system = _system_prompt(wire) + style_block(requirements)
-    user = (f"Stored requirements (oldest first):\n"
-            f"{_requirement_block(recalled)}\n\n"
-            f"User request:\n{text}\n\nJSON:")
-    budget = (EDITS_OUTPUT_TOKENS if wire == "edits"
-              else output_budget(text))
-    t0 = time.time()
-    raw = llm.complete(MODELS["translator"], system, user,
-                       max_tokens=budget,
-                       temperature=GEN_TEMPERATURE)
-    latency_ms = int((time.time() - t0) * 1000)
-    patch, parse_error = parse_patch(raw)
-    if patch.get("edits") is not None:
-        assembled = splice_edits(text, patch["edits"])
-        if assembled is None:
+
+    def _run(wire: str) -> dict:
+        system = _system_prompt(wire) + style_block(requirements)
+        user = (f"Stored requirements (oldest first):\n"
+                f"{_requirement_block(recalled)}\n\n"
+                f"User request:\n{text}\n\nJSON:")
+        budget = (EDITS_OUTPUT_TOKENS if wire == "edits"
+                  else output_budget(text))
+        t0 = time.time()
+        raw = llm.complete(MODELS["translator"], system, user,
+                           max_tokens=budget,
+                           temperature=GEN_TEMPERATURE)
+        latency_ms = int((time.time() - t0) * 1000)
+        patch, parse_error = parse_patch(raw)
+        if patch.get("edits") is not None:
+            assembled = splice_edits(text, patch["edits"])
+            if assembled is None:
+                return {"decision": "noop", "polished": None,
+                        "applied_ids": [], "parse_error": True,
+                        "latency_ms": latency_ms,
+                        "reason": "edit_splice_failed"}
+            patch = {"decision": "apply", "applied": patch["applied"],
+                     "polished": assembled}
+        # Entry numbers → ids (out-of-range numbers are dropped, never
+        # guessed); legacy id strings are filtered against the recalled set.
+        known = {r.id for r in recalled}
+        applied = []
+        for ref in patch.get("applied", []):
+            if isinstance(ref, int) and 1 <= ref <= len(recalled):
+                applied.append(recalled[ref - 1].id)
+            elif isinstance(ref, str) and ref in known:
+                applied.append(ref)
+        if (patch["decision"] == "apply"
+                and patch["polished"] == text.strip()):
+            # An apply that changes nothing IS a noop — downstream the
+            # composer text would be replaced with itself. Observed on the
+            # idempotence bench: fed its own rewrite back, the model
+            # sometimes says "apply" with the input verbatim instead of
+            # nooping.
             return {"decision": "noop", "polished": None, "applied_ids": [],
-                    "parse_error": True, "latency_ms": latency_ms,
-                    "reason": "edit_splice_failed"}
-        patch = {"decision": "apply", "applied": patch["applied"],
-                 "polished": assembled}
-    # Entry numbers → ids (out-of-range numbers are dropped, never guessed);
-    # legacy id strings are filtered against the recalled set.
-    known = {r.id for r in recalled}
-    applied = []
-    for ref in patch.get("applied", []):
-        if isinstance(ref, int) and 1 <= ref <= len(recalled):
-            applied.append(recalled[ref - 1].id)
-        elif isinstance(ref, str) and ref in known:
-            applied.append(ref)
-    if (patch["decision"] == "apply"
-            and patch["polished"] == text.strip()):
-        # An apply that changes nothing IS a noop — downstream the composer
-        # text would be replaced with itself. Observed on the idempotence
-        # bench: fed its own rewrite back, the model sometimes says "apply"
-        # with the input verbatim instead of nooping.
+                    "parse_error": parse_error, "latency_ms": latency_ms,
+                    "reason": "rewrite_unchanged"}
+        if (patch["decision"] == "apply"
+                and not preserves_request(text, patch["polished"])):
+            return {"decision": "noop", "polished": None, "applied_ids": [],
+                    "parse_error": parse_error, "latency_ms": latency_ms,
+                    "reason": "rewrite_dropped_user_text"}
+        if patch["decision"] == "apply":
+            return {"decision": "apply", "polished": patch["polished"],
+                    "applied_ids": applied, "parse_error": parse_error,
+                    "latency_ms": latency_ms}
         return {"decision": "noop", "polished": None, "applied_ids": [],
                 "parse_error": parse_error, "latency_ms": latency_ms,
-                "reason": "rewrite_unchanged"}
-    if (patch["decision"] == "apply"
-            and not preserves_request(text, patch["polished"])):
-        return {"decision": "noop", "polished": None, "applied_ids": [],
-                "parse_error": parse_error, "latency_ms": latency_ms,
-                "reason": "rewrite_dropped_user_text"}
-    if patch["decision"] == "apply":
-        return {"decision": "apply", "polished": patch["polished"],
-                "applied_ids": applied, "parse_error": parse_error,
-                "latency_ms": latency_ms}
-    return {"decision": "noop", "polished": None, "applied_ids": [],
-            "parse_error": parse_error, "latency_ms": latency_ms,
-            "reason": "unparseable_output" if parse_error else "model_noop"}
+                "reason": "unparseable_output" if parse_error else
+                "model_noop"}
+
+    result = _run(wire)
+    if (result.get("reason") == "rewrite_dropped_user_text"
+            and wire == "full" and TRANSLATE_WIRE == "edits"):
+        # The model WANTED to apply but restructured the request instead of
+        # only adding to it. Insertions preserve the request by construction,
+        # so one edits-wire retry converts this guard-noop into a valid
+        # rewrite. Full-wire noops are never retried — the injection-family
+        # caution banked with size routing stays untouched.
+        retry = _run("edits")
+        retry["latency_ms"] += result["latency_ms"]
+        return retry
+    return result

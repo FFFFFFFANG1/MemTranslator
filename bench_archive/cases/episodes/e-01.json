@@ -772,7 +772,7 @@
     "scope": {
      "app": "ANY",
      "task": "code-write",
-     "code_lang": "ANY",
+     "code_lang": "python",
      "nat_lang": "ANY"
     }
    },
@@ -973,7 +973,7 @@
   {
    "cid": "e01-c21",
    "text": "when evaluating a generated sentence contain at least 8 words (no more than 13 words)",
-   "clause": "至少13个词",
+   "clause": "生成的每个句子至少13个词",
    "alt_clause": "最少13个单词",
    "distinctive": "13",
    "coords": {
@@ -3169,7 +3169,6 @@
     "e01-c32"
    ],
    "should_fire": [
-    "e01-c16",
     "e01-c24"
    ],
    "must_not_fire": []

@@ -12,10 +12,15 @@ from bench_archive.graph.schema import ANY
 
 
 def _episode():
-    def node(cid, distinctive, clause, successor_of=None):
+    def node(cid, distinctive, clause, successor_of=None,
+             key="report.content"):
+        # c1/s0 share a facet key (they are a supersession pair); c0 is a
+        # different facet — two active rules on the SAME (key, scope) are a
+        # conflict state the gold store eliminates, so distinct facts need
+        # distinct keys here.
         return {"cid": cid, "text": clause, "clause": clause,
                 "alt_clause": clause, "distinctive": distinctive,
-                "coords": {"bucket": "output_contract", "key": "email.length",
+                "coords": {"bucket": "output_contract", "key": key,
                            "polarity": "require", "binding": "hard",
                            "value": {"type": "numeric", "num": 1, "unit": "w",
                                      "cmp": "max"},
@@ -27,7 +32,7 @@ def _episode():
         "id": "e-test", "schema_version": "E1", "protocol_version": 2,
         "persona": {"id": "t"},
         "catalogue": [
-            node("c0", "词册", "邮件里要用词册"),
+            node("c0", "词册", "邮件里要用词册", key="email.content"),
             node("c1", "台账", "报告里要放台账"),
             node("s0", "簿录", "报告里改放簿录", successor_of="c1"),
         ],

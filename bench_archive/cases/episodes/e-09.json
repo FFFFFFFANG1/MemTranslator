@@ -2797,7 +2797,6 @@
    ],
    "should_fire": [
     "e09-c08",
-    "e09-c16",
     "e09-c23"
    ],
    "must_not_fire": []
@@ -2881,8 +2880,7 @@
     "e09-c23"
    ],
    "should_fire": [
-    "e09-c08",
-    "e09-c16"
+    "e09-c08"
    ],
    "must_not_fire": []
   },

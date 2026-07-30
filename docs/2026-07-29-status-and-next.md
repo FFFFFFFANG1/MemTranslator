@@ -198,3 +198,69 @@ owner 指令：结构化注入、注入 32→8、dedup/冲突消除前移写路�
 - 可视化机制报告（框图/流程图/数据）已发布为 Artifact，随攻坚数据更新
 - backlog：E1 跨 run 塌陷闸、Ark 404 重试策略；21-28 桶 noop 88% 旧复测
   项被 perf 重放覆盖（该桶本次 noop 8%，n 仍小）
+
+## 第五轮（2026-07-30 下午）：oracle 提分攻坚（owner 指令：0.9+，先审 ground truth）
+
+审计口径：4 集（e-01/02/05/09）全部 probe 轮 should_fire 判定点逐点重放
+gold store → translate() → judge。起点 **0.54**（29/54）。
+
+### Ground-truth 审计结论（先于一切修改）
+
+25 个 miss 逐条定性后确认 **5 处 gold 缺陷**，全部修正并留档：
+1. `e01-c16` pylint 规则 scope 少标 `code_lang=python`，在 Go 任务上算
+   should_fire（工具语义上不可能满足）→ scope 收窄 + s40 除名。
+2. `e02-c01`「keep it friendly and welcoming」对话原文明确限定
+   client-facing 摘要场景，catalogue scope 却是 ANY → 与 c00（stop being
+   polite）在内部邮件轮同场竞争，模型按注入内容翻旧条被冤判 → scope
+   改 `task=report`。
+3. `e-02 s59` 期待 11 句上限被织入，但同轮 active 还有更新且更专属的
+   「postmortem 至少 17 句」（seq 46 > 42）→ 不可满足对，s59 除名。
+4. `e-09 s24/s28` 期待「标题别全大写」，但更强的活规则「no headings」被
+   正确携带后该期待不可证伪 → 两轮除名。
+5. `e01-c21` 节点三向自相矛盾（clause 至少13词 / text 8-13词 / coords
+   cmp=max）且 clause 缺宾语 → clause 改自含语义「生成的每个句子至少13个词」。
+
+另修 runner：**gold store 补写侧镜像的冲突消除**（同 (key,scope) 只留最新，
+无 key 不参与）——此前 oracle 臂会把产品写路径本应 retire 的矛盾对
+（polite vs friendly）原样递给模型。offline fixture 的同 key 偷懒元数据
+一并修正（432 全绿）。
+
+### 机制归因与修法
+
+选择层（13/25 miss 是 top-8 预筛砍掉 gold）：**逐点排名取证显示漏选规则
+BM25 全部 0 分**——风格/格式类规则与任务文本零词面重叠，排序退化为
+recency 抽签。零 LLM 变体上限 0.80（contract-lane），**flash 预选器也是
+0.80**（111 轮实测）——选择盲区与织入盲区同源。结论：cap=8 的代价是
+固定的 ~0.20 选择损失，文本手段修不动。
+
+织入层（prompt 两击 + 两个机械修复）：
+1. prompt 击一：完整性条款（数字上限类最易丢，逐条全织、数字保真）+
+   极性保真（avoid/prohibit 必须以禁止形式织入）。
+2. prompt 击二：冗余不豁免 + 规则多不是 noop 理由。
+3. 机械：`rewrite_dropped_user_text`（full 线保真守卫杀掉合格改写）时
+   **降级重试一次 edits 线**——插入式输出构造上保住原文；仅限 full 已判
+   apply 的场景，noop 不重试（保住 injection 已入账行为）。
+4. 机械：**攻击形态预检**（_ATTACK_PAT）——prompt 击一曾把
+   embedded-instruction check 打回 45/46（完整性压过攻击邻近谨慎，两击已
+   用尽），改为零 LLM 元指令模式守卫直接 noop；744 个 episode 轮零误伤。
+
+### 数字（owner 口径）
+
+| 配置 | per-task 完美率 | per-memory 命中率 |
+|---|---|---|
+| oracle @ 注入 cap=8（现行产品配置） | 24/39 = **0.62** | 33/50 = **0.66** |
+| oracle @ 全量注入（≈21-33 条结构化） | 33/39 = **0.85** | 43/50 = **0.86** |
+
+（起点 0.54 → 全量注入 0.86；剩余 7 个 miss 是 flash 织入优先级硬尾巴：
+verb-buried 类抽象规则 0/4、KPI 前瞻补充、多码规则丢一条、1 轮 noop 抖动。）
+
+门禁：robustness **46/46**（含 injection 回归修复）、offline pytest
+432、污染守卫通过。
+
+### 待 owner 裁定
+
+0.9+ 在 cap=8 下不可达（选择上限 0.80 × 织入 ≈0.86 ⇒ ~0.7 天花板）。
+全量注入下 0.86，且"32 条弄糊涂"的旧现象在结构化注入+完整性 prompt 下
+已基本消失（仅剩偶发 noop 抖动，均值 25 条 ≈ 1k tok）。**建议：读路径
+注入上限从 8 回调到全量 active（或 24），选择预筛保留为安全阀**——
+需要 owner 对 7-29 "降到 8 条" 裁定的更新授权。
