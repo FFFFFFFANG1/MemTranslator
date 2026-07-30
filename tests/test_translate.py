@@ -1,3 +1,4 @@
+import json
 import memtranslator.llm as llm
 from memtranslator.schema import Requirement
 from memtranslator.translate import parse_patch, recall, translate
@@ -99,3 +100,61 @@ def test_translate_malformed_output_noops(monkeypatch):
     out = translate("hello", _reqs("A"))
     assert out["decision"] == "noop"
     assert out["parse_error"] is True
+
+
+# ---- edits wire (2026-07-30 latency tier) ---------------------------------
+
+def test_splice_edits_inserts_and_appends():
+    from memtranslator.translate import splice_edits
+    out = splice_edits("给房东写封邮件催修暖气",
+                       [{"after": "写封邮件", "insert": "（不超过120词）"},
+                        {"append": "，语气客气点。"}])
+    assert out == "给房东写封邮件（不超过120词）催修暖气，语气客气点。"
+
+
+def test_splice_edits_rejects_ambiguous_or_missing_anchor():
+    from memtranslator.translate import splice_edits
+    assert splice_edits("写邮件，再写邮件", [{"after": "写邮件", "insert": "x"}]) is None
+    assert splice_edits("写周报", [{"after": "写邮件", "insert": "x"}]) is None
+    assert splice_edits("写周报", [{"append": ""}]) is None
+
+
+def test_translate_edits_wire_assembles_polished(monkeypatch):
+    import memtranslator.config as cfg
+    monkeypatch.setattr(cfg, "TRANSLATE_WIRE", "edits")
+    monkeypatch.setattr(cfg, "EDITS_MIN_TOKENS", 0)
+    reqs = _reqs("Emails stay under 120 words")
+
+    def fake(model, system, user, max_tokens=1024, **kw):
+        assert "INSERTIONS ONLY" in system
+        return json.dumps({"decision": "apply", "applied": [1],
+                           "edits": [{"after": "写封邮件", "insert": "（不超过120词）"}]},
+                          ensure_ascii=False)
+    monkeypatch.setattr(llm, "complete", fake)
+    out = translate("帮我给房东写封邮件催修暖气", reqs)
+    assert out["decision"] == "apply"
+    assert out["polished"] == "帮我给房东写封邮件（不超过120词）催修暖气"
+    assert out["applied_ids"] == [reqs[0].id]
+
+
+def test_translate_edits_wire_bad_anchor_degrades_to_noop(monkeypatch):
+    import memtranslator.config as cfg
+    monkeypatch.setattr(cfg, "TRANSLATE_WIRE", "edits")
+    monkeypatch.setattr(cfg, "EDITS_MIN_TOKENS", 0)
+
+    def fake(model, system, user, max_tokens=1024, **kw):
+        return json.dumps({"decision": "apply", "applied": [1],
+                           "edits": [{"after": "不存在的锚", "insert": "x"}]},
+                          ensure_ascii=False)
+    monkeypatch.setattr(llm, "complete", fake)
+    out = translate("帮我写封邮件", _reqs("Emails stay short"))
+    assert out["decision"] == "noop"
+    assert out["reason"] == "edit_splice_failed"
+
+
+def test_splice_edits_rejects_insert_inside_quoted_span():
+    from memtranslator.translate import splice_edits
+    text = "帮我看下这段：「All test names use snake_case.」改改语病"
+    assert splice_edits(text, [{"after": "「All", "insert": "（中文）"}]) is None
+    out = splice_edits(text, [{"after": "改改语病", "insert": "，用简体中文回复"}])
+    assert out is not None and "「All test names use snake_case.」" in out

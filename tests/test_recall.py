@@ -81,6 +81,7 @@ def test_translate_system_unchanged_without_styles(monkeypatch):
         seen["system"] = system
         return json.dumps({"decision": "noop"})
     monkeypatch.setattr(llm, "complete", fake)
-    from memtranslator.translate import TRANSLATOR_SYSTEM
+    from memtranslator.translate import _system_prompt
     translate("帮我写封邮件", [_r("邮件写短")])
-    assert seen["system"] == TRANSLATOR_SYSTEM
+    # a short request routes to the full wire regardless of TRANSLATE_WIRE
+    assert seen["system"] == _system_prompt("full")

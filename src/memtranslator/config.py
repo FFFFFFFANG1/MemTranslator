@@ -47,6 +47,28 @@ INDEX_ROW_TOKENS = 20     # per-entry text budget in numbered indexes
 # 修暖气") while still catching deletion of user content.
 PRESERVE_MIN_RATIO = 0.85
 
+# Read-path wire format (2026-07-30, phase ③ latency tier). "edits": the
+# model emits INSERTIONS ONLY ({"after": snippet, "insert": text} /
+# {"append": text}) and the product splices mechanically — output tokens
+# then scale with the constraints woven in, not with the request length the
+# legacy "full" mode had to echo back verbatim. The rewrite contract is
+# add-only, so insertions express every legal rewrite; a splice that fails
+# (anchor missing/ambiguous) degrades to noop like every other error path.
+# "full" = legacy full-text polished; instant rollback switch.
+#
+# Routing (2026-07-30): edits wire engages only ABOVE a request-size floor.
+# Measured: the win is entirely on long inputs (2437→1123ms on a ~500-char
+# paste) while short requests echo cheaply in full mode (0.85-1.5s) — and
+# the injection family showed edits mode is "braver" next to short
+# attack-shaped tasks where full mode's cautious noop is the banked 46/46
+# behavior. Below the floor nothing changes; above it, protected-zone
+# splicing guards pasted material. One prompt-patch attempt at the caution
+# gap was spent without effect — this routing is the mechanical resolution,
+# not a third patch.
+TRANSLATE_WIRE = "edits"
+EDITS_MIN_TOKENS = 200     # request size (est. tokens) below which full wire is used
+EDITS_OUTPUT_TOKENS = 700  # flat budget: inserts are short by construction
+
 # Every product generative call is pinned to greedy decoding. anchor §5 ranks
 # "predictable rewrite magnitude" above peak accuracy: the same request with
 # the same store should produce the same rewrite, or the hotkey stops feeling

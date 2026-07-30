@@ -109,3 +109,32 @@ def test_overlap_groups_are_oldest_first():
     groups = buckets([newer, older])
     grp = next(g for g in groups if len(g) >= 2)
     assert grp[0].created_at <= grp[-1].created_at
+
+
+def test_merge_losing_numeric_anchor_is_dropped():
+    """A merge whose text paraphrases away a numeric cap must not land —
+    sources stay live (E1 round-3 measured STATE loss from lossy merges)."""
+    from memtranslator.consolidate import _drop_anchor_losing_merges
+    a = Requirement(text="Keep summaries under 200 words.")
+    b = Requirement(text="Summaries stay within a 200-word cap.")
+    by_id = {a.id: a, b.id: b}
+    lossy = [{"kind": "merge", "target_ids": [a.id, b.id],
+              "text": "Keep summaries short."}]
+    kept, flags = _drop_anchor_losing_merges(lossy, by_id)
+    assert kept == [] and flags
+
+    faithful = [{"kind": "merge", "target_ids": [a.id, b.id],
+                 "text": "Keep summaries under 200 words."}]
+    kept, flags = _drop_anchor_losing_merges(faithful, by_id)
+    assert len(kept) == 1 and not flags
+
+
+def test_merge_of_conflicting_numbers_cannot_pass_as_merge():
+    from memtranslator.consolidate import _drop_anchor_losing_merges
+    a = Requirement(text="Emails stay under 120 words.")
+    b = Requirement(text="Emails stay under 78 words.")
+    by_id = {a.id: a, b.id: b}
+    merged = [{"kind": "merge", "target_ids": [a.id, b.id],
+               "text": "Emails stay under 78 words."}]
+    kept, flags = _drop_anchor_losing_merges(merged, by_id)
+    assert kept == []          # 120 lost -> must go through conflict path

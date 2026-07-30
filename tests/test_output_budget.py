@@ -52,8 +52,14 @@ def test_translate_passes_the_scaled_budget(monkeypatch):
         return json.dumps({"decision": "noop"})
     monkeypatch.setattr(llm, "complete", fake)
     long_text = "把下面的记录整理成周报：" + "这一天做了很多事情。" * 200
+    import memtranslator.config as cfg
+    monkeypatch.setattr(cfg, "TRANSLATE_WIRE", "full")
     translate(long_text, [Requirement(text="周报要用 bullet points")])
     assert seen["max_tokens"] == output_budget(long_text) > MIN_OUTPUT_TOKENS
+    # edits wire: flat budget — output no longer scales with the request
+    monkeypatch.setattr(cfg, "TRANSLATE_WIRE", "edits")
+    translate(long_text, [Requirement(text="周报要用 bullet points")])
+    assert seen["max_tokens"] == cfg.EDITS_OUTPUT_TOKENS
 
 
 def test_truncated_output_is_reported_not_anonymous(monkeypatch):

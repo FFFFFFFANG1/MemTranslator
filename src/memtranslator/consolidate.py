@@ -23,8 +23,11 @@ Rules:
 1. Entries in one group that express the SAME durable rule (near
    duplicates, translations of each other, the same obligation phrased
    twice) → emit one "merge" with their numbers and a single merged text
-   (clearest phrasing, user's language). Entries that are genuinely
-   different rules → leave alone. When unsure, do NOT merge.
+   (clearest phrasing, user's language). The merged text PRESERVES every
+   number, cap, and named format (a word-count limit, "APA", "snake_case")
+   that appears in the entries it replaces — a merge that paraphrases the
+   anchor away destroys the rule's testable core. Entries that are
+   genuinely different rules → leave alone. When unsure, do NOT merge.
 2. Entries in one group that CONFLICT — they govern the same aspect of the
    same kind of work but demand incompatible things (different caps,
    opposite tones, contradictory formats) → do NOT merge them: the LATEST
@@ -147,7 +150,43 @@ def consolidation_ops(reqs: list[Requirement]) -> dict:
                        "\n\n".join(parts), max_tokens=1200,
                        temperature=GEN_TEMPERATURE)
     ops, flags = parse_ops(raw, numbered)
-    return {"ops": ops, "flags": flags}
+    ops, aflags = _drop_anchor_losing_merges(ops, {r.id: r for r in numbered})
+    return {"ops": ops, "flags": flags + aflags}
+
+
+def _anchor_tokens(text: str) -> set:
+    """Digit-bearing tokens — the mechanically checkable core of a rule
+    (word caps, counts, versions). Named formats are covered by the prompt
+    line; numbers are enforced here because they are exactly what the
+    lifecycle bench aligns STATE on, and the measured failure was a merge
+    paraphrasing a cap away (E1 round-3: e-05 STATE 0.60→0.51 while
+    consolidation went from never firing to 17 triggers)."""
+    from memtranslator.bm25 import tokenize
+    return {t for t in tokenize(text) if any(c.isdigit() for c in t)}
+
+
+def _drop_anchor_losing_merges(ops: list[dict], by_id: dict
+                               ) -> tuple[list[dict], list[str]]:
+    """Zero-LLM guard: a merge whose text loses a numeric anchor present in
+    any source entry is dropped whole — the sources stay live, which is
+    strictly safer than a lossy merge. Two sources with DIFFERENT numbers
+    also land here: that pair is a conflict, not a duplicate, and the
+    conflict path (retire the older) is the correct resolution."""
+    kept, flags = [], []
+    for o in ops:
+        if o["kind"] == "merge":
+            need = set()
+            for tid in o.get("target_ids", []):
+                src = by_id.get(tid)
+                if src is not None:
+                    need |= _anchor_tokens(src.text)
+            have = _anchor_tokens(o.get("text", ""))
+            if need - have:
+                flags.append(f"merge dropped, loses anchors {need - have}: "
+                             f"{o.get('text', '')[:40]!r}")
+                continue
+        kept.append(o)
+    return kept, flags
 
 
 def run_consolidation(store: Store) -> dict:
