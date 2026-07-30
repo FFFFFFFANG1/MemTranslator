@@ -25,8 +25,8 @@ from pathlib import Path
 from memtranslator.schema import Requirement
 from memtranslator.translate import translate
 
-from bench_archive.runner.judge import judge          # shared infra, not corpus
-from bench_archive.runner.retry import with_retry
+from bench.suites.judge import judge          # shared infra, not corpus
+from bench.suites.retry import with_retry
 
 BENCH = Path(__file__).resolve().parent
 TRACES = BENCH / "traces"
@@ -251,12 +251,13 @@ def main():
         total_n += n
         state["paths"]["read"][fam["family"]] = {
             "score": round(p / n, 3), "n": n,
-            "fails": [{"id": r["id"], "why": r["fails"][:2]}
+            "fails": [{"id": r["id"], "why": r.get("fails", [])[:2]}
                       for r in results if not r["pass"]]}
         print(f"{fam['family']:24s} {p}/{n}")
         for r in results:
             if not r["pass"]:
-                print(f"    ✗ {r['id']}: {'; '.join(map(str, r['fails'][:2]))[:120]}")
+                print(f"    ✗ {r['id']}: "
+                      f"{'; '.join(map(str, r.get('fails', [])[:2]))[:120]}")
 
     fam_scores = [v for k, v in state["paths"]["read"].items()
                   if k != "_overall" and isinstance(v, dict)]

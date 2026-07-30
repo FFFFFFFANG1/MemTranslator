@@ -8,16 +8,16 @@ import pytest
 
 from memtranslator.recall import _scope_ok
 
-from bench_archive.graph.derive import (Effect, fold, scope_compatible,
+from bench.graph.derive import (Effect, fold, scope_compatible,
                                 to_product_context, to_product_scope,
                                 valid_at)
-from bench_archive.graph.invariants import (check_i1, check_i3, check_i5, check_i8,
+from bench.graph.invariants import (check_i1, check_i3, check_i5, check_i8,
                                     check_i9, check_i10, check_i11,
                                     lint_episode)
-from bench_archive.graph.relate import (A_EXCEPTS_B, B_EXCEPTS_A, CONTRADICTS,
+from bench.graph.relate import (A_EXCEPTS_B, B_EXCEPTS_A, CONTRADICTS,
                                 DUPLICATES, INDEPENDENT, PARTIAL_CONFLICT,
                                 relate, scope_relate)
-from bench_archive.graph.schema import (ANY, Constraint, Coords, Value, validate)
+from bench.graph.schema import (ANY, Constraint, Coords, Value, validate)
 
 
 def _scope(**kw):

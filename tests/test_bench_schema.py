@@ -1,6 +1,6 @@
 import json
 
-from bench_archive.runner.schema import Check, TranslateCase, load_translate_cases
+from bench.suites.schema import Check, TranslateCase, load_translate_cases
 
 
 def test_load_translate_cases(tmp_path):

@@ -1,8 +1,8 @@
 import json
 
 import memtranslator.llm as llm
-import bench_archive.runner.run_translate as rt
-from bench_archive.runner.schema import Check, TranslateCase
+import bench.suites.run_translate as rt
+from bench.suites.schema import Check, TranslateCase
 
 
 def _case(**kw):

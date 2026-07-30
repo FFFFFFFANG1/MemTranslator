@@ -1,6 +1,6 @@
 # bench — MemTranslator 评测基座 v2（2026-07-29）
 
-> 前一代生命周期舰队整体封存在 `bench_archive/`（语料、图层、oracle 审计链
+> 前一代生命周期舰队整体封存在 `bench_corpus_base/`（语料、图层、oracle 审计链
 > 全部保留，作为本套件的原料库）。本套件从它的失败里继承三条纪律，从
 > AutoMemory 的 refine 协议里继承四条结构。
 
@@ -30,7 +30,7 @@ adapt 是一等能力要求，不是加分项。
 4. **难度升级预留**：分数全 1.0 = 测试太弱，不 = 系统好。suite 设计成
    Critic 可以往里加 trace 升级难度（不删旧 trace）。
 
-## 从 bench_archive 的一天里学来的纪律
+## 从前一代舰队的一天里学来的纪律
 
 1. **机械判定优先**：能用 substring/regex/对比归因判的绝不用 judge；
    judge 只问窄的是/否（蕴含、等价），永不打「质量分」。
@@ -59,7 +59,7 @@ adapt 是一等能力要求，不是加分项。
 | idempotence | 改写产物再喂回 → 不二次注入 |
 | degenerate | 空任务/超长任务/纯代码块/任务已自带全部要求 |
 
-### perf/（借 bench_archive 语料放量）
+### perf/（借 episode 语料放量）
 
 用 archive 的 744 条真实口吻 user turns 重放写路径建 store，用 archive 的
 probe 任务测：适配质量、noop 率、稀释曲线、延迟/token — 全部**对 store
@@ -79,7 +79,7 @@ probe 任务测：适配质量、noop 率、稀释曲线、延迟/token — 全�
   约束只需**蕴含-有出处**（specializes 某条已存规则），不限抽象/具体规则。
   instantiation 族据此正式计分（不再有 report-only 的暧昧）；Suite T 的
   `AUTO_NO_INVENTION` 同步改三元判据（逐字有出处 / 蕴含有出处 / 无出处，
-  前两者过），`bench_archive` METRIC_VERSION 2→3，T 历史分数不可比。
+  前两者过），suites METRIC_VERSION 2→3，T 历史分数不可比。
 - **方差哨兵**：可预测性是 position anchor 第一优先级，展开全面放开后同请求
   同库的改写方差可能上升。invariance 族（paraphrase/order equiv-group）是
   哨兵——若 equiv-group 开始失败，回退分层方案（具体规则只 carry 不展开）。

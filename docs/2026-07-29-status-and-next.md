@@ -15,7 +15,7 @@
 ## ② memory 机制 —— 读路径章节关闭；写路径两大欠账已清（本次攻坚）
 
 **尺子**：bench v2 robustness 43 check + perf 真实重放（canary 双头仪器）；
-bench_archive 468 条语料作原料库，L 套件 54 case 是写路径单元裁判
+bench_corpus_base 468 条语料作原料库，L 套件 54 case 是写路径单元裁判
 （METRIC_VERSION 3）。
 
 ### 写路径攻坚记录（2026-07-29，commit `5bdee98`）

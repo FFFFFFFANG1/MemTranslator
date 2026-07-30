@@ -1,5 +1,5 @@
-import bench_archive.runner.run_e2e as re2e
-from bench_archive.runner.providers import NullProvider
+import bench.suites.run_e2e as re2e
+from bench.suites.providers import NullProvider
 
 
 class _LearnsRound4:
@@ -49,7 +49,7 @@ def test_learning_provider_updates_store(monkeypatch):
 
 
 def test_dir_hash_snapshot(tmp_path, monkeypatch):
-    import bench_archive.runner.report as report
+    import bench.suites.report as report
     monkeypatch.setattr(report, "RESULTS", tmp_path / "results")
     d = tmp_path / "personas"
     d.mkdir()
@@ -141,7 +141,7 @@ def test_chained_mode_keeps_junk(monkeypatch):
 
 
 def test_continuous_score_reaches_the_report(tmp_path, monkeypatch):
-    import bench_archive.runner.report as report
+    import bench.suites.report as report
     rates = report.category_rates([
         {"id": "a", "category": "persona", "score": 0.75, "pass": False},
         {"id": "b", "category": "persona", "score": 0.25, "pass": False},
@@ -150,7 +150,7 @@ def test_continuous_score_reaches_the_report(tmp_path, monkeypatch):
 
 
 def test_binary_results_still_supported():
-    import bench_archive.runner.report as report
+    import bench.suites.report as report
     rates = report.category_rates([
         {"id": "a", "category": "x", "pass": True},
         {"id": "b", "category": "x", "pass": False},
@@ -164,7 +164,7 @@ def test_gate_never_reads_the_diagnostic_snapshot(tmp_path, monkeypatch):
     on the easier gold-state-injected number."""
     import json
 
-    import bench_archive.runner.report as report
+    import bench.suites.report as report
     res = tmp_path / "results"
     res.mkdir()
     monkeypatch.setattr(report, "RESULTS", res)

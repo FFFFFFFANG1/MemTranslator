@@ -1,5 +1,5 @@
-import bench_archive.runner.judge as judge_mod
-from bench_archive.runner.judge import judge
+import bench.suites.judge as judge_mod
+from bench.suites.judge import judge
 
 
 def test_yes_verdict(monkeypatch):

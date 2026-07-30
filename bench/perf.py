@@ -31,11 +31,10 @@ from pathlib import Path
 from memtranslator.store import Store
 from memtranslator.translate import translate
 
-from bench_archive.runner.config import RUN_DIR
-from bench_archive.runner.providers import V1Provider
-from bench_archive.runner.retry import with_retry
+from bench.suites.config import RUN_DIR
+from bench.suites.providers import V1Provider
+from bench.suites.retry import with_retry
 
-ARCHIVE = Path(__file__).resolve().parents[1] / "bench_archive"
 BENCH = Path(__file__).resolve().parent
 
 # Facet-object vocabulary is what must be absent from the episode's turns.
@@ -120,7 +119,7 @@ def probe_at(store: Store, canary: dict, probes: list[str],
 
 
 def replay_episode(epid: str, sizes: list[int], flush_every: int = 4) -> dict:
-    ep = json.loads((ARCHIVE / "cases" / "episodes" / f"{epid}.json")
+    ep = json.loads((BENCH / "cases" / "episodes" / f"{epid}.json")
                     .read_text())
     canary = pick_canary(ep)
     if canary is None:
