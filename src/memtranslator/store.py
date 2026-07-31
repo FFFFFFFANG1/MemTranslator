@@ -112,18 +112,20 @@ class Store:
                 if old is None:
                     skipped.append(op)
                     continue
+                heir = self.add(op["text"], key=op.get("key") or old.key,
+                                scope=op.get("scope") or dict(old.scope),
+                                source="learned",
+                                salience=op.get("salience", 3),
+                                supersedes=old.id,
+                                bucket=op.get("bucket") or old.bucket,
+                                binding=op.get("binding") or old.binding,
+                                polarity=op.get("polarity") or old.polarity,
+                                evidence_id=op.get("evidence_id", ""))
                 if old.status == "active":
                     old.status = "retired"
-                    old.updated_at = time.time()
-                    self._append(old)
-                self.add(op["text"], key=op.get("key") or old.key,
-                         scope=op.get("scope") or dict(old.scope),
-                         source="learned", salience=op.get("salience", 3),
-                         supersedes=old.id,
-                         bucket=op.get("bucket") or old.bucket,
-                         binding=op.get("binding") or old.binding,
-                         polarity=op.get("polarity") or old.polarity,
-                         evidence_id=op.get("evidence_id", ""))
+                old.superseded_by = heir.id
+                old.updated_at = time.time()
+                self._append(old)
                 applied += 1
             elif kind == "retire":
                 req = self._items.get(op.get("target_id") or "")
@@ -132,8 +134,28 @@ class Store:
                     continue
                 if req.status == "active":
                     req.status = "retired"
+                    req.superseded_by = op.get("heir_id")
                     req.updated_at = time.time()
                     self._append(req)
+                    # Heir-liveness invariant (2026-07-31): a retire that
+                    # carries neither withdrawal evidence nor an heir is
+                    # bookkeeping, not user intent — if the victim had
+                    # itself replaced an older version, that version pops
+                    # back (version-stack semantics). Measured motivation:
+                    # a correct "≤11 sentences" cap was superseded by a
+                    # mis-extracted rule which then died, leaving the facet
+                    # with nothing — the ancestor was the right survivor.
+                    # An explicitly withdrawn entry never pops its chain.
+                    if (not op.get("withdrawal")
+                            and not op.get("heir_id")
+                            and req.supersedes):
+                        anc = self._items.get(req.supersedes)
+                        if (anc is not None and anc.status == "retired"
+                                and anc.superseded_by == req.id):
+                            anc.status = "active"
+                            anc.superseded_by = None
+                            anc.updated_at = time.time()
+                            self._append(anc)
                 applied += 1
             elif kind == "merge":
                 targets = [self._items.get(t) for t in
@@ -141,19 +163,29 @@ class Store:
                 if any(t is None for t in targets) or len(targets) < 2:
                     skipped.append(op)
                     continue
+                heir = self.add(op["text"],
+                                key=op.get("key") or targets[0].key,
+                                scope=op.get("scope")
+                                or dict(targets[0].scope),
+                                source="learned",
+                                salience=op.get("salience", 3),
+                                supersedes=targets[0].id,
+                                bucket=op.get("bucket") or targets[0].bucket,
+                                binding=op.get("binding")
+                                or targets[0].binding,
+                                polarity=op.get("polarity")
+                                or targets[0].polarity,
+                                evidence_id=op.get("evidence_id", ""))
+                # EVERY merge source records its heir — supersedes can only
+                # name one ancestor, but the reverse pointer is per-victim;
+                # without it targets[1:] looked heirless in forensics and
+                # could never pop back if the merged entry later dies.
                 for t in targets:
                     if t.status == "active":
                         t.status = "retired"
-                        t.updated_at = time.time()
-                        self._append(t)
-                self.add(op["text"], key=op.get("key") or targets[0].key,
-                         scope=op.get("scope") or dict(targets[0].scope),
-                         source="learned", salience=op.get("salience", 3),
-                         supersedes=targets[0].id,
-                         bucket=op.get("bucket") or targets[0].bucket,
-                         binding=op.get("binding") or targets[0].binding,
-                         polarity=op.get("polarity") or targets[0].polarity,
-                         evidence_id=op.get("evidence_id", ""))
+                    t.superseded_by = heir.id
+                    t.updated_at = time.time()
+                    self._append(t)
                 applied += 1
             else:
                 skipped.append(op)

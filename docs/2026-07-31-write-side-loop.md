@@ -1,0 +1,101 @@
+# 写侧攻坚循环(2026-07-31)
+
+Owner 协议:循环 = 认瓶颈 → 修(简单修复或轻量设计,LightMem/SimpleMem 优先)→
+验证(qwen 先、ling 防 harness overfit)→ 下一瓶颈。产品不得 overfit 到 bench。
+
+## 度量基线
+
+- oracle(gold store):qwen 0.95/0.96,ling 0.90/0.88,glm 1.00/1.00 —— 读侧已非瓶颈。
+- real(链式):qwen 0.43/0.37(4 集合并,单跑),STATE 0.43-0.73。
+- real 断点归因(R9 store,23 判定点):W2 学到被杀 35% / W1b 抽取漏 26% /
+  W1a 筛选丢 22% / R1 选择 0% / R2 织入 17%。**写侧合计 83%。**
+
+## 验证纪律(本循环学到的)
+
+- 单集 owner 指标 n≈10、链式方差 ±0.1,**单个修复必须用机制级指标验证**
+  (裸 retire 数、空转族数、STATE、保真分类),owner 指标只做多集合并的阶段验收。
+- 每项改进:pytest + L(qwen)→ 机制取证 → ling L 复核。E1 全量复跑只在阶段末。
+
+## 瓶颈清单(按实测证据排序)
+
+| # | 瓶颈 | 证据 | 状态 |
+|---|---|---|---|
+| B1 | 抽取层裸 retire 杀活规则 | e-05 取证:62 轮内 extract 发 10 裸 retire,9 个无接替者(净损失);consolidation 零 op。重叠 grounding 被任务闲聊打穿 | **修复已上(P1),机制验证中** |
+| B2 | 同事实空转:一条规则学 4 个 id,同文本 supersede 链后全灭 | e-05 "brief and colloquial" 时序 4 学 4 杀 | **修复已上(P2),机制验证中** |
+| B3 | 抽取漏抽(过筛选但无 op),中文规则重灾 | e-01 四条 zh 规则(113字符/699词/63字符/简洁)全部从未入库 | 待攻 |
+| B4 | 筛选层丢规则形状 | "no headings"、"avoid single leading underscore"、verb-buried 等无数字、命令否定式,正则不认 | 待攻(动 signals 需过 L noise-reject 双 1.00) |
+| B5 | 内容失真:学到但极性翻/数字漂 | "11 句上限"学成 "at least 11 sentences" | 待量化(取证 C 出数) |
+| B6 | 读侧织入尾巴 17% | headings 类规则注入未织 | 低优先(oracle 已 0.96) |
+
+## 改进提案池
+
+| # | 提案 | 对应瓶颈 | 性质 | 状态 |
+|---|---|---|---|---|
+| P1 | 撤回意图门:裸 retire 需撤回形状 span 证据(复用 _WITHDRAW_PAT,span 级) | B1 | 零 LLM 守卫,LightMem "delete 仅限直接冲突/显式撤回" | **已实现**,L 过(revoke 1.00),链式机制验证中 |
+| P2 | 同事实→update:重复 new / 零变化 contradict 转 reinforce(数字变化豁免) | B2 | 零 LLM 守卫,LightMem "同事实→update" | **已实现**,L 过(dedup 1.00) |
+| P3 | 写侧覆盖复核:过筛 span 无对应 op 时,一次点名补抽调用(镜像读侧数字复核) | B3 | 协议层,+1 异步调用 | 提案 |
+| P4 | 抽取 op 保真门:op 文本的数字必须出现在源 span;极性词族(max/min、否定)与 span 一致,不一致丢弃或降级 new | B5 | 零 LLM 守卫 | 提案 |
+| P5 | 筛选层规则形状扩充:命令否定式(no/avoid/don't + 名词)与格式名词(headings/underscore/fencing) | B4 | 正则,需守住 noise-reject 1.00×2 与 distractor 误触率 | 提案(动刀谨慎) |
+| P6 | flush 批次 4→2:减小批内干扰,代价抽取调用×2 | B3/B5 | 参数 | 提案(先 P3/P4) |
+| P7 | store 版本链治理:supersede 链同文本折叠(写时,而非读时) | B2 | 零 LLM | P2 已部分覆盖,观察 |
+
+## 轮次日志
+
+- **循环1(收口)**:B1/B2 → P1/P2 已实现。pytest 459 绿;L qwen 0.926
+  (掉分四例全为既有类别,非门引起;revoke/dedup 1.00)。e-05/e-02 链式复跑
+  owner 指标持平(单集噪声内)。机制取证(3 并行分析)结论:
+  - P2 机械有效:e-05 重复族 3→1(修订垃圾链消失);但漏数字变体近重复
+    (e-02 出现 "at least 11/at most 11/at least 17" 三 id 无链家族)。
+  - P1 未堵住:e-05 无接替者 retire 19→25(方差混杂;且 merge 只给
+    targets[0] 记 supersedes,记账虚增无主 retire)。
+  - **绑定性故障 = W2(8/13 occ),R1=0**。三种死法:
+    a. supersede 链错向+继承者死亡(e02-s01:对的 "at most 11" 被错的
+       "at least 17"(实为 postmortem 规则误 contradict 到 email cap)顶掉,
+       后者又死,全链无活口)—— 4 occ;
+    b. 无接替者裸杀(e05-c19 三条同规则全灭、e05-c07 活 4 版后
+       supersedes=None 死)—— 2 occ;
+    c. merge 连坐(e05-c24 标识符规则并进模块名条目,模块名 facet 一更新
+       整条陪葬)—— 2 occ。
+  - 保真分析:13 个 should_fire cid 只有 1 个有 faithful 活条目;另发现
+    content_tokens 词干化盲点(politeness/friendliness 不折到
+    polite/friendly,量表低估幸存质量)。
+
+## 循环2 方案:store 层继承者存活不变量(version-stack pop)
+
+设计(合成建议 + 我的收敛,LightMem update/delete 分离的机械化):
+1. **反向指针** `superseded_by`:被 contradict/merge 淘汰的条目记录谁替了它
+   (merge 给**每个** target 记,修记账伪影);
+2. **retire 语义分级**:抽取层撤回门从"拦截"升级为"标注"——有撤回证据的
+   retire 带 `withdrawal=True`(硬死,终结链);无证据的照旧拦截。
+   consolidation 冲突 retire 由 sanitizer 附 `heir_id`(内容重叠最大的幸存者);
+3. **链弹出**:无撤回证据且无继承者的 retire 落到 X 时,若 X.supersedes=A 且
+   A.superseded_by=X,则 A 复活(版本栈 pop)——直接覆盖死法 a;
+   有 heir 的 retire 不弹(facet 已有活的统治者);withdrawal 不弹(用户终结全链)。
+4. 撤回门重叠判据从"非空交集"强化为 overlap_is_reference(≥2 token 或数字锚)。
+
+预期覆盖 6/8 W2 occ;死法 c(merge 连坐)需后续 facet 级 supersede,本轮不做。
+风险:复活真撤回的规则(靠 withdrawal 标志隔离)、e-02 数字变体无链家族
+在不变量下共存活(读侧 rule 8 newest-wins 兜底,观察)。
+
+### 循环2 收口
+
+实现:schema `superseded_by` / store retire 三分级+版本栈 pop / merge 全员
+反向指针 / 同态契约测试参考 Gold 机同步升级(fuzz 加三种 retire 风味,
+202 用例)。裁判:pytest 465、L qwen 0.944(revoke/dedup 1.00)。
+链式机制指标:**无主 retire e-05 25→15、e-02 14→4;pop 实际触发 3 次;
+e-05 STATE 0.67(历史最好)**。owner 指标单集仍在噪声内摆动(e-05
+per-memory 三跑 0.44/0.33/0.22 vs STATE 0.58/0.56/0.67 反向),再次确认
+单集 owner 指标不可用于单修复验证。
+残留:gold 关键条目仍经两个"有牌照"通道死亡——被授证的 withdrawal retire
+与带 heir 的冲突消解。**新发现:gold 每集本有 12-13 个真撤回,retire 量级
+没错,错在瞄准。**
+
+## 循环3:contradict facet 相容门(进行中)
+
+死亡通道实锤(e-02 最新 store):postmortem 的"至少17句"被 contradict 到
+email 句数上限上,新文本还被幻觉成 "in emails"——合法外形、继承者活着,
+撤回门与不变量都无法触及。
+修法:contradict 的最佳 grounding span 推断任务 kind,与靶子 kind 双向已知
+且不相容 → 降级为 new(内容保留,击杀取消)。复用 infer_task_kind/
+kind_matches,缺信息不拦截。单测 3 例;pytest 468。
+教训:L 与链式验证不可并行打同一端点(自造 429 → ops=[] 假阴性)。

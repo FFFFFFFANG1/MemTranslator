@@ -63,6 +63,7 @@ class Requirement:
     strength: int = 1
     salience: int = 3                   # extraction-layer score; manual entries keep 3
     supersedes: str | None = None
+    superseded_by: str | None = None    # reverse pointer, set when retired WITH an heir
     source: str = "manual"              # manual | learned
     created_at: float = field(default_factory=_now)
     updated_at: float = field(default_factory=_now)
@@ -83,6 +84,7 @@ class Requirement:
             "strength": self.strength,
             "salience": self.salience,
             "supersedes": self.supersedes,
+            "superseded_by": self.superseded_by,
             "source": self.source,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
@@ -105,6 +107,7 @@ class Requirement:
             strength=d.get("strength", 1),
             salience=d.get("salience", 3),
             supersedes=d.get("supersedes"),
+            superseded_by=d.get("superseded_by"),
             source=d.get("source", "manual"),
             created_at=d.get("created_at", _now()),
             updated_at=d.get("updated_at", _now()),

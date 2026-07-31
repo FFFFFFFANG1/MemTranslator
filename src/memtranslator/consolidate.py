@@ -209,13 +209,22 @@ def _sanitize_ops(ops: list[dict], by_id: dict
                 survivors = [r for r in by_id.values()
                              if r.id != tid and r.id not in retired_ids
                              and r.id not in merged_ids]
-                survivor_texts = ([r.text for r in survivors]
-                                  + [o2.get("text", "") for o2 in ops
-                                     if o2.get("kind") == "merge"])
-                if tt and not any(tt & set(content_tokens(s))
-                                  for s in survivor_texts):
+                best, best_ov = None, 0
+                for r in survivors:
+                    ov = len(tt & set(content_tokens(r.text)))
+                    if ov > best_ov:
+                        best, best_ov = r, ov
+                merge_ov = any(tt & set(content_tokens(o2.get("text", "")))
+                               for o2 in ops if o2.get("kind") == "merge")
+                if tt and best is None and not merge_ov:
                     flags.append(f"contentless retire dropped: {tid}")
                     continue
+                # A consolidation retire is conflict resolution: the entry
+                # that won the conflict is the victim's heir. Recording it
+                # keeps the kill invariant-compliant (never heirless) and
+                # makes the victim resurrectable if the winner later dies.
+                if best is not None:
+                    o = {**o, "heir_id": best.id}
         out.append(o)
     return out, flags
 

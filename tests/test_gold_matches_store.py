@@ -26,12 +26,20 @@ from memtranslator.store import AUTO_RETIRE_AT, Store
 # ---------------------------------------------------------------------------
 
 class Gold:
-    """id → ("active", strength) | (dead_reason, strength)."""
+    """id → ("active", strength) | (dead_reason, strength).
+
+    2026-07-31 semantics rev: mirrors the store's heir-liveness invariant.
+    Supersede links are version stacks — an heirless, non-withdrawal retire
+    of an entry POPS its ancestor back to active; an explicit withdrawal
+    (op["withdrawal"]) terminates the chain; a retire with op["heir_id"]
+    records succession and never pops."""
 
     DEAD = ("superseded", "withdrawn", "merged", "auto_retired")
 
     def __init__(self):
         self.state: dict[str, tuple[str, int]] = {}
+        self.parent: dict[str, str] = {}    # entry -> the id it superseded
+        self.heir: dict[str, str | None] = {}   # victim -> who replaced it
 
     def ids(self):
         return list(self.state)
@@ -51,14 +59,26 @@ class Gold:
             s, k = self.state[tid]
             if s == "active":
                 self.state[tid] = ("superseded", k)
+            self.heir[tid] = op["id"]
+            self.parent[op["id"]] = tid
             self.state[op["id"]] = ("active", 1)
         elif kind == "retire":
             tid = op.get("target_id") or ""
             if tid not in self.state:
                 return
             s, k = self.state[tid]
-            if s == "active":
-                self.state[tid] = ("withdrawn", k)
+            if s != "active":
+                return
+            self.state[tid] = ("withdrawn", k)
+            self.heir[tid] = op.get("heir_id")
+            if (not op.get("withdrawal") and not op.get("heir_id")
+                    and tid in self.parent):
+                anc = self.parent[tid]
+                if anc in self.state:
+                    astate, ak = self.state[anc]
+                    if astate != "active" and self.heir.get(anc) == tid:
+                        self.state[anc] = ("active", ak)
+                        self.heir[anc] = None
         elif kind == "merge":
             tids = op.get("target_ids") or []
             if len(tids) < 2 or any(t not in self.state for t in tids):
@@ -67,6 +87,8 @@ class Gold:
                 s, k = self.state[t]
                 if s == "active":
                     self.state[t] = ("merged", k)
+                self.heir[t] = op["id"]
+            self.parent[op["id"]] = tids[0]
             self.state[op["id"]] = ("active", 1)
 
     def bump(self, rid: str, delta: int) -> None:
@@ -107,7 +129,15 @@ def _random_op(rng: random.Random, gold: Gold, n: int) -> dict:
         return {"kind": "contradict", "target_id": target(),
                 "text": f"rule {n} (corrected)"}
     if roll < 0.88:
-        return {"kind": "retire", "target_id": target()}
+        op = {"kind": "retire", "target_id": target()}
+        # exercise the invariant's three retire flavors: bare (may pop),
+        # explicit withdrawal (chain-terminal), conflict-with-heir (no pop)
+        flavor = rng.random()
+        if flavor < 0.3:
+            op["withdrawal"] = True
+        elif flavor < 0.5 and ids:
+            op["heir_id"] = rng.choice(ids)
+        return op
     k = rng.randrange(1, 4)              # includes the degenerate 1-target merge
     return {"kind": "merge",
             "target_ids": [target() for _ in range(k)],

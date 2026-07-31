@@ -367,6 +367,131 @@ def _ground_destructive_ops(ops: list[dict], a_candidates: list[str],
     return kept, flags
 
 
+def _gate_destructive_intent(ops: list[dict], a_candidates: list[str],
+                             b_candidates: list[dict],
+                             existing: list[Requirement]
+                             ) -> tuple[list[dict], list[str]]:
+    """A bare retire needs a withdrawal-SHAPED span, not mere vocabulary
+    overlap (LightMem's rule: delete only on direct conflict/revocation).
+
+    Measured on a chained e-05 replay: extraction emitted 10 bare retires
+    in 62 rounds, killing live gold rules — every one passed the overlap
+    grounding because ordinary task chatter naturally mentions rule
+    vocabulary ("写个 bullet list…" grounds a bullet-point rule's death).
+    Overlap says the rule was IN PLAY; only revocation language says the
+    user wants it GONE. The span-level check reuses the screening layer's
+    withdrawal pattern, so both layers recognise the same shapes."""
+    from memtranslator.signals import (_WITHDRAW_PAT, content_tokens,
+                                       overlap_is_reference)
+    spans = list(a_candidates) + [
+        f"{b.get('raw', '')} {b.get('final', '')}" for b in b_candidates]
+    withdraw_spans = [s for s in spans if _WITHDRAW_PAT.search(s)]
+    by_id = {r.id: r for r in existing}
+    kept, flags = [], []
+    for o in ops:
+        if o["kind"] == "retire":
+            tgt = by_id.get(o.get("target_id") or "")
+            if tgt is not None:
+                tt = content_tokens(tgt.text)
+                # reference-strength overlap (≥2 tokens or an anchor), not
+                # any-shared-token: a chatty span matching the withdrawal
+                # pattern for an unrelated rule must not license this kill
+                if not any(overlap_is_reference(tt, content_tokens(w))
+                           for w in withdraw_spans):
+                    flags.append(f"retire without withdrawal-shaped "
+                                 f"evidence dropped: {tgt.text[:40]!r}")
+                    continue
+                # evidence found: this is a USER withdrawal — mark it so
+                # the store treats it as chain-terminal (no version pop)
+                o = {**o, "withdrawal": True}
+        kept.append(o)
+    return kept, flags
+
+
+def _gate_contradict_facet(ops: list[dict], a_candidates: list[str],
+                           b_candidates: list[dict],
+                           existing: list[Requirement]
+                           ) -> tuple[list[dict], list[str]]:
+    """A contradict must stay within its target's kind of work. Measured
+    killer (e-02 chained): a postmortem-scoped "at least 17 sentences"
+    utterance was filed as an UPDATE to the email sentence cap — the model
+    even rewrote the new text to say "in emails", inheriting the target's
+    scope — and the correct cap died with a live wrong heir, invisible to
+    both the withdrawal gate and the heir invariant. Mechanical check: the
+    op's best-grounding span names one kind of work, the target another,
+    and they are incompatible → the utterance is a NEW rule for its own
+    kind, not an update; keep the content, cancel the kill. Either side
+    unknown → never block (the standing never-exclude-on-missing rule)."""
+    from memtranslator.kinds import infer_task_kind, kind_matches
+    from memtranslator.signals import content_tokens
+    spans = list(a_candidates) + [
+        f"{b.get('raw', '')} {b.get('final', '')}" for b in b_candidates]
+    by_id = {r.id: r for r in existing}
+    kept, flags = [], []
+    for o in ops:
+        if o.get("kind") == "contradict" and o.get("text"):
+            tgt = by_id.get(o.get("target_id") or "")
+            if tgt is not None and spans:
+                ot = set(content_tokens(o["text"]))
+                best = max(spans, key=lambda s:
+                           len(ot & set(content_tokens(s))))
+                skind = infer_task_kind(best, {})
+                tkinds = tgt.kinds or None
+                if not tkinds:
+                    tk = infer_task_kind(tgt.text, {})
+                    tkinds = [tk] if tk else None
+                if (skind and tkinds
+                        and not kind_matches(tkinds, skind)):
+                    flags.append(f"cross-kind contradict -> new: span kind "
+                                 f"{skind} vs target {tkinds} "
+                                 f"({tgt.text[:30]!r})")
+                    kept.append({**o, "kind": "new", "target_id": None})
+                    continue
+        kept.append(o)
+    return kept, flags
+
+
+def _dedup_against_store(ops: list[dict], existing: list[Requirement]
+                         ) -> tuple[list[dict], list[str]]:
+    """Same fact → update, never a second copy (LightMem/SimpleMem write
+    gate). Measured churn on chained stores: one rule learned as four
+    entries, then chained into A→B→C supersedes of IDENTICAL text, then
+    the whole family retired. A `new` op restating an active entry becomes
+    a reinforce of it; a `contradict` whose replacement text changes
+    nothing (same tokens, same numbers) likewise — a cap that changes its
+    NUMBER is a real update and passes untouched."""
+    from memtranslator.signals import content_tokens
+    import re as _re
+    digits = lambda t: set(_re.findall(r"\d+", t))
+    active = [r for r in existing
+              if r.status == "active" and r.kind == "requirement"]
+    kept, flags = [], []
+    by_id = {r.id: r for r in existing}
+    for o in ops:
+        if o.get("kind") == "new" and o.get("text"):
+            ot = set(content_tokens(o["text"]))
+            for r in active:
+                rt = set(content_tokens(r.text))
+                j = len(ot & rt) / max(1, len(ot | rt))
+                if j >= 0.7 and digits(o["text"]) == digits(r.text):
+                    flags.append(f"duplicate new -> reinforce "
+                                 f"{r.text[:40]!r}")
+                    o = {"kind": "reinforce", "target_id": r.id}
+                    break
+        elif o.get("kind") == "contradict" and o.get("text"):
+            tgt = by_id.get(o.get("target_id") or "")
+            if tgt is not None:
+                ot = set(content_tokens(o["text"]))
+                rt = set(content_tokens(tgt.text))
+                j = len(ot & rt) / max(1, len(ot | rt))
+                if j >= 0.8 and digits(o["text"]) == digits(tgt.text):
+                    flags.append(f"no-change contradict -> reinforce "
+                                 f"{tgt.text[:40]!r}")
+                    o = {"kind": "reinforce", "target_id": tgt.id}
+        kept.append(o)
+    return kept, flags
+
+
 def run_extraction(a_candidates: list[str], b_candidates: list[dict],
                    existing: list[Requirement]) -> dict:
     user = build_user_prompt(a_candidates, b_candidates, existing)
@@ -375,4 +500,10 @@ def run_extraction(a_candidates: list[str], b_candidates: list[dict],
     ops, flags = parse_ops(raw, existing)
     ops, gflags = _ground_destructive_ops(ops, a_candidates, b_candidates,
                                           existing)
-    return {"ops": ops, "flags": flags + gflags}
+    ops, wflags = _gate_destructive_intent(ops, a_candidates, b_candidates,
+                                           existing)
+    ops, cflags = _gate_contradict_facet(ops, a_candidates, b_candidates,
+                                         existing)
+    ops, dflags = _dedup_against_store(ops, existing)
+    return {"ops": ops,
+            "flags": flags + gflags + wflags + cflags + dflags}
