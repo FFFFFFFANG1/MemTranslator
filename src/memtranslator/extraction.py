@@ -7,6 +7,7 @@ current store. The model refers to entries by index number, never by raw id
 are). Out-of-range numbers drop the op and raise a flag.
 """
 import json
+import re
 
 from memtranslator import llm
 from memtranslator.config import (GEN_TEMPERATURE, INDEX_ROW_TOKENS,
@@ -451,6 +452,58 @@ def _gate_contradict_facet(ops: list[dict], a_candidates: list[str],
     return kept, flags
 
 
+_MIN_FAMILY = re.compile(
+    r"at\s+least|minimum|no\s+(?:fewer|less)\s+than|或以上|以上|至少|最少|不少于",
+    re.IGNORECASE)
+_MAX_FAMILY = re.compile(
+    r"at\s+most|maximum|max\b|no\s+(?:more|longer)\s+than|under\b|"
+    r"以内|以下|至多|最多|不超过|不得超过|别超过",
+    re.IGNORECASE)
+
+
+def _gate_op_fidelity(ops: list[dict], a_candidates: list[str],
+                      b_candidates: list[dict]
+                      ) -> tuple[list[dict], list[str]]:
+    """A numeric rule must keep its source's DIRECTION. Measured killer
+    (e-02 chained): "keep it to 11 sentences max" was written into the
+    store as "at least 11 sentences" — wrong at birth, unfixable by any
+    later kill-guard, and actively harmful when injected. Mechanical
+    check: for a new/contradict op whose text carries digits, find the
+    span sharing those digits; if the span sits in one bound family
+    (min/max) and the op text in the other, drop the op — an absent rule
+    self-heals on the next restatement, an inverted one never does.
+    Spans or ops without a clear single family are left alone."""
+    from memtranslator.signals import content_tokens
+    spans = list(a_candidates) + [
+        f"{b.get('raw', '')} {b.get('final', '')}" for b in b_candidates]
+
+    def family(text: str) -> str | None:
+        lo, hi = bool(_MIN_FAMILY.search(text)), bool(_MAX_FAMILY.search(text))
+        if lo == hi:
+            return None                    # neither, or both → ambiguous
+        return "min" if lo else "max"
+
+    kept, flags = [], []
+    for o in ops:
+        if o.get("kind") in ("new", "contradict") and o.get("text"):
+            op_digits = set(re.findall(r"\d+", o["text"]))
+            if op_digits:
+                src = [s for s in spans
+                       if op_digits & set(re.findall(r"\d+", s))]
+                if src:
+                    ofam = family(o["text"])
+                    sfams = {family(s) for s in src} - {None}
+                    if (ofam is not None and sfams
+                            and ofam not in sfams):
+                        flags.append(
+                            f"polarity-inverted op dropped "
+                            f"({'/'.join(sorted(sfams))} source -> {ofam} "
+                            f"op): {o['text'][:40]!r}")
+                        continue
+        kept.append(o)
+    return kept, flags
+
+
 def _dedup_against_store(ops: list[dict], existing: list[Requirement]
                          ) -> tuple[list[dict], list[str]]:
     """Same fact → update, never a second copy (LightMem/SimpleMem write
@@ -504,6 +557,7 @@ def run_extraction(a_candidates: list[str], b_candidates: list[dict],
                                            existing)
     ops, cflags = _gate_contradict_facet(ops, a_candidates, b_candidates,
                                          existing)
+    ops, pflags = _gate_op_fidelity(ops, a_candidates, b_candidates)
     ops, dflags = _dedup_against_store(ops, existing)
     return {"ops": ops,
-            "flags": flags + gflags + wflags + cflags + dflags}
+            "flags": flags + gflags + wflags + cflags + pflags + dflags}

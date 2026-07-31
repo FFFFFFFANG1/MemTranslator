@@ -9,7 +9,7 @@ WEB_DIR = ROOT / "web"
 
 MODELS = {
     # anchor §5: translator (and the future write path) run on flash-tier only
-    "translator": "qwen/qwen3.7-flash",
+    "translator": "inclusionai/ling-3.0-flash:free",
     # stand-in for the user's real downstream agent; swappable, any strong model
     "downstream": "claude-opus-4-8",
 }

@@ -104,3 +104,36 @@ def test_unknown_kind_never_blocks():
             "text": "Keep replies under 50 words."}]
     kept, _ = _gate_contradict_facet(ops, ["以后回复控制在50词"], [], [rule])
     assert kept[0]["kind"] == "contradict"
+
+
+def test_polarity_inverted_op_dropped():
+    from memtranslator.extraction import _gate_op_fidelity
+    ops = [{"kind": "new", "text": "Write at least 11 sentences per email."}]
+    spans = ["以后邮件最多11句话，别超过"]
+    kept, flags = _gate_op_fidelity(ops, spans, [])
+    assert kept == [] and any("polarity-inverted" in f for f in flags)
+
+
+def test_direction_preserved_op_kept():
+    from memtranslator.extraction import _gate_op_fidelity
+    ops = [{"kind": "new", "text": "Keep emails to at most 11 sentences."}]
+    spans = ["以后邮件最多11句话"]
+    kept, _ = _gate_op_fidelity(ops, spans, [])
+    assert len(kept) == 1
+
+
+def test_min_source_min_op_kept():
+    from memtranslator.extraction import _gate_op_fidelity
+    ops = [{"kind": "new", "text": "Write at least 17 sentences."}]
+    spans = ["postmortem 至少写17句"]
+    kept, _ = _gate_op_fidelity(ops, spans, [])
+    assert len(kept) == 1
+
+
+def test_ambiguous_or_digitless_never_dropped():
+    from memtranslator.extraction import _gate_op_fidelity
+    ops = [{"kind": "new", "text": "Avoid emoji in commit messages."},
+           {"kind": "new", "text": "Between 8 and 13 words per sentence."}]
+    spans = ["别用emoji", "句子长度8到13个词"]
+    kept, _ = _gate_op_fidelity(ops, spans, [])
+    assert len(kept) == 2
