@@ -504,6 +504,39 @@ def _gate_op_fidelity(ops: list[dict], a_candidates: list[str],
     return kept, flags
 
 
+_ONE_OFF_PAT = re.compile(
+    r"this\s+(?:one\s+)?time|just\s+this\s+once|this\s+once|for\s+now\b|"
+    r"这次|这一次|这一回|本次|就这一次|临时",
+    re.IGNORECASE)
+
+
+def _gate_one_off(ops: list[dict], a_candidates: list[str],
+                  b_candidates: list[dict]
+                  ) -> tuple[list[dict], list[str]]:
+    """A rule minted from a ONE-OFF utterance is a category error the
+    backbone can commit fluently: "just this once, use APA" comes back as
+    a durable contradict with the exception folded in. Mechanical check on
+    the op's best-grounding span: one-off markers present AND no
+    durability phrasing → the utterance scoped itself to a single task;
+    no durable op may come out of it. Category exceptions ("except formal
+    cover letters") carry no one-off marker and pass untouched."""
+    from memtranslator.signals import _RULE_PAT, content_tokens
+    spans = list(a_candidates) + [
+        f"{b.get('raw', '')} {b.get('final', '')}" for b in b_candidates]
+    kept, flags = [], []
+    for o in ops:
+        if o.get("kind") in ("new", "contradict") and o.get("text") and spans:
+            ot = set(content_tokens(o["text"]))
+            best = max(spans, key=lambda sp:
+                       len(ot & set(content_tokens(sp))))
+            if _ONE_OFF_PAT.search(best) and not _RULE_PAT.search(best):
+                flags.append(f"one-off-grounded op dropped: "
+                             f"{o['text'][:40]!r}")
+                continue
+        kept.append(o)
+    return kept, flags
+
+
 def _dedup_against_store(ops: list[dict], existing: list[Requirement]
                          ) -> tuple[list[dict], list[str]]:
     """Same fact → update, never a second copy (LightMem/SimpleMem write
@@ -560,6 +593,8 @@ def run_extraction(a_candidates: list[str], b_candidates: list[dict],
     ops, cflags = _gate_contradict_facet(ops, a_candidates, b_candidates,
                                          existing)
     ops, pflags = _gate_op_fidelity(ops, a_candidates, b_candidates)
+    ops, oflags = _gate_one_off(ops, a_candidates, b_candidates)
     ops, dflags = _dedup_against_store(ops, existing)
     return {"ops": ops,
-            "flags": flags + gflags + wflags + cflags + pflags + dflags}
+            "flags": (flags + gflags + wflags + cflags + pflags + oflags
+                      + dflags)}

@@ -181,6 +181,21 @@ _IMPERATIVE_PAT = re.compile(
     re.IGNORECASE)
 _MD_STRUCT = re.compile(r"^\s*(#{1,6}\s|[-*>]\s|\d+\.\s)")
 
+# Retrospective complaint about OUR output = a preference signal (loop-5,
+# 2026-07-31). Measured miss: an emoji-usage rule stated only as a
+# complaint about the previous output — no durability marker, no
+# imperative, no rendering noun, so every scorer above stays silent. A
+# referent pointing back at prior output plus an excess/deficit evaluator
+# is feedback extraction should get to judge; its precision rules still
+# decide whether a durable rule comes out (screening recalls, extraction
+# vets).
+_CORRECTION_PAT = re.compile(
+    r"(?:that\s+last|the\s+last\s+\w+\s+you|last\s+time|上次|刚才|上一(?:条|封|个|次))"
+    r".{0,60}?"
+    r"(?:way\s+too|too\s+(?:much|many|long|short|formal|casual)|太(?:多|长|短|正式|随意)|"
+    r"别这么|不要这么|过于)",
+    re.IGNORECASE | re.DOTALL)
+
 # Controlled facet lexicon: maps facet-key vocabulary to surface forms in
 # both product languages, so a stored key can boost a borderline sentence.
 _KEY_LEXICON = {
@@ -357,6 +372,8 @@ def screen_message(text: str,
             score += 2
         if _META_PAT.search(s):
             score += 2
+        if _CORRECTION_PAT.search(s):
+            score += 3
         if _IMPERATIVE_PAT.search(s):
             score += 1
         if len(sents) >= 3 and i in (0, len(sents) - 1):
@@ -373,6 +390,13 @@ def screen_message(text: str,
     spans, budget, taken = [], _SPAN_BUDGET, set()
     for _, i in scored[:3]:
         lo, hi = max(0, i - 1), min(len(sents), i + 2)
+        # A SHORT durability anchor is usually deictic ("just don't do it
+        # from now on") — the rule's content sits further back, and the ±1
+        # window handed extraction a bare pronoun (measured: content
+        # sentence two back from the anchor). One extra sentence of
+        # lookback, only for short rule-marked anchors.
+        if _RULE_PAT.search(sents[i]) and len(sents[i].strip()) < 50:
+            lo = max(0, i - 2)
         piece = "".join(_clip(sents[j], _MATERIAL_MIN_LEN)
                         for j in range(lo, hi)
                         if not material[j] and j not in taken)

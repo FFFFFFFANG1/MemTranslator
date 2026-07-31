@@ -137,3 +137,29 @@ def test_ambiguous_or_digitless_never_dropped():
     spans = ["别用emoji", "句子长度8到13个词"]
     kept, _ = _gate_op_fidelity(ops, spans, [])
     assert len(kept) == 2
+
+
+def test_one_off_grounded_op_dropped():
+    from memtranslator.extraction import _gate_one_off
+    ops = [{"kind": "contradict", "target_id": "req-x",
+            "text": "use MLA for references — except this one time APA"}]
+    spans = ["这一回，参考文献格式改成APA，之后恢复MLA"]
+    kept, flags = _gate_one_off(ops, spans, [])
+    assert kept == [] and any("one-off" in f for f in flags)
+
+
+def test_durable_marker_overrides_one_off_gate():
+    from memtranslator.extraction import _gate_one_off
+    ops = [{"kind": "new", "text": "Reports use bullet points."}]
+    spans = ["这次开始，以后周报都用 bullet points"]
+    kept, _ = _gate_one_off(ops, spans, [])
+    assert len(kept) == 1
+
+
+def test_category_exception_passes_one_off_gate():
+    from memtranslator.extraction import _gate_one_off
+    ops = [{"kind": "contradict", "target_id": "req-x",
+            "text": "Keep emails short — except formal cover letters."}]
+    spans = ["以后邮件都写短点，除了正式求职信"]
+    kept, _ = _gate_one_off(ops, spans, [])
+    assert len(kept) == 1
