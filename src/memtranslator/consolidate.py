@@ -146,8 +146,10 @@ def consolidation_ops(reqs: list[Requirement]) -> dict:
                      f"rules; keep at most {STYLE_RULE_CAP}, retire the rest.")
     parts.append("JSON:")
 
-    raw = llm.complete(MODELS["translator"], CONSOLIDATE_SYSTEM,
-                       "\n\n".join(parts), max_tokens=1200,
+    writer = MODELS.get("writer") or MODELS["translator"]
+    raw = llm.complete(writer, CONSOLIDATE_SYSTEM,
+                       "\n\n".join(parts),
+                       max_tokens=llm.budget_for(writer, 1200),
                        temperature=GEN_TEMPERATURE)
     ops, flags = parse_ops(raw, numbered)
     by_id = {r.id: r for r in numbered}

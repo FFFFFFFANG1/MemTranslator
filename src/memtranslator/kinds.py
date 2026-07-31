@@ -86,9 +86,12 @@ def _annotate_raw(texts: list[str]) -> tuple[list[list[str]], bool]:
     block = "\n".join(f"[{i + 1}] {t}" for i, t in enumerate(texts))
     call_failed = False
     try:
-        raw = llm.complete(MODELS["translator"], KINDS_SYSTEM,
+        writer = MODELS.get("writer") or MODELS["translator"]
+        raw = llm.complete(writer, KINDS_SYSTEM,
                            block + "\n\nJSON:",
-                           max_tokens=60 * len(texts) + 200, temperature=0)
+                           max_tokens=llm.budget_for(
+                               writer, 60 * len(texts) + 200),
+                           temperature=0)
     except Exception:
         raw, call_failed = "", True
     try:

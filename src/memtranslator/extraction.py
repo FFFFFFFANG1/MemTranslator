@@ -548,8 +548,10 @@ def _dedup_against_store(ops: list[dict], existing: list[Requirement]
 def run_extraction(a_candidates: list[str], b_candidates: list[dict],
                    existing: list[Requirement]) -> dict:
     user = build_user_prompt(a_candidates, b_candidates, existing)
-    raw = llm.complete(MODELS["translator"], EXTRACTION_SYSTEM, user,
-                       max_tokens=1500, temperature=GEN_TEMPERATURE)
+    writer = MODELS.get("writer") or MODELS["translator"]
+    raw = llm.complete(writer, EXTRACTION_SYSTEM, user,
+                       max_tokens=llm.budget_for(writer, 1500),
+                       temperature=GEN_TEMPERATURE)
     ops, flags = parse_ops(raw, existing)
     ops, gflags = _ground_destructive_ops(ops, a_candidates, b_candidates,
                                           existing)

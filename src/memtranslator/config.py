@@ -1,4 +1,5 @@
 """Single source of truth for models, paths, and budgets."""
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -8,8 +9,16 @@ EVENTS_FILE = DATA / "events.jsonl"
 WEB_DIR = ROOT / "web"
 
 MODELS = {
-    # anchor §5: translator (and the future write path) run on flash-tier only
-    "translator": "inclusionai/ling-3.0-flash:free",
+    # anchor §5: flash tier. 2026-07-31 owner ruling: main model is
+    # deepseek-v4-flash over Ark ("ark:" prefix routes the channel, ":think"
+    # suffix enables reasoning — llm.py); the read path never thinks
+    # (latency-bound). qwen/ling are auxiliary verification backbones.
+    "translator": "ark:deepseek-v4-flash",
+    # write path (extraction/consolidation/kind tagging): may think — it is
+    # asynchronous, its latency is free. MT_WRITER env overrides for A/B
+    # runs without touching this file (parallel experiments must not race
+    # on config edits). Absent → falls back to translator.
+    "writer": os.environ.get("MT_WRITER", "ark:deepseek-v4-flash"),
     # stand-in for the user's real downstream agent; swappable, any strong model
     "downstream": "claude-opus-4-8",
 }

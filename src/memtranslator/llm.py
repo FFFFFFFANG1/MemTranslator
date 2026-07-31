@@ -21,6 +21,18 @@ _client: anthropic.Anthropic | None = None
 _or_client: httpx.Client | None = None
 
 OPENROUTER_BASE = "https://openrouter.ai/api/v1"
+ARK_BASE_DEFAULT = "https://ark.cn-beijing.volces.com/api/plan/v3"
+
+# Reasoning tokens bill against max_tokens on both channels; a thinking
+# writer needs headroom or content starves (measured on ling: 1024 budget,
+# ~1100 reasoning tokens, empty content on every call).
+THINK_HEADROOM = 2500
+
+
+def budget_for(model: str, base: int) -> int:
+    """Output budget for `model`: base, plus headroom when its id carries
+    the ":think" suffix."""
+    return base + (THINK_HEADROOM if model.endswith(":think") else 0)
 
 # Reasoning is OFF by default on this channel. Measured on ling-3.0-flash:
 # the model spends 1000-1200 reasoning tokens on every call regardless of
@@ -75,10 +87,57 @@ def _openrouter_complete(model: str, system: str, user: str,
         raise LLMUnavailable(f"malformed response {str(data)[:200]}") from e
 
 
+def _ark_complete(model: str, system: str, user: str,
+                  max_tokens: int, temperature: float | None,
+                  thinking: bool) -> str:
+    """Ark (Volcano) OpenAI-compatible channel — the 2026-07-31 main-model
+    ruling: deepseek-v4-flash, thinking disabled on the latency-bound read
+    path, enabled where the caller says so (the write path is async, its
+    latency is free)."""
+    global _or_client
+    if _or_client is None:
+        _or_client = httpx.Client(timeout=180)
+    key = os.environ.get("ARK_API_KEY", "")
+    if not key:
+        raise LLMUnavailable("ARK_API_KEY not set")
+    base = os.environ.get("ARK_BASE_URL", ARK_BASE_DEFAULT)
+    payload = {"model": model, "max_tokens": max_tokens,
+               "thinking": {"type": "enabled" if thinking else "disabled"},
+               "messages": [{"role": "system", "content": system},
+                            {"role": "user", "content": user}]}
+    if temperature is not None:
+        payload["temperature"] = temperature
+    try:
+        resp = _or_client.post(f"{base}/chat/completions",
+                               headers={"Authorization": f"Bearer {key}"},
+                               json=payload)
+    except httpx.HTTPError as e:
+        raise LLMUnavailable("connection") from e
+    if resp.status_code != 200:
+        raise LLMUnavailable(
+            f"status:{resp.status_code} {resp.text[:200]}")
+    data = resp.json()
+    try:
+        return data["choices"][0]["message"]["content"] or ""
+    except (KeyError, IndexError, TypeError) as e:
+        raise LLMUnavailable(f"malformed response {str(data)[:200]}") from e
+
+
 def complete(model: str, system: str, user: str, max_tokens: int = 1024,
              temperature: float | None = None) -> str:
     """One-shot completion. `temperature=None` leaves the SDK default (1.0);
-    product paths pass an explicit value — see config.GEN_TEMPERATURE."""
+    product paths pass an explicit value — see config.GEN_TEMPERATURE.
+
+    Model-id grammar routes the channel (mocks stay signature-stable):
+    "ark:<model>[:think]" → Ark; "<vendor>/<model>" → OpenRouter;
+    bare id → Anthropic SDK. The ":think" suffix enables reasoning."""
+    if model.startswith("ark:"):
+        rest = model[4:]
+        thinking = rest.endswith(":think")
+        if thinking:
+            rest = rest[:-len(":think")]
+        return _ark_complete(rest, system, user, max_tokens, temperature,
+                             thinking)
     if "/" in model:
         return _openrouter_complete(model, system, user, max_tokens,
                                     temperature)

@@ -12,7 +12,7 @@ import httpx
 
 from bench.suites.config import (JUDGE_MAX_TOKENS, JUDGE_MODEL, LLM_API_KEY,
                                  LLM_BASE_URL)
-from bench.suites.ratelimit import JUDGE_BUCKET
+from bench.suites.ratelimit import JUDGE_BUCKET, JUDGE_SPACER
 from bench.suites.retry import with_retry
 
 JUDGE_SYSTEM = """You are a strict binary judge for a rewrite-quality benchmark.
@@ -29,6 +29,7 @@ def _complete(system: str, user: str) -> str:
     if _client is None:
         _client = httpx.Client(timeout=120)
     JUDGE_BUCKET.acquire()
+    JUDGE_SPACER.acquire()
     resp = _client.post(
         f"{LLM_BASE_URL}/chat/completions",
         headers={"Authorization": f"Bearer {LLM_API_KEY}"},

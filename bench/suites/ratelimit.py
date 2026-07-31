@@ -62,3 +62,39 @@ class AIMDBucket:
 # One bucket per channel, process-wide. The judge channel is the measured
 # bottleneck; the product channel has not tripped and gets no bucket yet.
 JUDGE_BUCKET = AIMDBucket()
+
+
+class CrossProcessSpacer:
+    """Global minimum spacing between judge calls ACROSS processes.
+
+    The AIMD bucket above is process-wide only; N parallel runner processes
+    each carry their own bucket, so the aggregate rate scales with N and the
+    channel trips collectively (measured 2026-07-31: six concurrent episode
+    runs killed every sibling with judge 429s after per-process retries were
+    exhausted). A file-lock timestamp gives all processes one shared clock:
+    each call waits until at least `min_interval` has passed since ANY
+    process's last call. flock is advisory but every caller goes through
+    this class, and a crashed holder releases the lock with its fd."""
+
+    def __init__(self, path: str, min_interval: float):
+        self.path = path
+        self.min_interval = min_interval
+
+    def acquire(self) -> None:
+        import fcntl
+        import os
+        with open(self.path, "a+") as f:
+            fcntl.flock(f, fcntl.LOCK_EX)
+            try:
+                st = os.fstat(f.fileno())
+                wait = self.min_interval - (time.time() - st.st_mtime)
+                if wait > 0:
+                    time.sleep(wait)
+                os.utime(self.path, None)
+            finally:
+                fcntl.flock(f, fcntl.LOCK_UN)
+
+
+# 150ms global spacing ≈ 6-7 judge QPS total, regardless of process count —
+# roughly what one 4-worker process generated when the channel was healthy.
+JUDGE_SPACER = CrossProcessSpacer("/tmp/memtranslator-judge.lock", 0.15)

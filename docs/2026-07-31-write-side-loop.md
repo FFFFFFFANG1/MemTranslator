@@ -145,3 +145,31 @@ L qwen 0.926(dedup/revoke 1.00,P4 零成本)。
 - anti-overfit 全链通过:每道门在 qwen(L 带内、四集合并 0.49/0.46)与
   ling(L 0.796→0.907、链式 0.67/0.67)双侧同向。
 - 提交:`e47130e`(循环1-3)+ `809d9dc`(循环4+验收)。
+
+## 骨干切换 + write-think 对照(2026-07-31 下午)
+
+Owner 裁定:主模型 ark:deepseek-v4-flash(plan 通道,thinking 关);
+qwen/ling 降为辅助验证,只在主模型结果确定后开。judge 主通道(coding/v3)
+配额耗尽,按预案切备用 plan key,**裁判模型 deepseek-v4-pro 不变,尺子可比**。
+基建:llm.py Ark 通道("ark:" 前缀 + ":think" 后缀语法)、writer 独立模型键
+(MT_WRITER env 覆盖,A/B 不改文件)、think 预算头寸、judge 跨进程限速器
+(6 路并发曾把共享 judge 通道打爆——AIMD 桶是进程内的,N 进程合力冲垮;
+文件锁全局 150ms 间隔后 7 路稳定)。
+
+### deepseek-v4-flash 基线(thinking 全关)
+
+- oracle **1.00/1.00 满分**(qwen 0.95/0.96,与 glm 持平)
+- robustness 41/46;L 0.870(dedup 1.00)
+- real ×4:e-02 0.33/0.27(S0.52)/ e-05 0.67/0.67(S0.77)/
+  e-09 0.23/0.35(S0.54)/ e-01 0.69/0.69(S0.83)
+- **合并:per-task 21/44=0.48,per-memory 24/50=0.48**(qwen 同代码 0.49/0.46)
+
+### write-think 对照(writer=:think,读侧不变)
+
+- real ×4 合并:per-task 17/42=**0.40**,per-memory 20/47=**0.43**(全输)
+- L **0.815**,其中 **diff-supersede 0.17**(基线 0.83)——思考型 writer
+  在 supersede 目标选择上大幅劣化,与 qwen+reasoning 时 L 掉分同构
+- STATE 均值 0.695 vs 0.665(略升,但 op 质量与 owner 指标双降)
+
+**裁定:写侧 thinking 关闭保持默认。** "异步=延迟免费" 成立,但 deepseek
+的思考让破坏性 op 的瞄准变差,收益为负。单跑数据,方向与 qwen 先例一致。
