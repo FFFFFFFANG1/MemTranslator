@@ -89,12 +89,16 @@ EDITS_OUTPUT_TOKENS = 700  # flat budget: inserts are short by construction
 # temperature 1.0, which was measured as the largest variance term in suite E).
 GEN_TEMPERATURE = 0.0
 
-# Async write-path budget switches (2026-07-31 owner ruling: spending up to
-# ~+0.5 amortized LLM calls per turn on the ASYNC side is acceptable when it
-# buys ≥0.1 on the owner metrics). Both fire at most once per extraction
-# flush and are independently disableable.
-WRITE_RECHECK = True    # re-present rule-shaped spans that grounded no op
-WRITE_VERIFY = True     # birth-time fidelity vote on new/contradict ops
+# Async write-path budget switches. Tested 2026-07-31 under the owner's
+# bar (+0.5 amortized calls must buy ≥0.1 owner-metric): three pooled
+# 4-episode runs per arm, ~130 points each — ON scored 0.402/0.397 vs OFF
+# 0.515/0.514, non-overlapping run ranges. The coverage recheck mostly
+# re-admits ops the first pass had CORRECTLY ignored; behind the current
+# gate stack the binding constraint is store churn, not under-extraction.
+# Defaults stay OFF; the machinery and env switches remain for re-testing
+# after the write path changes shape again.
+WRITE_RECHECK = os.environ.get("MT_RECHECK", "0") == "1"
+WRITE_VERIFY = os.environ.get("MT_VERIFY", "0") == "1"
 
 # The rewrite is additive, so its length tracks the request's. A fixed cap
 # truncates long pastes mid-payload and the hotkey silently does nothing;
