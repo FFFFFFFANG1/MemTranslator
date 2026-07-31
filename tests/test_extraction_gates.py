@@ -163,3 +163,34 @@ def test_category_exception_passes_one_off_gate():
     spans = ["以后邮件都写短点，除了正式求职信"]
     kept, _ = _gate_one_off(ops, spans, [])
     assert len(kept) == 1
+
+
+def test_withdrawal_span_new_dropped_when_entry_alive():
+    from memtranslator.extraction import _gate_withdrawal_new
+    rule = Requirement(text="Format references in APA style.")
+    ops = [{"kind": "new", "text": "Format references in APA style.",
+            "key": "reference.format"}]
+    spans = ["scratch that APA references rule, just go back to default"]
+    kept, flags = _gate_withdrawal_new(ops, spans, [], [rule])
+    assert kept == [] and any("withdrawal-span new" in f for f in flags)
+
+
+def test_withdrawal_new_gate_cross_language_limitation():
+    # Documented hole: a zh withdrawal of an en-stored rule shares too few
+    # surface tokens to reach reference strength, so the gate passes it
+    # through (never-block-on-weak-evidence). Root-lexicon growth is the
+    # lever if this class shows up in chained forensics.
+    from memtranslator.extraction import _gate_withdrawal_new
+    rule = Requirement(text="Format references in APA style.")
+    ops = [{"kind": "new", "text": "Format references in APA style."}]
+    spans = ["参考文献那条 APA 规则不用了，按默认来"]
+    kept, _ = _gate_withdrawal_new(ops, spans, [], [rule])
+    assert len(kept) == 1
+
+
+def test_plain_new_untouched_by_withdrawal_gate():
+    from memtranslator.extraction import _gate_withdrawal_new
+    ops = [{"kind": "new", "text": "Use serial commas in docs."}]
+    spans = ["以后文档里都用 serial comma"]
+    kept, _ = _gate_withdrawal_new(ops, spans, [], [])
+    assert len(kept) == 1

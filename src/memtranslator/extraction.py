@@ -510,6 +510,39 @@ _ONE_OFF_PAT = re.compile(
     re.IGNORECASE)
 
 
+def _gate_withdrawal_new(ops: list[dict], a_candidates: list[str],
+                         b_candidates: list[dict],
+                         existing: list[Requirement]
+                         ) -> tuple[list[dict], list[str]]:
+    """The withdrawal protocol says: never NEW while a stored entry still
+    says X — that mints the contradiction instead of resolving it.
+    Measured on the recheck pass: a withdrawal-shaped span took the
+    "referent not in store" branch and re-created the very rule being
+    revoked. Mechanical: a new op whose best-grounding span is
+    withdrawal-shaped AND overlaps an ACTIVE entry at reference strength
+    is dropped — the correct op for that span is contradict or retire."""
+    from memtranslator.signals import (_WITHDRAW_PAT, content_tokens,
+                                       overlap_is_reference)
+    spans = list(a_candidates) + [
+        f"{b.get('raw', '')} {b.get('final', '')}" for b in b_candidates]
+    active = [r for r in existing if r.status == "active"]
+    kept, flags = [], []
+    for o in ops:
+        if o.get("kind") == "new" and o.get("text") and spans:
+            ot = set(content_tokens(o["text"]))
+            best = max(spans, key=lambda sp:
+                       len(ot & set(content_tokens(sp))))
+            if _WITHDRAW_PAT.search(best):
+                st = content_tokens(best)
+                if any(overlap_is_reference(st, content_tokens(r.text))
+                       for r in active):
+                    flags.append(f"withdrawal-span new dropped: "
+                                 f"{o['text'][:40]!r}")
+                    continue
+        kept.append(o)
+    return kept, flags
+
+
 def _gate_one_off(ops: list[dict], a_candidates: list[str],
                   b_candidates: list[dict]
                   ) -> tuple[list[dict], list[str]]:
@@ -578,14 +611,9 @@ def _dedup_against_store(ops: list[dict], existing: list[Requirement]
     return kept, flags
 
 
-def run_extraction(a_candidates: list[str], b_candidates: list[dict],
-                   existing: list[Requirement]) -> dict:
-    user = build_user_prompt(a_candidates, b_candidates, existing)
-    writer = MODELS.get("writer") or MODELS["translator"]
-    raw = llm.complete(writer, EXTRACTION_SYSTEM, user,
-                       max_tokens=llm.budget_for(writer, 1500),
-                       temperature=GEN_TEMPERATURE)
-    ops, flags = parse_ops(raw, existing)
+def _apply_gates(ops: list[dict], a_candidates: list[str],
+                 b_candidates: list[dict], existing: list[Requirement]
+                 ) -> tuple[list[dict], list[str]]:
     ops, gflags = _ground_destructive_ops(ops, a_candidates, b_candidates,
                                           existing)
     ops, wflags = _gate_destructive_intent(ops, a_candidates, b_candidates,
@@ -594,7 +622,147 @@ def run_extraction(a_candidates: list[str], b_candidates: list[dict],
                                          existing)
     ops, pflags = _gate_op_fidelity(ops, a_candidates, b_candidates)
     ops, oflags = _gate_one_off(ops, a_candidates, b_candidates)
+    ops, nwflags = _gate_withdrawal_new(ops, a_candidates, b_candidates,
+                                        existing)
     ops, dflags = _dedup_against_store(ops, existing)
-    return {"ops": ops,
-            "flags": (flags + gflags + wflags + cflags + pflags + oflags
-                      + dflags)}
+    return ops, (gflags + wflags + cflags + pflags + oflags + nwflags
+                 + dflags)
+
+
+def _unaccounted_rule_spans(a_candidates: list[str], ops: list[dict],
+                            existing: list[Requirement]) -> list[str]:
+    """Spans that screening admitted for a rule-shaped reason but that no
+    surviving op accounts for — the measured W1b class: the signal reached
+    the model and silently produced nothing."""
+    from memtranslator.signals import (_CORRECTION_PAT, _META_PAT,
+                                       _RULE_PAT, _WITHDRAW_PAT,
+                                       content_tokens, overlap_is_reference)
+    by_id = {r.id: r for r in existing}
+    silent = []
+    for sp in a_candidates:
+        if not (_RULE_PAT.search(sp) or _META_PAT.search(sp)
+                or _WITHDRAW_PAT.search(sp) or _CORRECTION_PAT.search(sp)):
+            continue
+        st = content_tokens(sp)
+        covered = False
+        for o in ops:
+            ot = content_tokens(o.get("text", ""))
+            if ot and overlap_is_reference(st, ot):
+                covered = True
+                break
+            tgt = by_id.get(o.get("target_id") or "")
+            if tgt is not None and overlap_is_reference(
+                    st, content_tokens(tgt.text)):
+                covered = True
+                break
+        if not covered:
+            silent.append(sp)
+    return silent
+
+
+VERIFY_SYSTEM = """You check extracted requirement entries against their source sentences.
+For each numbered pair, the ENTRY must keep the SOURCE's rule intact on
+three points only: direction (a minimum stays a minimum, a maximum stays a
+maximum), negation (a ban stays a ban, a requirement stays a requirement),
+and numbers (every number carried over unchanged). Wording, language, and
+how broadly the rule is stated may all differ — judging the right category
+breadth is another layer's job, not yours.
+Output strictly one JSON object mapping each number to "ok" or "bad". No
+other text."""
+
+
+def _verify_ops(ops: list[dict], a_candidates: list[str],
+                b_candidates: list[dict]) -> tuple[list[dict], list[str]]:
+    """Birth-time fidelity vote (async budget, ≤1 call per flush): pair
+    each text op with its best-grounding span and let one strict call mark
+    distortions while the source is still in hand — after apply the span
+    is gone and a drifted entry can never be re-checked. Parse failure or
+    an unmatched number keeps the op (fail-open: this vote may only ever
+    remove)."""
+    from memtranslator.signals import content_tokens
+    spans = list(a_candidates) + [
+        f"{b.get('raw', '')} {b.get('final', '')}" for b in b_candidates]
+    textops = [(i, o) for i, o in enumerate(ops)
+               if o.get("kind") in ("new", "contradict") and o.get("text")]
+    if not textops or not spans:
+        return ops, []
+    lines = []
+    for n, (_i, o) in enumerate(textops, 1):
+        ot = set(content_tokens(o["text"]))
+        best = max(spans, key=lambda sp: len(ot & set(content_tokens(sp))))
+        lines.append(f"[{n}] ENTRY: {o['text']}\n    SOURCE: {best}")
+    writer = MODELS.get("writer") or MODELS["translator"]
+    try:
+        raw = llm.complete(writer, VERIFY_SYSTEM,
+                           "\n".join(lines) + "\n\nJSON:",
+                           max_tokens=llm.budget_for(
+                               writer, 30 * len(textops) + 150),
+                           temperature=GEN_TEMPERATURE)
+        m = re.search(r"\{.*\}", raw, re.DOTALL)
+        verdicts = json.loads(m.group(0)) if m else {}
+    except Exception:
+        return ops, []
+    bad_idx = {textops[int(k) - 1][0] for k, v in verdicts.items()
+               if isinstance(v, str) and v.strip().lower() == "bad"
+               and k.isdigit() and 1 <= int(k) <= len(textops)}
+    kept, flags = [], []
+    for i, o in enumerate(ops):
+        if i in bad_idx:
+            flags.append(f"fidelity vote dropped: {o.get('text', '')[:40]!r}")
+            continue
+        kept.append(o)
+    return kept, flags
+
+
+def run_extraction(a_candidates: list[str], b_candidates: list[dict],
+                   existing: list[Requirement]) -> dict:
+    from memtranslator.config import WRITE_RECHECK, WRITE_VERIFY
+    user = build_user_prompt(a_candidates, b_candidates, existing)
+    writer = MODELS.get("writer") or MODELS["translator"]
+    raw = llm.complete(writer, EXTRACTION_SYSTEM, user,
+                       max_tokens=llm.budget_for(writer, 1500),
+                       temperature=GEN_TEMPERATURE)
+    ops, flags = parse_ops(raw, existing)
+    ops, gate_flags = _apply_gates(ops, a_candidates, b_candidates, existing)
+    flags += gate_flags
+    if WRITE_RECHECK:
+        silent = _unaccounted_rule_spans(a_candidates, ops, existing)
+        if silent:
+            # Coverage recheck (async budget, ≤1 call per flush): the spans
+            # below cleared screening for a rule-shaped reason yet produced
+            # no op — the measured dominant never-learned class. A focused
+            # second look either extracts or explicitly ignores them; all
+            # gates re-apply, so precision discipline is unchanged.
+            user2 = (build_user_prompt(silent, [], existing)
+                     + "\n\n(Second pass: the spans above matched durable-"
+                       "rule signals but produced no operation. For each, "
+                       "either emit the correct operations or emit nothing "
+                       "if it is noise or a one-task spec.)")
+            raw2 = llm.complete(writer, EXTRACTION_SYSTEM, user2,
+                                max_tokens=llm.budget_for(writer, 1000),
+                                temperature=GEN_TEMPERATURE)
+            ops2, f2 = parse_ops(raw2, existing)
+            # a reinforce from the second look adds nothing but displaces
+            # the contradict the span was silent about (measured: relation
+            # family regressions were all old-rule reinforces from here)
+            ops2 = [o for o in ops2 if o.get("kind") != "reinforce"]
+            ops2, g2 = _apply_gates(ops2, silent, [], existing)
+            # the recheck may re-emit a first-pass op verbatim — near-
+            # identical text ops are the first pass's, not additions
+            from memtranslator.signals import content_tokens as _ct
+            first = [set(_ct(o["text"])) for o in ops if o.get("text")]
+            fresh = []
+            for o in ops2:
+                if o.get("text"):
+                    ot = set(_ct(o["text"]))
+                    if any(len(ot & ft) / max(1, len(ot | ft)) >= 0.7
+                           for ft in first):
+                        continue
+                fresh.append(o)
+            flags += [f"recheck: {len(silent)} silent span(s), "
+                      f"{len(fresh)} new op(s)"] + f2 + g2
+            ops += fresh
+    if WRITE_VERIFY:
+        ops, vflags = _verify_ops(ops, a_candidates, b_candidates)
+        flags += vflags
+    return {"ops": ops, "flags": flags}

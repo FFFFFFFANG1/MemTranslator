@@ -21,7 +21,7 @@ def test_routes_and_translates_numbered_ops(monkeypatch):
     seen = {}
 
     def fake(model, system, user, max_tokens=1024, **kw):
-        seen["user"] = user
+        seen.setdefault("user", user)
         return json.dumps([
             {"op": "reinforce", "target": 1, "salience": 4},
             {"op": "style_rule", "text": "约束以从句追加", "salience": 4},

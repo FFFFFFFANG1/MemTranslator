@@ -89,6 +89,13 @@ EDITS_OUTPUT_TOKENS = 700  # flat budget: inserts are short by construction
 # temperature 1.0, which was measured as the largest variance term in suite E).
 GEN_TEMPERATURE = 0.0
 
+# Async write-path budget switches (2026-07-31 owner ruling: spending up to
+# ~+0.5 amortized LLM calls per turn on the ASYNC side is acceptable when it
+# buys ≥0.1 on the owner metrics). Both fire at most once per extraction
+# flush and are independently disableable.
+WRITE_RECHECK = True    # re-present rule-shaped spans that grounded no op
+WRITE_VERIFY = True     # birth-time fidelity vote on new/contradict ops
+
 # The rewrite is additive, so its length tracks the request's. A fixed cap
 # truncates long pastes mid-payload and the hotkey silently does nothing;
 # translate.output_budget() scales within these bounds. The ceiling exists so

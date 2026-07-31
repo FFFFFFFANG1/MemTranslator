@@ -93,7 +93,7 @@ def test_run_extraction_end_to_end(monkeypatch):
     seen = {}
 
     def fake(model, system, user, max_tokens=1024, **kw):
-        seen["user"] = user
+        seen.setdefault("user", user)
         return json.dumps([
             {"op": "new", "text": "commit message 用英文",
              "key": "commit.language", "salience": 4,
