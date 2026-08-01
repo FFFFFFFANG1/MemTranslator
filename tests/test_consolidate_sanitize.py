@@ -60,3 +60,27 @@ def test_conflict_retire_kept():
     ops = [{"kind": "retire", "target_id": a}]     # newer conflicting cap
     out, _ = _sanitize_ops(ops, by_id)             # survives → legit retire
     assert len(out) == 1
+
+
+def test_cross_facet_weak_overlap_merge_dropped():
+    a = Requirement(text="Use single quotes for module names in docs",
+                    key="doc.naming")
+    b = Requirement(text="Identifiers in docs use ASCII characters only",
+                    key="code.identifiers")
+    by_id = {a.id: a, b.id: b}
+    ops = [{"kind": "merge", "target_ids": [a.id, b.id],
+            "text": "single quotes for module names and ASCII identifiers"}]
+    out, flags = _sanitize_ops(ops, by_id)
+    assert out == [] and any("cross-facet" in f for f in flags)
+
+
+def test_cross_key_near_duplicate_merge_kept():
+    a = Requirement(text="Emails must state the maintenance window and "
+                         "impact", key="email.content")
+    b = Requirement(text="State the maintenance window and impact in "
+                         "emails", key="unclassified.email")
+    by_id = {a.id: a, b.id: b}
+    ops = [{"kind": "merge", "target_ids": [a.id, b.id],
+            "text": "Emails must state the maintenance window and impact"}]
+    out, _ = _sanitize_ops(ops, by_id)
+    assert len(out) == 1

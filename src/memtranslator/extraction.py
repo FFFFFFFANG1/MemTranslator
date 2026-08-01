@@ -614,19 +614,31 @@ def _dedup_against_store(ops: list[dict], existing: list[Requirement]
 def _apply_gates(ops: list[dict], a_candidates: list[str],
                  b_candidates: list[dict], existing: list[Requirement]
                  ) -> tuple[list[dict], list[str]]:
-    ops, gflags = _ground_destructive_ops(ops, a_candidates, b_candidates,
-                                          existing)
-    ops, wflags = _gate_destructive_intent(ops, a_candidates, b_candidates,
-                                           existing)
-    ops, cflags = _gate_contradict_facet(ops, a_candidates, b_candidates,
-                                         existing)
-    ops, pflags = _gate_op_fidelity(ops, a_candidates, b_candidates)
-    ops, oflags = _gate_one_off(ops, a_candidates, b_candidates)
-    ops, nwflags = _gate_withdrawal_new(ops, a_candidates, b_candidates,
-                                        existing)
-    ops, dflags = _dedup_against_store(ops, existing)
-    return ops, (gflags + wflags + cflags + pflags + oflags + nwflags
-                 + dflags)
+    """Named gate chain. MT_ABLATE=name1,name2 skips gates by name — the
+    ablation harness's knob; production never sets it."""
+    import os
+    ablated = set(filter(None, os.environ.get("MT_ABLATE", "").split(",")))
+    chain = [
+        ("ground", lambda o: _ground_destructive_ops(
+            o, a_candidates, b_candidates, existing)),
+        ("intent", lambda o: _gate_destructive_intent(
+            o, a_candidates, b_candidates, existing)),
+        ("facet", lambda o: _gate_contradict_facet(
+            o, a_candidates, b_candidates, existing)),
+        ("fidelity", lambda o: _gate_op_fidelity(
+            o, a_candidates, b_candidates)),
+        ("oneoff", lambda o: _gate_one_off(o, a_candidates, b_candidates)),
+        ("wnew", lambda o: _gate_withdrawal_new(
+            o, a_candidates, b_candidates, existing)),
+        ("dedup", lambda o: _dedup_against_store(o, existing)),
+    ]
+    flags: list[str] = []
+    for name, fn in chain:
+        if name in ablated:
+            continue
+        ops, f = fn(ops)
+        flags += f
+    return ops, flags
 
 
 def _unaccounted_rule_spans(a_candidates: list[str], ops: list[dict],

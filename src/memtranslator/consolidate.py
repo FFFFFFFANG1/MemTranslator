@@ -200,6 +200,23 @@ def _sanitize_ops(ops: list[dict], by_id: dict
                 flags.append(f"disjoint merge dropped: "
                              f"{o.get('text', '')[:40]!r}")
                 continue
+            # Cross-facet compound guard (loop-7): sources under DIFFERENT
+            # facet keys may merge only as near-duplicates (sloppy key
+            # spellings of one rule — the measured maintenance-window
+            # triple). Weakly-related texts under different keys are two
+            # rules; compounding them sets up the collateral kill where a
+            # supersede on one facet buries the other.
+            srcs_r = [by_id[t] for t in (o.get("target_ids") or [])
+                      if t in by_id]
+            keys = {r.key for r in srcs_r if r.key}
+            if len(keys) >= 2 and len(toks) >= 2:
+                jmin = min(
+                    len(a & b) / max(1, len(a | b))
+                    for i, a in enumerate(toks) for b in toks[i + 1:])
+                if jmin < 0.5:
+                    flags.append(f"cross-facet merge dropped: "
+                                 f"{o.get('text', '')[:40]!r}")
+                    continue
         if o.get("kind") == "retire":
             tid = o.get("target_id")
             if tid in merged_ids:

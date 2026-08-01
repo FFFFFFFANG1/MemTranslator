@@ -82,3 +82,16 @@ def test_pop_survives_reload(tmp_path):
     reloaded = Store(tmp_path / "s.jsonl")
     texts = {r.text for r in reloaded.active()}
     assert texts == {"keep it to 11 sentences max"}
+
+
+def test_heirless_merge_death_unmerges_sources(tmp_path):
+    s = _mk(tmp_path)
+    x = s.add("single quotes for module names", key="doc.naming")
+    y = s.add("identifiers use ASCII only", key="code.identifiers")
+    s.apply_ops([{"kind": "merge", "target_ids": [x.id, y.id],
+                  "text": "module quotes and ASCII identifiers"}])
+    merged = next(r for r in s.active())
+    s.apply_ops([{"kind": "retire", "target_id": merged.id}])
+    texts = {r.text for r in s.active()}
+    assert texts == {"single quotes for module names",
+                     "identifiers use ASCII only"}

@@ -147,15 +147,19 @@ class Store:
                     # with nothing — the ancestor was the right survivor.
                     # An explicitly withdrawn entry never pops its chain.
                     if (not op.get("withdrawal")
-                            and not op.get("heir_id")
-                            and req.supersedes):
-                        anc = self._items.get(req.supersedes)
-                        if (anc is not None and anc.status == "retired"
-                                and anc.superseded_by == req.id):
-                            anc.status = "active"
-                            anc.superseded_by = None
-                            anc.updated_at = time.time()
-                            self._append(anc)
+                            and not op.get("heir_id")):
+                        # Generalized pop: EVERY entry this victim had
+                        # replaced comes back — the contradict ancestor
+                        # (superseded_by == victim) and all merge sources
+                        # alike. A compound merge dying heirless un-merges
+                        # instead of taking its sources to the grave.
+                        for anc in self._items.values():
+                            if (anc.status == "retired"
+                                    and anc.superseded_by == req.id):
+                                anc.status = "active"
+                                anc.superseded_by = None
+                                anc.updated_at = time.time()
+                                self._append(anc)
                 applied += 1
             elif kind == "merge":
                 targets = [self._items.get(t) for t in

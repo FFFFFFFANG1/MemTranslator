@@ -71,14 +71,13 @@ class Gold:
                 return
             self.state[tid] = ("withdrawn", k)
             self.heir[tid] = op.get("heir_id")
-            if (not op.get("withdrawal") and not op.get("heir_id")
-                    and tid in self.parent):
-                anc = self.parent[tid]
-                if anc in self.state:
-                    astate, ak = self.state[anc]
-                    if astate != "active" and self.heir.get(anc) == tid:
-                        self.state[anc] = ("active", ak)
-                        self.heir[anc] = None
+            if not op.get("withdrawal") and not op.get("heir_id"):
+                for anc, h in list(self.heir.items()):
+                    if h == tid and anc in self.state:
+                        astate, ak = self.state[anc]
+                        if astate != "active":
+                            self.state[anc] = ("active", ak)
+                            self.heir[anc] = None
         elif kind == "merge":
             tids = op.get("target_ids") or []
             if len(tids) < 2 or any(t not in self.state for t in tids):
