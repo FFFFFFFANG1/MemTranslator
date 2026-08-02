@@ -21,7 +21,7 @@ _client: anthropic.Anthropic | None = None
 _or_client: httpx.Client | None = None
 
 OPENROUTER_BASE = "https://openrouter.ai/api/v1"
-ARK_BASE_DEFAULT = "https://ark.cn-beijing.volces.com/api/plan/v3"
+ARK_BASE_DEFAULT = "https://ark.cn-beijing.volces.com/api/coding/v3"
 
 # Reasoning tokens bill against max_tokens on both channels; a thinking
 # writer needs headroom or content starves (measured on ling: 1024 budget,
