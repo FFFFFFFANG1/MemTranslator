@@ -146,8 +146,10 @@ class Store:
                     # mis-extracted rule which then died, leaving the facet
                     # with nothing — the ancestor was the right survivor.
                     # An explicitly withdrawn entry never pops its chain.
+                    import os as _os
                     if (not op.get("withdrawal")
-                            and not op.get("heir_id")):
+                            and not op.get("heir_id")
+                            and "pop" not in _os.environ.get("MT_ABLATE", "")):
                         # Generalized pop: EVERY entry this victim had
                         # replaced comes back — the contradict ancestor
                         # (superseded_by == victim) and all merge sources

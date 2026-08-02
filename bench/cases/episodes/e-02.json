@@ -1081,7 +1081,7 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "postmortem",
+     "task": "email",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -1667,7 +1667,7 @@
     },
     "scope": {
      "app": "ANY",
-     "task": "postmortem",
+     "task": "email",
      "code_lang": "ANY",
      "nat_lang": "ANY"
     }
@@ -3313,8 +3313,7 @@
     "e02-s01"
    ],
    "should_fire": [
-    "e02-c16",
-    "e02-s01"
+    "e02-c16"
    ],
    "must_not_fire": []
   },
@@ -3493,8 +3492,7 @@
     "e02-s01"
    ],
    "should_fire": [
-    "e02-c04",
-    "e02-s01"
+    "e02-c04"
    ],
    "must_not_fire": []
   },

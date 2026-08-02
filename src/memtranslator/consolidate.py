@@ -206,6 +206,9 @@ def _sanitize_ops(ops: list[dict], by_id: dict
             # triple). Weakly-related texts under different keys are two
             # rules; compounding them sets up the collateral kill where a
             # supersede on one facet buries the other.
+            import os
+            if "mergegate" in os.environ.get("MT_ABLATE", ""):
+                out.append(o); continue
             srcs_r = [by_id[t] for t in (o.get("target_ids") or [])
                       if t in by_id]
             keys = {r.key for r in srcs_r if r.key}
