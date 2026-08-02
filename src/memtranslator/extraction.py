@@ -510,6 +510,54 @@ _ONE_OFF_PAT = re.compile(
     re.IGNORECASE)
 
 
+_SEMI = re.compile(r"[;；]")
+_EXCEPT = re.compile(r"—\s*except|\bexcept\b|除了|例外", re.IGNORECASE)
+
+
+def _atomise_ops(ops: list[dict]) -> tuple[list[dict], list[str]]:
+    """Split semicolon-joined compound entries at birth (loop-8).
+
+    The extraction prompt already demands one rule per op (a compound entry
+    cannot be partly overridden later), but the backbone violates it —
+    measured: 5 semicolon-joined entries alive in one chained store. The
+    consolidation side of this risk is now gated; entries born compound
+    have no victims to pop and were the remaining half.
+
+    Conservative by construction: exception folding ("— except formal
+    cover letters") is deliberate and exempt; a semicolon inside quotes or
+    backticks is content, not a joiner; both halves must carry real
+    content. A compound contradict keeps its target on the FIRST half and
+    files the rest as its own rule — two contradicts on one target would
+    build a bogus supersede chain."""
+    from memtranslator.signals import content_tokens
+    out, flags = [], []
+    for o in ops:
+        text = o.get("text") or ""
+        if (o.get("kind") not in ("new", "contradict") or not text
+                or _EXCEPT.search(text)):
+            out.append(o)
+            continue
+        # a semicolon inside a quoted or backticked span is content
+        spans = re.findall(r"`[^`]*`|\"[^\"]*\"|'[^']*'|「[^」]*」", text)
+        if any(_SEMI.search(sp) for sp in spans):
+            out.append(o)
+            continue
+        parts = [p.strip(" ;；") for p in _SEMI.split(text)]
+        parts = [p for p in parts if p]
+        if len(parts) < 2 or any(len(content_tokens(p)) < 3 for p in parts):
+            out.append(o)
+            continue
+        eid = o.get("evidence_id") or f"atom-{abs(hash(text)) % 10000}"
+        for n, part in enumerate(parts):
+            piece = {**o, "text": part, "evidence_id": eid}
+            if n and o.get("kind") == "contradict":
+                piece["kind"] = "new"
+                piece["target_id"] = None
+            out.append(piece)
+        flags.append(f"atomised into {len(parts)}: {text[:50]!r}")
+    return out, flags
+
+
 def _gate_withdrawal_new(ops: list[dict], a_candidates: list[str],
                          b_candidates: list[dict],
                          existing: list[Requirement]
@@ -619,6 +667,7 @@ def _apply_gates(ops: list[dict], a_candidates: list[str],
     import os
     ablated = set(filter(None, os.environ.get("MT_ABLATE", "").split(",")))
     chain = [
+        ("atomise", lambda o: _atomise_ops(o)),
         ("ground", lambda o: _ground_destructive_ops(
             o, a_candidates, b_candidates, existing)),
         ("intent", lambda o: _gate_destructive_intent(

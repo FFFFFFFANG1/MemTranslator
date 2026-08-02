@@ -194,3 +194,49 @@ def test_plain_new_untouched_by_withdrawal_gate():
     spans = ["以后文档里都用 serial comma"]
     kept, _ = _gate_withdrawal_new(ops, spans, [], [])
     assert len(kept) == 1
+
+
+def test_compound_new_split_into_atoms():
+    from memtranslator.extraction import _atomise_ops
+    ops = [{"kind": "new", "key": "code.style",
+            "text": "Use single quotes for strings; avoid trailing commas "
+                    "in generated config"}]
+    out, flags = _atomise_ops(ops)
+    assert len(out) == 2
+    assert out[0]["evidence_id"] == out[1]["evidence_id"]
+    assert all(o["kind"] == "new" for o in out)
+    assert any("atomised" in f for f in flags)
+
+
+def test_compound_contradict_keeps_target_on_first_half_only():
+    from memtranslator.extraction import _atomise_ops
+    ops = [{"kind": "contradict", "target_id": "req-old",
+            "text": "Keep emails under 80 words; always sign off with the "
+                    "team name"}]
+    out, _ = _atomise_ops(ops)
+    assert out[0]["kind"] == "contradict" and out[0]["target_id"] == "req-old"
+    assert out[1]["kind"] == "new" and out[1]["target_id"] is None
+
+
+def test_exception_folding_never_split():
+    from memtranslator.extraction import _atomise_ops
+    ops = [{"kind": "contradict", "target_id": "req-old",
+            "text": "Keep emails short — except formal cover letters; those "
+                    "may run long"}]
+    out, _ = _atomise_ops(ops)
+    assert len(out) == 1
+
+
+def test_semicolon_inside_quotes_is_content():
+    from memtranslator.extraction import _atomise_ops
+    ops = [{"kind": "new",
+            "text": "End every generated statement with `;` in output code"}]
+    out, _ = _atomise_ops(ops)
+    assert len(out) == 1
+
+
+def test_trivial_half_never_split():
+    from memtranslator.extraction import _atomise_ops
+    ops = [{"kind": "new", "text": "Use bullet points in weekly reports; ok"}]
+    out, _ = _atomise_ops(ops)
+    assert len(out) == 1

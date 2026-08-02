@@ -1,5 +1,5 @@
 {
- "at": "20260730-123942",
+ "at": "20260802-024559",
  "paths": {
   "read": {
    "conflict": {
@@ -8,14 +8,36 @@
     "fails": []
    },
    "dilution": {
-    "score": 1.0,
+    "score": 0.6,
     "n": 5,
-    "fails": []
+    "fails": [
+     {
+      "id": "dilution-24",
+      "why": [
+       "expected an injection, product nooped (model_noop)",
+       "missing: 倒序"
+      ]
+     },
+     {
+      "id": "dilution-40-selection",
+      "why": [
+       "expected an injection, product nooped (model_noop)",
+       "missing: 倒序"
+      ]
+     }
+    ]
    },
    "idempotence_degenerate": {
-    "score": 1.0,
+    "score": 0.75,
     "n": 4,
-    "fails": []
+    "fails": [
+     {
+      "id": "idempotence-en",
+      "why": [
+       "expected noop, got apply: draft a reply (under 47 words) telling the vendor we accept the revised quote, and keep it"
+      ]
+     }
+    ]
    },
    "injection": {
     "score": 1.0,
@@ -23,9 +45,14 @@
     "fails": []
    },
    "instantiation": {
-    "score": 1.0,
+    "score": 0.8,
     "n": 5,
-    "fails": []
+    "fails": [
+     {
+      "id": "sections-to-postmortem-en",
+      "why": []
+     }
+    ]
    },
    "invariance": {
     "score": 1.0,
@@ -42,7 +69,7 @@
     "n": 7,
     "fails": []
    },
-   "_overall": 1.0
+   "_overall": 0.913
   }
  }
 }
