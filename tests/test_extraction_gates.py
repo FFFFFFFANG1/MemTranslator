@@ -240,3 +240,39 @@ def test_trivial_half_never_split():
     ops = [{"kind": "new", "text": "Use bullet points in weekly reports; ok"}]
     out, _ = _atomise_ops(ops)
     assert len(out) == 1
+
+
+def test_misaimed_retire_is_re_pointed_at_named_rule():
+    from memtranslator.extraction import _gate_destructive_intent
+    columns = Requirement(text="include at least 11 columns of data in "
+                               "tables")
+    headings = Requirement(text="always include at least 33 engaging "
+                                "headings and subheadings")
+    ops = [{"kind": "retire", "target_id": columns.id}]
+    spans = ["之前说的「always include at least 33 engaging headings and "
+             "subheadings」那条不用了，按你默认的来吧"]
+    kept, flags = _gate_destructive_intent(ops, spans, [],
+                                           [columns, headings])
+    assert kept[0]["target_id"] == headings.id
+    assert kept[0]["withdrawal"] is True
+    assert any("re-aimed" in f for f in flags)
+
+
+def test_correctly_aimed_retire_untouched():
+    from memtranslator.extraction import _gate_destructive_intent
+    pylint = Requirement(text="do not run pylint checks on python code")
+    other = Requirement(text="keep insights under 67 words")
+    ops = [{"kind": "retire", "target_id": pylint.id}]
+    spans = ["之前说的「stop running pylint when writing python code」"
+             "那条不用了"]
+    kept, _ = _gate_destructive_intent(ops, spans, [], [pylint, other])
+    assert kept[0]["target_id"] == pylint.id and kept[0]["withdrawal"]
+
+
+def test_unquoted_withdrawal_still_uses_whole_span():
+    from memtranslator.extraction import _gate_destructive_intent
+    rule = Requirement(text="keep insights under 67 words")
+    ops = [{"kind": "retire", "target_id": rule.id}]
+    kept, _ = _gate_destructive_intent(
+        ops, ["insights 那个 67 words 的限制不用了"], [], [rule])
+    assert len(kept) == 1 and kept[0]["target_id"] == rule.id

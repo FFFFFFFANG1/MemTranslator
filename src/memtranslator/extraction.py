@@ -368,6 +368,21 @@ def _ground_destructive_ops(ops: list[dict], a_candidates: list[str],
     return kept, flags
 
 
+_QUOTED = re.compile(r"「([^」]{4,})」|\u201c([^\u201d]{4,})\u201d|\"([^\"]{4,})\"")
+
+
+def _withdrawal_referent(spans: list[str]) -> str:
+    """What the withdrawal NAMES. Users typically quote the rule they are
+    dropping inside brackets or quotation marks, and that quoted fragment
+    is a far sharper referent than the whole chatty span around it;
+    without any quotation the span itself is used."""
+    quoted = []
+    for sp in spans:
+        for m in _QUOTED.finditer(sp):
+            quoted.append(next(g for g in m.groups() if g))
+    return " ".join(quoted) if quoted else " ".join(spans)
+
+
 def _gate_destructive_intent(ops: list[dict], a_candidates: list[str],
                              b_candidates: list[dict],
                              existing: list[Requirement]
@@ -388,6 +403,7 @@ def _gate_destructive_intent(ops: list[dict], a_candidates: list[str],
         f"{b.get('raw', '')} {b.get('final', '')}" for b in b_candidates]
     withdraw_spans = [s for s in spans if _WITHDRAW_PAT.search(s)]
     by_id = {r.id: r for r in existing}
+    active = [r for r in existing if r.status == "active"]
     kept, flags = [], []
     for o in ops:
         if o["kind"] == "retire":
@@ -397,13 +413,38 @@ def _gate_destructive_intent(ops: list[dict], a_candidates: list[str],
                 # reference-strength overlap (≥2 tokens or an anchor), not
                 # any-shared-token: a chatty span matching the withdrawal
                 # pattern for an unrelated rule must not license this kill
-                if not any(overlap_is_reference(tt, content_tokens(w))
-                           for w in withdraw_spans):
+                lic = [w for w in withdraw_spans
+                       if overlap_is_reference(tt, content_tokens(w))]
+                if not lic:
                     flags.append(f"retire without withdrawal-shaped "
                                  f"evidence dropped: {tgt.text[:40]!r}")
                     continue
-                # evidence found: this is a USER withdrawal — mark it so
-                # the store treats it as chain-terminal (no version pop)
+                # AIM CHECK (loop-9): overlap proves the span mentions
+                # vocabulary the target shares — not that the span NAMES
+                # the target. Measured: 「don't use sentence structure…」
+                # licensed the death of "write complete sentences", and a
+                # headings withdrawal killed a table-columns rule, because
+                # generic rule words (include / at least / sentence) reach
+                # reference strength on their own. The referent is usually
+                # quoted verbatim in the utterance, so score every ACTIVE
+                # entry against that referent and require the victim to be
+                # the best match; a strictly better match means the op is
+                # mis-aimed and is re-pointed at the rule the user named.
+                ref = _withdrawal_referent(lic)
+                rt = content_tokens(ref)
+                def score(text):
+                    et = content_tokens(text)
+                    return (len(set(rt) & set(et))
+                            / max(1, len(set(rt) | set(et))))
+                best, bs = tgt, score(tgt.text)
+                for r in active:
+                    sc = score(r.text)
+                    if sc > bs + 0.05:
+                        best, bs = r, sc
+                if best is not tgt:
+                    flags.append(f"retire re-aimed: {tgt.text[:32]!r} -> "
+                                 f"{best.text[:32]!r}")
+                    o = {**o, "target_id": best.id}
                 o = {**o, "withdrawal": True}
         kept.append(o)
     return kept, flags
