@@ -39,10 +39,25 @@ RECALL_CAP = 32
 # bounds the block.
 INJECT_CAP = 16
 
-# v1 pipeline knobs (design 2026-07-24 R5 — proposal defaults, single point)
-BATCH_N = 8               # extraction fires at N queued candidates...
-FLUSH_IDLE_S = 30 * 60    # ...or 30min after the oldest one
+# v1 pipeline knobs (design 2026-07-24 R5 — proposal defaults, single point).
+# The two write channels batch independently: route A waits for enough
+# screened statements to be worth a call, route B fires far sooner because a
+# diff is scarce, already attributed, and stale feedback is worth less — the
+# entry it judges may have moved on.
+A_BATCH_N = 8             # extraction fires at N queued candidates...
+B_BATCH_N = 3             # ...route B at three attributed diffs
+BATCH_N = A_BATCH_N       # historical name for callers that know only route A
+FLUSH_IDLE_S = 30 * 60    # ...or 30min after the oldest one, either channel
 SALIENCE_MIN = 3          # extraction ops below this are dropped
+
+# Route B sends the complete changed sentence through 128 lexical tokens.
+# Longer run-on sentences retain a symmetric 56-token window on each side of
+# the marked change: enough local syntax for attribution, with one threshold
+# and one explicit context policy shared by code, tests, prompt and docs.
+B_DIFF_SENTENCE_TOKENS = 128
+B_DIFF_CONTEXT_TOKENS = 56
+B_DIFF_CHANGE_TOKENS = 64
+B_DIFF_MERGE_GAP_TOKENS = 3
 # Tightened 2026-07-29: at 48/16 the ACTIVE branch never fired in practice
 # (11/12 episodes) and stores accumulated visible triplicates ("只囤不并").
 # Dedup and conflict elimination are the WRITE path's job — the rewrite

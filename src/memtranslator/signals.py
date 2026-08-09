@@ -5,7 +5,12 @@ join, so a time window plus text similarity is enough. Classification feeds
 two consumers: acceptance metrics for the rewrite loop, and the v1
 extraction corpus.
 """
+import re
 from difflib import SequenceMatcher
+
+from memtranslator.config import (B_DIFF_CHANGE_TOKENS, B_DIFF_CONTEXT_TOKENS,
+                                  B_DIFF_MERGE_GAP_TOKENS,
+                                  B_DIFF_SENTENCE_TOKENS)
 
 JOIN_WINDOW_S = 15 * 60
 EDIT_SIM_THRESHOLD = 0.55
@@ -120,6 +125,138 @@ def attribute_diff(raw: str, polished: str, final: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Route B — what the user actually changed in our patch, as sentences the
+# feedback extractor can attribute. Character-level shards made a semantic
+# replacement look like an unrelated add plus an unrelated delete, which is
+# the failure this layer exists to prevent.
+# ---------------------------------------------------------------------------
+
+_LEXICAL_TOKEN = re.compile(
+    r"[\u3400-\u9fff]|[A-Za-z0-9_]+|[^\w\s]", re.UNICODE)
+_SENTENCE_END = re.compile(r"[.!?。！？；;\n]")
+_TRUNCATED = "[truncated]"
+
+
+def _token_spans(text: str) -> list[tuple[str, int, int]]:
+    """Cheap deterministic lexical tokens with source offsets.
+
+    CJK characters are individual tokens; Latin words, numbers and
+    punctuation are tokens. This is intentionally tokenizer-independent so
+    write capture stays available whatever the model channel is doing.
+    """
+    return [(m.group(0), m.start(), m.end())
+            for m in _LEXICAL_TOKEN.finditer(text)]
+
+
+def _token_char_span(tokens: list[tuple[str, int, int]], start: int,
+                     end: int, text_len: int) -> tuple[int, int]:
+    left = tokens[start][1] if start < len(tokens) else text_len
+    right = tokens[end - 1][2] if end > start else left
+    return left, right
+
+
+def _sentence_bounds(text: str, start: int, end: int) -> tuple[int, int]:
+    left = 0
+    for match in _SENTENCE_END.finditer(text, 0, start):
+        left = match.end()
+    right_match = _SENTENCE_END.search(text, max(start, end))
+    right = right_match.end() if right_match else len(text)
+    while left < right and text[left].isspace():
+        left += 1
+    return left, right
+
+
+def _marked_sentence(text: str, change_start: int, change_end: int) -> str:
+    """Full sentence through B_DIFF_SENTENCE_TOKENS tokens, otherwise a
+    symmetric context window around the change."""
+    sent_start, sent_end = _sentence_bounds(text, change_start, change_end)
+    tokens = [t for t in _token_spans(text)
+              if t[1] >= sent_start and t[2] <= sent_end]
+    clip_start, clip_end = sent_start, sent_end
+    prefix = suffix = ""
+    if len(tokens) > B_DIFF_SENTENCE_TOKENS:
+        before = [i for i, t in enumerate(tokens) if t[2] <= change_start]
+        after = [i for i, t in enumerate(tokens) if t[1] >= change_end]
+        first = max(0, (before[-1] + 1 if before else 0)
+                    - B_DIFF_CONTEXT_TOKENS)
+        last_change = after[0] if after else len(tokens)
+        last = min(len(tokens), last_change + B_DIFF_CONTEXT_TOKENS)
+        clip_start = tokens[first][1]
+        clip_end = tokens[last - 1][2]
+        if clip_start > sent_start:
+            prefix = _TRUNCATED + " "
+        if clip_end < sent_end:
+            suffix = " " + _TRUNCATED
+
+    # A huge pasted replacement can itself exceed the sentence budget. Keep
+    # its edges while preserving the explicit changed-region marker.
+    changed = _token_spans(text[change_start:change_end])
+    if len(changed) > B_DIFF_CHANGE_TOKENS:
+        half = B_DIFF_CHANGE_TOKENS // 2
+        head_end = changed[half - 1][2]
+        tail_start = changed[-half][1]
+        raw_change = (text[change_start:change_start + head_end]
+                      + " " + _TRUNCATED + " "
+                      + text[change_start + tail_start:change_end])
+    else:
+        raw_change = text[change_start:change_end]
+    return (prefix + text[clip_start:change_start]
+            + "<changed>" + raw_change + "</changed>"
+            + text[change_end:clip_end] + suffix)
+
+
+def _coalesced_changes(a_tokens: list[tuple[str, int, int]],
+                       b_tokens: list[tuple[str, int, int]]) -> list[tuple]:
+    """Opcodes with near-neighbours merged: an edit that swaps a couple of
+    words reads as one change, not a burst of them."""
+    matcher = SequenceMatcher(
+        None, [t[0].lower() for t in a_tokens],
+        [t[0].lower() for t in b_tokens], autojunk=False)
+    changes = [op for op in matcher.get_opcodes() if op[0] != "equal"]
+    if not changes:
+        return []
+    out = [list(changes[0])]
+    for tag, i1, i2, j1, j2 in changes[1:]:
+        prev = out[-1]
+        if (i1 - prev[2] <= B_DIFF_MERGE_GAP_TOKENS
+                and j1 - prev[4] <= B_DIFF_MERGE_GAP_TOKENS):
+            prev[2], prev[4] = i2, j2
+            prev[0] = "replace" if prev[1] != i2 and prev[3] != j2 \
+                else ("delete" if prev[1] != i2 else "insert")
+        else:
+            out.append([tag, i1, i2, j1, j2])
+    return [tuple(x) for x in out]
+
+
+def patch_diff(polished: str, final: str) -> list[dict]:
+    """Sentence-level, token-aligned human edits for route B.
+
+    Normal edits carry the complete sentence before and after, with the
+    changed span explicitly marked. An unedited patch yields no hunks at
+    all, which is what lets the queue skip it without spending a call.
+    """
+    if _norm(polished) == _norm(final):
+        return []
+    before_tokens, after_tokens = _token_spans(polished), _token_spans(final)
+    hunks: list[dict] = []
+    labels = {"insert": "add", "delete": "delete", "replace": "replace"}
+    for tag, i1, i2, j1, j2 in _coalesced_changes(
+            before_tokens, after_tokens):
+        a1, a2 = _token_char_span(before_tokens, i1, i2, len(polished))
+        b1, b2 = _token_char_span(after_tokens, j1, j2, len(final))
+        if i1 == i2 and i1:
+            a1 = a2 = before_tokens[i1 - 1][2]
+        if j1 == j2 and j1:
+            b1 = b2 = after_tokens[j1 - 1][2]
+        hunks.append({
+            "op": labels[tag],
+            "before_sentence": _marked_sentence(polished, a1, a2),
+            "after_sentence": _marked_sentence(final, b1, b2),
+        })
+    return hunks
+
+
+# ---------------------------------------------------------------------------
 # M1 / Route A — sentence-level screening of natural messages (design §4;
 # 0 tokens). Splits a message into material vs discourse zones, scores
 # discourse sentences on rule-setting features, submits top spans only.
@@ -136,8 +273,6 @@ def attribute_diff(raw: str, polished: str, final: str) -> dict:
 #       phrasing. tests/test_no_bench_contamination.py enforces mechanically
 #       that no lexicon or prompt string is a verbatim lift from a case file.
 # ---------------------------------------------------------------------------
-
-import re
 
 # Rule-setting / restating / correcting phrasings. The 太长/太短 entries from
 # the proposal generalize to 太X / "too X" (same correction pattern, any

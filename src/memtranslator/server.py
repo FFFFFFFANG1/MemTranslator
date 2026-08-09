@@ -16,7 +16,8 @@ from pydantic import BaseModel
 from memtranslator import config, llm
 from memtranslator.consolidate import run_consolidation, should_consolidate
 from memtranslator.pipeline import Pipeline
-from memtranslator.signals import attribute_diff, classify_submit, screen_message
+from memtranslator.signals import (attribute_diff, classify_submit,
+                                   patch_diff, screen_message)
 from memtranslator.store import EventLog, Store
 from memtranslator.translate import translate
 
@@ -80,12 +81,13 @@ def create_app(store_path: Path | None = None,
                 if attr["strength_delta"]:
                     store.bump_strength(applied, attr["strength_delta"])
                 if cls in ("reverted", "edited_after_polish"):
-                    pipeline.add_diff({
-                        "raw": tr["original"], "polished": tr["polished"],
-                        "final": text,
-                        "applied": [store.get(i).text for i in applied
-                                    if i in store._items],
-                        "survival": attr["injection_survival"]}, now)
+                    # Route B judges the entries this patch used, so it gets
+                    # their snapshots as recorded at translate time — not a
+                    # store index it would have to search.
+                    pipeline.add_feedback(
+                        [store.get(i).to_dict() for i in applied
+                         if i in store._items],
+                        patch_diff(tr["polished"], text), now)
         try:
             if pipeline.maybe_flush(now) is not None:
                 if should_consolidate(store, pipeline.adds_since_consolidate):

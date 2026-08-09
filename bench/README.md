@@ -59,11 +59,21 @@ adapt 是一等能力要求，不是加分项。
 | idempotence | 改写产物再喂回 → 不二次注入 |
 | degenerate | 空任务/超长任务/纯代码块/任务已自带全部要求 |
 
-### perf/（借 episode 语料放量）
+### lifecycle = E1 + perf（同一链式回放）
 
-用 archive 的 744 条真实口吻 user turns 重放写路径建 store，用 archive 的
-probe 任务测：适配质量、noop 率、稀释曲线、延迟/token — 全部**对 store
-规模作图**（8/16/24/32+ 条）。
+`bench/cases/episodes/` 的真实口吻 turns 只跑**一遍**写路径，同时出：
+
+- **E1 owner**：per-task 完美率、per-memory 命中率（+ CARRY/SUPPRESS/STATE）
+- **perf 仪器**：canary `carry@alive` / spurious kills、noop%、延迟、injected chars，按 active 规模分桶
+
+```bash
+uv run python -m bench.perf --episodes e-01,e-03,e-05,e-09
+# 等价于：
+uv run python -m bench.suites.run_episodes \
+  --episodes e-01,e-03,e-05,e-09 --arms real --canary
+```
+
+单集全臂面板仍用：`uv run python -m bench.suites.run_episodes e-01`（默认不开 canary）。
 
 ## 计分
 
@@ -90,5 +100,6 @@ probe 任务测：适配质量、noop 率、稀释曲线、延迟/token — 全�
 eval "$(grep '^export ANTHROPIC_API_KEY=' ~/.bashrc)"
 uv run python -m bench.runner                 # 全部 robustness traces
 uv run python -m bench.runner --trace conflict
-uv run python -m bench.perf --sizes 8,16,32   # 性能套件
+uv run python -m bench.perf --episodes e-01,e-03,e-05,e-09   # E1+perf 融合
+uv run python -m bench.suites.run_episodes e-01              # 单集 E1 全臂
 ```

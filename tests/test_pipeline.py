@@ -1,9 +1,11 @@
-"""M2: pipeline triggers — batch-full and idle-flush, zero-call property."""
+"""M2: pipeline triggers — batch-full and idle-flush, zero-call property,
+and the two channels batching independently."""
 import json
 
 import memtranslator.llm as llm
-from memtranslator.config import BATCH_N, FLUSH_IDLE_S
+from memtranslator.config import BATCH_N, B_BATCH_N, FLUSH_IDLE_S
 from memtranslator.pipeline import Pipeline
+from memtranslator.schema import Requirement
 from memtranslator.store import Store
 
 
@@ -52,14 +54,69 @@ def test_idle_flush(monkeypatch, tmp_path):
     assert out is not None and len(calls) == 2
 
 
-def test_diff_candidates_join_the_batch(monkeypatch, tmp_path):
+def _feedback(p, store, text, now):
+    req = store.add(text)
+    return p.add_feedback(
+        [req.to_dict()],
+        [{"op": "replace",
+          "before_sentence": "keep it <changed>short</changed>.",
+          "after_sentence": "keep it <changed>very short</changed>."}], now)
+
+
+def test_feedback_without_a_diff_is_never_queued(tmp_path):
+    p = _pipe(tmp_path)
+    req = p.store.add("Emails must stay under 120 words.")
+    assert p.add_feedback([req.to_dict()], [], now=1000.0) is False
+    assert p.add_feedback([], [{"op": "replace"}], now=1000.0) is False
+    assert p.pending_count() == 0
+
+
+def test_route_b_flushes_at_its_own_threshold(monkeypatch, tmp_path):
+    calls = []
+
+    def fake(model, system, user, max_tokens=1024, **kw):
+        calls.append(user)
+        return json.dumps([{"signal": n, "entry": 1, "op": "none"}
+                           for n in range(1, B_BATCH_N + 1)])
+    monkeypatch.setattr(llm, "complete", fake)
+    p = _pipe(tmp_path)
+    for i in range(B_BATCH_N - 1):
+        _feedback(p, p.store, f"rule {i}", now=1000.0 + i)
+    assert p.maybe_flush(now=1000.0) is None       # below B_BATCH_N
+    _feedback(p, p.store, "rule last", now=1000.0)
+    out = p.maybe_flush(now=1000.0)
+    assert out is not None and len(calls) == 1     # one call for the batch
+    assert p.pending_count("b") == 0
+
+
+def test_route_b_update_edits_the_attributed_entry(monkeypatch, tmp_path):
+    p = _pipe(tmp_path)
+    req = p.store.add("Emails must stay under 120 words.")
+    p.add_feedback([req.to_dict()], [{
+        "op": "replace",
+        "before_sentence": "keep it under <changed>120</changed> words.",
+        "after_sentence": "keep it under <changed>80</changed> words."}],
+        now=1000.0)
+    monkeypatch.setattr(llm, "complete", lambda *a, **k: json.dumps(
+        [{"signal": 1, "entry": 1, "op": "update",
+          "text": "Keep emails under 80 words."}]))
+    out = p.maybe_flush(now=1000.0, force=True)
+    assert out["b"]["ops"] == [{"kind": "update", "target_id": req.id,
+                                "text": "Keep emails under 80 words."}]
+    # same entry, corrected in place — no heir, no supersede chain
+    assert [r.text for r in p.store.active()] == ["Keep emails under 80 words."]
+    assert p.store.get(req.id).text == "Keep emails under 80 words."
+
+
+def test_route_a_queue_does_not_trip_the_route_b_threshold(monkeypatch,
+                                                           tmp_path):
     calls = []
     _fake_ops(monkeypatch, calls)
     p = _pipe(tmp_path)
-    p.add_diff({"raw": "r", "polished": "p", "final": "f",
-                "applied": [], "survival": "mixed"}, now=1000.0)
-    out = p.maybe_flush(now=1000.0 + FLUSH_IDLE_S + 1)
-    assert out is not None and len(calls) >= 2   # extract + tagging at minimum
+    for i in range(B_BATCH_N):
+        p.add_natural([f"以后规则{i}"], now=1000.0 + i)
+    assert p.maybe_flush(now=1000.0 + B_BATCH_N) is None
+    assert calls == []
 
 
 def test_empty_queue_never_calls(monkeypatch, tmp_path):

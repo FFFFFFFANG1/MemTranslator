@@ -31,7 +31,11 @@ MIN_CJK_CHARS = 5
 MIN_LATIN_WORDS = 4
 
 _CJK = re.compile(r"[\u4e00-\u9fff]")
-_STRINGS = re.compile(r'"([^"\\]{4,})"|\'([^\'\\]{4,})\'')
+# A single-quoted Python literal cannot contain a raw newline. Without that
+# bound the pattern paired a quote with one hundreds of lines away and read
+# the comments in between as prompt text — a provenance comment naming the
+# phrasings a lexicon generalises was reported as a lift of them.
+_STRINGS = re.compile(r'"([^"\\\n]{4,})"|\'([^\'\\\n]{4,})\'')
 
 # Narrow escape hatch: fixed set phrases of everyday Chinese that a corpus
 # will inevitably also contain. An entry qualifies only if it is dictionary-

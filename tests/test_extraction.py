@@ -2,8 +2,13 @@
 op parsing. All LLM calls faked via monkeypatching llm.complete."""
 import json
 
+import pytest
+
 import memtranslator.llm as llm
-from memtranslator.extraction import parse_ops, run_extraction
+from memtranslator.extraction import (A_EXTRACTION_SYSTEM, B_EXTRACTION_SYSTEM,
+                                      build_b_user_prompt, parse_feedback_ops,
+                                      parse_ops, run_b_extraction,
+                                      run_extraction)
 from memtranslator.schema import Requirement
 
 
@@ -90,10 +95,10 @@ def test_escaped_quotes_and_clean_json_unaffected_by_repair():
 
 def test_run_extraction_end_to_end(monkeypatch):
     existing = _reqs("周报要用 bullet points")
-    seen = {}
+    calls = []
 
     def fake(model, system, user, max_tokens=1024, **kw):
-        seen.setdefault("user", user)
+        calls.append({"system": system, "user": user})
         return json.dumps([
             {"op": "new", "text": "commit message 用英文",
              "key": "commit.language", "salience": 4,
@@ -104,13 +109,101 @@ def test_run_extraction_end_to_end(monkeypatch):
     monkeypatch.setattr(llm, "complete", fake)
     out = run_extraction(
         a_candidates=["以后 commit 都写英文", "周报继续 bullet points"],
-        b_candidates=[{"raw": "r", "polished": "p", "final": "f",
-                       "applied": ["周报要用 bullet points"],
-                       "survival": "mixed"}],
-        existing=existing)
+        b_candidates=[], existing=existing)
     assert [o["kind"] for o in out["ops"]] == ["new", "reinforce"]
     assert out["ops"][1]["target_id"] == existing[0].id
     assert out["flags"] == []
-    # numbered index and both candidate sections reached the prompt
-    assert "[1]" in seen["user"] and "commit 都写英文" in seen["user"]
-    assert "survival" in seen["user"] or "mixed" in seen["user"]
+    assert [c["system"] for c in calls] == [A_EXTRACTION_SYSTEM]
+    assert "[1]" in calls[0]["user"] and "commit 都写英文" in calls[0]["user"]
+
+
+def test_a_route_refuses_to_carry_b_signals():
+    """The routes no longer share an executor, so one call cannot serve
+    both: route B's judgements never reach Store.apply_ops."""
+    with pytest.raises(ValueError):
+        run_extraction(a_candidates=["以后周报用 bullet"],
+                       b_candidates=[{"entries": [], "diff": []}],
+                       existing=[])
+
+
+def test_the_two_prompts_have_disjoint_operation_contracts():
+    assert "SIGNALS-B" not in A_EXTRACTION_SYSTEM
+    assert "SIGNALS-A" not in B_EXTRACTION_SYSTEM
+    # Route B may only judge the entries the patch used: no store index, no
+    # creation, none of route A's op vocabulary.
+    assert "STORE: the current entries" not in B_EXTRACTION_SYSTEM
+    b_contract = B_EXTRACTION_SYSTEM.rsplit("Output STRICTLY", 1)[1]
+    assert '"update"|"retire"|"none"' in b_contract
+    for kind in ("new", "reinforce", "contradict", "style_rule", "salience"):
+        assert kind not in b_contract
+    assert "Never create a new memory" in B_EXTRACTION_SYSTEM
+    assert "same facet" in B_EXTRACTION_SYSTEM
+    assert "independently satisfiable" in B_EXTRACTION_SYSTEM
+    # The prompt states the same token policy the diff layer implements.
+    assert "through 128 lexical tokens" in B_EXTRACTION_SYSTEM
+    assert "56 tokens on each side" in B_EXTRACTION_SYSTEM
+    assert "reinforce" not in build_b_user_prompt([])
+
+
+def test_feedback_parser_binds_only_recorded_entries():
+    entry = Requirement(text="Emails must stay under 120 words.")
+    candidates = [{"entries": [entry.to_dict()], "diff": [
+        {"op": "replace",
+         "before_sentence": "Keep it under <changed>120</changed> words.",
+         "after_sentence": "Keep it under <changed>80</changed> words."}]}]
+    ops, flags = parse_feedback_ops(json.dumps(
+        [{"signal": 1, "entry": 1, "op": "update",
+          "text": "Emails must stay under 80 words."}]), candidates)
+    assert flags == []
+    assert ops == [{"kind": "update", "target_id": entry.id,
+                    "text": "Emails must stay under 80 words."}]
+
+    # An entry outside the signal is unreachable — there is no id to name.
+    ops, flags = parse_feedback_ops(json.dumps(
+        [{"signal": 1, "entry": 2, "op": "retire"}]), candidates)
+    assert ops == [] and any("entry out of range" in f for f in flags)
+
+
+def test_feedback_ops_are_returned_in_signal_chronology():
+    """Buffer order decides, not model array order: a later refinement must
+    reset the feedback score an earlier removal vote lowered."""
+    entry = Requirement(text="Emails must stay under 120 words.")
+    candidate = {"entries": [entry.to_dict()], "diff": [{"op": "replace"}]}
+    ops, flags = parse_feedback_ops(json.dumps([
+        {"signal": 2, "entry": 1, "op": "update",
+         "text": "Emails must stay under 80 words."},
+        {"signal": 1, "entry": 1, "op": "retire"},
+    ]), [candidate, candidate])
+    assert flags == []
+    assert [op["kind"] for op in ops] == ["retire", "update"]
+
+
+def test_feedback_none_and_no_op_update_produce_nothing():
+    entry = Requirement(text="Emails must stay under 120 words.")
+    candidates = [{"entries": [entry.to_dict()], "diff": [{"op": "add"}]}]
+    ops, flags = parse_feedback_ops(
+        json.dumps([{"signal": 1, "entry": 1, "op": "none"}]), candidates)
+    assert ops == [] and flags == []
+    ops, flags = parse_feedback_ops(json.dumps(
+        [{"signal": 1, "entry": 1, "op": "update",
+          "text": "Emails must stay under 120 words."}]), candidates)
+    assert ops == [] and any("unchanged" in f for f in flags)
+
+
+def test_run_b_extraction_sees_entries_and_diff_only(monkeypatch):
+    entry = Requirement(text="Emails must stay under 120 words.")
+    candidates = [{"entries": [entry.to_dict()], "diff": [
+        {"op": "delete",
+         "before_sentence": "Write the email <changed>under 120 words</changed>.",
+         "after_sentence": "Write the email."}]}]
+    seen = {}
+
+    def fake(model, system, user, max_tokens=1024, **kw):
+        seen["system"], seen["user"] = system, user
+        return json.dumps([{"signal": 1, "entry": 1, "op": "retire"}])
+    monkeypatch.setattr(llm, "complete", fake)
+    out = run_b_extraction(candidates)
+    assert out["ops"] == [{"kind": "retire", "target_id": entry.id}]
+    # the raw/polished triple belongs to route A's world; B sees the edit
+    assert "polished" not in seen["user"] and "survival" not in seen["user"]
+    assert seen["system"] is B_EXTRACTION_SYSTEM

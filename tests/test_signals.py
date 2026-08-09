@@ -50,7 +50,8 @@ def test_latest_matching_translate_wins():
 
 # ---------- M1 / B1: attribute_diff (0-token span attribution) ----------
 
-from memtranslator.signals import attribute_diff, screen_message  # noqa: E402
+from memtranslator.signals import (attribute_diff, patch_diff,  # noqa: E402
+                                   screen_message)
 
 RAW = "给房东写封邮件催修暖气"
 POLISHED = "给房东写封不超过120词的邮件，催他尽快修暖气"
@@ -86,6 +87,52 @@ def test_attr_partial_injection_kept_with_additions():
 def test_attr_no_injection_noop_translate():
     a = attribute_diff(RAW, RAW, RAW + "，谢谢")
     assert a["verdict"] == "partial" and a["strength_delta"] == 0
+
+
+# ---------- Route B: patch_diff (0-token sentence-level human edits) ----------
+
+def test_patch_diff_is_empty_until_user_changes_agent_patch():
+    assert patch_diff(POLISHED, POLISHED) == []
+    hunks = patch_diff(POLISHED, POLISHED.replace("120", "80"))
+    assert hunks and hunks[0]["op"] == "replace"
+    assert "<changed>120</changed>" in hunks[0]["before_sentence"]
+    assert "<changed>80</changed>" in hunks[0]["after_sentence"]
+
+
+def test_patch_diff_uses_coherent_token_level_replacement():
+    """A semantic swap is one replacement, not an unrelated add and delete —
+    the shape that made the feedback extractor misread edits."""
+    hunks = patch_diff("Meeting notes for today's standup, using bullet points.",
+                       "Meeting notes for today's standup, using a table.")
+    assert len(hunks) == 1 and hunks[0]["op"] == "replace"
+    assert "<changed>bullet points</changed>" in hunks[0]["before_sentence"]
+    assert "<changed>a table</changed>" in hunks[0]["after_sentence"]
+
+
+def test_patch_diff_keeps_complete_sentence_at_128_tokens():
+    prefix = " ".join(f"before{i}" for i in range(63))
+    suffix = " ".join(f"after{i}" for i in range(63))
+    hunks = patch_diff(f"{prefix} formal {suffix}.", f"{prefix} casual {suffix}.")
+    assert len(hunks) == 1
+    assert "[truncated]" not in hunks[0]["before_sentence"]
+    assert hunks[0]["before_sentence"].startswith("before0 ")
+    assert "<changed>formal</changed>" in hunks[0]["before_sentence"]
+    assert hunks[0]["before_sentence"].endswith("after62.")
+
+
+def test_patch_diff_over_128_tokens_keeps_56_tokens_each_side():
+    prefix = " ".join(f"before{i}" for i in range(64))
+    suffix = " ".join(f"after{i}" for i in range(63))
+    hunks = patch_diff(f"{prefix} formal {suffix}.", f"{prefix} casual {suffix}.")
+    assert len(hunks) == 1
+    assert "<changed>formal</changed>" in hunks[0]["before_sentence"]
+    assert "<changed>casual</changed>" in hunks[0]["after_sentence"]
+    assert "[truncated]" in hunks[0]["before_sentence"]
+    # 129 tokens → exactly 56 context tokens each side of the replacement
+    assert "before7 " not in hunks[0]["before_sentence"]
+    assert "before8 " in hunks[0]["before_sentence"]
+    assert "after55" in hunks[0]["before_sentence"]
+    assert "after56" not in hunks[0]["before_sentence"]
 
 
 # ---------- M1 / Route A: screen_message (0-token sentence screening) ----------

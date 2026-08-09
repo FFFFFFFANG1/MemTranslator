@@ -16,7 +16,15 @@ from memtranslator.schema import BUCKETS, POLARITIES
 from memtranslator.scopes import normalize_scope
 from memtranslator.schema import Requirement
 
-EXTRACTION_SYSTEM = """You maintain a store of a user's delivery requirements — durable rules about
+# The two signal routes are separate calls with disjoint operation contracts
+# (2026-08-09). Route A reads what the user SAID and emits store ops against
+# the numbered STORE. Route B reads what the user EDITED in a patch we wrote
+# and judges only the entries that patch used, so it needs no store index and
+# may not create memory — see B_EXTRACTION_SYSTEM. Route A's own rules keep
+# their historical numbers so a doc citing "rule 4c" still points at the same
+# text. Cross-batch store hygiene stays with the low-frequency consolidation
+# pass, the only stage that sees the results of both routes.
+A_EXTRACTION_SYSTEM = """You maintain a store of a user's delivery requirements — durable rules about
 HOW tasks should be executed and delivered (length, format, tone, language,
 method, workflow). You receive:
 - STORE: the current entries, numbered [1]..[N];
@@ -25,10 +33,7 @@ method, workflow). You receive:
   vocabulary with entries [3]]" — candidate referents computed by word
   overlap. When resolving which entry a span restates, overrides or
   withdraws, check those numbers FIRST; the annotation is a candidate
-  list, not a verdict, and a span without one usually sets a NEW rule;
-- SIGNALS-B: rewrite records {raw → polished → final} where "final" is what
-  the user actually sent after our rewrite, with a mechanical survival label
-  for the injected constraints (kept / removed / mixed).
+  list, not a verdict, and a span without one usually sets a NEW rule.
 
 Emit requirement operations, following ALL of these rules:
 1. Extract only durable "how the task is done" rules the user expressed.
@@ -68,29 +73,6 @@ Emit requirement operations, following ALL of these rules:
    nothing, for a bare withdrawal). NEVER aim contradict or retire at an
    unrelated entry just because a number must be chosen; a wrong target
    destroys a healthy rule.
-3. SIGNALS-B: ops may come ONLY from text the user ADDED into "final"
-   relative to "polished". An added delivery constraint (format, language,
-   tone, length, method) COUNTS as a durable signal even when seen once —
-   that is the point of this channel. Cover the FULL added delta — if the
-   user added both a language and a tone constraint, the new rule carries
-   both. Bind each learned rule to the breadth the user's intent supports —
-   and when the user's own wording NAMES the category ("这类客诉回复", "the
-   postmortems I write", "招标文件"), use exactly that wording as the rule's
-   breadth: the user's phrasing IS the scope. Only when no category is named,
-   infer the task TYPE from the user's own vocabulary, never the specific
-   instance (this one file, this one recipient). Interpersonal tone and
-   recipient-specific asks stay scoped to their stated context. Each added
-   constraint lands on its OWN facet: never fold one into an existing
-   entry about a DIFFERENT facet — a language or tone the user added to
-   one email is its own (scoped) "new" rule, not an amendment to a stored
-   length rule. NEVER emit ops about constraints that were
-   already in "polished" (our own injections are not user signals — no
-   reinforce for them). A deleted or weakened injected constraint is a
-   one-off signal: emit NOTHING for it — no retire, no contradict
-   (mechanical strength already handled it; "survival: removed" describes
-   exactly this). If the user REWORDED an injected constraint but kept its
-   meaning, that is feedback on our rewrite style: emit "style_rule" with a
-   short imperative rule (≤25 tokens) about how to phrase rewrites.
 4. Requirement text: single sentence, imperative gist, written in ENGLISH
    regardless of the user's language — English is the store's canonical
    language (owner ruling 2026-07-29: one storage language keeps matching
@@ -136,6 +118,61 @@ Output STRICTLY a JSON array (possibly empty), nothing else:
   "bucket": "<one of the six>", "polarity": "require|prefer|avoid|prohibit",
   "evidence_id": "<same for rules from one utterance>",
   "scope": {}, "salience": 1-5, "evidence": "<short quote>"}]"""
+
+# Historical name kept for the probes and repros that pin the A channel.
+EXTRACTION_SYSTEM = A_EXTRACTION_SYSTEM
+
+
+B_EXTRACTION_SYSTEM = """You review human edits to requirement-backed request patches.
+For each SIGNAL you receive:
+- ENTRIES are the exact stored requirements the translator used for that
+  patch, numbered locally within the signal;
+- DIFF is the only human feedback. Each item shows the complete sentence
+  before and after the edit; ``<changed>...</changed>`` marks the edited
+  span. Sentences through 128 lexical tokens are complete; longer sentences
+  retain 56 tokens on each side of the change and use ``[truncated]``.
+
+Judge each entry independently. First identify the facet governed by the
+entry (length, format, language, tone, method, and so on), then the facet
+changed inside the markers.
+
+Strict attribution rules:
+- If the entry's original behavior remains unchanged and the user merely adds
+  a second, independently satisfiable constraint, emit none. Never append an
+  orthogonal addition to the stored entry.
+- update is allowed only when the diff changes the same facet, value, or scope
+  as the entry. A changed cap, alternative rendering, opposite language or
+  tone, or a new exception to the same rule is a replacement/refinement and
+  MUST be update, never retire.
+- retire is allowed only when the marked edit removes or rejects the entry's
+  behavior and supplies no replacement on that facet.
+- When attribution or facet identity is uncertain, emit none.
+
+Use this counterfactual before update: ignore the marked addition in the
+AFTER sentence. If the entry's required behavior is still present and fully
+satisfied, while the addition can coexist with it, the answer is none. For
+example, an entry requiring labelled charts is not updated when the user
+keeps the labels and merely adds another output language. Conversely,
+replacing a list with a matrix changes the same rendering facet and is update.
+
+The only operations are:
+- update: the diff directly refines, narrows, widens, or changes that entry.
+  Return the complete revised durable requirement in ENGLISH, not the
+  one-off request; do not merely explain what changed.
+- retire: the diff directly removes or rejects the behavior required by that
+  entry and supplies no replacement. This is one negative vote; storage
+  retires an entry only after two votes.
+- none: the edit is unrelated to the entry, only changes task content or
+  phrasing, preserves the entry, adds a one-off constraint, or is ambiguous.
+
+Never create a new memory, reinforce an entry, infer a style rule, or target
+an entry outside the signal. Untouched agent-written text is not user
+evidence. A replacement is update, not retire. Emit exactly one judgement
+per signal-entry pair.
+
+Output STRICTLY a JSON array, nothing else:
+[{"signal": <signal number>, "entry": <entry number>,
+  "op": "update"|"retire"|"none", "text": "<required for update>"}]"""
 
 
 def _index_block(existing: list[Requirement]) -> str:
@@ -191,6 +228,33 @@ def build_user_prompt(a_candidates: list[str], b_candidates: list[dict],
         parts.append("SIGNALS-B (rewrite records):\n" + "\n".join(blocks))
     parts.append("JSON:")
     return "\n\n".join(parts)
+
+
+def build_a_user_prompt(a_candidates: list[str],
+                        existing: list[Requirement]) -> str:
+    return build_user_prompt(a_candidates, [], existing)
+
+
+def build_b_user_prompt(candidates: list[dict]) -> str:
+    """Route-B input is entry snapshots plus marked diffs — no store index.
+    The entries are the ones the patch actually used, recorded at translate
+    time, so there is nothing for the model to search for or resolve."""
+    signals = []
+    for signal_n, candidate in enumerate(candidates, 1):
+        entries = []
+        for entry_n, entry in enumerate(candidate.get("entries", []), 1):
+            entries.append({
+                "entry": entry_n,
+                "text": entry.get("text", ""),
+                "key": entry.get("key", ""),
+                "scope": entry.get("scope") or None,
+                "bucket": entry.get("bucket", ""),
+                "polarity": entry.get("polarity", ""),
+            })
+        signals.append({"signal": signal_n, "entries": entries,
+                        "diff": candidate.get("diff", [])})
+    return ("SIGNALS:\n" + json.dumps(signals, ensure_ascii=False, indent=2)
+            + "\n\nJSON:")
 
 
 def _escape_inner_quotes(s: str) -> str:
@@ -302,6 +366,80 @@ def parse_ops(raw: str, existing: list[Requirement]) -> tuple[list[dict], list[s
                 flags.append(f"malformed merge: {ts!r}")
         else:
             flags.append(f"malformed op: {op!r}")
+    return ops, flags
+
+
+def parse_feedback_ops(raw: str, candidates: list[dict]
+                       ) -> tuple[list[dict], list[str]]:
+    """Parse route-B judgements and bind them mechanically to the recorded
+    entry ids. The model names a (signal, entry) pair, never an id: it can
+    only ever act on an entry the patch really used."""
+    s = raw.strip()
+    start, end = s.find("["), s.rfind("]")
+    if start < 0 or end <= start:
+        return [], ["unparseable"]
+    try:
+        items = json.loads(s[start:end + 1])
+    except json.JSONDecodeError:
+        try:
+            items = json.loads(_escape_inner_quotes(s[start:end + 1]))
+        except json.JSONDecodeError:
+            return [], ["unparseable"]
+    if not isinstance(items, list):
+        return [], ["unparseable"]
+
+    by_pair, flags, seen = {}, [], set()
+    for item in items:
+        if not isinstance(item, dict):
+            flags.append("malformed feedback judgement")
+            continue
+        signal_n, entry_n = item.get("signal"), item.get("entry")
+        if not isinstance(signal_n, int) \
+                or not (1 <= signal_n <= len(candidates)):
+            flags.append(f"feedback signal out of range: {signal_n!r}")
+            continue
+        entries = candidates[signal_n - 1].get("entries", [])
+        if not isinstance(entry_n, int) or not (1 <= entry_n <= len(entries)):
+            flags.append(f"feedback entry out of range: {entry_n!r}")
+            continue
+        pair = (signal_n, entry_n)
+        if pair in seen:
+            flags.append(f"duplicate feedback judgement: {pair!r}")
+            continue
+        seen.add(pair)
+        entry = entries[entry_n - 1]
+        target_id = entry.get("id")
+        if not target_id:
+            flags.append(f"feedback entry missing id: {pair!r}")
+            continue
+
+        kind = item.get("op")
+        if kind == "none":
+            by_pair[pair] = None
+            continue
+        if kind == "retire":
+            by_pair[pair] = {"kind": "retire", "target_id": target_id}
+            continue
+        if kind == "update":
+            text = item.get("text")
+            if not isinstance(text, str) or not text.strip():
+                flags.append(f"feedback update missing text: {pair!r}")
+                continue
+            text = text.strip()
+            if text == (entry.get("text") or "").strip():
+                flags.append(f"feedback update unchanged: {pair!r}")
+                continue
+            by_pair[pair] = {"kind": "update", "target_id": target_id,
+                             "text": text}
+            continue
+        flags.append(f"unsupported feedback op: {kind!r}")
+
+    expected = sum(len(c.get("entries", [])) for c in candidates)
+    if len(seen) < expected:
+        flags.append(f"missing feedback judgements: {expected - len(seen)}")
+    # Model array order is not trusted. Apply feedback in buffer chronology so
+    # a later refinement can reset earlier negative evidence, not vice versa.
+    ops = [by_pair[p] for p in sorted(by_pair) if by_pair[p] is not None]
     return ops, flags
 
 
@@ -816,16 +954,17 @@ def _verify_ops(ops: list[dict], a_candidates: list[str],
     return kept, flags
 
 
-def run_extraction(a_candidates: list[str], b_candidates: list[dict],
-                   existing: list[Requirement]) -> dict:
+def run_a_extraction(a_candidates: list[str],
+                     existing: list[Requirement]) -> dict:
+    """Route A: the user's own messages, one call."""
     from memtranslator.config import WRITE_RECHECK, WRITE_VERIFY
-    user = build_user_prompt(a_candidates, b_candidates, existing)
+    user = build_a_user_prompt(a_candidates, existing)
     writer = MODELS.get("writer") or MODELS["translator"]
-    raw = llm.complete(writer, EXTRACTION_SYSTEM, user,
+    raw = llm.complete(writer, A_EXTRACTION_SYSTEM, user,
                        max_tokens=llm.budget_for(writer, 1500),
                        temperature=GEN_TEMPERATURE)
     ops, flags = parse_ops(raw, existing)
-    ops, gate_flags = _apply_gates(ops, a_candidates, b_candidates, existing)
+    ops, gate_flags = _apply_gates(ops, a_candidates, [], existing)
     flags += gate_flags
     if WRITE_RECHECK:
         silent = _unaccounted_rule_spans(a_candidates, ops, existing)
@@ -835,12 +974,12 @@ def run_extraction(a_candidates: list[str], b_candidates: list[dict],
             # no op — the measured dominant never-learned class. A focused
             # second look either extracts or explicitly ignores them; all
             # gates re-apply, so precision discipline is unchanged.
-            user2 = (build_user_prompt(silent, [], existing)
+            user2 = (build_a_user_prompt(silent, existing)
                      + "\n\n(Second pass: the spans above matched durable-"
                        "rule signals but produced no operation. For each, "
                        "either emit the correct operations or emit nothing "
                        "if it is noise or a one-task spec.)")
-            raw2 = llm.complete(writer, EXTRACTION_SYSTEM, user2,
+            raw2 = llm.complete(writer, A_EXTRACTION_SYSTEM, user2,
                                 max_tokens=llm.budget_for(writer, 1000),
                                 temperature=GEN_TEMPERATURE)
             ops2, f2 = parse_ops(raw2, existing)
@@ -865,6 +1004,34 @@ def run_extraction(a_candidates: list[str], b_candidates: list[dict],
                       f"{len(fresh)} new op(s)"] + f2 + g2
             ops += fresh
     if WRITE_VERIFY:
-        ops, vflags = _verify_ops(ops, a_candidates, b_candidates)
+        ops, vflags = _verify_ops(ops, a_candidates, [])
         flags += vflags
     return {"ops": ops, "flags": flags}
+
+
+def run_b_extraction(candidates: list[dict]) -> dict:
+    """Route B: one call over a batch of {entries, diff} signals. The budget
+    is smaller than route A's because the output is one short judgement per
+    signal-entry pair, never a sweep of the store.
+
+    The gate chain does not apply here. Every gate exists to stop route A
+    from aiming a destructive op at an entry the user never referred to;
+    route B's targets are the entries the patch demonstrably used, and its
+    only destructive op already needs a second vote to bite."""
+    user = build_b_user_prompt(candidates)
+    writer = MODELS.get("writer") or MODELS["translator"]
+    raw = llm.complete(writer, B_EXTRACTION_SYSTEM, user,
+                       max_tokens=llm.budget_for(writer, 900),
+                       temperature=GEN_TEMPERATURE)
+    ops, flags = parse_feedback_ops(raw, candidates)
+    return {"ops": ops, "flags": flags}
+
+
+def run_extraction(a_candidates: list[str], b_candidates: list[dict],
+                   existing: list[Requirement]) -> dict:
+    """Compatibility entry point for route A. The routes no longer share an
+    operation vocabulary or an executor, so a mixed call cannot be honoured:
+    route B's judgements go to `Store.apply_feedback_ops`, not `apply_ops`."""
+    if b_candidates:
+        raise ValueError("route B must use run_b_extraction")
+    return run_a_extraction(a_candidates, existing)

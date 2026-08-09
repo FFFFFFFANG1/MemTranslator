@@ -22,11 +22,14 @@ panel. null-generic is a corpus instrument (prior floor), separated in the
 report. Cost note: one episode ≈ 62 chained + |probes|×|arms| translate calls.
 
     uv run python -m bench.suites.run_episodes e-01
+    # Fused E1+perf (one chain → owner metrics + canary/scale instruments):
+    uv run python -m bench.perf --episodes e-01,e-03,e-05,e-09
 """
 import argparse
 import json
 import time
 import uuid
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from memtranslator import llm, translate as tr_mod
@@ -41,6 +44,8 @@ from memtranslator.store import Store
 from bench.graph.derive import (Effect, fold, project_status,
                                 to_product_context, to_product_scope)
 from bench.suites.config import CASES, RUN_DIR
+from bench.suites.instruments import (pick_canary, sample_instrument,
+                                      size_bucket)
 from bench.suites.judge import judge
 from bench.suites.providers import V1Provider
 from bench.suites.report import write_snapshot
@@ -244,17 +249,29 @@ JUDGED_ARMS = ("real", "oracle-arm", "oracle-should")
 # chained pass
 # ---------------------------------------------------------------------------
 
-def run_chained(ep: dict, flush_every: int = 4) -> dict:
+def run_chained(ep: dict, flush_every: int = 4,
+                sizes: list[int] | None = None,
+                canary: dict | None = None) -> dict:
+    """One write-path chain. Optional ``canary`` + ``sizes`` collect the
+    perf instruments on the same store so a single run yields E1 scores and
+    scale/safety numbers together.
+    """
     d = RUN_DIR / "episode-stores"
     d.mkdir(parents=True, exist_ok=True)
     store = Store(d / f"{ep['id']}-{uuid.uuid4().hex[:8]}.jsonl")
+    if canary:
+        store.add(canary["text"], source="manual")
     provider = V1Provider()
     pending, transcript = [], []
     probe_rows, consolidations = [], []
+    instrument_rows: list[dict] = []
     snapshots: dict[int, list[dict]] = {}
     adds_since = 0
     peak_active = 0
     rounds_since_flush = 0
+    taken: set[int] = set()
+    probes = [r["text"] for r in ep["rounds"] if r.get("probe")][:4]
+    size_targets = list(sizes or [])
 
     for r in ep["rounds"]:
         transcript.append(r["text"])
@@ -267,6 +284,7 @@ def run_chained(ep: dict, flush_every: int = 4) -> dict:
             # the store the probe-time system saw, not the end-of-episode one
             probe_rows.append({"round": r, "transcript": list(transcript),
                                "chained_polished": out["polished"],
+                               "latency_ms": out.get("latency_ms", 0),
                                "store_state": [x.to_dict()
                                                for x in store.list()]})
         pending.append({"type": "natural", "text": r["text"]})
@@ -296,13 +314,29 @@ def run_chained(ep: dict, flush_every: int = 4) -> dict:
                 consolidations.append({"seq": r["seq"], "trigger": trigger,
                                        "n_ops": len(cops)})
                 adds_since = 0
+            if size_targets:
+                n = len(store.active())
+                due = [s for s in size_targets if s <= n and s not in taken]
+                if due:
+                    taken.update(due)
+                    instrument_rows.append(
+                        sample_instrument(store, canary, probes, ep["id"]))
         peak_active = max(peak_active, len(store.active()))
         if r["seq"] in ep["checkpoints"]:
             snapshots[r["seq"]] = [x.to_dict() for x in store.list()]
 
+    # Always finish the episode so E1 gold probes/checkpoints stay complete;
+    # instruments only sample along the way (and once at the end).
+    if size_targets and (not instrument_rows
+                         or instrument_rows[-1]["size"] != len(store.active())):
+        instrument_rows.append(
+            sample_instrument(store, canary, probes, ep["id"]))
+
     return {"store": store, "probe_rows": probe_rows,
             "snapshots": snapshots, "consolidations": consolidations,
-            "peak_active": peak_active}
+            "peak_active": peak_active,
+            "instrument_rows": instrument_rows,
+            "canary": canary["text"] if canary else None}
 
 
 # ---------------------------------------------------------------------------
@@ -411,20 +445,33 @@ def score_state(ep, snapshot: list[dict], seq: int) -> dict:
             "misses": detail[:20]}
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("episode", nargs="?", default="e-01")
-    ap.add_argument("--arms", default="real,no_retire,oracle-arm,"
-                    "oracle-should,full_context,null-generic")
-    args = ap.parse_args()
-    ep = json.loads((CASES / "episodes" / f"{args.episode}.json").read_text())
-    by_cid = {n["cid"]: n for n in ep["catalogue"]}
-    arms = args.arms.split(",")
+def _owner_metrics(rows: list[dict], arm: str) -> dict:
+    """Owner ruling 2026-07-30: per-task perfect + per-memory hit first."""
+    sub = [r for r in rows if r["arm"] == arm
+           and (r["carry_n"] + r["suppress_n"]) > 0]
+    perfect = sum(1 for r in sub
+                  if r["carry_hits"] == r["carry_n"]
+                  and r["suppress_hits"] == r["suppress_n"])
+    mem_n = sum(r["carry_n"] for r in sub)
+    mem_hit = sum(r["carry_hits"] for r in sub)
+    return {"tasks_perfect": perfect, "tasks_n": len(sub),
+            "memory_hit": mem_hit, "memory_n": mem_n}
 
-    print(f"{ep['id']}: chained pass ({len(ep['rounds'])} rounds)...")
-    chained = run_chained(ep)
+
+def run_one(ep: dict, arms: list[str], sizes: list[int] | None,
+            use_canary: bool) -> dict:
+    """One episode: chained write + E1 scoring + optional perf instruments."""
+    by_cid = {n["cid"]: n for n in ep["catalogue"]}
+    canary = pick_canary(ep) if use_canary else None
+    if use_canary and canary is None:
+        print(f"{ep['id']}: no collision-free canary — instruments without "
+              f"canary carry/kill")
+
+    print(f"{ep['id']}: chained pass ({len(ep['rounds'])} rounds)"
+          f"{', canary planted' if canary else ''}...")
+    chained = run_chained(ep, sizes=sizes, canary=canary)
     print(f"  peak SUT active {chained['peak_active']}, "
-          f"consolidations {chained['consolidations']}")
+          f"consolidations {len(chained['consolidations'])}")
 
     rows = []
     for row in chained["probe_rows"]:
@@ -441,6 +488,8 @@ def main():
     per_arm = {}
     for arm in arms:
         sub = [r for r in rows if r["arm"] == arm]
+        if not sub:
+            continue
         cn = sum(r["carry_n"] for r in sub)
         cmn = sum(r["carry_mech_n"] for r in sub)
         sn = sum(r["suppress_n"] for r in sub)
@@ -454,27 +503,11 @@ def main():
             "mean_block_chars": sum(r["block_chars"] for r in sub) / len(sub),
             "mean_latency_ms": sum(r["latency_ms"] for r in sub) / len(sub)}
 
-    state = sum(r["ok"] for r in state_rows) / max(1, sum(r["n"]
-                                                          for r in state_rows))
+    state = sum(r["ok"] for r in state_rows) / max(
+        1, sum(r["n"] for r in state_rows))
     real = per_arm.get("real", {})
+    om = _owner_metrics(rows, "real")
 
-    # Owner ruling 2026-07-30: the two numbers shown FIRST are per-task
-    # and per-memory; everything below them is diagnostics. A task counts
-    # as perfect iff every should-fire memory was woven AND no
-    # must-not-fire one leaked; tasks with zero judgment points are
-    # excluded (nothing to get right or wrong).
-    def owner_metrics(arm: str) -> dict:
-        sub = [r for r in rows if r["arm"] == arm
-               and (r["carry_n"] + r["suppress_n"]) > 0]
-        perfect = sum(1 for r in sub
-                      if r["carry_hits"] == r["carry_n"]
-                      and r["suppress_hits"] == r["suppress_n"])
-        mem_n = sum(r["carry_n"] for r in sub)
-        mem_hit = sum(r["carry_hits"] for r in sub)
-        return {"tasks_perfect": perfect, "tasks_n": len(sub),
-                "memory_hit": mem_hit, "memory_n": mem_n}
-
-    om = owner_metrics("real")
     if om["tasks_n"]:
         print(f"\nper-task  (全部要求完美选出): {om['tasks_perfect']}"
               f"/{om['tasks_n']} = "
@@ -494,30 +527,147 @@ def main():
               f"{f(s['suppress']):>9} {s['noop_rate']:6.2f} "
               f"{s['mean_block_chars']:7.0f} {s['mean_latency_ms']:6.0f}")
     print(f"STATE (chained store vs gold): {state:.2f}")
-    print("note: null-generic is a corpus instrument, not a product "
-          "baseline — do not plot it against the other arms")
+    if len(arms) > 1:
+        print("note: null-generic is a corpus instrument, not a product "
+              "baseline — do not plot it against the other arms")
 
-    # Owner ruling 2026-07-28: no weighted composite. The three bands are
-    # the numbers; `score` carries the unweighted band mean purely so
-    # waterlines has one scalar to plot, and it is labeled as such.
     bands = [x for x in (real.get("carry"), real.get("suppress"), state)
              if x is not None]
     band_mean = sum(bands) / len(bands) if bands else 0.0
-    results = [{"id": ep["id"], "category": "episode",
-                "episode": ep["id"], "pass": bool(bands),
-                "score": band_mean, "score_is": "unweighted band mean",
-                "owner_metrics": om,
-                "carry": real.get("carry"), "suppress": real.get("suppress"),
-                "state": state}]
-    write_snapshot(f"E1-{ep['id']}", str(CASES / "episodes"), results,
+    result = {"id": ep["id"], "category": "episode",
+              "episode": ep["id"], "pass": bool(bands),
+              "score": band_mean, "score_is": "unweighted band mean",
+              "owner_metrics": om,
+              "carry": real.get("carry"), "suppress": real.get("suppress"),
+              "state": state,
+              "instrument_rows": chained["instrument_rows"],
+              "canary": chained["canary"],
+              "peak_sut_active": chained["peak_active"],
+              "final_active": len(chained["store"].active()),
+              "final_retired": sum(1 for x in chained["store"].list()
+                                   if x.status == "retired")}
+    write_snapshot(f"E1-{ep['id']}", str(CASES / "episodes"), [result],
                    expected=1,
                    extra={"protocol_version": ep.get("protocol_version"),
-                          
                           "arms": per_arm,
                           "state_band": state, "state_rows": state_rows,
                           "consolidations": chained["consolidations"],
                           "peak_sut_active": chained["peak_active"],
-                          "probe_rows_n": len(chained["probe_rows"])})
+                          "probe_rows_n": len(chained["probe_rows"]),
+                          "instrument_rows": chained["instrument_rows"],
+                          "canary": chained["canary"]})
+    return result
+
+
+def _print_instrument_table(results: list[dict]) -> None:
+    print(f"\n{'bucket':>7} {'carry@alive':>12} {'kills':>6} {'noop%':>6} "
+          f"{'ms':>6} {'chars':>7}")
+    by_b: dict[str, list] = {}
+    for r in results:
+        for row in r.get("instrument_rows") or []:
+            by_b.setdefault(size_bucket(row["size"]), []).append(row)
+    if not by_b:
+        print("  (no instrument samples — pass --sizes to enable)")
+        return
+    for b in sorted(by_b, key=lambda x: int(x.split("-")[0])):
+        rows = by_b[b]
+        alive = [x for x in rows if x["canary"].get("alive")]
+        carried = sum(1 for x in alive if x.get("canary_carried"))
+        kills = sum(1 for x in rows if not x["canary"].get("alive"))
+        print(f"{b:>7} {carried}/{len(alive):>2}@alive {kills:>6} "
+              f"{100 * sum(x['noop_rate'] for x in rows) / len(rows):>5.0f} "
+              f"{sum(x['mean_ms'] for x in rows) // len(rows):>6} "
+              f"{sum(x['block_chars'] for x in rows) // len(rows):>7}")
+    for r in results:
+        for row in r.get("instrument_rows") or []:
+            if not row["canary"].get("alive"):
+                print(f"  KILL in {r['episode']} at size {row['size']}: "
+                      f"canary superseded by: "
+                      f"{row['canary'].get('successor')}")
+
+
+def main(argv: list[str] | None = None):
+    ap = argparse.ArgumentParser(
+        description="E1 lifecycle (+ optional perf instruments on one chain)")
+    ap.add_argument("episode", nargs="?", default=None,
+                    help="single episode id (default e-01); "
+                         "ignored when --episodes is set")
+    ap.add_argument("--episodes", default="",
+                    help="comma-separated episode ids; enables fused "
+                         "E1+perf output (default arms=real, canary on)")
+    ap.add_argument("--arms", default="",
+                    help="default: full arm panel for one episode; "
+                         "real only when --episodes is set")
+    ap.add_argument("--sizes", default=None,
+                    help="active-store thresholds for instrument samples "
+                         "(default: 4,8,16,24,32 with --episodes; off for "
+                         "single-episode classic E1). Pass '' to disable.")
+    ap.add_argument("--canary", action=argparse.BooleanOptionalAction,
+                    default=None,
+                    help="plant collision-free canary on the chained store "
+                         "(default: on with --episodes, off for single)")
+    ap.add_argument("--workers", type=int, default=4,
+                    help="episode-level parallelism (default 4)")
+    args = ap.parse_args(argv)
+
+    multi = bool(args.episodes.strip())
+    ep_ids = ([e.strip() for e in args.episodes.split(",") if e.strip()]
+              if multi else [args.episode or "e-01"])
+    arms = ([a.strip() for a in args.arms.split(",") if a.strip()]
+            if args.arms.strip()
+            else (["real"] if multi else [
+                "real", "no_retire", "oracle-arm", "oracle-should",
+                "full_context", "null-generic"]))
+    if args.sizes is None:
+        sizes = [4, 8, 16, 24, 32] if multi else None
+    elif not str(args.sizes).strip():
+        sizes = None
+    else:
+        sizes = [int(s) for s in str(args.sizes).split(",") if s.strip()]
+    use_canary = (bool(multi) if args.canary is None else args.canary)
+
+    def _load_and_run(epid: str) -> dict:
+        ep = json.loads((CASES / "episodes" / f"{epid}.json").read_text())
+        return run_one(ep, arms, sizes, use_canary)
+
+    results = []
+    workers = max(1, args.workers)
+    if workers == 1 or len(ep_ids) == 1:
+        for epid in ep_ids:
+            results.append(_load_and_run(epid))
+    else:
+        by_id = {}
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            futs = {pool.submit(_load_and_run, epid): epid for epid in ep_ids}
+            for fut in as_completed(futs):
+                epid = futs[fut]
+                by_id[epid] = fut.result()
+        results = [by_id[epid] for epid in ep_ids]
+
+    if len(results) > 1:
+        tasks_n = sum(r["owner_metrics"]["tasks_n"] for r in results)
+        tasks_p = sum(r["owner_metrics"]["tasks_perfect"] for r in results)
+        mem_n = sum(r["owner_metrics"]["memory_n"] for r in results)
+        mem_h = sum(r["owner_metrics"]["memory_hit"] for r in results)
+        print("\n=== pooled owner metrics ===")
+        if tasks_n:
+            print(f"per-task  {tasks_p}/{tasks_n} = {tasks_p / tasks_n:.3f}")
+        if mem_n:
+            print(f"per-memory {mem_h}/{mem_n} = {mem_h / mem_n:.3f}")
+
+    if sizes is not None:
+        _print_instrument_table(results)
+        stamp = time.strftime("%Y%m%d-%H%M%S")
+        payload = {"suite": "E1+P", "at": stamp,
+                   "episodes": ",".join(ep_ids), "arms": arms,
+                   "sizes": sizes, "canary": use_canary,
+                   "results": results}
+        out = Path(__file__).resolve().parents[1] / "results" / f"lifecycle-{stamp}.json"
+        out.parent.mkdir(exist_ok=True)
+        out.write_text(json.dumps(payload, ensure_ascii=False, indent=1))
+        latest = Path(__file__).resolve().parents[1] / "perf_results.json"
+        latest.write_text(json.dumps(payload, ensure_ascii=False, indent=1))
+        print(f"-> {out} (+ latest pointer {latest.name})")
 
 
 if __name__ == "__main__":

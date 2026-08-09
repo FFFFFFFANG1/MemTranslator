@@ -1,5 +1,5 @@
 {
- "at": "20260802-024559",
+ "at": "20260809-124924",
  "paths": {
   "read": {
    "conflict": {
@@ -12,7 +12,7 @@
     "n": 5,
     "fails": [
      {
-      "id": "dilution-24",
+      "id": "dilution-8",
       "why": [
        "expected an injection, product nooped (model_noop)",
        "missing: 倒序"
@@ -32,9 +32,9 @@
     "n": 4,
     "fails": [
      {
-      "id": "idempotence-en",
+      "id": "idempotence-no-double-injection",
       "why": [
-       "expected noop, got apply: draft a reply (under 47 words) telling the vendor we accept the revised quote, and keep it"
+       "expected noop, got apply: 帮我写封邮件给房东，热水器坏了让他找人来修，全文控制在78词以内。"
       ]
      }
     ]
@@ -45,14 +45,9 @@
     "fails": []
    },
    "instantiation": {
-    "score": 0.8,
+    "score": 1.0,
     "n": 5,
-    "fails": [
-     {
-      "id": "sections-to-postmortem-en",
-      "why": []
-     }
-    ]
+    "fails": []
    },
    "invariance": {
     "score": 1.0,
@@ -65,9 +60,16 @@
     "fails": []
    },
    "noop_both_ways": {
-    "score": 1.0,
+    "score": 0.857,
     "n": 7,
-    "fails": []
+    "fails": [
+     {
+      "id": "task-already-states-it-noop",
+      "why": [
+       "expected noop, got apply: 把这篇论文的方法部分总结一下，控制在78词以内。"
+      ]
+     }
+    ]
    },
    "_overall": 0.913
   }

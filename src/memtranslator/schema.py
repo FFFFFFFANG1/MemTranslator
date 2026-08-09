@@ -61,6 +61,10 @@ class Requirement:
     scope: dict = field(default_factory=dict)   # {app?, task?, lang?}; {} = global
     kinds: list = field(default_factory=list)   # work kinds governed (kinds.py); [] = untagged, always matches
     strength: int = 1
+    # Route-B deletion evidence, deliberately separate from strength: an
+    # accepted patch does not reinforce memory, while two direct removals do
+    # retire it. Zero is neutral; each confirmed removal subtracts one.
+    feedback_score: int = 0
     salience: int = 3                   # extraction-layer score; manual entries keep 3
     supersedes: str | None = None
     superseded_by: str | None = None    # reverse pointer, set when retired WITH an heir
@@ -82,6 +86,7 @@ class Requirement:
             "scope": self.scope,
             "kinds": self.kinds,
             "strength": self.strength,
+            "feedback_score": self.feedback_score,
             "salience": self.salience,
             "supersedes": self.supersedes,
             "superseded_by": self.superseded_by,
@@ -105,6 +110,7 @@ class Requirement:
             scope=d.get("scope") or {},
             kinds=d.get("kinds") or [],
             strength=d.get("strength", 1),
+            feedback_score=d.get("feedback_score", 0),
             salience=d.get("salience", 3),
             supersedes=d.get("supersedes"),
             superseded_by=d.get("superseded_by"),

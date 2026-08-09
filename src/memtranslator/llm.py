@@ -97,10 +97,17 @@ def _ark_complete(model: str, system: str, user: str,
     global _or_client
     if _or_client is None:
         _or_client = httpx.Client(timeout=180)
-    key = os.environ.get("ARK_API_KEY", "")
+    # Prefer ARK_*; fall back to LLM_* (common local .env naming for the
+    # same Ark coding/v3 endpoint). Missing key used to surface as a
+    # generic "channel unavailable" retry storm in the bench harness.
+    key = (os.environ.get("ARK_API_KEY")
+           or os.environ.get("LLM_API_KEY")
+           or "")
     if not key:
         raise LLMUnavailable("ARK_API_KEY not set")
-    base = os.environ.get("ARK_BASE_URL", ARK_BASE_DEFAULT)
+    base = (os.environ.get("ARK_BASE_URL")
+            or os.environ.get("LLM_BASE_URL")
+            or ARK_BASE_DEFAULT)
     payload = {"model": model, "max_tokens": max_tokens,
                "thinking": {"type": "enabled" if thinking else "disabled"},
                "messages": [{"role": "system", "content": system},

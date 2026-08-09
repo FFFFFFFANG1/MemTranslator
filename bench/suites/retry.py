@@ -47,6 +47,9 @@ def _is_permanent(exc) -> bool:
     text = str(exc)
     if "status:429" in text:
         return False
+    # Missing credentials never heal by waiting.
+    if "API_KEY not set" in text:
+        return True
     for code in ("status:400", "status:401", "status:403", "status:404",
                  "status:413", "status:422"):
         if code in text:

@@ -37,7 +37,8 @@ class ExtractionCase:
     source: str
     existing: list[str]          # requirement texts already in the store
     events: list[dict]           # {"type": "natural", "text": ...} or
-                                 # {"type": "edited_diff", "raw":, "polished":, "final":}
+                                 # {"type": "edited_diff", "raw":, "polished":,
+                                 #  "final":, "applied": [index into existing]}
     expect_ops: list[dict]       # {"kind": "new|reinforce|contradict",
                                  #  "target": int|None (index into existing),
                                  #  "gist": "..."}; [] means must-not-extract
@@ -74,7 +75,10 @@ def load_translate_cases(path: Path) -> list[TranslateCase]:
     return _check_unique_ids(cases)
 
 
-OP_KINDS = ("new", "reinforce", "contradict", "retire", "merge")
+# "update" is route B's only constructive op: it edits the attributed entry
+# in place rather than minting an heir, so it is a distinct expectation from
+# route A's "contradict".
+OP_KINDS = ("new", "reinforce", "contradict", "retire", "merge", "update")
 
 
 def load_extraction_cases(path: Path) -> list[ExtractionCase]:
@@ -83,10 +87,17 @@ def load_extraction_cases(path: Path) -> list[ExtractionCase]:
         for op in d["expect_ops"]:
             if op["kind"] not in OP_KINDS:
                 raise ValueError(f"{d['id']}: bad op kind {op['kind']}")
-            if op["kind"] == "retire" and op.get("target") is None:
-                raise ValueError(f"{d['id']}: retire op needs a target")
+            if op["kind"] in ("retire", "update") and op.get("target") is None:
+                raise ValueError(f"{d['id']}: {op['kind']} op needs a target")
             if op["kind"] == "merge" and len(op.get("targets") or []) < 2:
                 raise ValueError(f"{d['id']}: merge op needs ≥2 targets")
+        for e in d["events"]:
+            # a route-B case claims which stored entries the rewrite wove in;
+            # an out-of-range index would silently grade the route against a
+            # constraint the store never held
+            for i in e.get("applied") or []:
+                if not isinstance(i, int) or not (0 <= i < len(d["existing"])):
+                    raise ValueError(f"{d['id']}: applied index out of range: {i!r}")
         cases.append(ExtractionCase(
             id=d["id"], category=d["category"], source=d["source"],
             existing=list(d["existing"]), events=list(d["events"]),

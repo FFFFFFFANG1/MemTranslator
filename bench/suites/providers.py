@@ -102,35 +102,42 @@ class V1Provider:
     feedback, not requirement ops in the bench contract."""
 
     def extract(self, events, existing):
-        from memtranslator.extraction import run_extraction
-        from memtranslator.signals import attribute_diff, screen_message
+        """Native ops from both channels, without collapsing their store
+        semantics: route A's belong to `Store.apply_ops`, route B's only to
+        `Store.apply_feedback_ops`, where an update edits the attributed
+        entry in place."""
+        from memtranslator.extraction import run_a_extraction, run_b_extraction
+        from memtranslator.signals import patch_diff, screen_message
 
         keys = [r.key for r in existing if r.key]
         texts = [r.text for r in existing]
-        a_spans, b_triples = [], []
+        a_spans, b_signals = [], []
         for e in events:
             if e.get("type") == "natural":
                 a_spans += screen_message(e["text"], existing_keys=keys,
                                           existing_texts=texts)
             elif e.get("type") == "edited_diff":
-                attr = attribute_diff(e["raw"], e["polished"], e["final"])
-                b_triples.append({
-                    "raw": e["raw"], "polished": e["polished"],
-                    "final": e["final"], "applied": [],
-                    "survival": attr["injection_survival"]})
-        if not a_spans and not b_triples:
-            return []
-        out = run_extraction(a_spans, b_triples, existing)
-        by_id = {r.id: r for r in existing}
+                # The product records entry snapshots at translate time;
+                # the fixtures name them as indices into their fixed local
+                # store, which is the same thing one dereference earlier.
+                entries = [existing[i].to_dict() for i in e.get("applied", [])
+                           if isinstance(i, int) and 0 <= i < len(existing)]
+                diff = patch_diff(e["polished"], e["final"])
+                if entries and diff:
+                    b_signals.append({"entries": entries, "diff": diff})
         ops = []
-        for o in out["ops"]:
-            if o.get("rkind") == "style_rule":
-                continue
-            # the bench contract grades reinforce text against the gist; the
-            # rule being reinforced IS the target entry's text
-            if o["kind"] == "reinforce" and "text" not in o:
-                o = {**o, "text": by_id[o["target_id"]].text}
-            ops.append(o)
+        if a_spans:
+            by_id = {r.id: r for r in existing}
+            for o in run_a_extraction(a_spans, existing)["ops"]:
+                if o.get("rkind") == "style_rule":
+                    continue
+                # the bench contract grades reinforce text against the gist;
+                # the rule being reinforced IS the target entry's text
+                if o["kind"] == "reinforce" and "text" not in o:
+                    o = {**o, "text": by_id[o["target_id"]].text}
+                ops.append(o)
+        if b_signals:
+            ops += run_b_extraction(b_signals)["ops"]
         return ops
 
     def consolidate(self, existing):

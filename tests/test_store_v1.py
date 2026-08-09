@@ -103,3 +103,44 @@ def test_style_rule_kind_persisted(tmp_path):
     assert reloaded.get(r.id).kind == "style_rule"
     raw = (tmp_path / "store.jsonl").read_text().splitlines()
     assert json.loads(raw[-1])["kind"] == "style_rule"
+
+
+def test_feedback_retire_requires_two_votes_and_survives_reload(tmp_path):
+    """One dropped constraint is not a withdrawal: an edit can leave a rule
+    out for reasons that have nothing to do with wanting it gone."""
+    path = tmp_path / "store.jsonl"
+    s = Store(path)
+    r = s.add("Emails under 120 words")
+    s.apply_feedback_ops([{"kind": "retire", "target_id": r.id}])
+    assert s.get(r.id).status == "active"
+    assert Store(path).get(r.id).feedback_score == -1
+    s.apply_feedback_ops([{"kind": "retire", "target_id": r.id}])
+    assert s.get(r.id).feedback_score == -2
+    assert s.get(r.id).status == "retired"
+
+
+def test_feedback_update_refines_in_place_and_clears_negative_score(tmp_path):
+    s = Store(tmp_path / "store.jsonl")
+    r = s.add("Emails under 120 words")
+    s.apply_feedback_ops([{"kind": "retire", "target_id": r.id}])
+    out = s.apply_feedback_ops([{"kind": "update", "target_id": r.id,
+                                 "text": "Emails under 80 words"}])
+    assert out["applied"] == 1
+    # same id, no heir: the user corrected this rule, they did not add one
+    assert s.get(r.id).text == "Emails under 80 words"
+    assert s.get(r.id).supersedes is None and len(s.active()) == 1
+    assert s.get(r.id).feedback_score == 0
+
+
+def test_feedback_ops_skip_entries_route_a_already_retired(tmp_path):
+    """The two channels flush independently, so B can judge an entry A just
+    replaced. The executor is where that settles — a retired entry takes no
+    more feedback."""
+    s = Store(tmp_path / "store.jsonl")
+    r = s.add("Emails under 120 words")
+    s.apply_ops([{"kind": "contradict", "target_id": r.id,
+                  "text": "Emails under 80 words"}])
+    out = s.apply_feedback_ops([{"kind": "update", "target_id": r.id,
+                                 "text": "Emails under 60 words"}])
+    assert out["applied"] == 0 and len(out["skipped"]) == 1
+    assert [x.text for x in s.active()] == ["Emails under 80 words"]

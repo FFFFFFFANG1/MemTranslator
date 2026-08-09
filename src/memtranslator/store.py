@@ -15,6 +15,7 @@ from memtranslator.schema import (BINDINGS, BUCKETS, KINDS, POLARITIES,
                                   STATUSES, Requirement)
 
 AUTO_RETIRE_AT = -2          # strength ≤ -2 → implicit retire (design §3)
+B_FEEDBACK_RETIRE_AT = -2    # two route-B delete judgements retire an entry
 
 
 class Store:
@@ -196,6 +197,46 @@ class Store:
             else:
                 skipped.append(op)
         return {"applied": applied, "skipped": skipped}
+
+    def apply_feedback_ops(self, ops: list[dict]) -> dict:
+        """Apply route-B operations, which never travel through `apply_ops`.
+
+        Route B judges the exact entries the rewrite used, so an update
+        edits that entry in place rather than minting an heir: there is no
+        new rule here, only the same rule as the user just corrected it.
+        (The JSONL keeps the old version — every mutation still appends.)
+        A retire is negative evidence, not a destructive command: it takes
+        two such judgements, because one edit can drop a constraint for
+        reasons that have nothing to do with wanting the rule gone.
+        """
+        applied, skipped, retired = 0, [], 0
+        for op in ops:
+            req = self._items.get(op.get("target_id") or "")
+            if req is None or req.status != "active":
+                skipped.append(op)
+                continue
+            kind = op.get("kind")
+            if kind == "update":
+                text = (op.get("text") or "").strip()
+                if not text:
+                    skipped.append(op)
+                    continue
+                req.text = text
+                req.feedback_score = 0
+                req.updated_at = time.time()
+                self._append(req)
+                applied += 1
+            elif kind == "retire":
+                req.feedback_score -= 1
+                if req.feedback_score <= B_FEEDBACK_RETIRE_AT:
+                    req.status = "retired"
+                    retired += 1
+                req.updated_at = time.time()
+                self._append(req)
+                applied += 1
+            else:
+                skipped.append(op)
+        return {"applied": applied, "skipped": skipped, "retired": retired}
 
     def update(self, req_id: str, *, text: str | None = None,
                status: str | None = None) -> Requirement:
