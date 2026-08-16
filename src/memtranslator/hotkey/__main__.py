@@ -1,21 +1,19 @@
-"""MemTranslator hotkey shell (spike): menu bar item + global ⌥⌘E.
+"""MemTranslator macOS menu-bar client.
 
-On hotkey: read the focused text field, ask the daemon to polish, write the
-result back — editable in place, human in the loop (anchor §2.2). The
-daemon records the translate event; the agent-side hook records the final
-submit; the join happens server-side."""
+⌥⌘R captures the focused composer as a guarded Accessibility transaction,
+asks the local daemon to compile applicable requirements into it, writes the
+result back, then watches the same composer briefly for human edits.
+"""
+from __future__ import annotations
+
 import json
 import threading
 import urllib.request
 
-from AppKit import (
-    NSApplication,
-    NSApplicationActivationPolicyAccessory,
-    NSMenu,
-    NSMenuItem,
-    NSStatusBar,
-    NSVariableStatusItemLength,
-)
+from AppKit import (NSApplication, NSApplicationActivationPolicyAccessory,
+                    NSMenu, NSMenuItem, NSStatusBar,
+                    NSVariableStatusItemLength, NSWorkspace)
+from Foundation import NSObject, NSURL
 from PyObjCTools import AppHelper
 from Quartz import (
     CFMachPortCreateRunLoopSource,
@@ -35,27 +33,32 @@ from Quartz import (
     kCGKeyboardEventKeycode,
     kCGSessionEventTap,
 )
+from objc import super
 
 from memtranslator.hotkey import axtext
+from memtranslator.hotkey.client import DaemonClient
+from memtranslator.hotkey.controller import DesktopController
+from memtranslator.hotkey.overlay import StatusOverlay
 
 DAEMON = "http://127.0.0.1:8123"
-KEY_E = 14  # ANSI 'e'
+KEY_R = 15
+ENTER_KEYS = {36, 76}
 
 
 def polish_flow(read=None, write=None, post=None) -> str:
-    """Returns a status string; separated from AX for testability."""
+    """Compatibility wrapper retained for integrations around the v0 spike."""
     if read is None:
         read = axtext.read_focused_text
     if write is None:
         write = axtext.write_focused_text
     if post is None:
         def post(text):
-            req = urllib.request.Request(
+            request = urllib.request.Request(
                 f"{DAEMON}/api/translate",
                 data=json.dumps({"text": text}).encode(),
                 headers={"Content-Type": "application/json"})
-            with urllib.request.urlopen(req, timeout=20) as r:
-                return json.load(r)
+            with urllib.request.urlopen(request, timeout=20) as response:
+                return json.load(response)
     raw = read()
     if not raw or not raw.strip():
         return "empty"
@@ -68,29 +71,154 @@ def polish_flow(read=None, write=None, post=None) -> str:
     return "applied" if write(out["polished"]) else "write_failed"
 
 
-class App:
-    def __init__(self):
+class App(NSObject):
+    def init(self):
+        self = super().init()
+        if self is None:
+            return None
+        self.overlay = StatusOverlay()
+        self.controller = DesktopController(
+            axtext.MacOSInputAdapter(), DaemonClient(DAEMON),
+            on_feedback=self._on_feedback, on_progress=self._on_progress)
+        self._poll_timer = None
         self.status_item = NSStatusBar.systemStatusBar() \
             .statusItemWithLength_(NSVariableStatusItemLength)
         self.status_item.button().setTitle_("⇄")
+
         menu = NSMenu.alloc().init()
-        menu.addItemWithTitle_action_keyEquivalent_(
-            "MemTranslator · ⌥⌘E 润色", None, "")
+        title = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
+            "MemTranslator", None, "")
+        title.setEnabled_(False)
+        menu.addItem_(title)
+        self.state_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
+            "Ready · ⌥⌘R", None, "")
+        self.state_item.setEnabled_(False)
+        menu.addItem_(self.state_item)
+        menu.addItem_(NSMenuItem.separatorItem())
+        polish = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
+            "Polish Focused Input", "polishFocusedInput:", "")
+        polish.setTarget_(self)
+        menu.addItem_(polish)
+        menu.addItem_(NSMenuItem.separatorItem())
+        control = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
+            "Open Control Center", "openControlCenter:", "")
+        control.setTarget_(self)
+        menu.addItem_(control)
+        demo = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
+            "Open Interactive Demo", "openDemo:", "")
+        demo.setTarget_(self)
+        menu.addItem_(demo)
         menu.addItem_(NSMenuItem.separatorItem())
         menu.addItemWithTitle_action_keyEquivalent_("Quit", "terminate:", "q")
         self.status_item.setMenu_(menu)
+        return self
 
-    def flash(self, text):
-        def set_title(t):
-            self.status_item.button().setTitle_(t)
-        AppHelper.callAfter(set_title, text)
-        threading.Timer(1.6, lambda: AppHelper.callAfter(set_title, "⇄")).start()
+    def polishFocusedInput_(self, _sender):
+        print("menu polish requested", flush=True)
+        self.on_hotkey()
 
-    def on_hotkey(self):
+    def openControlCenter_(self, _sender):
+        NSWorkspace.sharedWorkspace().openURL_(
+            NSURL.URLWithString_(DAEMON + "/"))
+
+    def openDemo_(self, _sender):
+        NSWorkspace.sharedWorkspace().openURL_(
+            NSURL.URLWithString_(DAEMON + "/demo"))
+
+    def _set_state(self, glyph: str, text: str, reset_after: float = 0) -> None:
+        def update():
+            self.status_item.button().setTitle_(glyph)
+            self.state_item.setTitle_(text)
+        AppHelper.callAfter(update)
+        if reset_after:
+            threading.Timer(reset_after, lambda: self._set_state(
+                "⇄", "Ready · ⌥⌘R")).start()
+
+    def _on_feedback(self, result: dict) -> None:
+        if result["status"] == "feedback_failed":
+            self._set_state("!", "Feedback queued failed", 2.2)
+            self.overlay.show("未能保存修改", auto_hide=1.8)
+            return
+        added = result.get("response", {}).get("vocabulary_added", [])
+        if added:
+            terms = ", ".join(entry["term"] for entry in added)
+            self._set_state("✓", f"Learned vocabulary · {terms}", 3.0)
+            self.overlay.show(f"✓  已记住 {terms}", auto_hide=2.2)
+        else:
+            classification = result.get("response", {}).get(
+                "classification", "")
+            if classification == "edited_after_polish":
+                self._set_state("✓", "Edit feedback saved", 2.2)
+                self.overlay.show("✓  已记录修改", auto_hide=1.8)
+
+    def _on_progress(self, state: str, snapshot) -> None:
+        bounds = snapshot.screen_bounds if snapshot is not None else None
+        label = {
+            "translating": "正在整理…",
+            "writing": "正在回填…",
+        }.get(state)
+        if label:
+            self.overlay.show(label, bounds)
+
+    def _schedule_poll(self) -> None:
+        if self._poll_timer is not None:
+            self._poll_timer.cancel()
+        if not self.controller.tracker.active:
+            self._poll_timer = None
+            return
+        self._poll_timer = threading.Timer(0.18, self._poll)
+        self._poll_timer.daemon = True
+        self._poll_timer.start()
+
+    def _poll(self) -> None:
+        self.controller.observe()
+        self._schedule_poll()
+
+    def on_enter(self) -> None:
+        if not self.controller.tracker.active:
+            return
+        threading.Thread(target=lambda: self.controller.observe(key="Enter"),
+                         daemon=True).start()
+
+    def on_hotkey(self) -> None:
+        print("hotkey accepted: option+command+r", flush=True)
+        if self.controller.tracker.active:
+            self.controller.tracker.cancel()
+        self._set_state("…", "Compiling requirements…")
+        captured_snapshot = self.controller.adapter.capture()
+        bounds = (captured_snapshot.screen_bounds
+                  if captured_snapshot is not None else None)
+        self.overlay.show("正在读取…", bounds)
+
         def run():
-            status = polish_flow()
-            self.flash({"applied": "✓", "noop": "·", "empty": "·",
-                        "daemon_down": "!", "write_failed": "!"}[status])
+            result = self.controller.polish(snapshot=captured_snapshot)
+            status = result["status"]
+            print(f"polish result: {status}", flush=True)
+            if status == "tracking":
+                write = result["write"]
+                result_snapshot = result["snapshot"]
+                self._set_state("●", f"Tracking · {result_snapshot.app_name} · "
+                                      f"{write.strategy}")
+                self.overlay.show("✓  已回填", result_snapshot.screen_bounds,
+                                  auto_hide=1.0)
+                self._schedule_poll()
+            else:
+                glyph, label = {
+                    "empty": ("·", "Focused composer is empty"),
+                    "unsupported": ("×", "Protected or unsupported input"),
+                    "noop": ("·", "No applicable requirement"),
+                    "daemon_down": ("!", "Daemon unavailable"),
+                    "write_failed": ("!", "Write verification failed"),
+                }.get(status, ("!", status))
+                self._set_state(glyph, label, 2.2)
+                overlay_label = {
+                    "empty": "未找到可编辑文字",
+                    "unsupported": "此输入框暂不支持",
+                    "noop": "无需调整",
+                    "daemon_down": "本地服务未连接",
+                    "write_failed": "回填失败",
+                }.get(status, "处理失败")
+                self.overlay.show(overlay_label, bounds, auto_hide=1.6)
         threading.Thread(target=run, daemon=True).start()
 
 
@@ -99,17 +227,27 @@ def main():
         print("Grant Accessibility permission, then relaunch.")
     nsapp = NSApplication.sharedApplication()
     nsapp.setActivationPolicy_(NSApplicationActivationPolicyAccessory)
-    app = App()
+    app = App.alloc().init()
 
-    def tap_callback(proxy, etype, event, refcon):
-        if etype == kCGEventKeyDown:
-            keycode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode)
-            flags = CGEventGetFlags(event)
-            if (keycode == KEY_E
-                    and flags & kCGEventFlagMaskCommand
-                    and flags & kCGEventFlagMaskAlternate):
-                app.on_hotkey()
-                return None  # swallow the keystroke
+    def tap_callback(_proxy, event_type, event, _refcon):
+        if event_type != kCGEventKeyDown:
+            return event
+        keycode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode)
+        flags = CGEventGetFlags(event)
+        if keycode == KEY_R:
+            print(
+                "R key observed: "
+                f"command={bool(flags & kCGEventFlagMaskCommand)} "
+                f"option={bool(flags & kCGEventFlagMaskAlternate)}",
+                flush=True,
+            )
+        if (keycode == KEY_R
+                and flags & kCGEventFlagMaskCommand
+                and flags & kCGEventFlagMaskAlternate):
+            app.on_hotkey()
+            return None
+        if keycode in ENTER_KEYS:
+            app.on_enter()
         return event
 
     tap = CGEventTapCreate(kCGSessionEventTap, kCGHeadInsertEventTap,

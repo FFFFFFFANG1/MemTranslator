@@ -9,23 +9,30 @@ src/memtranslator/
   schema.py      Requirement (requirement-only memory, anchor §2.1)
   store.py       append-only JSONL store + event log (sends record their edit diff)
   translate.py   read path: recall → one flash call → JSON patch, noop-default
+  vocabulary.py  exact spellings learned from post-polish user corrections
   llm.py         thin Anthropic client (translator: haiku; downstream: swappable)
   server.py      FastAPI shell: composer polish / requirement CRUD / streaming chat
-web/index.html   the shell UI
+  hotkey/        macOS AX capture/write, app profiles, edit tracking, feedback client
+web/index.html   control center
+web/demo.html    deterministic interactive desktop demo (no API key or OS writes)
 tests/           mechanical tests with a fake LLM — no API key needed
 ```
 
 ## Run
 
 ```bash
-uv sync
-uv run pytest                  # 20 tests, no key needed
+uv sync --group hotkey
+uv run pytest                  # no key needed
 
-source ~/.zshrc                # ANTHROPIC_API_KEY
 uv run uvicorn memtranslator.server:app --port 8123
 ```
 
-Open http://127.0.0.1:8123 — add a requirement on the right, type a request, hit **⌘E** to polish (the result lands back in the composer, editable), then **Enter** to send. The downstream agent only sees the text you confirmed. Runtime state lives in `data/` (gitignored); delete it to reset.
+Provider credentials are loaded from the gitignored project `.env`; values
+already exported by the launch shell take precedence.
+The demo downstream defaults to `ark:$LLM_MODEL`; set `MT_DOWNSTREAM` to an
+explicit model id when testing a different provider.
+
+Open http://127.0.0.1:8123 — add a requirement on the right, type a request, hit **⌥⌘R** to polish (the result lands back in the composer, editable), then **Enter** to send. The downstream agent only sees the text you confirmed. Open http://127.0.0.1:8123/demo for a deterministic walkthrough of the desktop loop. Runtime state lives in `data/` (gitignored); delete it to reset.
 
 > On this machine, keep the venv outside the iCloud tree or file eviction
 > will randomly break editable installs:
@@ -39,8 +46,27 @@ Two channels join inside the daemon — no markers ever embedded in text:
                             join → accepted / edited / reverted / natural
 
 - **Hotkey shell** (`uv run --group hotkey python -m memtranslator.hotkey`):
-  menu bar ⇄, global ⌥⌘E polishes the focused text field via Accessibility
-  (grant permission on first run). AX write-back with a clipboard fallback.
+  menu bar ⇄, global ⌥⌘R captures the focused editable text field through
+  macOS Accessibility, sends a structured snapshot to the local daemon, and
+  writes the result back only if focus and text are still unchanged.
+- **Adaptive write-back**: native controls try direct AX value replacement;
+  Electron apps prefer verified clipboard paste; browsers use paste only.
+  The clipboard is preserved and restored. Unsupported or secure fields fail
+  closed instead of typing into an uncertain target.
+- **Edit feedback**: after a successful write, the shell watches only that
+  focused composer for up to 15 seconds. Enter, clearing, focus change, or
+  timeout closes the session and submits the latest non-empty text. It does not
+  run a permanent document-wide text logger.
+- **Vocabulary**: conservative one-token spelling corrections such as
+  `Sirius → siriux` are stored in a separate exact-spelling ledger. Delivery
+  requirements continue to describe *how work should be done*; vocabulary is
+  never compiled into that requirement memory. Confirmed aliases are applied
+  locally as a deterministic token-level pre-pass on future requests, before
+  the requirement compiler runs.
+- **Permissions**: Accessibility is required to inspect and update the focused
+  text control. macOS may also request Input Monitoring for the global hotkey
+  and Enter detection. Both permissions are visible and revocable in System
+  Settings → Privacy & Security.
 - **Claude Code hook**: merge `hooks/claude-code/settings-fragment.json`
   into `~/.claude/settings.json`. Fail-open: if the daemon is down the
   prompt passes through untouched. Cursor / Codex hooks: not yet.

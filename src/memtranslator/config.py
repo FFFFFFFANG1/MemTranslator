@@ -1,11 +1,41 @@
 """Single source of truth for models, paths, and budgets."""
 import os
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def _load_project_env(path: Path) -> None:
+    """Load simple KEY=VALUE entries without overriding the launch shell.
+
+    The product keeps provider credentials in the gitignored project `.env`.
+    `uvicorn` and the menu-bar process do not source that file themselves, so
+    loading it here keeps every entry point on the same configuration path.
+    """
+    if not path.exists():
+        return
+    for raw in path.read_text().splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[len("export "):].lstrip()
+        key, separator, value = line.partition("=")
+        key, value = key.strip(), value.strip()
+        if not separator or not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key):
+            continue
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+            value = value[1:-1]
+        os.environ.setdefault(key, value)
+
+
+_load_project_env(ROOT / ".env")
+
 DATA = ROOT / "data"
 STORE_FILE = DATA / "store.jsonl"
 EVENTS_FILE = DATA / "events.jsonl"
+VOCAB_FILE = DATA / "vocabulary.jsonl"
 WEB_DIR = ROOT / "web"
 
 MODELS = {
@@ -19,8 +49,12 @@ MODELS = {
     # runs without touching this file (parallel experiments must not race
     # on config edits). Absent → falls back to translator.
     "writer": os.environ.get("MT_WRITER", "ark:deepseek-v4-flash"),
-    # stand-in for the user's real downstream agent; swappable, any strong model
-    "downstream": "claude-opus-4-8",
+    # Stand-in for the user's real downstream agent. Prefer the same
+    # OpenAI-compatible model declared by the project `.env`; MT_DOWNSTREAM
+    # remains the explicit override for testing another channel.
+    "downstream": os.environ.get(
+        "MT_DOWNSTREAM",
+        f"ark:{os.environ.get('LLM_MODEL', 'deepseek-v4-flash')}"),
 }
 
 # anchor §4 context budget: only the newest N active requirements reach the prompt

@@ -11,6 +11,7 @@ streams today).
 Network failures (this machine reaches providers through a local proxy that
 can flap) surface as LLMUnavailable so endpoints can answer with an explicit,
 user-facing state instead of a bare 500."""
+import json
 import os
 from collections.abc import Iterator
 
@@ -171,6 +172,33 @@ def complete(model: str, system: str, user: str, max_tokens: int = 1024,
 
 def stream_text(model: str, system: str, messages: list[dict],
                 max_tokens: int = 2048) -> Iterator[str]:
+    global _or_client
+    if model.startswith("ark:"):
+        rest = model[4:]
+        thinking = rest.endswith(":think")
+        if thinking:
+            rest = rest[:-len(":think")]
+        key = (os.environ.get("ARK_API_KEY")
+               or os.environ.get("LLM_API_KEY") or "")
+        if not key:
+            raise LLMUnavailable("ARK_API_KEY not set")
+        base = (os.environ.get("ARK_BASE_URL")
+                or os.environ.get("LLM_BASE_URL") or ARK_BASE_DEFAULT)
+        yield from _compatible_stream(
+            rest, base, key, system, messages, max_tokens,
+            extra={"thinking": {
+                "type": "enabled" if thinking else "disabled"}})
+        return
+    if "/" in model:
+        key = os.environ.get("OPENROUTER_API_KEY", "")
+        if not key:
+            raise LLMUnavailable("OPENROUTER_API_KEY not set")
+        extra = {} if OPENROUTER_REASONING else {
+            "reasoning": {"enabled": False}}
+        yield from _compatible_stream(
+            model, OPENROUTER_BASE, key, system, messages, max_tokens,
+            extra=extra)
+        return
     try:
         with _get_client().messages.stream(
             model=model,
@@ -188,3 +216,46 @@ def stream_text(model: str, system: str, messages: list[dict],
         why = (detail or {}).get("message") if isinstance(detail, dict) else None
         raise LLMUnavailable(
             f"status:{e.status_code} {why or str(e)[:200]}") from e
+
+
+def _compatible_stream(model: str, base: str, key: str, system: str,
+                       messages: list[dict], max_tokens: int,
+                       extra: dict | None = None) -> Iterator[str]:
+    """Stream text from an OpenAI-compatible chat-completions endpoint."""
+    global _or_client
+    if _or_client is None:
+        _or_client = httpx.Client(timeout=180)
+    payload = {
+        "model": model,
+        "max_tokens": max_tokens,
+        "stream": True,
+        "messages": [{"role": "system", "content": system}, *messages],
+        **(extra or {}),
+    }
+    try:
+        with _or_client.stream(
+                "POST", f"{base}/chat/completions",
+                headers={"Authorization": f"Bearer {key}"},
+                json=payload) as response:
+            if response.status_code != 200:
+                response.read()
+                raise LLMUnavailable(
+                    f"status:{response.status_code} "
+                    f"{response.text[:200]}")
+            for line in response.iter_lines():
+                if not line.startswith("data: "):
+                    continue
+                data = line[len("data: "):]
+                if data == "[DONE]":
+                    break
+                try:
+                    event = json.loads(data)
+                    content = event["choices"][0]["delta"].get("content")
+                except (json.JSONDecodeError, KeyError, IndexError, TypeError):
+                    continue
+                if isinstance(content, str) and content:
+                    yield content
+    except LLMUnavailable:
+        raise
+    except httpx.HTTPError as e:
+        raise LLMUnavailable("connection") from e
