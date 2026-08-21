@@ -77,37 +77,73 @@ def test_retire_wrong_target_fails(monkeypatch):
     assert rx.run_case(c, _WrongRetire())["pass"] is False
 
 
-def test_empty_events_routes_to_consolidate(monkeypatch):
+def test_empty_events_with_candidate_routes_to_reconcile(monkeypatch):
     monkeypatch.setattr(rx, "judge", lambda crit, ctx: (True, False))
     c = _case(category="dedup",
               existing=["邮件写短点，120词以内。",
                         "Emails must stay under 120 words.",
                         "代码只给代码。"],
               events=[],
-              expect_ops=[{"kind": "merge", "targets": [0, 1],
+              candidate={"kind": "potential_new",
+                         "item": {"text": "Keep emails under 120 words.",
+                                  "bucket": "output_contract", "scope": {},
+                                  "work_kinds": ["email"], "key": "email.length",
+                                  "confidence": 8},
+                         "source_text": "继续120词"},
+              expect_ops=[{"kind": "reinforce", "targets": [0, 1],
                            "gist": "emails under 120 words"}])
 
-    class _Merger:
+    class _Reconciler:
         def extract(self, events, existing):
-            raise AssertionError("must call consolidate, not extract")
+            raise AssertionError("must call reconcile, not extract")
         def consolidate(self, existing):
-            return [{"kind": "merge",
-                     "target_ids": [existing[0].id, existing[1].id],
-                     "text": "Emails under 120 words."}]
-    assert rx.run_case(c, _Merger())["pass"] is True
+            raise AssertionError("must call reconcile, not consolidate")
+        def reconcile(self, candidate, existing):
+            return [{"kind": "reinforce", "target_id": existing[1].id,
+                     "text": existing[1].text}]
+    assert rx.run_case(c, _Reconciler())["pass"] is True
 
 
-def test_merge_wrong_target_set_fails(monkeypatch):
+def test_reinforce_outside_target_set_fails(monkeypatch):
     monkeypatch.setattr(rx, "judge", lambda crit, ctx: (True, False))
     c = _case(category="dedup", existing=["a", "b", "c"], events=[],
-              expect_ops=[{"kind": "merge", "targets": [0, 1], "gist": "ab"}])
+              candidate={"kind": "potential_new",
+                         "item": {"text": "a", "bucket": "output_contract",
+                                  "scope": {}, "work_kinds": ["any"],
+                                  "key": "x", "confidence": 8}},
+              expect_ops=[{"kind": "reinforce", "targets": [0, 1],
+                           "gist": "ab"}])
 
-    class _OverMerge:
-        def consolidate(self, existing):
-            return [{"kind": "merge",
-                     "target_ids": [r.id for r in existing],   # merged c too
-                     "text": "abc"}]
-    assert rx.run_case(c, _OverMerge())["pass"] is False
+    class _Wrong:
+        def reconcile(self, candidate, existing):
+            return [{"kind": "reinforce", "target_id": existing[2].id,
+                     "text": existing[2].text}]
+    assert rx.run_case(c, _Wrong())["pass"] is False
+
+
+def test_deduplicate_accepts_merge_or_reinforce(monkeypatch):
+    monkeypatch.setattr(rx, "judge", lambda crit, ctx: (True, False))
+    c = _case(
+        category="dedup", existing=["same a", "other", "same b"], events=[],
+        candidate={"kind": "potential_new",
+                   "item": {"text": "same", "bucket": "output_contract",
+                            "scope": {}, "work_kinds": ["any"],
+                            "key": "format.output", "confidence": 8}},
+        expect_ops=[{"kind": "deduplicate", "targets": [0, 2],
+                     "gist": "same rule"}])
+
+    class _Result:
+        def __init__(self, kind): self.kind = kind
+        def reconcile(self, candidate, existing):
+            if self.kind == "merge":
+                return [{"kind": "merge",
+                         "target_ids": [existing[0].id, existing[2].id],
+                         "text": "same"}]
+            return [{"kind": "reinforce", "target_id": existing[2].id,
+                     "text": "same"}]
+
+    assert rx.run_case(c, _Result("merge"))["pass"] is True
+    assert rx.run_case(c, _Result("reinforce"))["pass"] is True
 
 
 def test_schema_rejects_bad_retire_and_merge(tmp_path):
@@ -128,5 +164,22 @@ def test_schema_rejects_bad_retire_and_merge(tmp_path):
     try:
         load_extraction_cases(p)
         raise AssertionError("merge with <2 targets must be rejected")
+    except ValueError:
+        pass
+
+
+def test_schema_rejects_dedup_without_candidate(tmp_path):
+    import json
+    from bench.suites.schema import load_extraction_cases
+    p = tmp_path / "bad.jsonl"
+    p.write_text(json.dumps({
+        "id": "l-ddp-x", "category": "dedup", "source": "handwritten",
+        "existing": ["a", "b"], "events": [],
+        "expect_ops": [{"kind": "reinforce", "targets": [0, 1],
+                        "gist": "ab"}],
+    }, ensure_ascii=False))
+    try:
+        load_extraction_cases(p)
+        raise AssertionError("dedup without candidate must be rejected")
     except ValueError:
         pass

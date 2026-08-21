@@ -14,10 +14,8 @@ from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 
 from memtranslator import config, llm
-from memtranslator.consolidate import run_consolidation, should_consolidate
 from memtranslator.pipeline import Pipeline
-from memtranslator.signals import (attribute_diff, classify_submit,
-                                   patch_diff, screen_message)
+from memtranslator.signals import attribute_diff, classify_submit, patch_diff
 from memtranslator.store import EventLog, Store
 from memtranslator.translate import translate
 
@@ -66,33 +64,39 @@ def create_app(store_path: Path | None = None,
         an unreachable LLM leaves candidates queued for the next flush."""
         cls = verdict["classification"]
         if cls == "natural":
-            active = store.active()
-            keys = [r.key for r in active if r.key]
-            pipeline.add_natural(
-                screen_message(text, existing_keys=keys,
-                               existing_texts=[r.text for r in active]), now)
+            # Extractor-A owns semantic admission.  Every natural message
+            # reaches it unchanged; the only input reduction happens later
+            # at the model token boundary in build_candidate_user_prompt().
+            pipeline.add_natural([text], now)
         else:
             tr = next((e for e in reversed(events.read_all())
                        if e.get("translate_id") == verdict["matched_translate_id"]
                        and e["kind"] == "translate"), None)
             if tr:
+                # Route A learns only text authored by the user.  A matched
+                # submit may contain Translator-generated wording, so recover
+                # the original composer input from the translate event rather
+                # than feeding either polished or final text back into A.
+                original = tr.get("original")
+                if isinstance(original, str) and original.strip():
+                    pipeline.add_natural([original], now)
                 applied = tr.get("applied_ids", [])
                 attr = attribute_diff(tr["original"], tr["polished"], text)
                 if attr["strength_delta"]:
                     store.bump_strength(applied, attr["strength_delta"])
                 if cls in ("reverted", "edited_after_polish"):
                     # Route B judges the entries this patch used, so it gets
-                    # their snapshots as recorded at translate time — not a
-                    # store index it would have to search.
+                    # their snapshots as recorded at translate time. Events
+                    # written before snapshots were added fall back to the
+                    # current Store during the short join window.
+                    entries = tr.get("applied_entries")
+                    if not isinstance(entries, list):
+                        entries = [store.get(i).to_dict() for i in applied
+                                   if i in store._items]
                     pipeline.add_feedback(
-                        [store.get(i).to_dict() for i in applied
-                         if i in store._items],
-                        patch_diff(tr["polished"], text), now)
+                        entries, patch_diff(tr["polished"], text), now)
         try:
-            if pipeline.maybe_flush(now) is not None:
-                if should_consolidate(store, pipeline.adds_since_consolidate):
-                    run_consolidation(store)
-                    pipeline.adds_since_consolidate = 0
+            pipeline.maybe_flush(now)
         except llm.LLMUnavailable:
             pass          # queue survives; the next submit retries the flush
 
@@ -145,6 +149,11 @@ def create_app(store_path: Path | None = None,
             result = translate(text, store.list())
         except llm.LLMUnavailable:
             raise HTTPException(502, "llm_unreachable")
+        applied = result.get("applied_entries")
+        if not isinstance(applied, list):
+            # Compatibility for tests/adapters that still return only ids.
+            applied = [store.get(i).to_dict() for i in result["applied_ids"]
+                       if i in store._items]
         translate_counter["n"] += 1
         translate_id = f"tr-{translate_counter['n']}-{int(len(text))}"
         events.append("translate", {
@@ -153,10 +162,10 @@ def create_app(store_path: Path | None = None,
             "decision": result["decision"],
             "polished": result["polished"],
             "applied_ids": result["applied_ids"],
+            "applied_entries": applied,
             "parse_error": result["parse_error"],
             "latency_ms": result["latency_ms"],
         })
-        applied = [store.get(i).to_dict() for i in result["applied_ids"]]
         return {"translate_id": translate_id, "decision": result["decision"],
                 "polished": result["polished"], "applied": applied,
                 "parse_error": result["parse_error"],

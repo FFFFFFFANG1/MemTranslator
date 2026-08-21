@@ -1,5 +1,5 @@
 {
- "at": "20260809-124924",
+ "at": "20260819-015143",
  "paths": {
   "read": {
    "conflict": {
@@ -8,36 +8,22 @@
     "fails": []
    },
    "dilution": {
-    "score": 0.6,
+    "score": 0.8,
     "n": 5,
     "fails": [
      {
-      "id": "dilution-8",
+      "id": "dilution-40-crosslingual-rule",
       "why": [
        "expected an injection, product nooped (model_noop)",
-       "missing: 倒序"
-      ]
-     },
-     {
-      "id": "dilution-40-selection",
-      "why": [
-       "expected an injection, product nooped (model_noop)",
-       "missing: 倒序"
+       "missing: {'value': '倒序', 'matcher': 'semantic', 'criterion': 'The rewritten request asks for the minutes to be ordered newest-first / reverse chronological (倒序/从新到旧).'}"
       ]
      }
     ]
    },
    "idempotence_degenerate": {
-    "score": 0.75,
+    "score": 1.0,
     "n": 4,
-    "fails": [
-     {
-      "id": "idempotence-no-double-injection",
-      "why": [
-       "expected noop, got apply: 帮我写封邮件给房东，热水器坏了让他找人来修，全文控制在78词以内。"
-      ]
-     }
-    ]
+    "fails": []
    },
    "injection": {
     "score": 1.0,
@@ -45,9 +31,14 @@
     "fails": []
    },
    "instantiation": {
-    "score": 1.0,
+    "score": 0.8,
     "n": 5,
-    "fails": []
+    "fails": [
+     {
+      "id": "sections-to-postmortem-en",
+      "why": []
+     }
+    ]
    },
    "invariance": {
     "score": 1.0,
@@ -60,18 +51,14 @@
     "fails": []
    },
    "noop_both_ways": {
-    "score": 0.857,
+    "score": 1.0,
     "n": 7,
-    "fails": [
-     {
-      "id": "task-already-states-it-noop",
-      "why": [
-       "expected noop, got apply: 把这篇论文的方法部分总结一下，控制在78词以内。"
-      ]
-     }
-    ]
+    "fails": []
    },
-   "_overall": 0.913
+   "_overall": 0.957
   }
+ },
+ "artifacts": {
+  "snapshot": "/Users/fang/Documents/codespace/MemTranslator/bench/results/R-20260819-015143.json"
  }
 }

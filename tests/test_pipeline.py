@@ -16,8 +16,18 @@ def _pipe(tmp_path):
 def _fake_ops(monkeypatch, calls):
     def fake(model, system, user, max_tokens=1024, **kw):
         calls.append(user)
-        return json.dumps([{"op": "new", "text": "学到的规则",
-                            "key": "email.length", "salience": 4}])
+        if "SIGNALS-A:" in user:
+            return json.dumps([{
+                "decision": "candidate",
+                "kind": "potential_new",
+                "item": {"text": "Keep emails concise.",
+                         "bucket": "output_contract",
+                         "scope_mode": "scoped",
+                         "applies_when": None,
+                         "work_kinds": ["email"],
+                         "key": "length.max", "confidence": 8},
+                "change_candidate": None, "sources": [1]}])
+        return json.dumps([{"case": 1, "action": "add", "targets": []}])
     monkeypatch.setattr(llm, "complete", fake)
 
 
@@ -37,10 +47,11 @@ def test_flush_at_batch_n(monkeypatch, tmp_path):
     for i in range(BATCH_N):
         p.add_natural([f"以后规则{i}"], now=1000.0 + i)
     out = p.maybe_flush(now=1000.0 + BATCH_N)
-    # extraction + kind tagging (recheck/verify default OFF per A/B verdict)
+    # candidate extraction + consolidation; kinds arrive with the candidate
     assert out is not None and len(calls) == 2
     assert out["store"]["applied"] == 1
     assert len(p.store.active()) == 1          # op landed in the store
+    assert p.store.active()[0].kinds == ["email"]
     assert p.pending_count() == 0              # queue drained
 
 
@@ -58,9 +69,7 @@ def _feedback(p, store, text, now):
     req = store.add(text)
     return p.add_feedback(
         [req.to_dict()],
-        [{"op": "replace",
-          "before_sentence": "keep it <changed>short</changed>.",
-          "after_sentence": "keep it <changed>very short</changed>."}], now)
+        [{"old": "keep it short.", "new": "keep it very short."}], now)
 
 
 def test_feedback_without_a_diff_is_never_queued(tmp_path):
@@ -93,9 +102,8 @@ def test_route_b_update_edits_the_attributed_entry(monkeypatch, tmp_path):
     p = _pipe(tmp_path)
     req = p.store.add("Emails must stay under 120 words.")
     p.add_feedback([req.to_dict()], [{
-        "op": "replace",
-        "before_sentence": "keep it under <changed>120</changed> words.",
-        "after_sentence": "keep it under <changed>80</changed> words."}],
+        "old": "keep it under 120 words.",
+        "new": "keep it under 80 words."}],
         now=1000.0)
     monkeypatch.setattr(llm, "complete", lambda *a, **k: json.dumps(
         [{"signal": 1, "entry": 1, "op": "update",

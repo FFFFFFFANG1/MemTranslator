@@ -31,6 +31,10 @@ ANY = "ANY"
 BUCKETS = ("task_goal", "reasoning_policy", "deliverables",
            "output_contract", "communication_style", "execution_policy")
 
+# Graph-authoring only (2026-08-12): polarity/binding feed relate() for
+# DUPLICATES vs CONTRADICTS. The live product Requirement schema does not
+# store them; Suite E1 scoring never reads them. Kept here so existing
+# episode JSON and the relation algebra stay reproducible.
 POLARITIES = ("require", "prefer", "avoid", "prohibit")
 BINDINGS = ("hard", "soft", "default", "suggestion")
 

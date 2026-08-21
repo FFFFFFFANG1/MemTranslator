@@ -14,7 +14,6 @@ results of both.
 """
 from memtranslator.config import A_BATCH_N, B_BATCH_N, FLUSH_IDLE_S
 from memtranslator.extraction import run_a_extraction, run_b_extraction
-from memtranslator.kinds import backfill_kinds
 from memtranslator.store import Store
 
 
@@ -78,7 +77,6 @@ class Pipeline:
             applied = self.store.apply_ops(out["ops"])
             self.adds_since_consolidate += sum(
                 1 for o in out["ops"] if o["kind"] in ("new", "contradict"))
-            backfill_kinds(self.store)
             result["a"] = {**out, "store": applied}
             result["ops"] += out["ops"]
             result["flags"] += out["flags"]

@@ -3,7 +3,8 @@ import json
 
 import memtranslator.llm as llm
 from memtranslator.config import CONSOLIDATE_ACTIVE, CONSOLIDATE_ADDS, STYLE_RULE_CAP
-from memtranslator.consolidate import buckets, run_consolidation, should_consolidate
+from memtranslator.consolidate_tidy_backup import (
+    buckets, run_consolidation, should_consolidate)
 from memtranslator.schema import Requirement
 from memtranslator.store import Store
 
@@ -89,7 +90,7 @@ def test_cross_key_overlap_clusters_near_duplicates():
     """Three same-obligation rules under different keys/buckets must still
     reach the merge prompt as one group (the measured miss: triplicate
     email maintenance-window rules invisible to key grouping)."""
-    from memtranslator.consolidate import buckets
+    from memtranslator.consolidate_tidy_backup import buckets
     a = Requirement(text="Emails must state the maintenance window start and end times.",
                     key="email.content", bucket="deliverables", created_at=1.0)
     b = Requirement(text="State the maintenance window and impact scope in emails.",
@@ -103,7 +104,7 @@ def test_cross_key_overlap_clusters_near_duplicates():
 
 
 def test_overlap_groups_are_oldest_first():
-    from memtranslator.consolidate import buckets
+    from memtranslator.consolidate_tidy_backup import buckets
     newer = Requirement(text="Reports end with a summary table of findings.",
                         key="report.x", bucket="", created_at=9.0)
     older = Requirement(text="End every report with a findings summary table.",
@@ -116,7 +117,7 @@ def test_overlap_groups_are_oldest_first():
 def test_merge_losing_numeric_anchor_is_dropped():
     """A merge whose text paraphrases away a numeric cap must not land —
     sources stay live (E1 round-3 measured STATE loss from lossy merges)."""
-    from memtranslator.consolidate import _drop_anchor_losing_merges
+    from memtranslator.consolidate_tidy_backup import _drop_anchor_losing_merges
     a = Requirement(text="Keep summaries under 200 words.")
     b = Requirement(text="Summaries stay within a 200-word cap.")
     by_id = {a.id: a, b.id: b}
@@ -132,7 +133,7 @@ def test_merge_losing_numeric_anchor_is_dropped():
 
 
 def test_merge_of_conflicting_numbers_cannot_pass_as_merge():
-    from memtranslator.consolidate import _drop_anchor_losing_merges
+    from memtranslator.consolidate_tidy_backup import _drop_anchor_losing_merges
     a = Requirement(text="Emails stay under 120 words.")
     b = Requirement(text="Emails stay under 78 words.")
     by_id = {a.id: a, b.id: b}

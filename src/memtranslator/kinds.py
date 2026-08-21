@@ -4,10 +4,14 @@ Why this exists: selection quality, not ranking. Style/format rules share no
 vocabulary with the tasks they govern, so every lexical ranker degrades to a
 recency lottery, and a capped top-N drops genuinely applicable rules
 whenever more than N apply (measured: many rounds carry 10-23 applicable
-rules). The fix pays the semantic cost on the WRITE path — one batched
-flash call tags each stored rule with the work kinds it governs — so the
-read path becomes a mechanical filter: keep the rules whose kinds cover
-this request's kind, inject them all, and only trim on a safety valve.
+rules). The fix pays the semantic cost on the WRITE path — tags each stored
+rule with the work kinds it governs — so the read path becomes a mechanical
+filter: keep the rules whose kinds cover this request's kind, inject them
+all, and only trim on a safety valve.
+
+Product kinds are open slugs (seed email|report|postmortem|code|any plus
+store-invented values). Genre filtering lives here; scope holds free
+key:value narrowness only.
 
 Degradation contract: an entry with EMPTY kinds (legacy store, annotation
 failure, mocked LLM) always matches — the filter can only ever narrow with
@@ -19,17 +23,21 @@ import re
 
 from memtranslator import llm
 from memtranslator.config import MODELS
+from memtranslator.schema import WORK_KIND_ANY, WORK_KINDS
+from memtranslator.scopes import normalize_kind
 
-TASK_KINDS = ("email", "report", "postmortem", "code")
-KIND_ANY = "any"
+# Compatibility names retained for callers; schema.py owns the seed.
+TASK_KINDS = WORK_KINDS
+KIND_ANY = WORK_KIND_ANY
 
 KINDS_SYSTEM = """You classify a user's stored preference rules by which kinds of work they govern.
-Work kinds: email (emails and messages), report (prose document deliverables: reports, articles, summaries, slide decks, write-ups), postmortem (incident write-ups), code (writing code or scripts).
+Prefer the seed kinds email, report, postmortem, code, or any. You may use a
+new short English slug only when none of those fit (e.g. weekly_report).
 For each numbered rule decide which kinds it governs:
 - a rule naming a specific deliverable governs only the kind covering that deliverable;
 - a rule about output shape (length, line width, sentence/word/row counts, headings, tables, tone, emoji, wording, style) with no named deliverable governs "any";
 - a rule about code constructs, tooling, naming, comments, or program structure governs "code".
-Output strictly one JSON object mapping each number to a list drawn from ["email","report","postmortem","code","any"]. No other text."""
+Output strictly one JSON object mapping each number to a list of kind slugs. No other text."""
 
 # Query-side task-kind markers, earliest match wins. Deliberately short
 # strings (spelling-level), no bench phrases.
@@ -42,9 +50,8 @@ _MARKERS = {
                "总结", "slide", "deck", "文章", "简报"],
 }
 
-_CTX_TASK = {"email": "email", "report": "report",
-             "postmortem": "postmortem",
-             "code-write": "code", "code_write": "code", "code": "code"}
+# Seed-only aliases when context.task uses historical spellings.
+_SEED_ALIASES = {"code_write": "code", "coding": "code"}
 
 # prose-document family: a rule tagged for one written-document kind covers
 # the sibling kinds (a postmortem IS a prose document; measured misses were
@@ -53,12 +60,14 @@ _PROSE = {"report", "postmortem"}
 
 
 def infer_task_kind(query: str, context: dict | None = None) -> str | None:
-    """Zero-LLM: explicit context wins; otherwise earliest lexicon marker in
-    the request text; None when nothing matches (= no filtering)."""
+    """Zero-LLM: explicit context.task wins (any normalised slug); otherwise
+    earliest seed lexicon marker in the request text; None when nothing
+    matches (= no filtering)."""
     context = context or {}
-    t = _CTX_TASK.get(str(context.get("task", "")).lower())
-    if t:
-        return t
+    raw = context.get("task")
+    if raw is not None and str(raw).strip():
+        slug = normalize_kind(str(raw))
+        return _SEED_ALIASES.get(slug, slug)
     low = query.lower()
     best, best_pos = None, None
     for kind, markers in _MARKERS.items():
@@ -71,10 +80,16 @@ def infer_task_kind(query: str, context: dict | None = None) -> str | None:
 
 def kind_matches(kinds: list, tkind: str | None) -> bool:
     """Empty kinds / "any" / unknown task kind always match; the prose
-    family bridges report<->postmortem."""
-    if not kinds or tkind is None or KIND_ANY in kinds or tkind in kinds:
+    family bridges report<->postmortem. No silent parent-child beyond that."""
+    if (not kinds or tkind is None or KIND_ANY in kinds
+            or "agent_response" in kinds):
         return True
-    if tkind in _PROSE and _PROSE & set(kinds):
+    normalised = {normalize_kind(k) for k in kinds if str(k).strip()}
+    tkind = normalize_kind(tkind)
+    tkind = _SEED_ALIASES.get(tkind, tkind)
+    if tkind in normalised:
+        return True
+    if tkind in _PROSE and _PROSE & normalised:
         return True
     return False
 
@@ -99,13 +114,16 @@ def _annotate_raw(texts: list[str]) -> tuple[list[list[str]], bool]:
         parsed = json.loads(m.group(0)) if m else {}
     except Exception:
         parsed = {}
-    allowed = set(TASK_KINDS) | {KIND_ANY}
     out = []
     for i in range(len(texts)):
         vals = parsed.get(str(i + 1), [])
         if not isinstance(vals, list):
             vals = []
-        out.append([v for v in vals if v in allowed])
+        cleaned = []
+        for v in vals:
+            if isinstance(v, str) and v.strip():
+                cleaned.append(normalize_kind(v))
+        out.append(list(dict.fromkeys(cleaned)))
     return out, call_failed
 
 
@@ -116,38 +134,3 @@ def annotate_kinds(texts: list[str]) -> list[list[str]]:
     if not texts:
         return []
     return _annotate_raw(texts)[0]
-
-def backfill_kinds(store) -> int:
-    """Tag every active untagged requirement in one batched call — covers
-    fresh extractions, consolidation merges, and legacy entries alike
-    (self-healing: whatever slipped through gets tagged on the next flush).
-    Returns how many entries were tagged.
-
-    Retries with backoff, but only when the CALL failed (429/outage): this
-    runs right after an extraction flush, i.e. at the top of a rate-limit
-    burst, and a swallowed 429 here left whole chained stores untagged
-    (measured 2026-07-30: 1-2/17 tagged) — which silently switches off
-    every read-side feature that keys on the tags. The write path is
-    asynchronous; sleeping is free. A successful-but-empty reply is a model
-    answer and is left for the next flush's self-heal instead.
-    """
-    import time as _time
-    todo = [r for r in store.active()
-            if r.kind == "requirement" and not r.kinds]
-    if not todo:
-        return 0
-    texts = [r.text for r in todo]
-    tags, failed = _annotate_raw(texts)
-    for delay in (1.0, 4.0):
-        if not failed:
-            break
-        _time.sleep(delay)
-        tags, failed = _annotate_raw(texts)
-    n = 0
-    for r, k in zip(todo, tags):
-        if k:
-            r.kinds = k
-            if hasattr(store, "persist"):
-                store.persist(r)
-            n += 1
-    return n

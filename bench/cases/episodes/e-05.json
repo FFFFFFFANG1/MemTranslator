@@ -1,3632 +1,1168 @@
 {
- "id": "e-05",
- "schema_version": "E1",
- "seed": 55,
- "protocol_version": 2,
- "persona": {
-  "id": "techwriter-en",
-  "who": "technical writer maintaining developer docs",
-  "lang": "en",
-  "register": "precise but casual in chat",
-  "domain": "docs",
-  "quirks": "quotes style guides from memory"
- },
- "catalogue": [
-  {
-   "cid": "e05-c00",
-   "text": "when writing a changelog or NEWS file avoid: follow GNU style guide or guideline",
-   "clause": "follow GNU style guide for changelog",
-   "alt_clause": "adhere to GNU guidelines for NEWS entries",
-   "distinctive": "GNU style guide",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "style.voice",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "GNU style guide or guideline"
-     ],
-     "before": "",
-     "after": ""
+  "id": "e-05",
+  "protocol_version": 3,
+  "user_turns": [
+    {
+      "seq": 1,
+      "user_input": "推荐工具的时候优先开源的啊，闭源的我们过不了审"
     },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
+    {
+      "seq": 2,
+      "user_input": "Hey, can you draft a short email to the engineering team about the upcoming API doc freeze? I need it to mention the freeze date (Dec 15), the cutoff for new endpoint submissions (Dec 8), and a reminder to check the style guide for changelog formatting. Keep it friendly but clear.。That last changelog you wrote didn't follow GNU style at all — it was all over the place. Please don't use that format again; stick to the GNU guidelines for any NEWS or changelog entries from now on."
+    },
+    {
+      "seq": 3,
+      "user_input": "Can you pull together a quick report on the most common API errors our users hit last quarter? Include the error codes, frequency, and the typical root cause from our support tickets.。Hey, can you draft a postmortem for the API outage last Thursday? Include the timeline, root cause, and action items. Also, when you name any module in that doc, avoid underscores — use hyphens instead. Google's Python style guide says module names should be all-lowercase with hyphens, so let's stick with that."
+    },
+    {
+      "seq": 4,
+      "user_input": "From now on, never use triple double quotes in docstrings. I know the Google style guide says they're fine for multi-line strings, but for our codebase, I want them banned. Also, can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total.，Oh, and while you're at it—when you write the docstring for that function, keep the summary of code changes to 13 sentences max. Chicago Manual says 'brevity is the soul of wit' or something like that. Anyway, the function should take a list of file paths and return a dict mapping each extension to the count, using os.path.splitext."
+    },
+    {
+      "seq": 5,
+      "user_input": "Compose an email to the engineering team asking for a clarification on the new API endpoint parameters for the user authentication flow. Reference the Google Developer Documentation Style Guide when explaining why we need precise parameter descriptions.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 6,
+      "user_input": "Hey, can you draft a postmortem for the API outage last Thursday? Include the timeline, root cause, and action items. Oh, and one more thing—when you're not giving instructions, don't use double quotes for UI labels or buttons; use single quotes instead. The Microsoft Manual of Style backs me up on this one."
+    },
+    {
+      "seq": 7,
+      "user_input": "Yeah, do the postmortem for the API v2 rollout — summary, timeline, root cause, action items, dev-facing, no fluff. And from now on, keep responses brief and colloquial, like we're talking. I'm citing Strunk & White here: 'omit needless words.'，Hey, while you're at it, could you also pull together a report of all the API endpoints that changed between v2.1 and v2.2, including the new error codes? I need it for the release notes. Oh, and one more thing—when you're building strings from substrings, avoid repeated concatenation; use list joining or io.StringIO instead. That's in the Python style guide, section 2.3."
+    },
+    {
+      "seq": 8,
+      "user_input": "Can you write a Python function that takes a list of filenames and returns only the ones ending in '.md'? I need it for a docs cleanup script.。Hey, that postmortem you just drafted for the API docs outage — it's got `+` and `+=` in a loop to build a string, which is exactly the kind of thing that makes the timeline hard to read later. You know the Google style guide says 'prefer joining lists with `join()`'? So from now on, avoid `+` and `+=` when accumulating a string in a loop. Please rewrite that section using `join()`."
+    },
+    {
+      "seq": 9,
+      "user_input": "Hey, can you draft a postmortem for the API rate-limit outage last Tuesday? I'll need the timeline, root cause, impact summary, and action items — keep it in the style of our internal docs, like the one from the cache failover incident in March.。Oh, and one more thing — from now on, when you write a response for me, please keep it under 83 words. I know that sounds oddly specific, but it's what the team decided for changelog entries. So for the Python function I need: write a function that takes a git diff and returns a list of changed file paths, ignoring binary files — I need it for a changelog generator script. Keep it under 83 words, yeah?。Hey, can you draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging? Keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions. Oh, and from now on, please don't use 'Great Britain' on the page — it's ambiguous and not the official name for the UK."
+    },
+    {
+      "seq": 10,
+      "user_input": "Write a postmortem for the API outage last Tuesday. Cover what broke, why, and what we're changing to prevent it. Keep it short.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 11,
+      "user_input": "Hey, can you pull together a quick report on the number of broken links we've got in the v2 API docs? I need the count per section, and highlight any that point to retired endpoints.。Hey, that last batch of examples you gave me had file paths and URLs scattered all over the place. The Microsoft Style Guide says to keep examples clean and distraction-free. Please don't include file paths or URLs in any examples going forward. And while you're at it, can you pull together a quick report of all the API endpoints that have changed between v2.1 and v2.2 of the developer docs, including the new error codes? I need it for the release notes."
+    },
+    {
+      "seq": 12,
+      "user_input": "Hey, that last lambda you wrote for the file-path example was 30 lines long. That's way too much for a lambda — our style guide says lambdas should be simple expressions, not mini-functions. Can you keep them under 22 lines from now on?，Hey, the email draft you just sent is fine, but I noticed you jumped straight into code examples without explaining the concept first. That's exactly what I don't want—per the Google Developer Style Guide, we need to ensure concept understanding before diving into implementation. Can you rewrite that email draft to the dev team, asking them to review the new API endpoint docs I just pushed to staging, keep it short, and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions? And from now on, when you're helping me with code-related stuff, don't skip the concept explanation—always make sure I understand the concept first."
+    },
+    {
+      "seq": 13,
+      "user_input": "Hey, that last draft you wrote for the email had a lot of shorthand like 'the API' and 'the examples' without specifying which ones. I need the actual first-hand account of what the devs are supposed to update. Can you rewrite it so you avoid any shorthand and spell out exactly what they need to do?"
+    },
+    {
+      "seq": 14,
+      "user_input": "Hey, I just read your last draft and it's full of these little gotcha arguments like 'actually, that's not the right way to think about it' — that's exactly the kind of stuff that wastes cycles. Strunk & White would call it 'needless words.' Can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total. And from now on, please avoid wasting cycles with trivial argument in your writing.，Hey, that postmortem draft you just sent — the headings and subheadings are all over the place. We're following the Google Developer Doc Style Guide here, so please don't use any headings or subheadings at all. Just plain text sections with bold lead-ins. Can you redo it without any headings?"
+    },
+    {
+      "seq": 15,
+      "user_input": "对了，avoid repeated string concatenation; use list joining or io.StringIO buffer这条继续保持啊"
+    },
+    {
+      "seq": 16,
+      "user_input": "hey, i need a python script that takes a list of markdown files in a folder, extracts all the headings (h1 to h3), and outputs a table of contents as a new markdown file. should handle nested headings with indentation.。Hey, that function you just wrote had a form feed character in it as whitespace. Please don't do that — it's a nightmare for anyone reading the raw source, and the Python style guide (PEP 8) doesn't even mention it as acceptable whitespace. Stick to spaces or tabs."
+    },
+    {
+      "seq": 17,
+      "user_input": "Hey, can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total. Also, from now on, please don't use Markdown formatting when writing content — stick to plain text or HTML, like the Google developer style guide says.，Hey, one thing — in that last report you gave me the temperature in Fahrenheit, and the whole thing was a mess of words. I need you to always give temperatures in Celsius, and keep it under 22 words. Can you redo that API changes report with deprecation notices and new endpoints, with links to the dev guide sections, and make sure the temperature is in Celsius and under 22 words this time?"
+    },
+    {
+      "seq": 18,
+      "user_input": "Hey, draft a short email to the API team asking them to clarify the rate-limit headers in the response example for the v2 docs. I need to know if 'X-RateLimit-Remaining' resets per endpoint or per user.。Hey, I just looked at the last output you gave me and those bullet points are way too long. You're writing whole paragraphs in each bullet — that's not a bullet point, that's a mini-essay. The whole point of bullets is to be scannable. Could you please keep every bullet point under 17 words from now on? That's a hard limit. I need this for the API change report I asked for — can you pull together a quick list of all the endpoints that changed between v2.1 and v2.2, including the new error codes? And yeah, keep each bullet under 17 words."
+    },
+    {
+      "seq": 19,
+      "user_input": "Can you pull the API deprecation warnings from the last two releases and write a summary report for the dev team? I need the affected endpoints, the planned removal dates, and any migration instructions mentioned in the changelogs.。Hey, by the way — from now on, when you're checking a sentence I generate, don't use any words that start with letters from 'random'. That's a hard rule. Also, could you draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging? Keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions.。Hey, can you draft a postmortem for the API v2 rollout last week? The auth module failed and caused a 12-minute outage. Use the standard template: summary, timeline, root cause, action items. Keep it developer-facing, no fluff. Also, from now on, when writing a sentence, don't make one sentence phonetically rhythmically beautiful — just keep it plain and functional."
+    },
+    {
+      "seq": 20,
+      "user_input": "Hey, can you refactor the chunk of code that builds the HTML table rows? It's using += on a string in a loop and the lambda in the map is getting chunky.",
+      "probe": {
+        "should_apply": [
+          "e05-c06"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 21,
+      "user_input": "Hey, that last function you wrote used passive voice all over the place — 'the list is iterated', 'the count is returned'. That's a no-go for our developer docs. Style guides say active voice makes instructions way clearer. So from now on, please avoid passive voice in any code examples or explanations you write for me."
+    },
+    {
+      "seq": 22,
+      "user_input": "Hey, can you draft a short email to the dev team asking them to review the new API reference section for the v2.3 release? Keep it friendly but clear, and mention that the Chicago Manual of Style says we should use serial commas, so please keep an eye out for that.。Hey, that last output used default iterators and operators when going through the types. That's a no-go per the Google style guide — we explicitly avoid those in production docs. Could you redo it without them? Also, can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total.。Oh, and while you're at it, could you pull together a quick report of all the API endpoints that changed between v2.1 and v2.2 of the dev docs, including the new error codes? I need it for the release notes. Also, one thing — avoid using a single leading underscore in identifiers. I keep seeing it in the code samples and it's not compliant with PEP 8. From now on, just don't do it.。对了，ensure concept understanding before code这条继续保持啊"
+    },
+    {
+      "seq": 23,
+      "user_input": "Pull the latest usage stats for the authentication section and format them into a brief weekly report, including any notable spikes or drops.。Hey, the last response you gave me had identifiers with underscores and weird characters—totally breaks our style guide. The Google Developer Documentation Style Guide says identifiers should be ASCII alphanumerics and hyphens only. Can you pull together a brief report on the latest API changes in the v3 release? I need the deprecation notices and the new endpoints listed, with links to the relevant sections in the dev guide."
+    },
+    {
+      "seq": 24,
+      "user_input": "Can you pull a quick report on last month's docs open issues — how many were closed, how many still open, and the average time to first response?",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 25,
+      "user_input": "write a postmortem for the API outage we had last Tuesday, covering timeline, root cause, and lessons learned. keep it plain text, no markdown.",
+      "probe": {
+        "should_apply": [
+          "e05-c08"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 26,
+      "user_input": "这次这份写详细一点，季度 review 要用"
+    },
+    {
+      "seq": 27,
+      "user_input": "先把日志按天切开再统计，别一把梭"
+    },
+    {
+      "seq": 28,
+      "user_input": "Can you run a quick check on the API reference pages for the last release? I need to know if any examples still contain inline file paths — we had a style guide rule about that.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 29,
+      "user_input": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」"
+    },
+    {
+      "seq": 30,
+      "user_input": "Write a Python function that takes a list of version strings (like '2.3.1') and returns them sorted by semantic versioning rules, not lexicographically.",
+      "probe": {
+        "should_apply": [
+          "e05-c24"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 31,
+      "user_input": "我老板要求他们组的周报全用 bullet，真够呛"
+    },
+    {
+      "seq": 32,
+      "user_input": "Can you write a Python script that parses a Markdown file and extracts all the headings (h1 to h6) into a JSON structure with their levels and text?。Hey, that last response had multiline actions all indented — that's not how we write them in the docs. Per the Microsoft Style Guide, we don't indent multiline actions. Please don't do that going forward.。Hey, that code snippet you just wrote for me — it's got imports all jammed together with no blank lines between the standard library, third-party, and local sections. The Python style guide (PEP 8, obviously) says to separate them with blank lines. Can you please avoid mashing them together next time?"
+    },
+    {
+      "seq": 33,
+      "user_input": "Hey, that postmortem draft you just sent is way too long. I asked for a quick one, and you gave me a novel. Also, per the Google Developer Documentation Style Guide, summaries should be concise. From now on, when you write a summary, keep it under 2401 words. That's a hard limit.，对了，avoid wasting cycles with trivial argument这条继续保持啊"
+    },
+    {
+      "seq": 34,
+      "user_input": "Hey, this summary you just gave me for the API changes is way too long. I asked for a quick report, and you gave me 22 sentences. Can you stick to 17 sentences max when you're summarizing? It's like the Chicago Manual of Style says: 'Brevity is the soul of wit.'，Hey, that postmortem draft you just sent — it's got sentences in quotation marks all over the place, like you're quoting someone. That's not how we do it in developer docs. Chicago Manual says use quotes only for UI labels or exact error messages, not for emphasis. So please, no more enclosing sentences in quotation marks. Now redo the postmortem for the API v2 outage: 12 minutes, auth module failed, standard template: summary, timeline, root cause, action items. Keep it tight and dev-facing."
+    },
+    {
+      "seq": 35,
+      "user_input": "Can you rewrite this function to build the output string using a list and join instead of that repeated += pattern? Also, please rename `_build_summary` to something without the leading underscore.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 36,
+      "user_input": "Hey, can you draft a short email to the engineering team about the upcoming API doc freeze? I need it to mention the freeze date (Dec 15), the cutoff for new endpoint submissions (Dec 8), and a reminder to check the style guide for changelog formatting. Keep it friendly but clear.。Hey, that postmortem draft you just sent — it's got 'northern Virginia' and 'east coast' capitalized. That's not right. The Chicago Manual of Style says compass directions and regions stay lowercase unless they're part of a proper name. 'northern Virginia' is fine, 'East Coast' is wrong. Please fix that and redo the whole thing."
+    },
+    {
+      "seq": 37,
+      "user_input": "Can you pull together a quick report on the most common API errors our users hit last quarter? Include the error codes, frequency, and the typical root cause from our support tickets.。Hey, can you draft a short email to the API team asking them to review the new endpoint documentation I just pushed? I need it to mention that the style guide says we keep headings in sentence case, so please check that too. Also, from now on, no intricately crafted sentence structuring — just keep it straightforward, like the Chicago Manual of Style says."
+    },
+    {
+      "seq": 38,
+      "user_input": "又来了，这 API 每次都超时，烦死"
+    },
+    {
+      "seq": 39,
+      "user_input": "你上次自己说的「建议拆成两个 PR」，我照做了，结果还是冲突"
+    },
+    {
+      "seq": 40,
+      "user_input": "Could you pull last week's API deprecation notices into a bulleted report? Each point should be brief and avoid default list formatting.",
+      "probe": {
+        "should_apply": [
+          "e05-c19"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 41,
+      "user_input": "之前说的「follow GNU style guide for changelog」那条不用了，按你默认的来吧，之前说的「keep responses under 83 words」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 42,
+      "user_input": "Hey, this email draft you just sent me—it's fine for the dev team, but I noticed you named the example module `api_client` in the endpoint description. Per the Google Developer Style Guide, we should be using underscores for module names, not hyphens. Can you fix that and also make sure the email mentions active voice per the style guide?，之前说的「don't include file paths or URLs in examples」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 43,
+      "user_input": "之前说的「keep each bullet point under 17 words」那条不用了，按你默认的来吧，之前说的「no intricately crafted sentence structuring」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 44,
+      "user_input": "write a postmortem for the API outage yesterday. summarize the root cause, timeline, and fix in bullet points.",
+      "probe": {
+        "should_apply": [
+          "e05-c15"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 45,
+      "user_input": "Hey, that last email draft you wrote was way too long. I said keep it short, and you gave me 30 sentences. I need you to keep the summary of code changes to 22 sentences max. That's a hard limit, per the Google Developer Style Guide, we don't need a novel for a review request.，之前说的「avoid form feed character as whitespace」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 46,
+      "user_input": "Hey, I just read the last summary you wrote for the API docs, and it's way too long. I'm trying to draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging—keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions. But seriously, that summary was over 5043 words. That's not a summary, that's a novella. From now on, when you write a summary, keep it under 5043 words, got it?"
+    },
+    {
+      "seq": 47,
+      "user_input": "Hey, that email draft you just sent—it's got some passive voice in the endpoint descriptions. I specifically asked for active voice, per the Google Developer Style Guide. Also, when writing headings and subheadings, you need to make sure they're consistent—don't let them drift into passive constructions either. Can you redo it?"
+    },
+    {
+      "seq": 48,
+      "user_input": "Hey, can you draft a quick email to the API team about the upcoming changelog? I need to let them know we'll be adding entries for the v3.2 endpoints next week. Keep it short and friendly.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 49,
+      "user_input": "Hey, that last output was way too wordy. I asked for a temperature, and you gave me a whole paragraph. Per the Google Developer Style Guide, we should keep things concise. When you give a temperature, keep it under 17 words. Can you redo that? And also, draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging. Keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions."
+    },
+    {
+      "seq": 50,
+      "user_input": "之前说的「avoid passive voice」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 51,
+      "user_input": "之前说的「don't make one sentence phonetically rhythmically beautiful」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 52,
+      "user_input": "write a Python function that takes a list of file paths and returns a dict mapping each file extension to the count of files with that extension, using pathlib for everything.",
+      "probe": {
+        "should_apply": [
+          "e05-c24"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 53,
+      "user_input": "之前说的「without using default iterators and operators」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 54,
+      "user_input": "之前说的「don't use words starting with letters from 'random'」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 55,
+      "user_input": "之前说的「max 17 sentences when summarizing」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 56,
+      "user_input": "Can you write a Python script that parses a Markdown file and extracts all the headings (h1 to h6) into a JSON structure with their levels and text?",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 57,
+      "user_input": "之前说的「don't enclose sentences in quotation marks」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 58,
+      "user_input": "之前说的「keep lambda functions under 22 lines」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 59,
+      "user_input": "Hey, could you draft a quick email to the dev team about the new API endpoint? Keep it short and just the high-level changes.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 60,
+      "user_input": "hey, i need a python script that takes a list of markdown files in a folder, extracts all the headings (h1 to h3), and outputs a table of contents as a new markdown file. should handle nested headings with indentation.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": [
+          "e05-c15"
+        ]
+      }
+    },
+    {
+      "seq": 61,
+      "user_input": "Hey, can you draft a short email to the dev team asking them to review the new API reference section for the v2.3 release? Keep it friendly but clear, and mention that the Chicago Manual of Style says we should use serial commas, so please keep an eye out for that.",
+      "probe": {
+        "should_apply": [
+          "e05-c05"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 62,
+      "user_input": "Can you rewrite the Python script that generates the API endpoint table? The current version uses a loop with string concatenation and a helper function starting with an underscore. I need the output to be a clean markdown table.",
+      "probe": {
+        "should_apply": [
+          "e05-c07",
+          "e05-c24"
+        ],
+        "must_not_apply": []
+      }
     }
-   },
-   "atom": {
-    "provenance": {
-     "source": "keep-a-changelog",
-     "license": "MIT",
-     "url": "https://keepachangelog.com/en/1.1.0/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c01",
-   "text": "when naming a module avoid: use underscores",
-   "clause": "avoid underscores when naming modules",
-   "alt_clause": "don't use underscores in module names",
-   "distinctive": "underscores",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "code.naming",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "case_style",
-     "val": "snake",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c02",
-   "text": "when writing docstrings avoid: use triple double quotes",
-   "clause": "never use triple double quotes in docstrings",
-   "alt_clause": "do not use triple double quotes for docstrings from now on",
-   "distinctive": "triple double quotes",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.code_blocks",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "triple double quotes"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c03",
-   "text": "when writing a description keep summary of code changes (no more than 13 sentences)",
-   "clause": "keep summary of code changes to 13 sentences",
-   "alt_clause": "limit the code changes summary to 13 sentences",
-   "distinctive": "13",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "summary.length",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 13.0,
-     "unit": "sentences",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "conventional-commits",
-     "license": "CC-BY-3.0",
-     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1 -> 13"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c04",
-   "text": "when referring to interface elements in non-instructional contexts avoid: use single quote marks",
-   "clause": "use single quotes for UI elements in non-instructional contexts",
-   "alt_clause": "when not giving instructions, put interface labels in single quotes",
-   "distinctive": "single quotes",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.emphasis",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "single quote marks"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c05",
-   "text": "when responding avoid: keep responses brief and colloquial",
-   "clause": "keep responses brief and colloquial from now on",
-   "alt_clause": "always make replies short and conversational",
-   "distinctive": "brief and colloquial",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "tone.register",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "register",
-     "val": "casual",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c06",
-   "text": "when building a string from substrings avoid: use list joining or io.StringIO buffer",
-   "clause": "avoid repeated string concatenation; use list joining or io.StringIO buffer",
-   "alt_clause": "don't concatenate strings repeatedly; prefer list join or StringIO",
-   "distinctive": "io.StringIO",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.comments",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "list joining or io.StringIO buffer"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "python",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c07",
-   "text": "when accumulating a string within a loop avoid `+` and `+=` operators",
-   "clause": "avoid `+` and `+=` when accumulating a string in a loop",
-   "alt_clause": "don't use `+` or `+=` for string building in loops",
-   "distinctive": "`+` and `+=`",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.error_handling",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "`+` and `+=` operators"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c08",
-   "text": "when writing a response limit response length (no more than 83 words)",
-   "clause": "keep responses under 83 words",
-   "alt_clause": "limit each response to at most 83 words",
-   "distinctive": "83",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 83.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 50 -> 83"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c09",
-   "text": "on subsequent mentions on the page avoid: use 'Great Britain'",
-   "clause": "don't use 'Great Britain' on the page",
-   "alt_clause": "avoid referencing 'Great Britain' anywhere in the docs",
-   "distinctive": "Great Britain",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "language.terminology",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "'Great Britain'"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c10",
-   "text": "when providing examples avoid: include file paths and URLs",
-   "clause": "don't include file paths or URLs in examples",
-   "alt_clause": "keep file paths and URLs out of any example code",
-   "distinctive": "file paths or URLs",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "evidence.sources",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "file paths and URLs"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/shellguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c11",
-   "text": "when writing lambda functions limit lambda functions (no more than 22 lines)",
-   "clause": "keep lambda functions under 22 lines",
-   "alt_clause": "limit lambda functions to at most 22 lines",
-   "distinctive": "22",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.line_length",
-    "polarity": "prefer",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 22.0,
-     "unit": "lines",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "python",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1 -> 22"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c12",
-   "text": "when using AI to make code avoid: ensure concept understanding",
-   "clause": "ensure concept understanding before code",
-   "alt_clause": "always explain the concept before showing code",
-   "distinctive": "concept understanding",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.explanation",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "verb",
-     "val": "explain",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c13",
-   "text": "when evaluating generated text avoid: ensure first-hand account",
-   "clause": "avoid shorthand in first-hand accounts",
-   "alt_clause": "don't use abbreviations or vague terms when describing direct experiences",
-   "distinctive": "shorthand",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "evidence.grounding",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "first-hand account"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c14",
-   "text": "when writing avoid wasting cycles with trivial argument",
-   "clause": "avoid wasting cycles with trivial argument",
-   "alt_clause": "don't waste time on pointless debate",
-   "distinctive": "trivial argument",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "workflow.fidelity",
-    "polarity": "prefer",
-    "binding": "soft",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "wasting cycles with trivial argument"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity avoid -> prefer"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c15",
-   "text": "when writing headings and subheadings avoid: ensure headings and subheadings",
-   "clause": "don't use any headings or subheadings",
-   "alt_clause": "no headings or subheadings at all",
-   "distinctive": "headings or subheadings",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.headings",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "headings and subheadings"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c16",
-   "text": "when writing a file avoid: use form feed character as whitespace",
-   "clause": "avoid form feed character as whitespace",
-   "alt_clause": "don't use form feed characters for spacing",
-   "distinctive": "form feed character",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.line_width",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "form feed character as whitespace"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c17",
-   "text": "when writing content avoid: use Markdown formatting",
-   "clause": "don't use Markdown formatting",
-   "alt_clause": "avoid Markdown formatting entirely",
-   "distinctive": "Markdown formatting",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.markdown",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "format",
-     "val": "markdown",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c18",
-   "text": "when giving temperature give temperature in Celsius (no more than 22 words)",
-   "clause": "always give temperature in Celsius, under 22 words",
-   "alt_clause": "temperature must be Celsius and not exceed 22 words",
-   "distinctive": "22",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "analysis.units",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 22.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 2 -> 22"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c19",
-   "text": "when writing answers format bullet points (no more than 17 words)",
-   "clause": "keep each bullet point under 17 words",
-   "alt_clause": "never write a bullet point longer than 17 words",
-   "distinctive": "17",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.lists",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 17.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 2 -> 17"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c20",
-   "text": "when checking a generated sentence avoid: use words starting with letters from 'random'",
-   "clause": "don't use words starting with letters from 'random'",
-   "alt_clause": "avoid any word whose first letter is in 'random'",
-   "distinctive": "random",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "style.voice",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "words starting with letters from 'random'"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c21",
-   "text": "when writing a sentence avoid: make one sentence phonetically rhythmically beautiful",
-   "clause": "don't make one sentence phonetically rhythmically beautiful",
-   "alt_clause": "avoid crafting any single sentence to be phonetically rhythmically beautiful",
-   "distinctive": "phonetically rhythmically beautiful",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "style.voice",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "one sentence phonetically rhythmically beautiful"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c22",
-   "text": "when writing content avoid: use active voice",
-   "clause": "avoid passive voice",
-   "alt_clause": "don't use passive voice",
-   "distinctive": "passive voice",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "style.voice",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "active voice"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c23",
-   "text": "when iterating over types that support default iterators and operators avoid: use default iterators and operators",
-   "clause": "without using default iterators and operators",
-   "alt_clause": "avoiding the default iteration and operator patterns",
-   "distinctive": "default iterators and operators",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.naming",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "default iterators and operators"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c24",
-   "text": "when using leading or trailing underscores in identifiers avoid: use single leading underscore",
-   "clause": "avoid using a single leading underscore in identifiers",
-   "alt_clause": "don't use one leading underscore in identifiers",
-   "distinctive": "single leading underscore",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.naming",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "case_style",
-     "val": "snake",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c25",
-   "text": "when writing identifiers avoid: comprise only ASCII alphanumerics and hyphens",
-   "clause": "identifiers must be ASCII alphanumerics and hyphens only",
-   "alt_clause": "use only ASCII letters, digits, and hyphens in identifiers",
-   "distinctive": "ASCII alphanumerics and hyphens",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "code.naming",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "ASCII alphanumerics and hyphens"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "semver",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/semver/semver/master/semver.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c26",
-   "text": "when writing multiline actions avoid: indent multiline actions",
-   "clause": "don't indent multiline actions",
-   "alt_clause": "never add indentation to multiline actions",
-   "distinctive": "indent multiline actions",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.code_blocks",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "multiline actions"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/shellguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c27",
-   "text": "when writing code avoid: place blank line between import sections",
-   "clause": "avoid placing blank line between import sections",
-   "alt_clause": "don't put blank lines between import groups",
-   "distinctive": "blank line",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.code_blocks",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "blank line between import sections"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c28",
-   "text": "when writing a summary limit summary (no more than 2401 words)",
-   "clause": "keep summaries under 2401 words",
-   "alt_clause": "limit summaries to 2400 words or fewer",
-   "distinctive": "2401",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "summary.length",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 2401.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1500 -> 2401"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c29",
-   "text": "when summarizing in generated text compose summarization (no more than 17 sentences)",
-   "clause": "max 17 sentences when summarizing",
-   "alt_clause": "no more than 17 sentences in any summary",
-   "distinctive": "17",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "summary.length",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 17.0,
-     "unit": "sentences",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 2 -> 17"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c30",
-   "text": "when writing sentences avoid: enclose sentences in quotation marks",
-   "clause": "don't enclose sentences in quotation marks",
-   "alt_clause": "never put sentences inside quotes",
-   "distinctive": "quotation marks",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.emphasis",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "sentences in quotation marks"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c31",
-   "text": "when writing geographical directions or regions avoid: use lower case for compass directions and regions",
-   "clause": "use lowercase for compass directions and regions",
-   "alt_clause": "keep cardinal directions and regional terms in lowercase",
-   "distinctive": "regions",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.emphasis",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "lower case for compass directions and regions"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-c32",
-   "text": "always avoid: use intricately crafted sentence structuring",
-   "clause": "no intricately crafted sentence structuring",
-   "alt_clause": "avoid elaborate sentence construction",
-   "distinctive": "intricately crafted sentence structuring",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "tone.register",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "intricately crafted sentence structuring"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e05-s01",
-   "text": "when naming a module use underscores",
-   "clause": "use underscores for module names",
-   "alt_clause": "module names should have underscores",
-   "distinctive": "underscores",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "code.naming",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "case_style",
-     "val": "snake",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity avoid -> prefer"
-   },
-   "anchor_weak": false,
-   "successor_of": "e05-c01"
-  },
-  {
-   "cid": "e05-s03",
-   "text": "when writing a description keep summary of code changes (no more than 22 sentences)",
-   "clause": "keep summary of code changes to 22 sentences max",
-   "alt_clause": "limit the summary of code changes to no more than 22 sentences",
-   "distinctive": "22",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "summary.length",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 13.0,
-     "unit": "sentences",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "conventional-commits",
-     "license": "CC-BY-3.0",
-     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 13 -> 22"
-   },
-   "anchor_weak": false,
-   "successor_of": "e05-c03"
-  },
-  {
-   "cid": "e05-s04",
-   "text": "when writing a summary limit summary (no more than 5043 words)",
-   "clause": "keep summaries under 5043 words",
-   "alt_clause": "limit any summary to 5043 words max",
-   "distinctive": "5043",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "summary.length",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 2401.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 2401 -> 5043"
-   },
-   "anchor_weak": false,
-   "successor_of": "e05-c28"
-  },
-  {
-   "cid": "e05-s05",
-   "text": "when writing headings and subheadings ensure headings and subheadings",
-   "clause": "when writing headings and subheadings, ensure they're consistent",
-   "alt_clause": "for headings and subheadings, keep them uniform",
-   "distinctive": "headings and subheadings",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.headings",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "headings and subheadings"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e05-c15"
-  },
-  {
-   "cid": "e05-s06",
-   "text": "when giving temperature give temperature in Celsius (no more than 17 words)",
-   "clause": "keep temperature under 17 words",
-   "alt_clause": "limit temperature to 17 words max",
-   "distinctive": "17",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "analysis.units",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 22.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 22 -> 17"
-   },
-   "anchor_weak": false,
-   "successor_of": "e05-c18"
+  ],
+  "ground_truth": {
+    "requirements": [
+      {
+        "id": "e05-c00",
+        "text": "follow GNU style guide for changelog",
+        "paraphrase": "adhere to GNU guidelines for NEWS entries",
+        "anchor": "GNU style guide",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "changelog",
+          "news"
+        ],
+        "key": "format.style_guide",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c01",
+        "text": "avoid underscores when naming modules",
+        "paraphrase": "don't use underscores in module names",
+        "anchor": "underscores",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the output introduces or references a module name, whether in code or prose",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "naming.modules",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c02",
+        "text": "never use triple double quotes in docstrings",
+        "paraphrase": "do not use triple double quotes for docstrings from now on",
+        "anchor": "triple double quotes",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "docstring"
+        ],
+        "key": "docstring.quote_style",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c03",
+        "text": "keep summary of code changes to 13 sentences",
+        "paraphrase": "limit the code changes summary to 13 sentences",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code_change_summary"
+        ],
+        "key": "length.max",
+        "confidence": 7
+      },
+      {
+        "id": "e05-c04",
+        "text": "use single quotes for UI elements in non-instructional contexts",
+        "paraphrase": "when not giving instructions, put interface labels in single quotes",
+        "anchor": "single quotes",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output mentions UI elements such as labels, buttons, or menu names in running text rather than in instructional steps",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "quotation.ui_elements",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c05",
+        "text": "keep responses brief and colloquial from now on",
+        "paraphrase": "always make replies short and conversational",
+        "anchor": "brief and colloquial",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.register",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c06",
+        "text": "avoid repeated string concatenation; use list joining or io.StringIO buffer",
+        "paraphrase": "don't concatenate strings repeatedly; prefer list join or StringIO",
+        "anchor": "io.StringIO",
+        "bucket": "execution_policy",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "strings.construction",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c07",
+        "text": "avoid `+` and `+=` when accumulating a string in a loop",
+        "paraphrase": "don't use `+` or `+=` for string building in loops",
+        "anchor": "`+` and `+=`",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code_style.string_accumulation",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c08",
+        "text": "keep responses under 83 words",
+        "paraphrase": "limit each response to at most 83 words",
+        "anchor": "83",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c09",
+        "text": "don't use 'Great Britain' on the page",
+        "paraphrase": "avoid referencing 'Great Britain' anywhere in the docs",
+        "anchor": "Great Britain",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever written output refers to the country, avoiding the ambiguous non-official term 'Great Britain' in favor of the UK's official name",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "terminology.banned_terms",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c10",
+        "text": "don't include file paths or URLs in examples",
+        "paraphrase": "keep file paths and URLs out of any example code",
+        "anchor": "file paths or URLs",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any time the output includes illustrative examples such as code samples, command lines, or usage demonstrations",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "examples.cleanliness",
+        "confidence": 7
+      },
+      {
+        "id": "e05-c11",
+        "text": "keep lambda functions under 22 lines",
+        "paraphrase": "limit lambda functions to at most 22 lines",
+        "anchor": "22",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "length.lambda_max",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c12",
+        "text": "ensure concept understanding before code",
+        "paraphrase": "always explain the concept before showing code",
+        "anchor": "concept understanding",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output involves code, code examples, or implementation guidance, including code-related content embedded in other deliverables",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "order.concept_before_code",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c13",
+        "text": "avoid shorthand in first-hand accounts",
+        "paraphrase": "don't use abbreviations or vague terms when describing direct experiences",
+        "anchor": "shorthand",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when writing or rewriting a first-hand account or narrative recounting events, actions, or observations",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "clarity.shorthand_avoidance",
+        "confidence": 7
+      },
+      {
+        "id": "e05-c14",
+        "text": "avoid wasting cycles with trivial argument",
+        "paraphrase": "don't waste time on pointless debate",
+        "anchor": "trivial argument",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when the output contains written prose",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.argumentation",
+        "confidence": 7
+      },
+      {
+        "id": "e05-c15",
+        "text": "don't use any headings or subheadings",
+        "paraphrase": "no headings or subheadings at all",
+        "anchor": "headings or subheadings",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "postmortem"
+        ],
+        "key": "structure.headings",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c16",
+        "text": "avoid form feed character as whitespace",
+        "paraphrase": "don't use form feed characters for spacing",
+        "anchor": "form feed character",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "whitespace.characters",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c17",
+        "text": "don't use Markdown formatting",
+        "paraphrase": "avoid Markdown formatting entirely",
+        "anchor": "Markdown formatting",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the agent produces written text content, since any prose or document deliverable could otherwise be rendered in Markdown",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.markdown",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c18",
+        "text": "always give temperature in Celsius, under 22 words",
+        "paraphrase": "temperature must be Celsius and not exceed 22 words",
+        "anchor": "22",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the response states or mentions a temperature value or range",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "units.temperature",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c19",
+        "text": "keep each bullet point under 17 words",
+        "paraphrase": "never write a bullet point longer than 17 words",
+        "anchor": "17",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output contains bullet points",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.bullet_max_words",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c20",
+        "text": "don't use words starting with letters from 'random'",
+        "paraphrase": "avoid any word whose first letter is in 'random'",
+        "anchor": "random",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "word_choice.initial_letters",
+        "confidence": 7
+      },
+      {
+        "id": "e05-c21",
+        "text": "don't make one sentence phonetically rhythmically beautiful",
+        "paraphrase": "avoid crafting any single sentence to be phonetically rhythmically beautiful",
+        "anchor": "phonetically rhythmically beautiful",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when output contains natural-language prose sentences",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "style.sentence_rhythm",
+        "confidence": 7
+      },
+      {
+        "id": "e05-c22",
+        "text": "avoid passive voice",
+        "paraphrase": "don't use passive voice",
+        "anchor": "passive voice",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code",
+          "doc",
+          "explanation"
+        ],
+        "key": "voice.active",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c23",
+        "text": "without using default iterators and operators",
+        "paraphrase": "avoiding the default iteration and operator patterns",
+        "anchor": "default iterators and operators",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.style.default_iterators",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c24",
+        "text": "avoid using a single leading underscore in identifiers",
+        "paraphrase": "don't use one leading underscore in identifiers",
+        "anchor": "single leading underscore",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "naming.leading_underscore",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c25",
+        "text": "identifiers must be ASCII alphanumerics and hyphens only",
+        "paraphrase": "use only ASCII letters, digits, and hyphens in identifiers",
+        "anchor": "ASCII alphanumerics and hyphens",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output contains identifiers such as API names, endpoints, parameters, or variables",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "identifiers.charset",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c26",
+        "text": "don't indent multiline actions",
+        "paraphrase": "never add indentation to multiline actions",
+        "anchor": "indent multiline actions",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "doc"
+        ],
+        "key": "format.multiline_actions",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c27",
+        "text": "avoid placing blank line between import sections",
+        "paraphrase": "don't put blank lines between import groups",
+        "anchor": "blank line",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.import_spacing",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c28",
+        "text": "keep summaries under 2401 words",
+        "paraphrase": "limit summaries to 2400 words or fewer",
+        "anchor": "2401",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "summary"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c29",
+        "text": "max 17 sentences when summarizing",
+        "paraphrase": "no more than 17 sentences in any summary",
+        "anchor": "17",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "summary"
+        ],
+        "key": "length.sentence_cap",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c30",
+        "text": "don't enclose sentences in quotation marks",
+        "paraphrase": "never put sentences inside quotes",
+        "anchor": "quotation marks",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "postmortem",
+          "developer_docs"
+        ],
+        "key": "punctuation.quotation_marks",
+        "confidence": 8
+      },
+      {
+        "id": "e05-c31",
+        "text": "use lowercase for compass directions and regions",
+        "paraphrase": "keep cardinal directions and regional terms in lowercase",
+        "anchor": "regions",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output text mentions compass directions, geographic regions, or directional terms that are not part of a proper name",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "capitalization.compass_regions",
+        "confidence": 9
+      },
+      {
+        "id": "e05-c32",
+        "text": "no intricately crafted sentence structuring",
+        "paraphrase": "avoid elaborate sentence construction",
+        "anchor": "intricately crafted sentence structuring",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the output contains written prose or sentences, across any task kind",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "style.sentence_structure",
+        "confidence": 8
+      },
+      {
+        "id": "e05-s01",
+        "text": "use underscores for module names",
+        "paraphrase": "module names should have underscores",
+        "anchor": "underscores",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever module names are written or referenced in the output",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "naming.module_underscores",
+        "confidence": 8
+      },
+      {
+        "id": "e05-s03",
+        "text": "keep summary of code changes to 22 sentences max",
+        "paraphrase": "limit the summary of code changes to no more than 22 sentences",
+        "anchor": "22",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code_change_summary"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e05-s04",
+        "text": "keep summaries under 5043 words",
+        "paraphrase": "limit any summary to 5043 words max",
+        "anchor": "5043",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "summary"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e05-s05",
+        "text": "when writing headings and subheadings, ensure they're consistent",
+        "paraphrase": "for headings and subheadings, keep them uniform",
+        "anchor": "headings and subheadings",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output includes headings or subheadings",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "headings.consistency",
+        "confidence": 8
+      },
+      {
+        "id": "e05-s06",
+        "text": "keep temperature under 17 words",
+        "paraphrase": "limit temperature to 17 words max",
+        "anchor": "17",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "temperature_reading"
+        ],
+        "key": "length.max",
+        "confidence": 8
+      }
+    ],
+    "lifecycle": [
+      {
+        "seq": 2,
+        "op": "assert",
+        "id": "e05-c00"
+      },
+      {
+        "seq": 3,
+        "op": "assert",
+        "id": "e05-c01"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e05-c02"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e05-c03"
+      },
+      {
+        "seq": 6,
+        "op": "assert",
+        "id": "e05-c04"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e05-c05"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e05-c06"
+      },
+      {
+        "seq": 8,
+        "op": "assert",
+        "id": "e05-c07"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e05-c08"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e05-c09"
+      },
+      {
+        "seq": 11,
+        "op": "assert",
+        "id": "e05-c10"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e05-c11"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e05-c12"
+      },
+      {
+        "seq": 13,
+        "op": "assert",
+        "id": "e05-c13"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e05-c14"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e05-c15"
+      },
+      {
+        "seq": 16,
+        "op": "assert",
+        "id": "e05-c16"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e05-c17"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e05-c18"
+      },
+      {
+        "seq": 18,
+        "op": "assert",
+        "id": "e05-c19"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e05-c20"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e05-c21"
+      },
+      {
+        "seq": 21,
+        "op": "assert",
+        "id": "e05-c22"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e05-c23"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e05-c24"
+      },
+      {
+        "seq": 23,
+        "op": "assert",
+        "id": "e05-c25"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e05-c26"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e05-c27"
+      },
+      {
+        "seq": 33,
+        "op": "assert",
+        "id": "e05-c28"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e05-c29"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e05-c30"
+      },
+      {
+        "seq": 36,
+        "op": "assert",
+        "id": "e05-c31"
+      },
+      {
+        "seq": 37,
+        "op": "assert",
+        "id": "e05-c32"
+      },
+      {
+        "seq": 41,
+        "op": "retire",
+        "target": "e05-c00"
+      },
+      {
+        "seq": 42,
+        "op": "contradict",
+        "id": "e05-s01",
+        "target": "e05-c01"
+      },
+      {
+        "seq": 43,
+        "op": "retire",
+        "target": "e05-c19"
+      },
+      {
+        "seq": 45,
+        "op": "contradict",
+        "id": "e05-s03",
+        "target": "e05-c03"
+      },
+      {
+        "seq": 46,
+        "op": "contradict",
+        "id": "e05-s04",
+        "target": "e05-c28"
+      },
+      {
+        "seq": 47,
+        "op": "contradict",
+        "id": "e05-s05",
+        "target": "e05-c15"
+      },
+      {
+        "seq": 49,
+        "op": "contradict",
+        "id": "e05-s06",
+        "target": "e05-c18"
+      },
+      {
+        "seq": 50,
+        "op": "retire",
+        "target": "e05-c22"
+      },
+      {
+        "seq": 51,
+        "op": "retire",
+        "target": "e05-c21"
+      },
+      {
+        "seq": 53,
+        "op": "retire",
+        "target": "e05-c23"
+      },
+      {
+        "seq": 54,
+        "op": "retire",
+        "target": "e05-c20"
+      },
+      {
+        "seq": 55,
+        "op": "retire",
+        "target": "e05-c29"
+      },
+      {
+        "seq": 57,
+        "op": "retire",
+        "target": "e05-c30"
+      },
+      {
+        "seq": 58,
+        "op": "retire",
+        "target": "e05-c11"
+      },
+      {
+        "seq": 41,
+        "op": "retire",
+        "target": "e05-c08"
+      },
+      {
+        "seq": 42,
+        "op": "retire",
+        "target": "e05-c10"
+      },
+      {
+        "seq": 43,
+        "op": "retire",
+        "target": "e05-c32"
+      },
+      {
+        "seq": 45,
+        "op": "retire",
+        "target": "e05-c16"
+      },
+      {
+        "seq": 15,
+        "op": "reinforce",
+        "target": "e05-c06"
+      },
+      {
+        "seq": 22,
+        "op": "reinforce",
+        "target": "e05-c12"
+      },
+      {
+        "seq": 33,
+        "op": "reinforce",
+        "target": "e05-c14"
+      }
+    ],
+    "state_checkpoints": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      46,
+      53,
+      62
+    ]
   }
- ],
- "effects": [
-  {
-   "seq": 2,
-   "kind": "assert",
-   "cid": "e05-c00",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 3,
-   "kind": "assert",
-   "cid": "e05-c01",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 4,
-   "kind": "assert",
-   "cid": "e05-c02",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 4,
-   "kind": "assert",
-   "cid": "e05-c03",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 6,
-   "kind": "assert",
-   "cid": "e05-c04",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 7,
-   "kind": "assert",
-   "cid": "e05-c05",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 7,
-   "kind": "assert",
-   "cid": "e05-c06",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 8,
-   "kind": "assert",
-   "cid": "e05-c07",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 9,
-   "kind": "assert",
-   "cid": "e05-c08",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 9,
-   "kind": "assert",
-   "cid": "e05-c09",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 11,
-   "kind": "assert",
-   "cid": "e05-c10",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 12,
-   "kind": "assert",
-   "cid": "e05-c11",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 12,
-   "kind": "assert",
-   "cid": "e05-c12",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 13,
-   "kind": "assert",
-   "cid": "e05-c13",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 14,
-   "kind": "assert",
-   "cid": "e05-c14",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 14,
-   "kind": "assert",
-   "cid": "e05-c15",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 16,
-   "kind": "assert",
-   "cid": "e05-c16",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 17,
-   "kind": "assert",
-   "cid": "e05-c17",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 17,
-   "kind": "assert",
-   "cid": "e05-c18",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 18,
-   "kind": "assert",
-   "cid": "e05-c19",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 19,
-   "kind": "assert",
-   "cid": "e05-c20",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 19,
-   "kind": "assert",
-   "cid": "e05-c21",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 21,
-   "kind": "assert",
-   "cid": "e05-c22",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 22,
-   "kind": "assert",
-   "cid": "e05-c23",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 22,
-   "kind": "assert",
-   "cid": "e05-c24",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 23,
-   "kind": "assert",
-   "cid": "e05-c25",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 32,
-   "kind": "assert",
-   "cid": "e05-c26",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 32,
-   "kind": "assert",
-   "cid": "e05-c27",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 33,
-   "kind": "assert",
-   "cid": "e05-c28",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 34,
-   "kind": "assert",
-   "cid": "e05-c29",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 34,
-   "kind": "assert",
-   "cid": "e05-c30",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 36,
-   "kind": "assert",
-   "cid": "e05-c31",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 37,
-   "kind": "assert",
-   "cid": "e05-c32",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 41,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c00",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 42,
-   "kind": "contradict",
-   "cid": "e05-s01",
-   "target": "e05-c01",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 43,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c19",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 45,
-   "kind": "contradict",
-   "cid": "e05-s03",
-   "target": "e05-c03",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 46,
-   "kind": "contradict",
-   "cid": "e05-s04",
-   "target": "e05-c28",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 47,
-   "kind": "contradict",
-   "cid": "e05-s05",
-   "target": "e05-c15",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 49,
-   "kind": "contradict",
-   "cid": "e05-s06",
-   "target": "e05-c18",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 50,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c22",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 51,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c21",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 53,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c23",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 54,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c20",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 55,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c29",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 57,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c30",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 58,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c11",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 41,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c08",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 42,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c10",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 43,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c32",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 45,
-   "kind": "retire",
-   "cid": "",
-   "target": "e05-c16",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 15,
-   "kind": "reinforce",
-   "cid": "",
-   "target": "e05-c06",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 22,
-   "kind": "reinforce",
-   "cid": "",
-   "target": "e05-c12",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 33,
-   "kind": "reinforce",
-   "cid": "",
-   "target": "e05-c14",
-   "targets": [],
-   "delta": 0
-  }
- ],
- "rounds": [
-  {
-   "seq": 1,
-   "type": "N",
-   "text": "推荐工具的时候优先开源的啊，闭源的我们过不了审",
-   "context": {},
-   "distractor_kind": "content-preference",
-   "effects": []
-  },
-  {
-   "seq": 2,
-   "type": "C",
-   "text": "Hey, can you draft a short email to the engineering team about the upcoming API doc freeze? I need it to mention the freeze date (Dec 15), the cutoff for new endpoint submissions (Dec 8), and a reminder to check the style guide for changelog formatting. Keep it friendly but clear.。That last changelog you wrote didn't follow GNU style at all — it was all over the place. Please don't use that format again; stick to the GNU guidelines for any NEWS or changelog entries from now on.",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 2,
-     "kind": "assert",
-     "cid": "e05-c00",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 3,
-   "type": "C",
-   "text": "Can you pull together a quick report on the most common API errors our users hit last quarter? Include the error codes, frequency, and the typical root cause from our support tickets.。Hey, can you draft a postmortem for the API outage last Thursday? Include the timeline, root cause, and action items. Also, when you name any module in that doc, avoid underscores — use hyphens instead. Google's Python style guide says module names should be all-lowercase with hyphens, so let's stick with that.",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 3,
-     "kind": "assert",
-     "cid": "e05-c01",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 4,
-   "type": "S",
-   "text": "From now on, never use triple double quotes in docstrings. I know the Google style guide says they're fine for multi-line strings, but for our codebase, I want them banned. Also, can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total.，Oh, and while you're at it—when you write the docstring for that function, keep the summary of code changes to 13 sentences max. Chicago Manual says 'brevity is the soul of wit' or something like that. Anyway, the function should take a list of file paths and return a dict mapping each extension to the count, using os.path.splitext.",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 4,
-     "kind": "assert",
-     "cid": "e05-c02",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 4,
-     "kind": "assert",
-     "cid": "e05-c03",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 5,
-   "type": "R",
-   "text": "Compose an email to the engineering team asking for a clarification on the new API endpoint parameters for the user authentication flow. Reference the Google Developer Documentation Style Guide when explaining why we need precise parameter descriptions.",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c03",
-    "e05-c01"
-   ],
-   "may_fire": [
-    "e05-c00",
-    "e05-c01",
-    "e05-c02",
-    "e05-c03"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 6,
-   "type": "S",
-   "text": "Hey, can you draft a postmortem for the API outage last Thursday? Include the timeline, root cause, and action items. Oh, and one more thing—when you're not giving instructions, don't use double quotes for UI labels or buttons; use single quotes instead. The Microsoft Manual of Style backs me up on this one.",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 6,
-     "kind": "assert",
-     "cid": "e05-c04",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 7,
-   "type": "S",
-   "text": "Yeah, do the postmortem for the API v2 rollout — summary, timeline, root cause, action items, dev-facing, no fluff. And from now on, keep responses brief and colloquial, like we're talking. I'm citing Strunk & White here: 'omit needless words.'，Hey, while you're at it, could you also pull together a report of all the API endpoints that changed between v2.1 and v2.2, including the new error codes? I need it for the release notes. Oh, and one more thing—when you're building strings from substrings, avoid repeated concatenation; use list joining or io.StringIO instead. That's in the Python style guide, section 2.3.",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 7,
-     "kind": "assert",
-     "cid": "e05-c05",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 7,
-     "kind": "assert",
-     "cid": "e05-c06",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 8,
-   "type": "C",
-   "text": "Can you write a Python function that takes a list of filenames and returns only the ones ending in '.md'? I need it for a docs cleanup script.。Hey, that postmortem you just drafted for the API docs outage — it's got `+` and `+=` in a loop to build a string, which is exactly the kind of thing that makes the timeline hard to read later. You know the Google style guide says 'prefer joining lists with `join()`'? So from now on, avoid `+` and `+=` when accumulating a string in a loop. Please rewrite that section using `join()`.",
-   "context": {
-    "app": "email-client",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 8,
-     "kind": "assert",
-     "cid": "e05-c07",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 9,
-   "type": "C",
-   "text": "Hey, can you draft a postmortem for the API rate-limit outage last Tuesday? I'll need the timeline, root cause, impact summary, and action items — keep it in the style of our internal docs, like the one from the cache failover incident in March.。Oh, and one more thing — from now on, when you write a response for me, please keep it under 83 words. I know that sounds oddly specific, but it's what the team decided for changelog entries. So for the Python function I need: write a function that takes a git diff and returns a list of changed file paths, ignoring binary files — I need it for a changelog generator script. Keep it under 83 words, yeah?。Hey, can you draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging? Keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions. Oh, and from now on, please don't use 'Great Britain' on the page — it's ambiguous and not the official name for the UK.",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 9,
-     "kind": "assert",
-     "cid": "e05-c08",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 9,
-     "kind": "assert",
-     "cid": "e05-c09",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 10,
-   "type": "R",
-   "text": "Write a postmortem for the API outage last Tuesday. Cover what broke, why, and what we're changing to prevent it. Keep it short.",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e05-c09",
-    "e05-c08"
-   ],
-   "may_fire": [
-    "e05-c00",
-    "e05-c01",
-    "e05-c02",
-    "e05-c03",
-    "e05-c04",
-    "e05-c05",
-    "e05-c06",
-    "e05-c07",
-    "e05-c08",
-    "e05-c09"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 11,
-   "type": "C",
-   "text": "Hey, can you pull together a quick report on the number of broken links we've got in the v2 API docs? I need the count per section, and highlight any that point to retired endpoints.。Hey, that last batch of examples you gave me had file paths and URLs scattered all over the place. The Microsoft Style Guide says to keep examples clean and distraction-free. Please don't include file paths or URLs in any examples going forward. And while you're at it, can you pull together a quick report of all the API endpoints that have changed between v2.1 and v2.2 of the developer docs, including the new error codes? I need it for the release notes.",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 11,
-     "kind": "assert",
-     "cid": "e05-c10",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 12,
-   "type": "S",
-   "text": "Hey, that last lambda you wrote for the file-path example was 30 lines long. That's way too much for a lambda — our style guide says lambdas should be simple expressions, not mini-functions. Can you keep them under 22 lines from now on?，Hey, the email draft you just sent is fine, but I noticed you jumped straight into code examples without explaining the concept first. That's exactly what I don't want—per the Google Developer Style Guide, we need to ensure concept understanding before diving into implementation. Can you rewrite that email draft to the dev team, asking them to review the new API endpoint docs I just pushed to staging, keep it short, and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions? And from now on, when you're helping me with code-related stuff, don't skip the concept explanation—always make sure I understand the concept first.",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 12,
-     "kind": "assert",
-     "cid": "e05-c11",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 12,
-     "kind": "assert",
-     "cid": "e05-c12",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 13,
-   "type": "S",
-   "text": "Hey, that last draft you wrote for the email had a lot of shorthand like 'the API' and 'the examples' without specifying which ones. I need the actual first-hand account of what the devs are supposed to update. Can you rewrite it so you avoid any shorthand and spell out exactly what they need to do?",
-   "context": {
-    "app": "email-client",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 13,
-     "kind": "assert",
-     "cid": "e05-c13",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 14,
-   "type": "S",
-   "text": "Hey, I just read your last draft and it's full of these little gotcha arguments like 'actually, that's not the right way to think about it' — that's exactly the kind of stuff that wastes cycles. Strunk & White would call it 'needless words.' Can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total. And from now on, please avoid wasting cycles with trivial argument in your writing.，Hey, that postmortem draft you just sent — the headings and subheadings are all over the place. We're following the Google Developer Doc Style Guide here, so please don't use any headings or subheadings at all. Just plain text sections with bold lead-ins. Can you redo it without any headings?",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 14,
-     "kind": "assert",
-     "cid": "e05-c14",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 14,
-     "kind": "assert",
-     "cid": "e05-c15",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 15,
-   "type": "S",
-   "text": "对了，avoid repeated string concatenation; use list joining or io.StringIO buffer这条继续保持啊",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 15,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e05-c06",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 16,
-   "type": "C",
-   "text": "hey, i need a python script that takes a list of markdown files in a folder, extracts all the headings (h1 to h3), and outputs a table of contents as a new markdown file. should handle nested headings with indentation.。Hey, that function you just wrote had a form feed character in it as whitespace. Please don't do that — it's a nightmare for anyone reading the raw source, and the Python style guide (PEP 8) doesn't even mention it as acceptable whitespace. Stick to spaces or tabs.",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 16,
-     "kind": "assert",
-     "cid": "e05-c16",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 17,
-   "type": "S",
-   "text": "Hey, can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total. Also, from now on, please don't use Markdown formatting when writing content — stick to plain text or HTML, like the Google developer style guide says.，Hey, one thing — in that last report you gave me the temperature in Fahrenheit, and the whole thing was a mess of words. I need you to always give temperatures in Celsius, and keep it under 22 words. Can you redo that API changes report with deprecation notices and new endpoints, with links to the dev guide sections, and make sure the temperature is in Celsius and under 22 words this time?",
-   "context": {
-    "app": "slack",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 17,
-     "kind": "assert",
-     "cid": "e05-c17",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 17,
-     "kind": "assert",
-     "cid": "e05-c18",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 18,
-   "type": "C",
-   "text": "Hey, draft a short email to the API team asking them to clarify the rate-limit headers in the response example for the v2 docs. I need to know if 'X-RateLimit-Remaining' resets per endpoint or per user.。Hey, I just looked at the last output you gave me and those bullet points are way too long. You're writing whole paragraphs in each bullet — that's not a bullet point, that's a mini-essay. The whole point of bullets is to be scannable. Could you please keep every bullet point under 17 words from now on? That's a hard limit. I need this for the API change report I asked for — can you pull together a quick list of all the endpoints that changed between v2.1 and v2.2, including the new error codes? And yeah, keep each bullet under 17 words.",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 18,
-     "kind": "assert",
-     "cid": "e05-c19",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 19,
-   "type": "C",
-   "text": "Can you pull the API deprecation warnings from the last two releases and write a summary report for the dev team? I need the affected endpoints, the planned removal dates, and any migration instructions mentioned in the changelogs.。Hey, by the way — from now on, when you're checking a sentence I generate, don't use any words that start with letters from 'random'. That's a hard rule. Also, could you draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging? Keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions.。Hey, can you draft a postmortem for the API v2 rollout last week? The auth module failed and caused a 12-minute outage. Use the standard template: summary, timeline, root cause, action items. Keep it developer-facing, no fluff. Also, from now on, when writing a sentence, don't make one sentence phonetically rhythmically beautiful — just keep it plain and functional.",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 19,
-     "kind": "assert",
-     "cid": "e05-c20",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 19,
-     "kind": "assert",
-     "cid": "e05-c21",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 20,
-   "type": "R",
-   "text": "Hey, can you refactor the chunk of code that builds the HTML table rows? It's using += on a string in a loop and the lambda in the map is getting chunky.",
-   "context": {
-    "app": "email-client",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c11",
-    "e05-c06"
-   ],
-   "may_fire": [
-    "e05-c06",
-    "e05-c07",
-    "e05-c08",
-    "e05-c09",
-    "e05-c11",
-    "e05-c12",
-    "e05-c13",
-    "e05-c14",
-    "e05-c15",
-    "e05-c16",
-    "e05-c17",
-    "e05-c18",
-    "e05-c19",
-    "e05-c21"
-   ],
-   "should_fire": [
-    "e05-c06"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 21,
-   "type": "S",
-   "text": "Hey, that last function you wrote used passive voice all over the place — 'the list is iterated', 'the count is returned'. That's a no-go for our developer docs. Style guides say active voice makes instructions way clearer. So from now on, please avoid passive voice in any code examples or explanations you write for me.",
-   "context": {
-    "app": "email-client",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 21,
-     "kind": "assert",
-     "cid": "e05-c22",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 22,
-   "type": "C",
-   "text": "Hey, can you draft a short email to the dev team asking them to review the new API reference section for the v2.3 release? Keep it friendly but clear, and mention that the Chicago Manual of Style says we should use serial commas, so please keep an eye out for that.。Hey, that last output used default iterators and operators when going through the types. That's a no-go per the Google style guide — we explicitly avoid those in production docs. Could you redo it without them? Also, can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total.。Oh, and while you're at it, could you pull together a quick report of all the API endpoints that changed between v2.1 and v2.2 of the dev docs, including the new error codes? I need it for the release notes. Also, one thing — avoid using a single leading underscore in identifiers. I keep seeing it in the code samples and it's not compliant with PEP 8. From now on, just don't do it.。对了，ensure concept understanding before code这条继续保持啊",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 22,
-     "kind": "assert",
-     "cid": "e05-c23",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 22,
-     "kind": "assert",
-     "cid": "e05-c24",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 22,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e05-c12",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 23,
-   "type": "C",
-   "text": "Pull the latest usage stats for the authentication section and format them into a brief weekly report, including any notable spikes or drops.。Hey, the last response you gave me had identifiers with underscores and weird characters—totally breaks our style guide. The Google Developer Documentation Style Guide says identifiers should be ASCII alphanumerics and hyphens only. Can you pull together a brief report on the latest API changes in the v3 release? I need the deprecation notices and the new endpoints listed, with links to the relevant sections in the dev guide.",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 23,
-     "kind": "assert",
-     "cid": "e05-c25",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 24,
-   "type": "R",
-   "text": "Can you pull a quick report on last month's docs open issues — how many were closed, how many still open, and the average time to first response?",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c08",
-    "e05-c14"
-   ],
-   "may_fire": [
-    "e05-c08",
-    "e05-c09",
-    "e05-c10",
-    "e05-c13",
-    "e05-c14",
-    "e05-c15",
-    "e05-c17",
-    "e05-c18",
-    "e05-c19",
-    "e05-c20",
-    "e05-c23"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 25,
-   "type": "R",
-   "text": "write a postmortem for the API outage we had last Tuesday, covering timeline, root cause, and lessons learned. keep it plain text, no markdown.",
-   "context": {
-    "app": "email-client",
-    "task": "postmortem"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c13",
-    "e05-c17"
-   ],
-   "may_fire": [
-    "e05-c08",
-    "e05-c09",
-    "e05-c13",
-    "e05-c14",
-    "e05-c15",
-    "e05-c17",
-    "e05-c18",
-    "e05-c19",
-    "e05-c22",
-    "e05-c25"
-   ],
-   "should_fire": [
-    "e05-c08"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 26,
-   "type": "N",
-   "text": "这次这份写详细一点，季度 review 要用",
-   "context": {},
-   "distractor_kind": "one-off",
-   "effects": []
-  },
-  {
-   "seq": 27,
-   "type": "N",
-   "text": "先把日志按天切开再统计，别一把梭",
-   "context": {},
-   "distractor_kind": "task-step",
-   "effects": []
-  },
-  {
-   "seq": 28,
-   "type": "R",
-   "text": "Can you run a quick check on the API reference pages for the last release? I need to know if any examples still contain inline file paths — we had a style guide rule about that.",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c10",
-    "e05-c14"
-   ],
-   "may_fire": [
-    "e05-c08",
-    "e05-c09",
-    "e05-c10",
-    "e05-c13",
-    "e05-c14",
-    "e05-c15",
-    "e05-c17",
-    "e05-c18",
-    "e05-c19",
-    "e05-c20",
-    "e05-c23"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 29,
-   "type": "N",
-   "text": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」",
-   "context": {},
-   "distractor_kind": "pasted-material",
-   "effects": []
-  },
-  {
-   "seq": 30,
-   "type": "R",
-   "text": "Write a Python function that takes a list of version strings (like '2.3.1') and returns them sorted by semantic versioning rules, not lexicographically.",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c06",
-    "e05-c11"
-   ],
-   "may_fire": [
-    "e05-c06",
-    "e05-c07",
-    "e05-c08",
-    "e05-c09",
-    "e05-c11",
-    "e05-c12",
-    "e05-c13",
-    "e05-c14",
-    "e05-c15",
-    "e05-c16",
-    "e05-c17",
-    "e05-c18",
-    "e05-c19",
-    "e05-c21",
-    "e05-c24"
-   ],
-   "should_fire": [
-    "e05-c24"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 31,
-   "type": "N",
-   "text": "我老板要求他们组的周报全用 bullet，真够呛",
-   "context": {},
-   "distractor_kind": "third-party-obligation",
-   "effects": []
-  },
-  {
-   "seq": 32,
-   "type": "C",
-   "text": "Can you write a Python script that parses a Markdown file and extracts all the headings (h1 to h6) into a JSON structure with their levels and text?。Hey, that last response had multiline actions all indented — that's not how we write them in the docs. Per the Microsoft Style Guide, we don't indent multiline actions. Please don't do that going forward.。Hey, that code snippet you just wrote for me — it's got imports all jammed together with no blank lines between the standard library, third-party, and local sections. The Python style guide (PEP 8, obviously) says to separate them with blank lines. Can you please avoid mashing them together next time?",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 32,
-     "kind": "assert",
-     "cid": "e05-c26",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 32,
-     "kind": "assert",
-     "cid": "e05-c27",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 33,
-   "type": "S",
-   "text": "Hey, that postmortem draft you just sent is way too long. I asked for a quick one, and you gave me a novel. Also, per the Google Developer Documentation Style Guide, summaries should be concise. From now on, when you write a summary, keep it under 2401 words. That's a hard limit.，对了，avoid wasting cycles with trivial argument这条继续保持啊",
-   "context": {
-    "app": "slack",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 33,
-     "kind": "assert",
-     "cid": "e05-c28",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 33,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e05-c14",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 34,
-   "type": "S",
-   "text": "Hey, this summary you just gave me for the API changes is way too long. I asked for a quick report, and you gave me 22 sentences. Can you stick to 17 sentences max when you're summarizing? It's like the Chicago Manual of Style says: 'Brevity is the soul of wit.'，Hey, that postmortem draft you just sent — it's got sentences in quotation marks all over the place, like you're quoting someone. That's not how we do it in developer docs. Chicago Manual says use quotes only for UI labels or exact error messages, not for emphasis. So please, no more enclosing sentences in quotation marks. Now redo the postmortem for the API v2 outage: 12 minutes, auth module failed, standard template: summary, timeline, root cause, action items. Keep it tight and dev-facing.",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 34,
-     "kind": "assert",
-     "cid": "e05-c29",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 34,
-     "kind": "assert",
-     "cid": "e05-c30",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 35,
-   "type": "R",
-   "text": "Can you rewrite this function to build the output string using a list and join instead of that repeated += pattern? Also, please rename `_build_summary` to something without the leading underscore.",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c24",
-    "e05-c06"
-   ],
-   "may_fire": [
-    "e05-c06",
-    "e05-c07",
-    "e05-c08",
-    "e05-c09",
-    "e05-c11",
-    "e05-c12",
-    "e05-c13",
-    "e05-c14",
-    "e05-c15",
-    "e05-c16",
-    "e05-c17",
-    "e05-c18",
-    "e05-c19",
-    "e05-c21",
-    "e05-c24",
-    "e05-c27",
-    "e05-c29"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 36,
-   "type": "C",
-   "text": "Hey, can you draft a short email to the engineering team about the upcoming API doc freeze? I need it to mention the freeze date (Dec 15), the cutoff for new endpoint submissions (Dec 8), and a reminder to check the style guide for changelog formatting. Keep it friendly but clear.。Hey, that postmortem draft you just sent — it's got 'northern Virginia' and 'east coast' capitalized. That's not right. The Chicago Manual of Style says compass directions and regions stay lowercase unless they're part of a proper name. 'northern Virginia' is fine, 'East Coast' is wrong. Please fix that and redo the whole thing.",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 36,
-     "kind": "assert",
-     "cid": "e05-c31",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 37,
-   "type": "C",
-   "text": "Can you pull together a quick report on the most common API errors our users hit last quarter? Include the error codes, frequency, and the typical root cause from our support tickets.。Hey, can you draft a short email to the API team asking them to review the new endpoint documentation I just pushed? I need it to mention that the style guide says we keep headings in sentence case, so please check that too. Also, from now on, no intricately crafted sentence structuring — just keep it straightforward, like the Chicago Manual of Style says.",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 37,
-     "kind": "assert",
-     "cid": "e05-c32",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 38,
-   "type": "N",
-   "text": "又来了，这 API 每次都超时，烦死",
-   "context": {},
-   "distractor_kind": "rule-pattern-no-rule",
-   "effects": []
-  },
-  {
-   "seq": 39,
-   "type": "N",
-   "text": "你上次自己说的「建议拆成两个 PR」，我照做了，结果还是冲突",
-   "context": {},
-   "distractor_kind": "quoted-agent",
-   "effects": []
-  },
-  {
-   "seq": 40,
-   "type": "R",
-   "text": "Could you pull last week's API deprecation notices into a bulleted report? Each point should be brief and avoid default list formatting.",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c19",
-    "e05-c23"
-   ],
-   "may_fire": [
-    "e05-c08",
-    "e05-c09",
-    "e05-c10",
-    "e05-c13",
-    "e05-c14",
-    "e05-c15",
-    "e05-c17",
-    "e05-c18",
-    "e05-c19",
-    "e05-c20",
-    "e05-c23",
-    "e05-c26",
-    "e05-c28",
-    "e05-c30",
-    "e05-c32"
-   ],
-   "should_fire": [
-    "e05-c19"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 41,
-   "type": "S",
-   "text": "之前说的「follow GNU style guide for changelog」那条不用了，按你默认的来吧，之前说的「keep responses under 83 words」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 41,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c00",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 41,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c08",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 42,
-   "type": "S",
-   "text": "Hey, this email draft you just sent me—it's fine for the dev team, but I noticed you named the example module `api_client` in the endpoint description. Per the Google Developer Style Guide, we should be using underscores for module names, not hyphens. Can you fix that and also make sure the email mentions active voice per the style guide?，之前说的「don't include file paths or URLs in examples」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 42,
-     "kind": "contradict",
-     "cid": "e05-s01",
-     "target": "e05-c01",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 42,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c10",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 43,
-   "type": "S",
-   "text": "之前说的「keep each bullet point under 17 words」那条不用了，按你默认的来吧，之前说的「no intricately crafted sentence structuring」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 43,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c19",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 43,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c32",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 44,
-   "type": "R",
-   "text": "write a postmortem for the API outage yesterday. summarize the root cause, timeline, and fix in bullet points.",
-   "context": {
-    "app": "email-client",
-    "task": "postmortem"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c17",
-    "e05-c22",
-    "e05-c19",
-    "e05-c08"
-   ],
-   "may_fire": [
-    "e05-c09",
-    "e05-c13",
-    "e05-c14",
-    "e05-c15",
-    "e05-c17",
-    "e05-c18",
-    "e05-c22",
-    "e05-c25"
-   ],
-   "should_fire": [
-    "e05-c15"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 45,
-   "type": "S",
-   "text": "Hey, that last email draft you wrote was way too long. I said keep it short, and you gave me 30 sentences. I need you to keep the summary of code changes to 22 sentences max. That's a hard limit, per the Google Developer Style Guide, we don't need a novel for a review request.，之前说的「avoid form feed character as whitespace」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 45,
-     "kind": "contradict",
-     "cid": "e05-s03",
-     "target": "e05-c03",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 45,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c16",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 46,
-   "type": "S",
-   "text": "Hey, I just read the last summary you wrote for the API docs, and it's way too long. I'm trying to draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging—keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions. But seriously, that summary was over 5043 words. That's not a summary, that's a novella. From now on, when you write a summary, keep it under 5043 words, got it?",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 46,
-     "kind": "contradict",
-     "cid": "e05-s04",
-     "target": "e05-c28",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 47,
-   "type": "S",
-   "text": "Hey, that email draft you just sent—it's got some passive voice in the endpoint descriptions. I specifically asked for active voice, per the Google Developer Style Guide. Also, when writing headings and subheadings, you need to make sure they're consistent—don't let them drift into passive constructions either. Can you redo it?",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 47,
-     "kind": "contradict",
-     "cid": "e05-s05",
-     "target": "e05-c15",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 48,
-   "type": "R",
-   "text": "Hey, can you draft a quick email to the API team about the upcoming changelog? I need to let them know we'll be adding entries for the v3.2 endpoints next week. Keep it short and friendly.",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-s05",
-    "e05-c14",
-    "e05-c15",
-    "e05-c00"
-   ],
-   "may_fire": [
-    "e05-c02",
-    "e05-c04",
-    "e05-c05",
-    "e05-c09",
-    "e05-c13",
-    "e05-c14",
-    "e05-c17",
-    "e05-c18",
-    "e05-s01",
-    "e05-s03",
-    "e05-s05"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 49,
-   "type": "S",
-   "text": "Hey, that last output was way too wordy. I asked for a temperature, and you gave me a whole paragraph. Per the Google Developer Style Guide, we should keep things concise. When you give a temperature, keep it under 17 words. Can you redo that? And also, draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging. Keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions.",
-   "context": {
-    "app": "email-client",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 49,
-     "kind": "contradict",
-     "cid": "e05-s06",
-     "target": "e05-c18",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 50,
-   "type": "S",
-   "text": "之前说的「avoid passive voice」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 50,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c22",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 51,
-   "type": "S",
-   "text": "之前说的「don't make one sentence phonetically rhythmically beautiful」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 51,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c21",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 52,
-   "type": "R",
-   "text": "write a Python function that takes a list of file paths and returns a dict mapping each file extension to the count of files with that extension, using pathlib for everything.",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c24",
-    "e05-c27",
-    "e05-c16"
-   ],
-   "may_fire": [
-    "e05-c06",
-    "e05-c07",
-    "e05-c09",
-    "e05-c11",
-    "e05-c12",
-    "e05-c13",
-    "e05-c14",
-    "e05-c17",
-    "e05-c24",
-    "e05-c27",
-    "e05-c29",
-    "e05-c31",
-    "e05-s05",
-    "e05-s06"
-   ],
-   "should_fire": [
-    "e05-c24"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 53,
-   "type": "S",
-   "text": "之前说的「without using default iterators and operators」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 53,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c23",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 54,
-   "type": "S",
-   "text": "之前说的「don't use words starting with letters from 'random'」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 54,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c20",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 55,
-   "type": "S",
-   "text": "之前说的「max 17 sentences when summarizing」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 55,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c29",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 56,
-   "type": "R",
-   "text": "Can you write a Python script that parses a Markdown file and extracts all the headings (h1 to h6) into a JSON structure with their levels and text?",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c27",
-    "e05-c24",
-    "e05-c16"
-   ],
-   "may_fire": [
-    "e05-c06",
-    "e05-c07",
-    "e05-c09",
-    "e05-c11",
-    "e05-c12",
-    "e05-c13",
-    "e05-c14",
-    "e05-c17",
-    "e05-c24",
-    "e05-c27",
-    "e05-c31",
-    "e05-s05",
-    "e05-s06"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 57,
-   "type": "S",
-   "text": "之前说的「don't enclose sentences in quotation marks」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 57,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c30",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 58,
-   "type": "S",
-   "text": "之前说的「keep lambda functions under 22 lines」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 58,
-     "kind": "retire",
-     "cid": "",
-     "target": "e05-c11",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 59,
-   "type": "R",
-   "text": "Hey, could you draft a quick email to the dev team about the new API endpoint? Keep it short and just the high-level changes.",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-s03",
-    "e05-c05",
-    "e05-c00",
-    "e05-c18"
-   ],
-   "may_fire": [
-    "e05-c02",
-    "e05-c04",
-    "e05-c05",
-    "e05-c09",
-    "e05-c13",
-    "e05-c14",
-    "e05-c17",
-    "e05-s01",
-    "e05-s03",
-    "e05-s05",
-    "e05-s06"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 60,
-   "type": "R",
-   "text": "hey, i need a python script that takes a list of markdown files in a folder, extracts all the headings (h1 to h3), and outputs a table of contents as a new markdown file. should handle nested headings with indentation.",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c24",
-    "e05-c27",
-    "e05-c11",
-    "e05-c16"
-   ],
-   "may_fire": [
-    "e05-c06",
-    "e05-c07",
-    "e05-c09",
-    "e05-c12",
-    "e05-c13",
-    "e05-c14",
-    "e05-c17",
-    "e05-c24",
-    "e05-c27",
-    "e05-c31",
-    "e05-s05",
-    "e05-s06"
-   ],
-   "should_fire": [],
-   "must_not_fire": [
-    "e05-c15"
-   ]
-  },
-  {
-   "seq": 61,
-   "type": "R",
-   "text": "Hey, can you draft a short email to the dev team asking them to review the new API reference section for the v2.3 release? Keep it friendly but clear, and mention that the Chicago Manual of Style says we should use serial commas, so please keep an eye out for that.",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-s06",
-    "e05-c02",
-    "e05-c00",
-    "e05-c01"
-   ],
-   "may_fire": [
-    "e05-c02",
-    "e05-c04",
-    "e05-c05",
-    "e05-c09",
-    "e05-c13",
-    "e05-c14",
-    "e05-c17",
-    "e05-s01",
-    "e05-s03",
-    "e05-s05",
-    "e05-s06"
-   ],
-   "should_fire": [
-    "e05-c05"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 62,
-   "type": "R",
-   "text": "Can you rewrite the Python script that generates the API endpoint table? The current version uses a loop with string concatenation and a helper function starting with an underscore. I need the output to be a clean markdown table.",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e05-c24",
-    "e05-c07",
-    "e05-c16",
-    "e05-c11"
-   ],
-   "may_fire": [
-    "e05-c06",
-    "e05-c07",
-    "e05-c09",
-    "e05-c12",
-    "e05-c13",
-    "e05-c14",
-    "e05-c17",
-    "e05-c24",
-    "e05-c27",
-    "e05-c31",
-    "e05-s05",
-    "e05-s06"
-   ],
-   "should_fire": [
-    "e05-c07",
-    "e05-c24"
-   ],
-   "must_not_fire": []
-  }
- ],
- "checkpoints": [
-  8,
-  16,
-  24,
-  32,
-  40,
-  46,
-  53,
-  62
- ],
- "dup_pairs": [],
- "stats": {
-  "nodes": 38,
-  "dead_final": 18,
-  "peak_gold_active": 33,
-  "degraded_successors": 2,
-  "i11_pruned_traps": 0,
-  "lint_errors": [
-   "I10: e05-c08 / e05-c28 textually near (J≥0.5) but INDEPENDENT — key split?",
-   "I10: e05-c08 / e05-s04 textually near (J≥0.5) but INDEPENDENT — key split?",
-   "I10: e05-c17 / e05-c22 textually near (J≥0.5) but INDEPENDENT — key split?"
-  ]
- }
 }

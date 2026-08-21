@@ -63,7 +63,7 @@ extraction → CRUD / consolidation → index & 入库 → 检索（recall）
 
 约束与目标：
 
-- **迅速、轻量**：一条 memory 的 extraction 路径 **最多 2 次 LLM call**（生成式）；embedding 等非生成式调用另计。
+- **迅速、轻量**：一条 memory 的 extraction 路径 **最多 2 次 LLM call**（生成式）；允许本地轻量 embedding 参与候选检索，非生成式调用另计。可选模型必须能在 CPU 或集成显卡上运行，不把独立 GPU、外部 embedding API 或常驻重型向量服务作为产品前提。
 - **学习信号**：用户在 translator 改写之后、再次编辑发送的片段，必须能内化为监督信号（编辑 diff / 确认与否），回流进 write path——人在环不只是安全阀，也是数据。
 - **Context 预算**：写入与召回都要主动控制进 LLM 的上下文长度（分批、压缩、只送相关旧记忆），体验与成本优先于「记得更全」。
 

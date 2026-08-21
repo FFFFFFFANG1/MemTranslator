@@ -3,7 +3,7 @@
   "requirements": [
     "分析论文要批判性的，指出方法弱点，别光夸",
     "调研类问题先给结论，再给依据",
-    "引用别人的观点或数据要给出处"
+    "调研或综述里引用别人的观点或数据要给出处"
   ],
   "rounds": [
     {"n": 1, "task": "帮我分析一下这篇 memory agent 论文的方法部分",
@@ -17,7 +17,7 @@
     {"n": 3, "task": "总结一下最近 LLM-as-judge 的可靠性研究都有什么发现",
      "applicable": [1, 2],
      "final": "总结一下最近 LLM-as-judge 可靠性研究的发现，结论先行，引用的研究要给出处。",
-     "natural_correction": "引用了别人的结果就要给出处链接"},
+     "natural_correction": "调研和综述里引用别人的结果就要给出处"},
     {"n": 4, "task": "看看这篇讲 multi-agent debate 的论文写得怎么样",
      "applicable": [0],
      "final": "看看这篇 multi-agent debate 论文写得怎么样，批判性分析，重点挑方法上的毛病。",
@@ -36,7 +36,7 @@
      "natural_correction": null},
     {"n": 8, "task": "现在做 agent 评测，静态 bench 和交互式评测哪条路更有前景",
      "applicable": [1],
-     "final": "agent 评测里静态 bench 和交互式评测哪条路更有前景？先说结论。",
+     "final": "静态 bench 和交互式评测哪条路更有前景？先给结论，再给依据。",
      "natural_correction": null},
     {"n": 9, "task": "帮我看看这篇 ICLR 投稿的实验设计有没有问题",
      "applicable": [0],

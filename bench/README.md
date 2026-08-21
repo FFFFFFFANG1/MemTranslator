@@ -75,6 +75,61 @@ uv run python -m bench.suites.run_episodes \
 
 单集全臂面板仍用：`uv run python -m bench.suites.run_episodes e-01`（默认不开 canary）。
 
+更接近日常对话密度的 noisy corpus 在每两个 authored turns 之间固定插入
+5–10 条 OASST1 普通 root prompts。它不改变原始 probe、lifecycle 或
+checkpoint 的语义，只重映射它们的 seq：
+
+```bash
+uv run python -m bench.suites.run_episodes \
+  --episodes e-01,e-02,e-03,e-04,e-05,e-06,e-07,e-08,e-09,e-10,e-11,e-12 \
+  --episodes-dir bench/cases/episodes-noisy \
+  --arms real --canary --workers 12
+```
+
+噪声池被 benchmark 协议假设为“不含需要长期写入 memory 的 requirement”；
+运行时不再下载 OASST1，也不调用模型筛选。固定 pool、来源版本、seed 和每集
+扩充统计见 `bench/cases/noise/README.md` 与
+`bench/cases/episodes-noisy/noise_manifest.json`。
+
+Episode 使用最小 v3 协议：顶层只有 `id`、`protocol_version`、
+`user_turns`、`ground_truth`。每个 turn 只有 `seq`、`user_input` 和可选
+`probe`；SUT 只能看到 `user_input`。`ground_truth` 保存评分所需的
+requirements、lifecycle 和 state checkpoints，不进入产品路径。
+
+### Oracle（固定协议）
+
+Oracle 只回答：**如果当前 task 需要的 memory 已经完全正确，
+Translator 能否把它们写进 request？**
+
+每个 probe 只注入它的 `should_apply` golden items，包含与线上 Extractor
+协议一致、经校验和人工审计的 `bucket / scope_mode / applies_when /
+work_kinds / key / confidence`；不注入完整 gold store、query attribute，
+不带 pending raw/history，也不跑写路径。项目只保留这一种 `oracle`
+协议：
+
+```bash
+uv run python -m bench.suites.run_oracle --workers 12
+uv run python -m bench.suites.run_oracle --model ark:glm-5.2 --workers 12
+# 调试时才保留每个 probe 的完整输入、输出和判分
+uv run python -m bench.suites.run_oracle --save-trace
+```
+
+Golden attribute 首次生成或协议变化后重打标：
+
+```bash
+PYTHONPATH=src .venv/bin/python -m bench.suites.oracle_attribute --limit 5
+PYTHONPATH=src .venv/bin/python -m bench.suites.oracle_attribute --apply
+```
+
+`run_episodes --arms oracle` 与上述独立 runner 共用同一个 arm 实现。
+前者用于单集面板；后者不先跑 chained write path，用于恒定的全量
+oracle 测试。
+
+E1 的主 CARRY/per-task/per-memory 语义判分默认使用 `glm-5.3`；大量
+checkpoint 对齐的 STATE fallback 默认使用 `deepseek-v4-pro`，避免 STATE
+调用量主导整套运行时间。两者都走根目录 `.env` 的 `LLM_API_KEY`，可分别用
+`JUDGE_MODEL`、`STATE_JUDGE_MODEL` 覆盖，snapshot 会记录实际模型。
+
 ## 计分
 
 - check 级二元（binary），族分 = mean(checks)，path 分 = mean(族)。

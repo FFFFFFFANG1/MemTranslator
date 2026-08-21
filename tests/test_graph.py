@@ -198,15 +198,20 @@ def test_scope_projection_equivalence_exhaustive():
             if bench == prod:
                 continue
             divergent += 1
-            # characterize: divergence is ONLY legal when the projection
-            # collapsed two distinct lang axes into one slot
+            # legal divergence 1: lang overload (product's single lang field)
             s_code, s_nat = scope["code_lang"] != ANY, scope["nat_lang"] != ANY
             c_code, c_nat = ctx["code_lang"] is not None, \
                 ctx["nat_lang"] is not None
             crossed = (s_code and not c_code and c_nat) \
                 or (not s_code and s_nat and c_code) \
                 or (s_code and s_nat) or (c_code and c_nat)
-            assert crossed, (
+            # legal divergence 2: bench task genre no longer projects into
+            # product soft-scope (it lives in kinds instead)
+            task_genre = (
+                scope["task"] != ANY and ctx.get("task") is not None
+                and scope["task"] != ctx["task"]
+                and bench is False and prod is True)
+            assert crossed or task_genre, (
                 f"unexplained divergence: scope={scope} ctx={ctx} "
                 f"bench={bench} product={prod}")
     # the distortion exists (the overload is real) and is bounded

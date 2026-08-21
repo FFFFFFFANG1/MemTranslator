@@ -3,17 +3,17 @@
   "requirements": [
     "Meeting notes must end with an action-item list with owners and due dates",
     "Planning docs must fit on one page",
-    "No corporate jargon in anything written for the team"
+    "Meeting notes and planning docs must use plain language with no corporate jargon"
   ],
   "rounds": [
     {"n": 1, "task": "Write up the notes from today's sprint planning meeting",
      "applicable": [0, 2],
      "final": "Write up the notes from today's sprint planning meeting. End with an action-item list (owner + due date), and keep it jargon-free.",
-     "natural_correction": "Meeting notes need to end with action items with owners and due dates, and cut the corporate speak"},
+     "natural_correction": "Meeting notes need action items with owners and due dates. Meeting notes and planning docs — plain language, no corporate speak"},
     {"n": 2, "task": "Draft the Q3 roadmap planning doc",
      "applicable": [1, 2],
      "final": "Draft the Q3 roadmap planning doc. One page max, plain language, no jargon.",
-     "natural_correction": "Planning docs have to fit on one page"},
+     "natural_correction": "Planning docs have to fit on one page. And meeting notes and planning docs should stay free of corporate jargon"},
     {"n": 3, "task": "Write up notes from the incident retro this morning",
      "applicable": [0, 2],
      "final": "Write up notes from this morning's incident retro. Close with action items (owner + due date), no jargon.",

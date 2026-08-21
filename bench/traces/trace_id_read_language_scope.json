@@ -30,7 +30,7 @@
     {
       "id": "scope-match-fires",
       "store": [
-        {"text": "邮件正文别用表情符号", "scope": {"task": "email"}}
+        {"text": "邮件正文别用表情符号", "kinds": ["email"]}
       ],
       "task": {"text": "帮我写封邮件感谢面试官，语气自然点",
                "context": {"task": "email"}},
@@ -45,7 +45,7 @@
     {
       "id": "scope-mismatch-silent",
       "store": [
-        {"text": "邮件正文别用表情符号", "scope": {"task": "email"}}
+        {"text": "邮件正文别用表情符号", "kinds": ["email"]}
       ],
       "task": {"text": "帮我把这季度的销售数据整理成一份报告",
                "context": {"task": "report"}},
@@ -54,7 +54,7 @@
     {
       "id": "scope-unknown-context-still-fires",
       "store": [
-        {"text": "邮件正文别用表情符号", "scope": {"task": "email"}}
+        {"text": "邮件正文别用表情符号", "kinds": ["email"]}
       ],
       "task": {"text": "帮我写封邮件感谢面试官，语气自然点"},
       "expect": {

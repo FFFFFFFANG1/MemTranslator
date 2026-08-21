@@ -1,7 +1,7 @@
 """Scale / safety instruments shared by the fused E1+perf lifecycle run.
 
 Canary planting is optional on the same chained store: gold CARRY/SUPPRESS/
-STATE score against catalogue cids, so an extra planted entry does not enter
+STATE score against ground-truth requirement ids, so a planted entry does not enter
 those numerators; it can still dilute extraction, which is why the fused
 runner exposes ``--canary`` / ``--no-canary``.
 """
@@ -45,7 +45,8 @@ CANARIES = [
 def pick_canary(ep: dict) -> dict | None:
     """First canary whose facet vocabulary never occurs in this user's
     history — collision-free by mechanical scan, not by hope."""
-    blob = " ".join(r["text"] for r in ep["rounds"]).lower()
+    blob = " ".join(
+        turn["user_input"] for turn in ep["user_turns"]).lower()
     for c in CANARIES:
         if not any(v.lower() in blob for v in c["vocab"]):
             return c

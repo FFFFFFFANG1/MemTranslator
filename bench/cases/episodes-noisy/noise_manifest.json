@@ -1,0 +1,121 @@
+{
+ "source": "OpenAssistant/oasst1",
+ "source_url": "https://huggingface.co/datasets/OpenAssistant/oasst1/resolve/fdf72ae0827c1cda404aff25b6603abec9e3399b/2023-04-12_oasst_prompts.messages.jsonl.gz",
+ "source_revision": "fdf72ae0827c1cda404aff25b6603abec9e3399b",
+ "license": "Apache-2.0",
+ "noise_pool": "bench/cases/noise/oasst1-root-prompts.jsonl",
+ "noise_pool_sha256": "af42856a74fe0126fa2bc2545051db1c76e219e9a859d91f29c20d649dc1ea5c",
+ "seed": 20260820,
+ "min_noise": 5,
+ "max_noise": 10,
+ "episodes": [
+  {
+   "episode": "e-01",
+   "language": "zh",
+   "original_turns": 62,
+   "noise_turns": 440,
+   "expanded_turns": 502,
+   "gap_min": 5,
+   "gap_max": 10
+  },
+  {
+   "episode": "e-02",
+   "language": "en",
+   "original_turns": 62,
+   "noise_turns": 451,
+   "expanded_turns": 513,
+   "gap_min": 5,
+   "gap_max": 10
+  },
+  {
+   "episode": "e-03",
+   "language": "zh",
+   "original_turns": 62,
+   "noise_turns": 463,
+   "expanded_turns": 525,
+   "gap_min": 5,
+   "gap_max": 10
+  },
+  {
+   "episode": "e-04",
+   "language": "zh",
+   "original_turns": 62,
+   "noise_turns": 461,
+   "expanded_turns": 523,
+   "gap_min": 5,
+   "gap_max": 10
+  },
+  {
+   "episode": "e-05",
+   "language": "en",
+   "original_turns": 62,
+   "noise_turns": 458,
+   "expanded_turns": 520,
+   "gap_min": 5,
+   "gap_max": 10
+  },
+  {
+   "episode": "e-06",
+   "language": "zh",
+   "original_turns": 62,
+   "noise_turns": 448,
+   "expanded_turns": 510,
+   "gap_min": 5,
+   "gap_max": 10
+  },
+  {
+   "episode": "e-07",
+   "language": "en",
+   "original_turns": 62,
+   "noise_turns": 458,
+   "expanded_turns": 520,
+   "gap_min": 5,
+   "gap_max": 10
+  },
+  {
+   "episode": "e-08",
+   "language": "zh",
+   "original_turns": 62,
+   "noise_turns": 445,
+   "expanded_turns": 507,
+   "gap_min": 5,
+   "gap_max": 10
+  },
+  {
+   "episode": "e-09",
+   "language": "en",
+   "original_turns": 62,
+   "noise_turns": 462,
+   "expanded_turns": 524,
+   "gap_min": 5,
+   "gap_max": 10
+  },
+  {
+   "episode": "e-10",
+   "language": "zh",
+   "original_turns": 62,
+   "noise_turns": 456,
+   "expanded_turns": 518,
+   "gap_min": 5,
+   "gap_max": 10
+  },
+  {
+   "episode": "e-11",
+   "language": "en",
+   "original_turns": 62,
+   "noise_turns": 457,
+   "expanded_turns": 519,
+   "gap_min": 5,
+   "gap_max": 10
+  },
+  {
+   "episode": "e-12",
+   "language": "zh",
+   "original_turns": 62,
+   "noise_turns": 482,
+   "expanded_turns": 544,
+   "gap_min": 5,
+   "gap_max": 10
+  }
+ ]
+}

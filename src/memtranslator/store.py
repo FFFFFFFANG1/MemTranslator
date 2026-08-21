@@ -11,8 +11,9 @@ import json
 import time
 from pathlib import Path
 
-from memtranslator.schema import (BINDINGS, BUCKETS, KINDS, POLARITIES,
-                                  STATUSES, Requirement)
+from memtranslator.schema import (BUCKETS, KINDS, STATUSES, Requirement)
+from memtranslator.scopes import migrate_genre_from_scope, normalize_kind, normalize_scope
+
 
 AUTO_RETIRE_AT = -2          # strength ≤ -2 → implicit retire (design §3)
 B_FEEDBACK_RETIRE_AT = -2    # two route-B delete judgements retire an entry
@@ -27,35 +28,74 @@ class Store:
                 if not line.strip():
                     continue
                 req = Requirement.from_dict(json.loads(line))
+                migrate_genre_from_scope(req)
                 self._items[req.id] = req
+        self._prepare_indexes(list(self._items.values()))
+
+    @staticmethod
+    def _prepare_indexes(requirements: list[Requirement]) -> None:
+        """Warm retrieval caches without ever making storage depend on them."""
+        try:
+            from memtranslator.retrieval import prepare_requirements
+            prepare_requirements(requirements)
+        except Exception:
+            # Retrieval degrades to uncached BM25; an optional local embedding
+            # backend must never make an append-only Store mutation fail.
+            pass
 
     def _append(self, req: Requirement) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.path.open("a") as f:
             f.write(json.dumps(req.to_dict(), ensure_ascii=False) + "\n")
+        self._prepare_indexes([req])
 
     def add(self, text: str, *, kind: str = "requirement", key: str = "",
             scope: dict | None = None, source: str = "manual",
-            salience: int = 3, supersedes: str | None = None,
-            bucket: str = "", binding: str = "", polarity: str = "",
-            evidence_id: str = "") -> Requirement:
+            applies_when: str = "",
+            scope_mode: str = "",
+            confidence: int | None = None, supersedes: str | None = None,
+            bucket: str = "", evidence_id: str = "",
+            kinds: list | None = None, sources: list | None = None,
+            # Legacy salience accepted then mapped into confidence.
+            salience: int | None = None) -> Requirement:
         text = text.strip()
         if not text:
             raise ValueError("requirement text is empty")
         if kind not in KINDS:
             raise ValueError(f"unknown kind: {kind}")
-        # Empty means unclassified, which is legal; a NON-empty value outside
-        # the vocabulary is a bug upstream and must not be persisted silently.
-        for value, allowed, label in ((bucket, BUCKETS, "bucket"),
-                                      (binding, BINDINGS, "binding"),
-                                      (polarity, POLARITIES, "polarity")):
-            if value and value not in allowed:
-                raise ValueError(f"unknown {label}: {value}")
-        req = Requirement(text=text, kind=kind, key=key, scope=scope or {},
-                          source=source, salience=salience,
+        kinds = kinds or []
+        if not isinstance(kinds, list):
+            raise ValueError(f"unknown work kinds: {kinds!r}")
+        normalised = []
+        for value in kinds:
+            if not isinstance(value, str) or not value.strip():
+                raise ValueError(f"unknown work kinds: {kinds!r}")
+            normalised.append(normalize_kind(value))
+        kinds = list(dict.fromkeys(normalised))
+        scope = normalize_scope(scope)
+        if bucket and bucket not in BUCKETS:
+            raise ValueError(f"unknown bucket: {bucket}")
+        if confidence is None:
+            if isinstance(salience, int):
+                confidence = max(0, min(10, salience * 2))
+            else:
+                confidence = 0
+        elif not isinstance(confidence, int) or not 0 <= confidence <= 10:
+            confidence = 0
+        source_texts = []
+        for entry in sources or []:
+            if isinstance(entry, str) and entry.strip():
+                text_entry = entry.strip()
+                if text_entry not in source_texts:
+                    source_texts.append(text_entry)
+        req = Requirement(text=text, kind=kind, key=key, scope=scope,
+                          applies_when=applies_when,
+                          scope_mode=scope_mode,
+                          kinds=kinds,
+                          source=source, confidence=confidence,
                           supersedes=supersedes, bucket=bucket,
-                          binding=binding, polarity=polarity,
-                          evidence_id=evidence_id)
+                          evidence_id=evidence_id, sources=source_texts)
+        migrate_genre_from_scope(req)
         self._items[req.id] = req
         self._append(req)
         return req
@@ -93,11 +133,14 @@ class Store:
                 self.add(op["text"], kind=op.get("rkind", "requirement"),
                          key=op.get("key", ""),
                          scope=op.get("scope") or {}, source="learned",
-                         salience=op.get("salience", 3),
+                         applies_when=op.get("applies_when") or "",
+                         scope_mode=op.get("scope_mode", ""),
+                         confidence=op.get("confidence"),
                          bucket=op.get("bucket", ""),
-                         binding=op.get("binding", ""),
-                         polarity=op.get("polarity", ""),
-                         evidence_id=op.get("evidence_id", ""))
+                         evidence_id=op.get("evidence_id", ""),
+                         kinds=op.get("kinds") or [],
+                         sources=op.get("sources") or [],
+                         salience=op.get("salience"))
                 applied += 1
             elif kind == "reinforce":
                 req = self._items.get(op.get("target_id") or "")
@@ -105,6 +148,14 @@ class Store:
                     skipped.append(op)
                     continue
                 req.strength += 1
+                for entry in op.get("sources") or []:
+                    if isinstance(entry, str) and entry.strip():
+                        text_entry = entry.strip()
+                        if text_entry not in req.sources:
+                            req.sources.append(text_entry)
+                conf = op.get("confidence")
+                if isinstance(conf, int) and 0 <= conf <= 10:
+                    req.confidence = max(req.confidence, conf)
                 req.updated_at = time.time()
                 self._append(req)
                 applied += 1
@@ -114,14 +165,23 @@ class Store:
                     skipped.append(op)
                     continue
                 heir = self.add(op["text"], key=op.get("key") or old.key,
-                                scope=op.get("scope") or dict(old.scope),
+                                scope=(op["scope"] if "scope" in op
+                                       else dict(old.scope)),
+                                scope_mode=(op["scope_mode"]
+                                            if "scope_mode" in op
+                                            else old.scope_mode),
+                                applies_when=(op["applies_when"]
+                                              if "applies_when" in op
+                                              else old.applies_when),
                                 source="learned",
-                                salience=op.get("salience", 3),
+                                confidence=op.get("confidence"),
                                 supersedes=old.id,
                                 bucket=op.get("bucket") or old.bucket,
-                                binding=op.get("binding") or old.binding,
-                                polarity=op.get("polarity") or old.polarity,
-                                evidence_id=op.get("evidence_id", ""))
+                                evidence_id=op.get("evidence_id", ""),
+                                kinds=(op["kinds"] if "kinds" in op
+                                       else list(old.kinds)),
+                                sources=op.get("sources") or [],
+                                salience=op.get("salience"))
                 if old.status == "active":
                     old.status = "retired"
                 old.superseded_by = heir.id
@@ -136,6 +196,11 @@ class Store:
                 if req.status == "active":
                     req.status = "retired"
                     req.superseded_by = op.get("heir_id")
+                    for entry in op.get("sources") or []:
+                        if isinstance(entry, str) and entry.strip():
+                            text_entry = entry.strip()
+                            if text_entry not in req.sources:
+                                req.sources.append(text_entry)
                     req.updated_at = time.time()
                     self._append(req)
                     # Heir-liveness invariant (2026-07-31): a retire that
@@ -172,17 +237,23 @@ class Store:
                     continue
                 heir = self.add(op["text"],
                                 key=op.get("key") or targets[0].key,
-                                scope=op.get("scope")
-                                or dict(targets[0].scope),
+                                scope=(op["scope"] if "scope" in op
+                                       else dict(targets[0].scope)),
+                                scope_mode=(op["scope_mode"]
+                                            if "scope_mode" in op
+                                            else targets[0].scope_mode),
+                                applies_when=(op["applies_when"]
+                                              if "applies_when" in op
+                                              else targets[0].applies_when),
                                 source="learned",
-                                salience=op.get("salience", 3),
+                                confidence=op.get("confidence"),
                                 supersedes=targets[0].id,
                                 bucket=op.get("bucket") or targets[0].bucket,
-                                binding=op.get("binding")
-                                or targets[0].binding,
-                                polarity=op.get("polarity")
-                                or targets[0].polarity,
-                                evidence_id=op.get("evidence_id", ""))
+                                evidence_id=op.get("evidence_id", ""),
+                                kinds=(op["kinds"] if "kinds" in op
+                                       else list(targets[0].kinds)),
+                                sources=op.get("sources") or [],
+                                salience=op.get("salience"))
                 # EVERY merge source records its heir — supersedes can only
                 # name one ancestor, but the reverse pointer is per-victim;
                 # without it targets[1:] looked heirless in forensics and

@@ -8,9 +8,9 @@ from memtranslator.store import Store
 def test_new_fields_defaults_and_roundtrip(tmp_path):
     s = Store(tmp_path / "store.jsonl")
     r = s.add("邮件不超过120词")
-    assert (r.kind, r.key, r.scope, r.strength, r.salience,
-            r.supersedes, r.source) == ("requirement", "", {}, 1, 3,
-                                        None, "manual")
+    assert (r.kind, r.key, r.scope, r.strength, r.confidence,
+            r.sources, r.supersedes, r.source) == (
+        "requirement", "", {}, 1, 0, [], None, "manual")
     back = Requirement.from_dict(r.to_dict())
     assert back.to_dict() == r.to_dict()
 
@@ -26,10 +26,25 @@ def test_from_dict_tolerates_v0_records():
 def test_add_learned_with_metadata(tmp_path):
     s = Store(tmp_path / "store.jsonl")
     r = s.add("代码只给代码", kind="requirement", key="code.explanation",
-              scope={"task": "code"}, source="learned", salience=4)
+              scope={"task": "code"}, source="learned", confidence=8,
+              sources=["以后代码只给代码"])
     assert r.key == "code.explanation" and r.source == "learned"
+    # Legacy scope.task genre migrates into kinds on write.
+    assert r.kinds == ["code"] and r.scope == {}
     reloaded = Store(tmp_path / "store.jsonl").get(r.id)
-    assert reloaded.scope == {"task": "code"} and reloaded.salience == 4
+    assert reloaded.kinds == ["code"] and reloaded.scope == {}
+    assert reloaded.confidence == 8
+    assert reloaded.sources == ["以后代码只给代码"]
+
+
+def test_legacy_salience_maps_into_confidence(tmp_path):
+    s = Store(tmp_path / "store.jsonl")
+    r = s.add("x", salience=4)
+    assert r.confidence == 8
+    legacy = Requirement.from_dict({
+        "id": "req-legacy", "text": "旧", "status": "active",
+        "salience": 5, "created_at": 1.0, "updated_at": 1.0})
+    assert legacy.confidence == 10
 
 
 def test_bump_strength_and_auto_retire(tmp_path):

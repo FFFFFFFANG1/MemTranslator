@@ -1,7 +1,7 @@
 """Bench-side config. The judge is NOT a product path, so anchor §5's
-flash-only rule does not apply; per the 2026-07-24 sign-off it runs on
-deepseek-v4-pro over the OpenAI-compatible channel configured in the
-repo-root .env (currently Volcano Ark; swap channel or model here)."""
+flash-only rule does not apply. It runs over the OpenAI-compatible channel
+configured in the repo-root .env (currently Volcano Ark); JUDGE_MODEL may
+override the audited default."""
 import os
 from pathlib import Path
 
@@ -26,7 +26,7 @@ RUN_DIR = Path(os.environ.get("BENCH_RUN_DIR")
 # specialization of a stored requirement now passes, so v2 T scores read
 # strictly lower on the same behavior). The gate refuses to aggregate
 # snapshots whose metric_version differs from the current one.
-METRIC_VERSION = 3
+METRIC_VERSION = 12  # E1 applicability pairs + oracle attributes audited
 
 
 def _load_env(path: Path) -> dict[str, str]:
@@ -38,7 +38,8 @@ def _load_env(path: Path) -> dict[str, str]:
             if line and not line.startswith("#") and "=" in line:
                 k, v = line.split("=", 1)
                 out[k.strip()] = v.strip()
-    for k in ("LLM_API_KEY", "LLM_BASE_URL", "LLM_MODEL"):
+    for k in ("LLM_API_KEY", "LLM_BASE_URL", "LLM_MODEL", "JUDGE_MODEL",
+              "STATE_JUDGE_MODEL"):
         if k in os.environ:
             out[k] = os.environ[k]
     return out
@@ -48,10 +49,19 @@ _ENV = _load_env(REPO_ROOT / ".env")
 LLM_BASE_URL = _ENV.get("LLM_BASE_URL", "https://api.deepseek.com")
 LLM_API_KEY = _ENV.get("LLM_API_KEY", os.environ.get("DEEPSEEK_API_KEY", ""))
 
-JUDGE_MODEL = "deepseek-v4-pro"      # 拍板点 2 决议（2026-07-24）
+JUDGE_MODEL = _ENV.get("JUDGE_MODEL", "glm-5.3")
 GEN_MODEL = "deepseek-v4-flash"      # case 扩展生成用（同通道）
-JUDGE_MAX_TOKENS = 300
-E2E_SECOND_HALF_FROM = 9             # rounds 9..16 count toward the score
+# GLM-5.x spends completion tokens on mandatory reasoning before its short
+# JSON answer. Full oracle-v4 runs produced 13 empty finals at 2048 and 10 at
+# 4096 among roughly 110 CARRY pairs. 8192 plus one parse retry in judge.py
+# substantially reduces mandatory-thinking truncation while keeping any
+# residual parse failures visible in the snapshot.
+JUDGE_MAX_TOKENS = (8192 if JUDGE_MODEL.lower().startswith("glm-5") else 300)
+STATE_JUDGE_MODEL = _ENV.get("STATE_JUDGE_MODEL", "deepseek-v4-pro")
+STATE_JUDGE_MAX_TOKENS = (
+    2048 if STATE_JUDGE_MODEL.lower().startswith("glm-5") else 300)
+E2E_SEED_ROUNDS = 5                  # first N finals absorbed as message history
+E2E_SECOND_HALF_FROM = 6             # rounds 6..16 count toward the score
 E2E_PASS_THRESHOLD = 0.8             # persona-level pass, now REPORTING ONLY
 E2E_PERSONA_COUNT = 8                # nominal suite size; fewer = hard error
 E2E_REPEATS = 3                      # runs averaged per persona (variance control)
