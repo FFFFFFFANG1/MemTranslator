@@ -25,33 +25,43 @@ isolates "can it apply what it should know by now" from "did an early mistake
 poison everything". The gate always reads `chained`: the diagnostic exists to
 localize a failure, never to replace the harder number.
 
-M0 rework (2026-07-28): the runner's private `_apply_ops` is gone. It had no
-merge branch, never wrote `supersedes`, and built `Requirement(text=...)`
-without key/scope/bucket/salience — so the suite was grading the product on a
-store the product does not have. Each persona-run now drives a REAL
-`memtranslator.store.Store` on a private path under RUN_DIR, ops apply through
-the product's own `Store.apply_ops`, `translate` receives the `context` third
-argument (before this, `_scope_ok` had never once executed on this suite), and
-the harness drives consolidation the way a daemon would — `Pipeline.maybe_flush`
-does not call it, so a bench that doesn't either is silently exempting the
-consolidation path from ever being tested. Each consolidation records WHICH
-trigger fired: CONSOLIDATE_ADDS resets the counter and structurally shadows
-CONSOLIDATE_ACTIVE, and "the ACTIVE branch never fired" is a product finding
-the snapshot should carry, not a guess.
+M0 rework (2026-07-28): the runner's private `_apply_ops` is gone. Each
+persona-run drives a REAL `memtranslator.store.Store` on a private path under
+RUN_DIR; ops apply through the product store; `translate` receives the
+`context` third argument.
+
+Update 2026-08-12: the GROUPS store-tidy consolidator is archived
+(`consolidate_tidy_backup.py`) and is not invoked on the live product or E2E
+path.
+
+Update 2026-08-12 (B-side alignment): Route B can only judge entries a patch
+actually wove in (`update`/`retire` via `Store.apply_feedback_ops`); it cannot
+create memory. E2E therefore:
+- queues `natural_correction` → Route A (the only create path on miss);
+- queues `edited_diff` only when translate returned `applied_ids` AND
+  `patch_diff(polished, final)` is non-empty, with entry snapshots (product
+  shape), never a bare diff against an empty attribution;
+- on flush, applies A ops through `apply_ops` and B ops through
+  `apply_feedback_ops` (channel-tagged by V1Provider).
+
+Update 2026-08-12 (seed-then-score): first `E2E_SEED_ROUNDS` `final`s and
+any `natural_correction`s are one Route-A batch before scored translate.
+Scoring starts at `E2E_SECOND_HALF_FROM`. Later misses still queue A/B
+signals so CASE consolidator dedup keeps getting traffic.
 """
 import argparse
 import json
 import uuid
 from pathlib import Path
 
-from memtranslator.config import CONSOLIDATE_ACTIVE, CONSOLIDATE_ADDS
-from memtranslator.consolidate import should_consolidate
+from memtranslator.signals import patch_diff
 from memtranslator.store import Store
 from memtranslator.translate import translate
 
 from bench.suites.config import (CASES, E2E_PASS_THRESHOLD,
                                  E2E_PERSONA_COUNT, E2E_REPEATS,
-                                 E2E_SECOND_HALF_FROM, RUN_DIR)
+                                 E2E_SECOND_HALF_FROM, E2E_SEED_ROUNDS,
+                                 RUN_DIR)
 from bench.suites.judge import judge
 from bench.suites.providers import PROVIDERS
 from bench.suites.report import hash_cases, write_snapshot
@@ -85,37 +95,95 @@ def _reset_to_gold(persona: dict, exercised: set[int]) -> Store:
     return store
 
 
+def _split_channel_ops(ops: list[dict]) -> tuple[list[dict], list[dict]]:
+    """Separate route-A CRUD from route-B feedback. Prefer explicit channel
+    tags from V1Provider; fall back to op kind for legacy test fakes."""
+    a_ops, b_ops = [], []
+    for op in ops:
+        channel = op.get("channel")
+        kind = op.get("kind")
+        if channel == "b" or (channel is None and kind == "update"):
+            b_ops.append(op)
+        elif channel == "a" or kind in ("new", "reinforce", "contradict",
+                                          "merge"):
+            a_ops.append(op)
+        elif kind == "retire":
+            # Untagged retire from a fake provider: treat as A (historical).
+            (b_ops if channel == "b" else a_ops).append(op)
+        else:
+            a_ops.append(op)
+    return a_ops, b_ops
+
+
+def _queue_miss_signals(pending: list[dict], *, store: Store, out: dict,
+                        polished: str, final: str,
+                        natural_correction: str | None) -> None:
+    """Mirror the product submit path: A from natural text; B only when the
+    patch named entries AND the human edit produced a real diff.
+
+    Post-seed misses also enqueue `final` so paraphrased corrections keep
+    feeding CASE consolidator dedup after the absorb phase.
+    """
+    if natural_correction:
+        pending.append({"type": "natural", "text": natural_correction})
+    if final:
+        pending.append({"type": "natural", "text": final})
+    applied_ids = [i for i in (out.get("applied_ids") or [])
+                   if isinstance(i, str)]
+    diff = patch_diff(polished, final)
+    if not applied_ids or not diff:
+        return
+    entries = []
+    for rid in applied_ids:
+        try:
+            entries.append(store.get(rid).to_dict())
+        except KeyError:
+            continue
+    if entries:
+        pending.append({"type": "edited_diff", "polished": polished,
+                        "final": final, "entries": entries})
+
+
 def run_persona(persona: dict, provider, flush_every: int = 4,
-                mode: str = "chained") -> dict:
+                mode: str = "chained",
+                seed_rounds: int = E2E_SEED_ROUNDS) -> dict:
     store = _fresh_store(persona["id"])
     pending: list[dict] = []
     rounds_out: list[dict] = []
     consolidations: list[dict] = []
     exercised: set[int] = set()
-    adds_since = 0
     peak_active = 0
 
     def flush() -> None:
-        nonlocal adds_since, pending, store
+        nonlocal pending, store
         pid = persona["id"]
         ops = with_retry(lambda: provider.extract(pending, store.active()),
                          f"{pid}/extract")
-        store.apply_ops(ops)
-        adds_since += sum(1 for o in ops
-                          if o.get("kind") in ("new", "contradict"))
+        a_ops, b_ops = _split_channel_ops(ops)
+        if a_ops:
+            store.apply_ops(a_ops)
+        if b_ops:
+            store.apply_feedback_ops(b_ops)
         pending = []
-        if should_consolidate(store, adds_since):
-            # record the trigger BEFORE consolidating: after apply_ops the
-            # store has changed and the answer is gone
-            trigger = ("active" if len(store.active()) > CONSOLIDATE_ACTIVE
-                       else "adds")
-            cops = with_retry(lambda: provider.consolidate(store.active()),
-                              f"{pid}/consolidate")
-            store.apply_ops(cops)
-            consolidations.append({"trigger": trigger, "n_ops": len(cops)})
-            adds_since = 0
+
+    # Absorb phase: first N finals + their natural_corrections (one A batch).
+    for rd in persona["rounds"][:seed_rounds]:
+        for i in rd.get("applicable") or []:
+            exercised.add(i)
+        if rd.get("final"):
+            pending.append({"type": "natural", "text": rd["final"]})
+        if rd.get("natural_correction"):
+            pending.append({"type": "natural",
+                            "text": rd["natural_correction"]})
+    if pending:
+        flush()
+        if mode == "repaired":
+            store = _reset_to_gold(persona, exercised)
+        peak_active = max(peak_active, len(store.active()))
 
     for rd in persona["rounds"]:
+        if rd["n"] <= seed_rounds:
+            continue
         context = rd.get("context") or persona.get("context")
         out = with_retry(
             lambda: _polish(rd["task"], store.active(), context=context),
@@ -131,35 +199,36 @@ def run_persona(persona: dict, provider, flush_every: int = 4,
                 misses.append(i)
         hit = not misses
         if not hit:
-            pending.append({"type": "edited_diff", "raw": rd["task"],
-                            "polished": polished, "final": rd["final"]})
-            if rd.get("natural_correction"):
-                pending.append({"type": "natural",
-                                "text": rd["natural_correction"]})
+            _queue_miss_signals(
+                pending, store=store, out=out, polished=polished,
+                final=rd["final"],
+                natural_correction=rd.get("natural_correction"))
         n_active = len(store.active())
         peak_active = max(peak_active, n_active)
         rounds_out.append({"n": rd["n"], "hit": hit, "misses": misses,
                            "carried": carried,
                            "applicable": len(rd["applicable"]),
                            "store_active": n_active})
-        if len(pending) >= flush_every:
+        # Flush on scored-round cadence when anything is queued.
+        if pending and rd["n"] % flush_every == 0:
             flush()
             if mode == "repaired":
                 store = _reset_to_gold(persona, exercised)
     if pending:
         flush()
 
-    second = [r for r in rounds_out if r["n"] >= E2E_SECOND_HALF_FROM]
-    applicable = sum(r["applicable"] for r in second)
-    carried = sum(r["carried"] for r in second)
+    scored = [r for r in rounds_out if r["n"] >= E2E_SECOND_HALF_FROM]
+    applicable = sum(r["applicable"] for r in scored)
+    carried = sum(r["carried"] for r in scored)
     rate = carried / applicable if applicable else 0.0
-    round_rate = (sum(r["hit"] for r in second) / len(second)
-                  if second else 0.0)
+    round_rate = (sum(r["hit"] for r in scored) / len(scored)
+                  if scored else 0.0)
     final = store.list()
     return {"id": persona["id"], "category": "persona", "mode": mode,
             "score": rate, "pass": rate >= E2E_PASS_THRESHOLD,
             "second_half_rate": rate,
             "second_half_round_rate": round_rate,
+            "seed_rounds": seed_rounds,
             "peak_active": peak_active,
             "store_final": {"active": sum(1 for r in final
                                           if r.status == "active"),

@@ -1,7 +1,10 @@
 """Suite L: feed each case's events to a provider, grade ops against
-expectations. Precision is sacred: one spurious extraction fails the case."""
+expectations. Precision is sacred: one spurious extraction fails the case.
+
+Dedup cases feed a structured candidate to the CASE consolidator
+(`provider.reconcile`) instead of the archived GROUPS tidy merge path.
+"""
 import argparse
-import time
 
 from memtranslator.schema import Requirement
 
@@ -17,11 +20,26 @@ from bench.suites.schema import load_extraction_cases
 def _match(exp, op, existing, case, judge_flags) -> bool:
     """Does provider op satisfy expected op? kind/target mechanical,
     text semantics via judge. retire is fully mechanical (no text)."""
-    if op["kind"] != exp["kind"]:
+    if exp["kind"] == "deduplicate":
+        want = {existing[i].id for i in exp["targets"]}
+        if op["kind"] == "merge":
+            if set(op.get("target_ids") or []) != want:
+                return False
+        elif op["kind"] == "reinforce":
+            if op.get("target_id") not in want:
+                return False
+        else:
+            return False
+    elif op["kind"] != exp["kind"]:
         return False
-    if exp["kind"] == "merge":
+    elif exp["kind"] == "merge":
         want = {existing[i].id for i in exp["targets"]}
         if set(op.get("target_ids") or []) != want:
+            return False
+    elif exp.get("targets") is not None:
+        # Any-of: consolidator may reaffirm either near-duplicate in top-3.
+        want = {existing[i].id for i in exp["targets"]}
+        if op.get("target_id") not in want:
             return False
     elif exp.get("target") is not None:
         if op.get("target_id") != existing[exp["target"]].id:
@@ -44,8 +62,11 @@ def _match(exp, op, existing, case, judge_flags) -> bool:
 
 def run_case(case, provider) -> dict:
     existing = [Requirement(text=t) for t in case.existing]
-    # no events → this is a consolidation case: grade the store-tidying path
-    if case.events:
+    if case.candidate is not None:
+        ops = with_retry(
+            lambda: provider.reconcile(case.candidate, existing),
+            f"{case.id}/reconcile")
+    elif case.events:
         ops = with_retry(lambda: provider.extract(case.events, existing),
                          f"{case.id}/extract")
     else:

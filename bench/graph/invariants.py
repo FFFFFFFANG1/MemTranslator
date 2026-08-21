@@ -21,7 +21,8 @@ from collections import defaultdict
 from itertools import combinations
 
 from memtranslator.bm25 import BM25, tokenize
-from memtranslator.config import RECALL_CAP
+from memtranslator.config import GLOBAL_RECALL_MAX_TOKENS
+from memtranslator.signals import estimate_input_tokens
 
 from bench.graph.derive import fold, scope_compatible, valid_at
 from bench.graph.relate import (CONTRADICTS, DUPLICATES, INDEPENDENT,
@@ -166,13 +167,24 @@ def simulate_no_retire_injection(constraints, effects, probe) -> set[str]:
     pool = [by_cid[cid] for _s, cid in introduced if cid in by_cid
             and scope_compatible(by_cid[cid].coords.scope,
                                  probe.get("context") or {})]
-    if len(pool) <= RECALL_CAP:
+    def block_tokens(items) -> int:
+        block = "\n".join(
+            f"[{number}] {item.text}"
+            for number, item in enumerate(items, 1))
+        return estimate_input_tokens(block)
+
+    if block_tokens(pool) <= GLOBAL_RECALL_MAX_TOKENS:
         return {c.cid for c in pool}
     scores = BM25([c.text for c in pool]).scores(probe.get("query", ""))
     seq_of = {cid: s for s, cid in introduced}
     order = sorted(range(len(pool)),
                    key=lambda i: (-scores[i], -seq_of[pool[i].cid]))
-    return {pool[i].cid for i in order[:RECALL_CAP]}
+    selected = []
+    for index in order:
+        candidate = selected + [pool[index]]
+        if block_tokens(candidate) <= GLOBAL_RECALL_MAX_TOKENS:
+            selected.append(pool[index])
+    return {constraint.cid for constraint in selected}
 
 
 def check_i11(constraints, effects, probes) -> list[str]:

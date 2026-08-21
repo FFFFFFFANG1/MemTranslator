@@ -22,10 +22,15 @@ from concurrent.futures import ThreadPoolExecutor
 from difflib import SequenceMatcher
 from pathlib import Path
 
+from memtranslator.config import TRANSLATOR_MESSAGE_MAX_TOKENS
+from memtranslator.recall import recall
 from memtranslator.schema import Requirement
+from memtranslator.signals import compact_message
 from memtranslator.translate import translate
 
+from bench.suites.config import JUDGE_MODEL, METRIC_VERSION, RESULTS
 from bench.suites.judge import judge          # shared infra, not corpus
+from bench.suites.report import hash_cases
 from bench.suites.retry import with_retry
 
 BENCH = Path(__file__).resolve().parent
@@ -45,7 +50,8 @@ def build_store(specs: list[dict]) -> list[Requirement]:
     reqs = []
     for i, s in enumerate(specs):
         r = Requirement(text=s["text"], kind=s.get("kind", "requirement"),
-                        key=s.get("key", ""), scope=s.get("scope") or {})
+                        key=s.get("key", ""), scope=s.get("scope") or {},
+                        kinds=list(s.get("kinds") or []))
         r.status = s.get("status", "active")
         r.strength = s.get("strength", 1)
         rank = s.get("age_rank", i)
@@ -59,6 +65,56 @@ def run_translate(task: str, store: list[Requirement],
                   context: dict | None) -> dict:
     return with_retry(lambda: translate(task, store, context=context),
                       "bench/translate")
+
+
+def _requirement_trace(requirement: Requirement) -> dict:
+    """The exact recall-side fields needed to explain selection/application."""
+    return {
+        "id": requirement.id,
+        "text": requirement.text,
+        "status": requirement.status,
+        "created_at": requirement.created_at,
+        "bucket": requirement.bucket,
+        "key": requirement.key,
+        "scope": requirement.scope,
+        "work_kinds": requirement.kinds,
+        "confidence": requirement.confidence,
+    }
+
+
+def _output_trace(out: dict, task: str) -> dict:
+    trace = {
+        "decision": out.get("decision"),
+        "reason": out.get("reason"),
+        "polished": out.get("polished"),
+        "effective_text": out.get("polished") or task,
+        "applied_ids": out.get("applied_ids") or [],
+        "applied_entries": out.get("applied_entries") or [],
+        "parse_error": bool(out.get("parse_error")),
+        "latency_ms": out.get("latency_ms"),
+    }
+    if out.get("hunk_errors"):
+        trace["hunk_errors"] = out["hunk_errors"]
+    if isinstance(out.get("entry_verdicts"), list):
+        trace["entry_verdicts"] = out["entry_verdicts"]
+    return trace
+
+
+def run_translate_observed(task: str, store: list[Requirement],
+                           context: dict | None) -> tuple[dict, dict]:
+    """Run the product path and retain enough evidence to diagnose a miss.
+
+    Recall is deterministic for a fixed store/query, so observing it directly
+    before translate exposes the exact selected entries without changing the
+    product response protocol.
+    """
+    shown = compact_message(task, max_tokens=TRANSLATOR_MESSAGE_MAX_TOKENS)
+    recalled = recall(store, query=shown, context=context)
+    out = run_translate(task, store, context)
+    return out, {
+        "recalled_entries": [_requirement_trace(r) for r in recalled],
+        "output": _output_trace(out, task),
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -110,15 +166,23 @@ def score_instantiation(check: dict) -> dict:
     task = check["task"]["text"]
     ctx = check["task"].get("context")
     rule = check["store"][0]["text"]           # the abstract rule is store[0]
-    with_rule = run_translate(task, build_store(check["store"]), ctx)
-    without = run_translate(task, build_store(check["store"][1:]), ctx)
+    with_rule, with_trace = run_translate_observed(
+        task, build_store(check["store"]), ctx)
+    without, without_trace = run_translate_observed(
+        task, build_store(check["store"][1:]), ctx)
 
     pol_with = with_rule["polished"] or task
     pol_without = without["polished"] or task
     caused = _added_vs(pol_without, pol_with)
 
     tier = 0
-    detail = {"caused": caused[:200]}
+    detail = {"caused": caused,
+              "trace": {"case": {"mode": "instantiation",
+                                    "store": check["store"],
+                                    "task": check["task"],
+                                    "expect": check["expect"]},
+                        "with_rule": with_trace,
+                        "without_rule": without_trace}}
     if caused.strip():
         rule_words = set(_WORD.findall(rule))
         caused_words = set(_WORD.findall(caused))
@@ -153,7 +217,8 @@ def run_check(check: dict) -> dict:
 
     store = build_store(check["store"])
     task = check["task"]["text"]
-    out = run_translate(task, store, check["task"].get("context"))
+    out, translation_trace = run_translate_observed(
+        task, store, check["task"].get("context"))
     polished = out["polished"] or task
     exp = check["expect"]
     fails = []
@@ -164,9 +229,13 @@ def run_check(check: dict) -> dict:
     # product that had defended correctly.
     if exp.get("noop_is_pass") and out["decision"] == "noop":
         return {"id": check["id"], "pass": True, "fails": [],
-                "decision": "noop", "polished": polished[:200],
+                "decision": "noop", "polished": polished,
                 "behavior": "noop", "anchors_hit": [],
-                "equiv_group": check.get("equiv_group")}
+                "equiv_group": check.get("equiv_group"),
+                "trace": {"case": {"store": check["store"],
+                                    "task": check["task"],
+                                    "expect": check["expect"]},
+                          **translation_trace}}
 
     want = exp.get("behavior")
     if want == "noop" and out["decision"] != "noop":
@@ -189,11 +258,15 @@ def run_check(check: dict) -> dict:
                 fails.append(f"judge: {crit[:80]}")
 
     return {"id": check["id"], "pass": not fails, "fails": fails,
-            "decision": out["decision"], "polished": polished[:200],
+            "decision": out["decision"], "polished": polished,
             "behavior": _behavior(out),
             "anchors_hit": [str(i) for i in exp.get("must_contain", [])
                             if _match(i, polished)],
-            "equiv_group": check.get("equiv_group")}
+            "equiv_group": check.get("equiv_group"),
+            "trace": {"case": {"store": check["store"],
+                                "task": check["task"],
+                                "expect": check["expect"]},
+                      **translation_trace}}
 
 
 def check_equiv_groups(results: list[dict]) -> list[dict]:
@@ -217,6 +290,47 @@ def check_equiv_groups(results: list[dict]) -> list[dict]:
     return out
 
 
+def write_r_snapshot(suite: str, stamp: str, results: list[dict]) -> Path:
+    """Persist complete R evidence without changing its legacy micro score."""
+    RESULTS.mkdir(parents=True, exist_ok=True)
+    score = (sum(1 for result in results if result["pass"]) / len(results)
+             if results else 0.0)
+    by_family: dict[str, list[dict]] = {}
+    for result in results:
+        by_family.setdefault(result.get("category") or "(none)", []).append(
+            result)
+    family_rates = {
+        family: sum(1 for result in family_results if result["pass"])
+        / len(family_results)
+        for family, family_results in sorted(by_family.items())
+    }
+    macro = (sum(family_rates.values()) / len(family_rates)
+             if family_rates else 0.0)
+    snapshot = {
+        "suite": suite,
+        "at": stamp,
+        "metric_version": METRIC_VERSION,
+        "judge_model": JUDGE_MODEL,
+        "cases_file": str(TRACES),
+        "cases_hash": hash_cases(str(TRACES)),
+        "score": score,
+        "score_detail": {"headline": score, "micro": score,
+                         "macro": macro, "gap": abs(score - macro),
+                         "semantics": "legacy weighted read-path accuracy"},
+        "expected_shards": len(results),
+        "completed_shards": len(results),
+        "complete": True,
+        "category_rates": family_rates,
+        "strata": {},
+        "collapse_flags": [],
+        "judge_parse_flags": 0,
+        "results": results,
+    }
+    out = RESULTS / f"{suite}-{stamp}.json"
+    out.write_text(json.dumps(snapshot, ensure_ascii=False, indent=1))
+    return out
+
+
 # ---------------------------------------------------------------------------
 # driver
 # ---------------------------------------------------------------------------
@@ -235,16 +349,22 @@ def main():
 
     # merge into the existing state: a --trace filtered run must not wipe
     # the other families' scores (it did — twice)
-    state = {"at": time.strftime("%Y%m%d-%H%M%S"), "paths": {"read": {}}}
+    stamp = time.strftime("%Y%m%d-%H%M%S")
+    state = {"at": stamp, "paths": {"read": {}}}
     if STATE.exists():
         old = json.loads(STATE.read_text())
         state["paths"]["read"] = old.get("paths", {}).get("read", {})
     total_pass = total_n = 0
+    all_results = []
     for fam_path in families:
         fam = json.loads(fam_path.read_text())
         with ThreadPoolExecutor(max_workers=args.workers) as ex:
             results = list(ex.map(run_check, fam["checks"]))
         results += check_equiv_groups(results)
+        for result in results:
+            result["category"] = fam["family"]
+            result["trace_file"] = str(fam_path)
+        all_results += results
         n = len(results)
         p = sum(1 for r in results if r["pass"])
         total_pass += p
@@ -264,9 +384,16 @@ def main():
     state["paths"]["read"]["_overall"] = round(
         sum(f["score"] * f["n"] for f in fam_scores)
         / max(1, sum(f["n"] for f in fam_scores)), 3)
+    suite = "R"
+    if args.trace:
+        suffix = re.sub(r"[^a-zA-Z0-9_-]+", "-", args.trace).strip("-")
+        suite = f"R-{suffix or 'filtered'}"
+    snapshot_path = write_r_snapshot(suite, stamp, all_results)
+    state["artifacts"] = {"snapshot": str(snapshot_path)}
     STATE.write_text(json.dumps(state, ensure_ascii=False, indent=1))
     print(f"\nread path: {total_pass}/{total_n} = {total_pass / total_n:.3f}")
     print(f"state -> {STATE}")
+    print(f"snapshot -> {snapshot_path}")
 
 
 if __name__ == "__main__":

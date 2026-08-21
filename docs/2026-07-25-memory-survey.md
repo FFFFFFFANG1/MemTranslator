@@ -82,7 +82,7 @@
 
 #### 2) Traps / do NOT borrow
 
-- **Dense-embedding-at-scale retrieval** — Voyager (skill-description embeddings), A-Mem/A-MEM (sentence-BERT cosine), RAPTOR (UMAP+GMM over embeddings), khoj (semantic search product), EM-LLM/LongMem/Memorizing Transformers (k-NN over dense keys). Disallowed toolbox-wise; replace every one of these with BM25 + KV + graph traversal.
+- **Dense-embedding-at-scale retrieval** — Voyager (skill-description embeddings), A-Mem/A-MEM (sentence-BERT cosine), RAPTOR (UMAP+GMM over embeddings), khoj (semantic search product), EM-LLM/LongMem/Memorizing Transformers (k-NN over dense keys). Do not copy their heavy indexing stacks wholesale. Lightweight local embeddings are allowed as one candidate-ranking signal when they run on CPU or an integrated GPU; keep BM25 + structured metadata as the other, inspectable signal.
 - **Weight-editing / parametric memory** — ROME, MEMIT, MEND (closed-form or hypernetwork MLP edits), Titans (test-time gradient), Larimar/MemoryLLM/M+ (latent memory matrices/tokens), RMT (recurrent memory tokens). All require GPU training or an opaque non-auditable store; incompatible with an append-only, human-inspectable rule store and FLASH-only generation.
 - **Blind statistical eviction** — MemoryLLM/M+ random-drop and Titans' decay gate. Explicitly cautioned in the corpus: random forgetting silently drops still-valid sibling evidence — the very P3 mislearning we must avoid. Always route removal through explicit relation judgement (retire), never probabilistic drop.
 - **Static rebuild-to-update indexes** — RAPTOR and (largely) GraphRAG rebuild the whole index to ingest new data. Borrow their *structure* (abstraction levels / community summaries) but not the rebuild; our design is incremental append.
@@ -131,7 +131,7 @@
 **Borrow.**
 - P1: self-verification as the admission gate — store an artifact only once it is proven to work (analog to a validity check on a rule).
 - P4: verified-only, composable skills degrade gracefully over long horizons.
-- P2/P3: weak — append-only with no merge means near-duplicate siblings accumulate (our P3 problem); retrieval is dense-embedding, disallowed for us.
+- P2/P3: weak — append-only with no merge means near-duplicate siblings accumulate (our P3 problem); its dense retrieval is usable only as a lightweight candidate generator, not as our conflict mechanism.
 
 #### Agent Workflow Memory (AWM) — ICML 2025 main-conference poster (PMLR v267, pp. 63897-63911) — https://proceedings.mlr.press/v267/wang25bx.html
 
@@ -410,7 +410,7 @@ Note: JSON entries for ExpeL, Dynamic Cheatsheet, CLIN, MemoryBank, and Sleep-ti
 - P3: edge invalidation instead of destructive delete is essentially our append-only store with a "retire" status — a clean template for repairing a contradicted rule while keeping history.
 - P2: entity-resolution-on-insert is a direct pairing mechanism (attach new edge to the right existing node).
 - P4: bi-temporal validity keeps recall correct as facts change over many rounds.
-- Bonus: BM25 + graph traversal retrieval fits our allowed non-dense toolset exactly.
+- Bonus: BM25 + graph traversal remain useful inspectable signals and can be fused with a lightweight local embedding ranker.
 
 #### cognee (topoteretes/cognee) — 29,260 stars, not archived ([source](https://api.github.com/repos/topoteretes/cognee))
 
@@ -481,7 +481,7 @@ Note: JSON entries for ExpeL, Dynamic Cheatsheet, CLIN, MemoryBank, and Sleep-ti
 **Borrow.**
 - P1: the entity knowledge store's frequency + recency scoring is a ready-made salience signal ("often mentioned + recently referenced = important"), directly transferable to scoring rule salience.
 - P2: entity-centric writeback (attach new mentions to existing graph entities) is a pairing mechanism.
-- Retrieval is pure graph traversal (no dense reliance), fitting our allowed toolset.
+- Retrieval is pure graph traversal (no dense reliance), fitting the inspectable half of our allowed hybrid toolset.
 - P3/P4: weaker — no explicit conflict resolution or forgetting.
 
 #### khoj (khoj-ai/khoj) — 35,967 stars ([source](https://api.github.com/repos/khoj-ai/khoj))
@@ -495,12 +495,12 @@ Note: JSON entries for ExpeL, Dynamic Cheatsheet, CLIN, MemoryBank, and Sleep-ti
 
 #### txtai (neuml/txtai) — ~12,750 stars ([source](https://api.github.com/repos/neuml/txtai))
 
-**Mechanism.** General-purpose "embeddings database" framework, not a memory system per se. It stores an embeddings index that unions sparse (**BM25/keyword**) and dense vector indexes, a graph network, and a relational (SQL) store over text/docs/audio/images. Writes are index/upsert operations; it exposes SQL-style updates but has no built-in conflict/merge/reinforce/retire semantics — dedup and reconciliation are left to the application. Retrieval supports hybrid search: sparse BM25 keyword search AND dense vectors, plus graph traversal and topic modeling — directly usable under the project's allowed-tools constraint (BM25 lexical + KV/relational, no external embedding API required if using its local sparse index). No decay/eviction.
+**Mechanism.** General-purpose "embeddings database" framework, not a memory system per se. It stores an embeddings index that unions sparse (**BM25/keyword**) and dense vector indexes, a graph network, and a relational (SQL) store over text/docs/audio/images. Writes are index/upsert operations; it exposes SQL-style updates but has no built-in conflict/merge/reinforce/retire semantics — dedup and reconciliation are left to the application. Retrieval supports hybrid search: sparse BM25 keyword search AND dense vectors, plus graph traversal and topic modeling — directly relevant to our BM25 + lightweight-local-embedding candidate retrieval. No decay/eviction.
 
 **Numbers.** None reported in the data.
 
 **Borrow.**
-- P1/P2 tooling substrate: its hybrid sparse(BM25) + relational store is a concrete, embedding-API-free backend for our append-only lexical-recall store and for pairing a new signal to existing entries via BM25 candidate generation.
+- P1/P2 tooling substrate: its hybrid sparse+dense design supports our RRF direction, provided the dense side stays local and light enough for CPU/integrated-GPU execution.
 - No native P3 repair or P4 multi-round correctness logic.
 
 #### microsoft/graphrag — 34,812 stars ([source](https://api.github.com/repos/microsoft/graphrag))

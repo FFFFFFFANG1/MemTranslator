@@ -5,7 +5,7 @@ import sys
 
 sys.path.insert(0, "src")
 
-from memtranslator.consolidate import _sanitize_ops
+from memtranslator.consolidate_tidy_backup import _sanitize_ops
 from memtranslator.schema import Requirement
 
 

@@ -15,6 +15,7 @@ generic fragments cannot be evidence of copying, so only spans long enough to
 be distinctive are checked — the point is to catch lifted PHRASES, not to ban
 the word "email" from a system that is about emails.
 """
+import json
 import re
 from pathlib import Path
 
@@ -54,7 +55,32 @@ def _corpus() -> str:
     parts = []
     for p in sorted(CASES.rglob("*")):
         if p.suffix in (".jsonl", ".json") and p.is_file():
-            parts.append(p.read_text())
+            relative_parts = p.relative_to(CASES).parts
+            if relative_parts[0] in {"noise", "episodes-noisy"}:
+                # OASST1 is an independently sourced, broad natural-language
+                # pool, not authored benchmark language. Including it (and
+                # the derived episodes that duplicate it) makes ordinary
+                # four-word prompt fragments collide by chance and cannot
+                # provide evidence that product wording was lifted from a
+                # hand-authored benchmark case.
+                continue
+            if p.parent.name == "episodes" and p.suffix == ".json":
+                # Golden applicability attributes are generated from the live
+                # Extractor contract and then human-audited. Including those
+                # model-authored strings in the anti-copy corpus reverses the
+                # direction of this guard: prompt language naturally appears
+                # in labels produced by that prompt. User turns and authored
+                # requirement/scoring text remain guarded.
+                payload = json.loads(p.read_text())
+                generated = {
+                    "bucket", "scope_mode", "applies_when", "work_kinds",
+                    "key", "confidence"}
+                for node in payload["ground_truth"]["requirements"]:
+                    for field in generated:
+                        node.pop(field, None)
+                parts.append(json.dumps(payload, ensure_ascii=False))
+            else:
+                parts.append(p.read_text())
     return "\n".join(parts)
 
 

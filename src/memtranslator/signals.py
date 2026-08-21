@@ -137,6 +137,50 @@ _SENTENCE_END = re.compile(r"[.!?。！？；;\n]")
 _TRUNCATED = "[truncated]"
 
 
+def _input_token_cost(ch: str) -> float:
+    """Cheap cross-language estimate for deterministic input guardrails."""
+    return 1.0 if "一" <= ch <= "鿿" else 0.25
+
+
+def estimate_input_tokens(text: str) -> int:
+    """Approximate provider tokens: CJK≈1/char, Latin≈1/4 chars."""
+    return int(sum(_input_token_cost(ch) for ch in text) + 0.999)
+
+
+def _take_prefix_tokens(text: str, budget: float) -> str:
+    used = 0.0
+    for index, ch in enumerate(text):
+        cost = _input_token_cost(ch)
+        if used + cost > budget:
+            return text[:index]
+        used += cost
+    return text
+
+
+def _take_suffix_tokens(text: str, budget: float) -> str:
+    used = 0.0
+    for index in range(len(text) - 1, -1, -1):
+        cost = _input_token_cost(text[index])
+        if used + cost > budget:
+            return text[index + 1:]
+        used += cost
+    return text
+
+
+def _middle_truncate(text: str, max_tokens: int) -> str:
+    if max_tokens <= 0:
+        return _TRUNCATED
+    if estimate_input_tokens(text) <= max_tokens:
+        return text
+    marker = f"\n{_TRUNCATED}\n"
+    remaining = max(0.0, max_tokens - estimate_input_tokens(marker))
+    head_budget = remaining / 2
+    tail_budget = remaining - head_budget
+    head = _take_prefix_tokens(text, head_budget).rstrip()
+    tail = _take_suffix_tokens(text, tail_budget).lstrip()
+    return head + marker + tail
+
+
 def _token_spans(text: str) -> list[tuple[str, int, int]]:
     """Cheap deterministic lexical tokens with source offsets.
 
@@ -201,7 +245,7 @@ def _marked_sentence(text: str, change_start: int, change_end: int) -> str:
     else:
         raw_change = text[change_start:change_end]
     return (prefix + text[clip_start:change_start]
-            + "<changed>" + raw_change + "</changed>"
+            + raw_change
             + text[change_end:clip_end] + suffix)
 
 
@@ -229,18 +273,16 @@ def _coalesced_changes(a_tokens: list[tuple[str, int, int]],
 
 
 def patch_diff(polished: str, final: str) -> list[dict]:
-    """Sentence-level, token-aligned human edits for route B.
+    """Apply-patch hunks of the human edit on the translator's output.
 
-    Normal edits carry the complete sentence before and after, with the
-    changed span explicitly marked. An unedited patch yields no hunks at
-    all, which is what lets the queue skip it without spending a call.
+    Each hunk is {old, new} against the patched request. An unedited patch
+    yields no hunks, which is what lets the queue skip it without a call.
     """
     if _norm(polished) == _norm(final):
         return []
     before_tokens, after_tokens = _token_spans(polished), _token_spans(final)
     hunks: list[dict] = []
-    labels = {"insert": "add", "delete": "delete", "replace": "replace"}
-    for tag, i1, i2, j1, j2 in _coalesced_changes(
+    for _tag, i1, i2, j1, j2 in _coalesced_changes(
             before_tokens, after_tokens):
         a1, a2 = _token_char_span(before_tokens, i1, i2, len(polished))
         b1, b2 = _token_char_span(after_tokens, j1, j2, len(final))
@@ -249,9 +291,8 @@ def patch_diff(polished: str, final: str) -> list[dict]:
         if j1 == j2 and j1:
             b1 = b2 = after_tokens[j1 - 1][2]
         hunks.append({
-            "op": labels[tag],
-            "before_sentence": _marked_sentence(polished, a1, a2),
-            "after_sentence": _marked_sentence(final, b1, b2),
+            "old": _marked_sentence(polished, a1, a2),
+            "new": _marked_sentence(final, b1, b2),
         })
     return hunks
 
@@ -367,20 +408,41 @@ def _weight(s: str) -> float:
 
 
 def _clip(s: str, max_weight: float) -> str:
-    """Prefix of `s` up to a language-normalised weight — the span-assembly
-    twin of _weight(); a flat [:80] silently amputated the operative tail
-    of English rule sentences (the trailing "…N words max" is the rule)."""
-    w = 0.0
-    for i, ch in enumerate(s):
-        w += 1 if _CJK_CHAR.match(ch) else 0.5
-        if w > max_weight:
-            return s[:i]
-    return s
+    """Language-normalised head+tail view with an explicit hidden middle."""
+    if _weight(s) <= max_weight:
+        return s
+    marker_weight = _weight(_TRUNCATED)
+    remaining = max(0.0, max_weight - marker_weight)
+
+    def prefix(budget: float) -> str:
+        used = 0.0
+        for index, ch in enumerate(s):
+            cost = 1 if _CJK_CHAR.match(ch) else 0.5
+            if used + cost > budget:
+                return s[:index]
+            used += cost
+        return s
+
+    def suffix(budget: float) -> str:
+        used = 0.0
+        for index in range(len(s) - 1, -1, -1):
+            ch = s[index]
+            cost = 1 if _CJK_CHAR.match(ch) else 0.5
+            if used + cost > budget:
+                return s[index + 1:]
+            used += cost
+        return s
+
+    return (prefix(remaining / 2).rstrip() + " " + _TRUNCATED + " "
+            + suffix(remaining - remaining / 2).lstrip())
+
+
+_FENCED_MATERIAL = re.compile(r"```.*?(?:```|$)", re.DOTALL)
 
 
 def _strip_code_fences(text: str) -> str:
-    parts = text.split("```")
-    return "\n".join(p for i, p in enumerate(parts) if i % 2 == 0)
+    """Hide fenced pasted material without hiding that it was omitted."""
+    return _FENCED_MATERIAL.sub(f"\n{_TRUNCATED}\n", text)
 
 
 def _material_mask(sents: list[str]) -> list[bool]:
@@ -401,6 +463,30 @@ def _material_mask(sents: list[str]) -> list[bool]:
         for j in run:
             mask[j] = True
     return mask
+
+
+def _append_marker(parts: list[str]) -> None:
+    """Append one visibly separated marker, collapsing adjacent omissions."""
+    for part in reversed(parts):
+        if not part.strip():
+            continue
+        if part.strip() == _TRUNCATED:
+            return
+        break
+    if parts and not parts[-1].endswith(("\n", " ")):
+        parts.append("\n")
+    parts.append(_TRUNCATED)
+    parts.append("\n")
+
+
+def compact_message(text: str, *, max_tokens: int) -> str:
+    """Return an LLM-visible view bounded by a head/tail token budget.
+
+    Over-budget text keeps the opening and the end; the hidden middle is
+    marked ``[truncated]``. Callers keep the original for persistence and
+    patches. Paste/material heuristics are not applied here.
+    """
+    return _middle_truncate(text, max_tokens)
 
 
 def _key_terms(existing_keys: list[str]) -> list[str]:
@@ -532,9 +618,23 @@ def screen_message(text: str,
         # lookback, only for short rule-marked anchors.
         if _RULE_PAT.search(sents[i]) and len(sents[i].strip()) < 50:
             lo = max(0, i - 2)
-        piece = "".join(_clip(sents[j], _MATERIAL_MIN_LEN)
-                        for j in range(lo, hi)
-                        if not material[j] and j not in taken)
+        parts: list[str] = []
+        if lo > 0:
+            _append_marker(parts)
+        hiding = False
+        for j in range(lo, hi):
+            if j in taken:
+                continue
+            if material[j]:
+                if not hiding:
+                    _append_marker(parts)
+                hiding = True
+                continue
+            parts.append(_clip(sents[j], _MATERIAL_MIN_LEN))
+            hiding = False
+        if hi < len(sents):
+            _append_marker(parts)
+        piece = "".join(parts).strip()
         taken.update(range(lo, hi))
         if piece and len(piece) <= budget:
             spans.append(piece)

@@ -21,6 +21,102 @@ def _persona():
     return {"id": "p", "requirements": ["都要X"], "rounds": rounds}
 
 
+def test_seed_absorbs_first_finals_before_translate(monkeypatch):
+    """First five finals plus seed naturals; translate starts at 6."""
+    seen = []
+    polish_ns = []
+
+    class _Spy:
+        def extract(self, events, existing):
+            seen.append([(e.get("type"), e.get("text")) for e in events])
+            return [{"kind": "new", "channel": "a", "text": "都要X"}]
+
+    def polish(text, reqs, context=None):
+        polish_ns.append(text)
+        return {"decision": "noop", "polished": None, "applied_ids": [],
+                "parse_error": False, "latency_ms": 0}
+
+    monkeypatch.setattr(re2e, "_polish", polish)
+    monkeypatch.setattr(re2e, "_carries", lambda req, polished: (False, False))
+    re2e.run_persona(_persona(), _Spy(), flush_every=4, seed_rounds=5)
+    seed = []
+    for i in range(1, 6):
+        seed.append(("natural", f"task {i} + constraint"))
+        if i == 1:
+            seed.append(("natural", "以后都要X"))
+    assert seen[0] == seed
+    assert polish_ns == [f"task {i}" for i in range(6, 17)]
+
+
+def test_miss_without_applied_ids_skips_b_signal(monkeypatch):
+    """B requires attributed entries; a noop translate must not invent a
+    route-B event from polished→final alone."""
+    monkeypatch.setattr(re2e, "_carries", lambda req, polished: (False, False))
+    monkeypatch.setattr(re2e, "_polish", lambda text, reqs, context=None: {
+        "decision": "noop", "polished": None, "applied_ids": [],
+        "parse_error": False, "latency_ms": 0})
+
+    seen = []
+
+    class _Spy:
+        def extract(self, events, existing):
+            seen.append([e.get("type") for e in events])
+            return []
+
+    persona = {"id": "p", "requirements": ["规则"],
+               "rounds": [{"n": i, "task": f"t{i}", "applicable": [0],
+                           "final": f"t{i} + x",
+                           "natural_correction": "要X" if i == 6 else None}
+                          for i in range(1, 9)]}
+    re2e.run_persona(persona, _Spy(), flush_every=4, seed_rounds=5)
+    # Seed flush first (5 naturals), then scored flush at n=8: A-only
+    # (natural_correction on r6 + final on each miss), never edited_diff.
+    assert seen[0] == ["natural"] * 5
+    assert seen[1] == ["natural"] * 4
+    assert "edited_diff" not in seen[1]
+
+
+def test_b_update_goes_through_feedback_ops(monkeypatch, tmp_path):
+    monkeypatch.setattr(re2e, "RUN_DIR", tmp_path)
+    monkeypatch.setattr(re2e, "_carries", lambda req, polished: (False, False))
+
+    store_box = {}
+
+    def polish(text, reqs, context=None):
+        if reqs:
+            store_box["id"] = reqs[0].id
+            return {"decision": "apply", "polished": text + " woven",
+                    "applied_ids": [reqs[0].id], "parse_error": False,
+                    "latency_ms": 0}
+        return {"decision": "noop", "polished": None, "applied_ids": [],
+                "parse_error": False, "latency_ms": 0}
+
+    monkeypatch.setattr(re2e, "_polish", polish)
+
+    class _TeachThenUpdate:
+        def __init__(self):
+            self.n = 0
+
+        def extract(self, events, existing):
+            self.n += 1
+            if self.n == 1:
+                return [{"kind": "new", "channel": "a", "text": "都要X"}]
+            # Second flush: B update on the woven entry
+            return [{"kind": "update", "channel": "b",
+                     "target_id": existing[0].id, "text": "都要Y"}]
+
+    persona = {"id": "p", "requirements": ["都要X"],
+               "rounds": [
+                   {"n": i, "task": f"t{i}", "applicable": [0],
+                    "final": f"t{i}+Y", "natural_correction": None}
+                   for i in range(1, 9)
+               ]}
+    r = re2e.run_persona(persona, _TeachThenUpdate(), flush_every=4,
+                         seed_rounds=5)
+    assert r["store_final"]["active"] == 1
+    assert r["peak_active"] == 1
+
+
 def test_null_provider_scores_zero(monkeypatch):
     monkeypatch.setattr(re2e, "_carries", lambda req, polished: (False, False))
     r = re2e.run_persona(_persona(), NullProvider(), flush_every=4)
@@ -34,6 +130,7 @@ def test_perfect_carry_scores_one(monkeypatch):
         "applied_ids": [], "parse_error": False, "latency_ms": 0})
     r = re2e.run_persona(_persona(), NullProvider(), flush_every=4)
     assert r["second_half_rate"] == 1.0 and r["pass"] is True
+    assert all(row["n"] >= 6 for row in r["rounds"])
 
 
 def test_learning_provider_updates_store(monkeypatch):
@@ -45,7 +142,8 @@ def test_learning_provider_updates_store(monkeypatch):
     monkeypatch.setattr(re2e, "_polish", fake_polish)
     monkeypatch.setattr(re2e, "_carries", lambda req, polished: (False, False))
     re2e.run_persona(_persona(), _LearnsRound4(), flush_every=4)
-    assert seen_sizes[0] == 0 and seen_sizes[-1] >= 1   # store grew mid-run
+    # Seed flush learns before the first scored translate.
+    assert seen_sizes[0] >= 1
 
 
 def test_dir_hash_snapshot(tmp_path, monkeypatch):
@@ -67,7 +165,10 @@ def _multi_req_persona():
     """Two applicable requirements per round — the case v1 scoring threw away:
     carrying one of two scored exactly the same as carrying neither."""
     rounds = [{"n": i, "task": f"task {i}", "applicable": [0, 1],
-               "final": f"task {i} + both", "natural_correction": None}
+               "final": f"task {i} + both",
+               # Keep a natural on every miss so the write path still flushes
+               # under B-alignment (edited_diff alone cannot create memory).
+               "natural_correction": "以后都要遵守规则"}
               for i in range(1, 17)]
     return {"id": "p2", "requirements": ["规则A", "规则B"], "rounds": rounds}
 

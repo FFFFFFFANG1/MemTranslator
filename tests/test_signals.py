@@ -50,7 +50,8 @@ def test_latest_matching_translate_wins():
 
 # ---------- M1 / B1: attribute_diff (0-token span attribution) ----------
 
-from memtranslator.signals import (attribute_diff, patch_diff,  # noqa: E402
+from memtranslator.signals import (attribute_diff, compact_message,  # noqa: E402
+                                   estimate_input_tokens, patch_diff,
                                    screen_message)
 
 RAW = "给房东写封邮件催修暖气"
@@ -94,9 +95,7 @@ def test_attr_no_injection_noop_translate():
 def test_patch_diff_is_empty_until_user_changes_agent_patch():
     assert patch_diff(POLISHED, POLISHED) == []
     hunks = patch_diff(POLISHED, POLISHED.replace("120", "80"))
-    assert hunks and hunks[0]["op"] == "replace"
-    assert "<changed>120</changed>" in hunks[0]["before_sentence"]
-    assert "<changed>80</changed>" in hunks[0]["after_sentence"]
+    assert hunks and "120" in hunks[0]["old"] and "80" in hunks[0]["new"]
 
 
 def test_patch_diff_uses_coherent_token_level_replacement():
@@ -104,9 +103,9 @@ def test_patch_diff_uses_coherent_token_level_replacement():
     the shape that made the feedback extractor misread edits."""
     hunks = patch_diff("Meeting notes for today's standup, using bullet points.",
                        "Meeting notes for today's standup, using a table.")
-    assert len(hunks) == 1 and hunks[0]["op"] == "replace"
-    assert "<changed>bullet points</changed>" in hunks[0]["before_sentence"]
-    assert "<changed>a table</changed>" in hunks[0]["after_sentence"]
+    assert len(hunks) == 1
+    assert "bullet points" in hunks[0]["old"]
+    assert "a table" in hunks[0]["new"]
 
 
 def test_patch_diff_keeps_complete_sentence_at_128_tokens():
@@ -114,10 +113,10 @@ def test_patch_diff_keeps_complete_sentence_at_128_tokens():
     suffix = " ".join(f"after{i}" for i in range(63))
     hunks = patch_diff(f"{prefix} formal {suffix}.", f"{prefix} casual {suffix}.")
     assert len(hunks) == 1
-    assert "[truncated]" not in hunks[0]["before_sentence"]
-    assert hunks[0]["before_sentence"].startswith("before0 ")
-    assert "<changed>formal</changed>" in hunks[0]["before_sentence"]
-    assert hunks[0]["before_sentence"].endswith("after62.")
+    assert "[truncated]" not in hunks[0]["old"]
+    assert hunks[0]["old"].startswith("before0 ")
+    assert "formal" in hunks[0]["old"]
+    assert hunks[0]["old"].endswith("after62.")
 
 
 def test_patch_diff_over_128_tokens_keeps_56_tokens_each_side():
@@ -125,14 +124,14 @@ def test_patch_diff_over_128_tokens_keeps_56_tokens_each_side():
     suffix = " ".join(f"after{i}" for i in range(63))
     hunks = patch_diff(f"{prefix} formal {suffix}.", f"{prefix} casual {suffix}.")
     assert len(hunks) == 1
-    assert "<changed>formal</changed>" in hunks[0]["before_sentence"]
-    assert "<changed>casual</changed>" in hunks[0]["after_sentence"]
-    assert "[truncated]" in hunks[0]["before_sentence"]
+    assert "formal" in hunks[0]["old"]
+    assert "casual" in hunks[0]["new"]
+    assert "[truncated]" in hunks[0]["old"]
     # 129 tokens → exactly 56 context tokens each side of the replacement
-    assert "before7 " not in hunks[0]["before_sentence"]
-    assert "before8 " in hunks[0]["before_sentence"]
-    assert "after55" in hunks[0]["before_sentence"]
-    assert "after56" not in hunks[0]["before_sentence"]
+    assert "before7 " not in hunks[0]["old"]
+    assert "before8 " in hunks[0]["old"]
+    assert "after55" in hunks[0]["old"]
+    assert "after56" not in hunks[0]["old"]
 
 
 # ---------- M1 / Route A: screen_message (0-token sentence screening) ----------
@@ -159,7 +158,22 @@ def test_scr_correction_inside_pasted_document_is_localized():
     joined = "".join(spans)
     assert "markdown" in joined
     assert "第3段" not in joined          # material zone stays out
+    assert "[truncated]" in joined       # omission is visible to the LLM
     assert sum(len(s) for s in spans) <= 600
+
+
+def test_compact_message_keeps_fenced_material_under_budget():
+    text = "BEGIN\n```python\nSECRET = 'do not send'\n```\nEND"
+    assert compact_message(text, max_tokens=100) == text
+
+
+def test_compact_message_truncates_the_middle_and_keeps_both_edges():
+    text = "BEGIN-" + "甲" * 80 + "MIDDLE-SENTINEL" + "乙" * 80 + "-END"
+    compacted = compact_message(text, max_tokens=80)
+    assert compacted.startswith("BEGIN-") and compacted.endswith("-END")
+    assert "MIDDLE-SENTINEL" not in compacted
+    assert "[truncated]" in compacted
+    assert estimate_input_tokens(compacted) <= 80
 
 
 def test_scr_code_block_is_material():
@@ -251,14 +265,3 @@ def test_scr_store_overlap_does_not_fire_plain_tasks():
 
 def test_scr_reinforce_idiom_hits():
     assert screen_message("对了，结尾要附参考链接这条继续保持啊") != []
-
-
-def test_referent_hints_annotate_prompt():
-    from memtranslator.extraction import build_user_prompt
-    from memtranslator.schema import Requirement
-    existing = [Requirement(text="周报每条进展要附数据链接"),
-                Requirement(text="代码注释一律用英文写")]
-    prompt = build_user_prompt(["周报的数据链接不用附了"], [], existing)
-    assert "[shares vocabulary with entries [1]]" in prompt
-    prompt2 = build_user_prompt(["以后开会纪要按时间排"], [], existing)
-    assert "shares vocabulary" not in prompt2

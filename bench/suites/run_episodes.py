@@ -6,18 +6,28 @@ the SUT did (gold-by-fold requires the log to be authored), with one
 deliberate exception: diff moves edit the SUT's actual `polished` string,
 because that is what an edit IS. The judge is out of the store loop entirely.
 
+E1 protocol v3 has only two payloads: ``user_turns`` and ``ground_truth``.
+Of every turn, only ``user_input`` may cross into the product. Probe
+expectations and lifecycle/checkpoint data are evaluator-only and may never
+affect translation, extraction, batching, or Store state.
+
 Bands (reported separately — owner ruling 2026-07-28: no weighted composite):
-- CARRY    should_fire constraints carried into the rewrite, judge-graded
+- CARRY    should_apply constraints carried into the rewrite, judge-graded
            (E-judge); carry_mech_numeric is the zero-judge cross-check on
            numeric anchors only.
-- SUPPRESS must_not_fire (dead, applies_to-filtered, I11-reachable)
+- SUPPRESS must_not_apply (dead, applies-to-filtered, I11-reachable)
            distinctive anchors absent from the rewrite. Zero judge.
 - STATE    the SUT store's own account: every dead gold cid has no ACTIVE
            store entry carrying its distinctive; every live one has at least
            one. Alignment is by distinctive substring, never by key — the
            SUT invents its own keys.
 
-Arms: real / no_retire / oracle-arm / full_context / null-generic — the M6
+Update 2026-08-19 (oracle attributes): the real chain still receives user
+input only. The oracle evaluator uses ``should_apply`` to select perfect
+memory and passes each selected golden item's authored Extractor attributes
+to Translator. Those attributes never cross into the real chained SUT path.
+
+Arms: real / no_retire / oracle / full_context / null-generic — the M6
 panel. null-generic is a corpus instrument (prior floor), separated in the
 report. Cost note: one episode ≈ 62 chained + |probes|×|arms| translate calls.
 
@@ -27,23 +37,26 @@ report. Cost note: one episode ≈ 62 chained + |probes|×|arms| translate calls
 """
 import argparse
 import json
+import re
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from memtranslator import llm, translate as tr_mod
+import memtranslator.recall as recall_mod
 from memtranslator.bm25 import BM25
-from memtranslator.config import (CONSOLIDATE_ACTIVE, GEN_TEMPERATURE,
-                                  MODELS, RECALL_CAP)
-from memtranslator.consolidate import should_consolidate
-from memtranslator.kinds import backfill_kinds
+from memtranslator.config import (GEN_TEMPERATURE,
+                                  GLOBAL_RECALL_MAX_TOKENS, MODELS,
+                                  PATCH_OUTPUT_TOKENS)
+from memtranslator.recall import (requirement_block_tokens,
+                                  select_within_token_budget)
 from memtranslator.schema import Requirement
 from memtranslator.store import Store
 
-from bench.graph.derive import (Effect, fold, project_status,
-                                to_product_context, to_product_scope)
-from bench.suites.config import CASES, RUN_DIR
+from bench.graph.derive import Effect, fold
+from bench.suites.config import (CASES, RUN_DIR, STATE_JUDGE_MAX_TOKENS,
+                                 STATE_JUDGE_MODEL)
 from bench.suites.instruments import (pick_canary, sample_instrument,
                                       size_bucket)
 from bench.suites.judge import judge
@@ -52,6 +65,8 @@ from bench.suites.report import write_snapshot
 from bench.suites.retry import with_retry
 
 # Owner ruling 2026-07-28: no weighted composite; bands report separately.
+EXTRACT_BATCH_SIZE = 10
+ORACLE_PROTOCOL_VERSION = 4
 
 GENERIC_POLISH_SYSTEM = """You are a request polisher sitting between a user and their AI agent.
 Rewrite the user's request so the agent knows exactly what is expected: make the implicit delivery expectations explicit (format, length, structure, style, language).
@@ -63,7 +78,7 @@ Rules:
 4. Your output is ALWAYS the user's REQUEST — never your answer to it.
 
 Output strictly one JSON object, nothing else:
-{"decision": "noop"} or {"decision": "apply", "polished": "..."}"""
+{"decision": "noop"} or {"decision": "apply", "hunks": [{"old": "<verbatim snippet>", "new": "<replacement>"}]}"""
 
 FULL_CONTEXT_PREAMBLE = (
     "Below is this user's conversation history with you, oldest first. "
@@ -72,76 +87,23 @@ FULL_CONTEXT_PREAMBLE = (
 
 
 def _effects(ep: dict) -> list[Effect]:
-    return [Effect(seq=e["seq"], kind=e["kind"], cid=e.get("cid") or "",
+    return [Effect(seq=e["seq"], kind=e["op"], cid=e.get("id") or "",
                    target=e.get("target") or "",
                    targets=tuple(e.get("targets") or ()),
                    delta=e.get("delta") or 0)
-            for e in ep["effects"]]
+            for e in ep["ground_truth"]["lifecycle"]]
 
 
-_KINDS_CACHE: dict = {}
+def _requirements(ep: dict) -> list[dict]:
+    return ep["ground_truth"]["requirements"]
 
 
-def _gold_kinds(ep: dict) -> dict:
-    """Per-episode work-kind tags for every catalogue clause, annotated once
-    via the product's write-time tagger — a perfect store would carry them.
-    One retry on an all-empty result; still-empty tags degrade to untagged
-    (= recall injects the rule everywhere), never to a wrong drop."""
-    epid = ep.get("id") or id(ep)
-    if epid not in _KINDS_CACHE:
-        from memtranslator.kinds import annotate_kinds
-        clauses = [n["clause"] or n["text"] for n in ep["catalogue"]]
-        tags = annotate_kinds(clauses)
-        if clauses and not any(tags):
-            tags = annotate_kinds(clauses)
-        _KINDS_CACHE[epid] = {n["cid"]: k
-                              for n, k in zip(ep["catalogue"], tags)}
-    return _KINDS_CACHE[epid]
+def _turns(ep: dict) -> list[dict]:
+    return ep["user_turns"]
 
 
-def _gold_requirements(ep: dict, seq: int) -> list[Requirement]:
-    """The store a perfect system would hold at seq: every introduced node,
-    with gold-projected status, clause text, and projected product scope."""
-    st = fold(_effects(ep), seq)
-    by_cid = {n["cid"]: n for n in ep["catalogue"]}
-    kinds_by_cid = _gold_kinds(ep)
-    out = []
-    for i, (cid, g) in enumerate(sorted(st.items(),
-                                        key=lambda kv: kv[1].since_seq)):
-        n = by_cid.get(cid)
-        if n is None:
-            continue
-        r = Requirement(text=n["clause"] or n["text"], key=n["coords"]["key"],
-                        scope=to_product_scope(n["coords"]["scope"]))
-        r.kinds = kinds_by_cid.get(cid, [])
-        r.status = project_status(g)
-        r.created_at = 1_000_000 + n_intro_seq(ep, cid) * 60
-        r.updated_at = r.created_at
-        out.append(r)
-    # Conflict elimination mirrors the product's write path (owner ruling:
-    # dedup/conflict is CRUD's job, the translator is only a last line of
-    # defense) — a "perfect store" therefore never holds two active rules on
-    # the same (key, scope); the newest statement wins. Without this the
-    # oracle arm hands the model live contradictions the product would have
-    # retired at write time.
-    from memtranslator.scopes import normalize_scope as _norm
-    best: dict = {}
-    for r in out:
-        if r.status != "active" or not r.key:
-            continue          # keyless entries have no facet identity
-        k = (r.key, tuple(sorted(_norm(r.scope).items())))
-        if k not in best or r.created_at > best[k].created_at:
-            best[k] = r
-    keep = set(id(r) for r in best.values())
-    return [r for r in out
-            if r.status != "active" or not r.key or id(r) in keep]
-
-
-def n_intro_seq(ep: dict, cid: str) -> int:
-    for e in ep["effects"]:
-        if e.get("cid") == cid:
-            return e["seq"]
-    return 0
+def _checkpoints(ep: dict) -> list[int]:
+    return ep["ground_truth"]["state_checkpoints"]
 
 
 # ---------------------------------------------------------------------------
@@ -153,109 +115,137 @@ def _complete_with_block(text: str, system: str, block: str,
     user = f"{header}:\n{block}\n\nUser request:\n{text}\n\nJSON:"
     t0 = time.time()
     raw = llm.complete(MODELS["translator"], system, user,
-                       max_tokens=tr_mod.output_budget(text),
+                       max_tokens=PATCH_OUTPUT_TOKENS,
                        temperature=GEN_TEMPERATURE)
     latency_ms = int((time.time() - t0) * 1000)
     patch, parse_error = tr_mod.parse_patch(raw)
-    if patch["decision"] == "apply" and \
-            not tr_mod.preserves_request(text, patch["polished"]):
-        patch = {"decision": "noop"}
-    polished = patch.get("polished") if patch["decision"] == "apply" else None
-    return {"polished": polished, "parse_error": parse_error,
+    polished = None
+    if patch["decision"] == "apply":
+        polished = tr_mod.apply_hunks(text, patch["hunks"])
+        if polished is None:
+            parse_error = True
+        elif not tr_mod.preserves_request(text, polished):
+            polished = None
+            patch = {"decision": "noop"}
+    return {"decision": patch["decision"], "polished": polished,
+            "parse_error": parse_error,
             "latency_ms": latency_ms, "block_chars": len(block)}
 
 
-def arm_real(store_items: list, ep, r, transcript):
+def arm_real(store_items: list, ep, r, transcript, raw_messages=None):
+    """Run the product from message text and product-owned state only."""
+    del ep, transcript, raw_messages
     active = [x for x in store_items if x.status == "active"]
-    out = with_retry(lambda: tr_mod.translate(
-        r["text"], active,
-        context=to_product_context(r["context"])), "arm/real")
-    return {"polished": out["polished"], "latency_ms": out["latency_ms"],
-            "block_chars": sum(len(x.text) for x in active)}
+    out = with_retry(lambda: tr_mod.translate(r["user_input"], active),
+                     "arm/real")
+    return {**out, "block_chars": sum(len(x.text) for x in active)}
 
 
-def arm_no_retire(store_items: list, ep, r, transcript):
+def arm_no_retire(store_items: list, ep, r, transcript, raw_messages=None):
     pool = [x for x in store_items if x.kind == "requirement"]
     pool.sort(key=lambda x: x.created_at)
-    if len(pool) > RECALL_CAP:
+    if requirement_block_tokens(pool) > GLOBAL_RECALL_MAX_TOKENS:
         scores = BM25([f"{x.text} {x.key or ''}" for x in pool]) \
-            .scores(r["text"])
+            .scores(r["user_input"])
         order = sorted(range(len(pool)),
                        key=lambda i: (-scores[i], -pool[i].created_at))
-        pool = sorted((pool[i] for i in order[:RECALL_CAP]),
-                      key=lambda x: x.created_at)
+        pool = select_within_token_budget(
+            [pool[index] for index in order], GLOBAL_RECALL_MAX_TOKENS)
+        pool.sort(key=lambda x: x.created_at)
     block = tr_mod._requirement_block(pool)
-    return _complete_with_block(r["text"], tr_mod.TRANSLATOR_SYSTEM, block,
+    return _complete_with_block(r["user_input"], tr_mod.TRANSLATOR_SYSTEM, block,
                                 "Stored requirements")
 
 
-def arm_oracle(store_items: list, ep, r, transcript):
-    gold = [x for x in _gold_requirements(ep, r["seq"])
-            if x.status == "active"]
-    out = with_retry(lambda: tr_mod.translate(
-        r["text"], gold, context=to_product_context(r["context"])),
-        "arm/oracle")
-    return {"polished": out["polished"], "latency_ms": out["latency_ms"],
-            "block_chars": sum(len(x.text) for x in gold)}
+def arm_oracle(store_items: list, ep, r, transcript, raw_messages=None):
+    """Gold-memory application ceiling for one probe.
 
-
-def arm_oracle_should(store_items: list, ep, r, transcript):
-    """Application ceiling: inject ONLY the rules gold says apply to THIS
-    request — nothing to select, nothing to dilute.
-
-    oracle-arm answers "how well does it apply rules given a perfect store"
-    and conflates two abilities, because a perfect store still holds 20-30
-    rules and the translator must pick. This arm removes the picking: if it
-    still cannot carry what it was handed, the remaining loss is application
-    (or the applies_to gold is wrong), and neither retrieval nor dilution can
-    be blamed for it."""
-    by_cid = {n["cid"]: n for n in ep["catalogue"]}
-    should = [by_cid[c] for c in r.get("should_fire", []) if c in by_cid]
+    Oracle has exactly one protocol: give Translator only this probe's gold
+    ``should_apply`` requirements with their authored Extractor attributes.
+    It never receives the full gold store, pending raw messages, or query-side
+    labels. Selection, retrieval, write-path state, and history are therefore
+    fixed as correct; the measured question is only whether Translator can
+    carry perfect memory into the current request.
+    """
+    del store_items, transcript, raw_messages
+    by_cid = {n["id"]: n for n in _requirements(ep)}
+    expected = r["probe"]
+    should_ids = list(expected["should_apply"])
+    unknown = [cid for cid in should_ids if cid not in by_cid]
+    if unknown:
+        raise ValueError(
+            f"oracle should_apply references unknown ids: {unknown}")
+    if len(should_ids) != len(set(should_ids)):
+        raise ValueError("oracle should_apply contains duplicate ids")
+    should = [by_cid[cid] for cid in should_ids]
     if not should:
         return {"polished": None, "latency_ms": 0, "block_chars": 0,
                 "decision": "noop"}
-    reqs = [Requirement(text=n["clause"] or n["text"], key=n["coords"]["key"],
-                        scope=to_product_scope(n["coords"]["scope"]))
-            for n in should]
-    out = with_retry(lambda: tr_mod.translate(
-        r["text"], reqs, context=to_product_context(r["context"])),
-        "arm/oracle-should")
-    return {"polished": out["polished"], "latency_ms": out["latency_ms"],
-            "block_chars": sum(len(x.text) for x in reqs),
-            "decision": out["decision"]}
+    required_attributes = {
+        "bucket", "scope_mode", "applies_when", "work_kinds", "key",
+        "confidence"}
+    incomplete = [n["id"] for n in should
+                  if not required_attributes <= set(n)]
+    if incomplete:
+        raise ValueError(
+            f"oracle golden items lack Extractor attributes: {incomplete}")
+    # Golden files preserve the public Extractor spelling ``all``; Requirement
+    # stores the normalised internal spelling ``any``.
+    reqs = [Requirement(
+        text=n["text"], bucket=n["bucket"], key=n["key"],
+        scope_mode=n["scope_mode"], applies_when=n["applies_when"] or "",
+        kinds=["any" if kind == "all" else kind
+               for kind in n["work_kinds"]],
+        confidence=n["confidence"])
+        for n in should]
+    if requirement_block_tokens(reqs) > GLOBAL_RECALL_MAX_TOKENS:
+        raise ValueError(
+            "oracle should_apply text exceeds the Translator global-memory "
+            f"budget of {GLOBAL_RECALL_MAX_TOKENS} tokens")
+    out = with_retry(
+        lambda: tr_mod.translate(r["user_input"], reqs), "arm/oracle")
+    return {**out, "block_chars": sum(len(x.text) for x in reqs)}
 
 
-def arm_full_context(store_items: list, ep, r, transcript):
+def arm_full_context(store_items: list, ep, r, transcript,
+                     raw_messages=None):
     turns = "\n".join(f"{i + 1}. {t}" for i, t in enumerate(transcript))
     block = f"{FULL_CONTEXT_PREAMBLE}\n\n{turns}"
-    return _complete_with_block(r["text"], tr_mod.TRANSLATOR_SYSTEM, block,
+    return _complete_with_block(r["user_input"], tr_mod.TRANSLATOR_SYSTEM, block,
                                 "Conversation history")
 
 
-def arm_null_generic(store_items: list, ep, r, transcript):
-    return _complete_with_block(r["text"], GENERIC_POLISH_SYSTEM, "(none)",
+def arm_null_generic(store_items: list, ep, r, transcript,
+                     raw_messages=None):
+    return _complete_with_block(r["user_input"], GENERIC_POLISH_SYSTEM, "(none)",
                                 "Stored requirements")
 
 
 ARMS = {"real": arm_real, "no_retire": arm_no_retire,
-        "oracle-arm": arm_oracle, "oracle-should": arm_oracle_should,
+        "oracle": arm_oracle,
         "full_context": arm_full_context, "null-generic": arm_null_generic}
 
-# arms whose CARRY is judged (the judge band costs a call per should_fire)
-JUDGED_ARMS = ("real", "oracle-arm", "oracle-should")
+# arms whose CARRY is judged (the judge band costs a call per should_apply)
+JUDGED_ARMS = ("real", "oracle")
 
 
 # ---------------------------------------------------------------------------
 # chained pass
 # ---------------------------------------------------------------------------
 
-def run_chained(ep: dict, flush_every: int = 4,
+def run_chained(ep: dict, batch_size: int = EXTRACT_BATCH_SIZE,
                 sizes: list[int] | None = None,
-                canary: dict | None = None) -> dict:
-    """One write-path chain. Optional ``canary`` + ``sizes`` collect the
-    perf instruments on the same store so a single run yields E1 scores and
-    scale/safety numbers together.
+                canary: dict | None = None,
+                save_trace: bool = False) -> dict:
+    """One write-path chain with probe-triggered extraction.
+
+    Raw turns accumulate until ten messages are buffered or the next authored
+    probe needs Translator.  A probe-triggered flush contains only earlier
+    turns; the current probe is appended after translation, so evaluator
+    expectations and current-turn text cannot leak into its own Store view.
     """
+    if batch_size < 1:
+        raise ValueError("batch_size must be positive")
     d = RUN_DIR / "episode-stores"
     d.mkdir(parents=True, exist_ok=True)
     store = Store(d / f"{ep['id']}-{uuid.uuid4().hex[:8]}.jsonl")
@@ -264,66 +254,81 @@ def run_chained(ep: dict, flush_every: int = 4,
     provider = V1Provider()
     pending, transcript = [], []
     probe_rows, consolidations = [], []
+    write_traces: list[dict] = []
     instrument_rows: list[dict] = []
     snapshots: dict[int, list[dict]] = {}
-    adds_since = 0
     peak_active = 0
-    rounds_since_flush = 0
     taken: set[int] = set()
-    probes = [r["text"] for r in ep["rounds"] if r.get("probe")][:4]
+    probes = [r["user_input"] for r in _turns(ep) if r.get("probe")][:4]
     size_targets = list(sizes or [])
 
-    for r in ep["rounds"]:
-        transcript.append(r["text"])
-        prod_ctx = to_product_context(r["context"])
-        out = with_retry(lambda: tr_mod.translate(r["text"], store.active(),
-                                                  context=prod_ctx),
-                         f"{ep['id']}/r{r['seq']}")
-        if r.get("probe"):
+    def flush_pending(flush_seq: int, reason: str, *, final: bool = False):
+        nonlocal pending, peak_active
+        if not pending:
+            return
+        batch_events = [dict(event) for event in pending]
+        label = f"{ep['id']}/extract{'-final' if final else ''}"
+        ops = with_retry(lambda: provider.extract(pending, store.active()),
+                         label)
+        store_apply = store.apply_ops(ops)
+        if save_trace:
+            trace = {
+                "flush_seq": flush_seq,
+                "flush_reason": reason,
+                "events": batch_events,
+                "provider": getattr(provider, "last_trace", None),
+                "ops": list(ops),
+                "store_apply": store_apply,
+                "store_after": [item.to_dict() for item in store.list()],
+            }
+            if final:
+                trace["final_flush"] = True
+            write_traces.append(trace)
+        pending = []
+        peak_active = max(peak_active, len(store.active()))
+        if size_targets:
+            n = len(store.active())
+            due = [s for s in size_targets if s <= n and s not in taken]
+            if due:
+                taken.update(due)
+                instrument_rows.append(
+                    sample_instrument(store, canary, probes, ep["id"]))
+
+    for r in _turns(ep):
+        is_probe = bool(r.get("probe"))
+        # Only authored probes invoke Translator. Flush the accumulated prior
+        # messages first; the current raw request is appended below.
+        if is_probe:
+            flush_pending(r["seq"], "before_probe_translate")
+        user_input = r["user_input"]
+        transcript.append(user_input)
+        if is_probe:
+            out = with_retry(lambda: tr_mod.translate(
+                user_input, store.active()), f"{ep['id']}/r{r['seq']}")
             # snapshot the store AS OF this probe: arms scored later must see
             # the store the probe-time system saw, not the end-of-episode one
             probe_rows.append({"round": r, "transcript": list(transcript),
+                               "pending_raw": [],
                                "chained_polished": out["polished"],
+                               "chained_out": dict(out),
                                "latency_ms": out.get("latency_ms", 0),
                                "store_state": [x.to_dict()
                                                for x in store.list()]})
-        pending.append({"type": "natural", "text": r["text"]})
-        rounds_since_flush += 1
-        if rounds_since_flush >= flush_every:
-            ops = with_retry(lambda: provider.extract(pending,
-                                                      store.active()),
-                             f"{ep['id']}/extract")
-            store.apply_ops(ops)
-            # Product parity: the product's Pipeline tags fresh entries with
-            # work kinds after every flush; this seam drives extraction
-            # directly and was skipping the tagging, leaving chained stores
-            # untagged (measured 2026-07-30 — real-arm entries all kinds=[]).
-            backfill_kinds(store)
-            adds_since += sum(1 for o in ops
-                              if o.get("kind") in ("new", "contradict"))
-            pending, rounds_since_flush = [], 0
-            if should_consolidate(store, adds_since):
-                trigger = ("active"
-                           if len(store.active()) > CONSOLIDATE_ACTIVE
-                           else "adds")
-                cops = with_retry(
-                    lambda: provider.consolidate(store.active()),
-                    f"{ep['id']}/consolidate")
-                store.apply_ops(cops)
-                backfill_kinds(store)
-                consolidations.append({"seq": r["seq"], "trigger": trigger,
-                                       "n_ops": len(cops)})
-                adds_since = 0
-            if size_targets:
-                n = len(store.active())
-                due = [s for s in size_targets if s <= n and s not in taken]
-                if due:
-                    taken.update(due)
-                    instrument_rows.append(
-                        sample_instrument(store, canary, probes, ep["id"]))
+        pending.append({"type": "natural", "text": user_input})
+        if len(pending) >= batch_size:
+            flush_pending(r["seq"], "batch_full")
         peak_active = max(peak_active, len(store.active()))
-        if r["seq"] in ep["checkpoints"]:
+        if r["seq"] in _checkpoints(ep):
             snapshots[r["seq"]] = [x.to_dict() for x in store.list()]
+
+    # The episode is a complete history, not a live daemon waiting for the
+    # idle timer. Force the trailing partial batch through A before final
+    # checkpoints / STATE are evaluated.
+    if pending:
+        final_seq = _turns(ep)[-1]["seq"]
+        flush_pending(final_seq, "episode_end", final=True)
+        if final_seq in _checkpoints(ep):
+            snapshots[final_seq] = [x.to_dict() for x in store.list()]
 
     # Always finish the episode so E1 gold probes/checkpoints stay complete;
     # instruments only sample along the way (and once at the end).
@@ -335,6 +340,8 @@ def run_chained(ep: dict, flush_every: int = 4,
     return {"store": store, "probe_rows": probe_rows,
             "snapshots": snapshots, "consolidations": consolidations,
             "peak_active": peak_active,
+            "extract_batch_size": batch_size,
+            "write_traces": write_traces,
             "instrument_rows": instrument_rows,
             "canary": canary["text"] if canary else None}
 
@@ -344,17 +351,38 @@ def run_chained(ep: dict, flush_every: int = 4,
 # ---------------------------------------------------------------------------
 
 def _mech(polished: str | None, node) -> bool:
-    return bool(polished) and node["distinctive"] in polished
+    return bool(polished) and node["anchor"] in polished
+
+
+def _normalised_clause(text: str) -> str:
+    """Punctuation-insensitive exact-clause fast path before the LLM judge."""
+    return "".join(re.findall(r"[a-z0-9]+|[一-鿿]", text.lower()))
+
+
+def _explicit_clause_present(text: str, node: dict) -> bool:
+    haystack = _normalised_clause(text)
+    return any(
+        bool(needle) and _normalised_clause(needle) in haystack
+        for needle in (node.get("text"), node.get("paraphrase")))
 
 
 def score_probe(ep, row, arm_name, by_cid) -> dict:
     r = row["round"]
     store_items = [Requirement.from_dict(d) for d in row["store_state"]]
-    out = ARMS[arm_name](store_items, ep, r, row["transcript"]) \
-        if arm_name != "real" or row.get("chained_polished") is None \
-        else {"polished": row["chained_polished"], "latency_ms": 0,
-              "block_chars": 0}
+    if arm_name == "real" and isinstance(row.get("chained_out"), dict):
+        out = {**row["chained_out"], "block_chars": sum(
+            len(x.text) for x in store_items if x.status == "active")}
+    elif arm_name == "real" and row.get("chained_polished") is not None:
+        out = {"decision": "apply", "polished": row["chained_polished"],
+               "latency_ms": 0, "block_chars": 0}
+    else:
+        out = ARMS[arm_name](
+            store_items, ep, r, row["transcript"], row.get("pending_raw", []))
     polished = out.get("polished") or ""
+    # A noop sends the original request downstream. Grade that effective text
+    # so already-satisfied constraints can pass, while absent constraints stay
+    # in the denominator and fail instead of disappearing from the task.
+    effective_text = polished or r["user_input"]
     # Three pilots taught the split: SUPPRESS is mechanical (a dead rule's
     # anchor reappearing IS a leak), but mechanical CARRY is only
     # well-defined for OPERATIVE anchors — a number must appear for the rule
@@ -364,32 +392,61 @@ def score_probe(ep, row, arm_name, by_cid) -> dict:
     # the judge band (E-judge, like E0's criterion) with numeric-mech kept
     # as a zero-judge cross-check column. This is the spec's own E-mech
     # boundary — its mechanical claims were always the SUPPRESS half.
-    strong = lambda cid: not by_cid[cid].get("anchor_weak")
-    should = [cid for cid in r.get("should_fire", r["may_fire"])
-              if strong(cid)]
-    numeric = [cid for cid in should if by_cid[cid]["distinctive"].isdigit()]
+    expected = r["probe"]
+    should = list(expected["should_apply"])
+    numeric = [cid for cid in should if by_cid[cid]["anchor"].isdigit()]
     carry_judged = []
-    if polished and arm_name in JUDGED_ARMS:
+    if arm_name in JUDGED_ARMS:
         for cid in should:
             n = by_cid[cid]
-            ok, _flag = judge(
-                f"The rewritten request explicitly carries this "
-                f"constraint: {n['clause'] or n['text']}",
-                {"rewritten_request": polished})
-            carry_judged.append((cid, ok))
-    carry_mech = [(cid, _mech(polished, by_cid[cid])) for cid in numeric]
-    supp = [(cid, not _mech(polished, by_cid[cid]))
-            for cid in r["must_not_fire"] if strong(cid)]
+            if _explicit_clause_present(effective_text, n):
+                ok, flag, method = True, False, "explicit_clause"
+            else:
+                ok, flag = judge(
+                    f"The effective request explicitly instructs the "
+                    f"downstream agent to follow this constraint: "
+                    f"{n['text']}. An authored equivalent phrasing is: "
+                    f"{n['paraphrase']}. Count either that phrasing, another "
+                    f"equivalent behavioral "
+                    f"instruction or directly transforming an applicable "
+                    f"occurrence in the original request to obey the rule "
+                    f"(for example, changing 3.2% to 3.2 per cent or fixing "
+                    f"the case of a named team). Equivalent wording need not "
+                    f"repeat the rule verbatim; mere compliance, compatibility, "
+                    f"or absence "
+                    f"of prohibited content is not enough when the original "
+                    f"request contained no applicable occurrence and the "
+                    f"effective request states no instruction. A general rule "
+                    f"may be instantiated for this task without repeating its "
+                    f"future/global quantifier.",
+                    {"original_request": r["user_input"],
+                     "effective_request": effective_text,
+                     "rewritten_request": effective_text,
+                     "authored_equivalent": n["paraphrase"]})
+                method = "judge"
+            carry_judged.append({"cid": cid, "hit": ok,
+                                 "judge_parse_flag": flag,
+                                 "method": method})
+    carry_mech = [(cid, _mech(effective_text, by_cid[cid]))
+                  for cid in numeric]
+    supp = [(cid, not _mech(effective_text, by_cid[cid]))
+            for cid in expected["must_not_apply"]]
     return {"arm": arm_name, "seq": r["seq"],
             "noop": not polished,
-            "carry_hits": sum(1 for _c, h in carry_judged if h),
+            "carry_hits": sum(1 for value in carry_judged
+                              if value["hit"]),
             "carry_n": len(carry_judged),
             "carry_mech_hits": sum(1 for _c, h in carry_mech if h),
             "carry_mech_n": len(carry_mech),
             "suppress_hits": sum(1 for _c, h in supp if h),
             "suppress_n": len(supp),
             "block_chars": out.get("block_chars", 0),
-            "latency_ms": out.get("latency_ms", 0)}
+            "latency_ms": out.get("latency_ms", 0),
+            "effective_text": effective_text,
+            "carry_detail": carry_judged,
+            "suppress_detail": [{"cid": cid, "hit": hit}
+                                for cid, hit in supp],
+            "translator": out}
 
 
 def score_state(ep, snapshot: list[dict], seq: int) -> dict:
@@ -403,36 +460,66 @@ def score_state(ep, snapshot: list[dict], seq: int) -> dict:
     by roughly a third. A substring HIT is conclusive and costs nothing; only
     misses go to the judge."""
     st = fold(_effects(ep), seq)
-    by_cid = {n["cid"]: n for n in ep["catalogue"]}
-    active_texts = [s["text"] for s in snapshot
-                    if s["status"] == "active" and s["kind"] == "requirement"]
-    listing = "\n".join(f"{i + 1}. {t}"
-                        for i, t in enumerate(active_texts)) or "(empty)"
+    by_cid = {n["id"]: n for n in _requirements(ep)}
+    active_entries = [Requirement.from_dict(s) for s in snapshot
+                      if s["status"] == "active"
+                      and s["kind"] == "requirement"]
+    active_texts = [entry.text for entry in active_entries]
+
+    def candidates(node: dict, cap: int = 5) -> list[Requirement]:
+        """Shortlist likely equivalents without asking the judge to scan a
+        long store. Original sources are ranking evidence only; the judge
+        still decides from the stored canonical entry text."""
+        target = node["text"]
+        distinctive = node.get("anchor") or ""
+        documents = ["\n".join((entry.text, *entry.sources))
+                     for entry in active_entries]
+        sparse = [index for index, _score in BM25(documents).rank(target)]
+        source_hits = [
+            index for index, entry in enumerate(active_entries)
+            if distinctive and any(distinctive in source
+                                   for source in entry.sources)
+        ]
+        order = list(dict.fromkeys(source_hits + sparse))
+        return [active_entries[index] for index in order[:cap]]
 
     def aligned(node) -> bool:
-        if any(node["distinctive"] in t for t in active_texts):
+        if any(node["anchor"] in t for t in active_texts):
             return True
-        if not active_texts:
+        if not active_entries:
             return False
+        shortlist = candidates(node)
         ok, _flag = judge(
-            "At least one of the stored entries expresses the same durable "
-            "rule as the target rule.",
-            {"stored_entries": listing,
-             "target_rule": node["clause"] or node["text"]})
+            "At least one candidate entry expresses the same enforceable "
+            "durable rule as the target rule. Count translations, "
+            "paraphrases, and canonical normalization as matches, but "
+            "require the same direction, value, and scope; related topic or "
+            "facet overlap alone is not enough.",
+            {"candidate_entries": [
+                {"text": entry.text, "key": entry.key,
+                 "bucket": entry.bucket, "work_kinds": entry.kinds,
+                 "scope": entry.scope}
+                for entry in shortlist],
+             "target_rule": node["text"]},
+            model=STATE_JUDGE_MODEL,
+            max_tokens=STATE_JUDGE_MAX_TOKENS)
         return ok
 
     ok = n = 0
     detail = []
     for cid, g in st.items():
         node = by_cid.get(cid)
-        if node is None or not node["distinctive"] \
-                or node.get("anchor_weak"):
+        if node is None or not node["anchor"]:
             continue
         # a dead entry whose live SUCCESSOR shares the distinctive (object
         # anchors survive supersession) cannot be told apart — skip those
-        succ = [m for m in ep["catalogue"]
-                if m.get("successor_of") == cid
-                and m["distinctive"] == node["distinctive"]]
+        successor_ids = [
+            effect.get("id")
+            for effect in ep["ground_truth"]["lifecycle"]
+            if effect["op"] == "contradict" and effect.get("target") == cid]
+        succ = [by_cid[successor_id] for successor_id in successor_ids
+                if successor_id in by_cid
+                and by_cid[successor_id]["anchor"] == node["anchor"]]
         if succ:
             continue
         has = aligned(node)
@@ -459,17 +546,19 @@ def _owner_metrics(rows: list[dict], arm: str) -> dict:
 
 
 def run_one(ep: dict, arms: list[str], sizes: list[int] | None,
-            use_canary: bool) -> dict:
+            use_canary: bool, save_trace: bool = False,
+            cases_dir: Path | None = None) -> dict:
     """One episode: chained write + E1 scoring + optional perf instruments."""
-    by_cid = {n["cid"]: n for n in ep["catalogue"]}
+    by_cid = {n["id"]: n for n in _requirements(ep)}
     canary = pick_canary(ep) if use_canary else None
     if use_canary and canary is None:
         print(f"{ep['id']}: no collision-free canary — instruments without "
               f"canary carry/kill")
 
-    print(f"{ep['id']}: chained pass ({len(ep['rounds'])} rounds)"
+    print(f"{ep['id']}: chained pass ({len(_turns(ep))} rounds)"
           f"{', canary planted' if canary else ''}...")
-    chained = run_chained(ep, sizes=sizes, canary=canary)
+    chained = run_chained(ep, sizes=sizes, canary=canary,
+                          save_trace=save_trace)
     print(f"  peak SUT active {chained['peak_active']}, "
           f"consolidations {len(chained['consolidations'])}")
 
@@ -543,19 +632,36 @@ def run_one(ep: dict, arms: list[str], sizes: list[int] | None,
               "instrument_rows": chained["instrument_rows"],
               "canary": chained["canary"],
               "peak_sut_active": chained["peak_active"],
+              "state_judge_model": STATE_JUDGE_MODEL,
+              "extract_batch_size": chained["extract_batch_size"],
               "final_active": len(chained["store"].active()),
               "final_retired": sum(1 for x in chained["store"].list()
                                    if x.status == "retired")}
-    write_snapshot(f"E1-{ep['id']}", str(CASES / "episodes"), [result],
+    if save_trace:
+        result["probe_trace"] = {
+            "chained": chained["probe_rows"],
+            "scores": rows,
+        }
+        result["write_trace"] = chained["write_traces"]
+    cases_dir = cases_dir or CASES / "episodes"
+    write_snapshot(f"E1-{ep['id']}", str(cases_dir), [result],
                    expected=1,
                    extra={"protocol_version": ep.get("protocol_version"),
                           "arms": per_arm,
                           "state_band": state, "state_rows": state_rows,
                           "consolidations": chained["consolidations"],
+                          "extract_batch_size": (
+                              chained["extract_batch_size"]),
                           "peak_sut_active": chained["peak_active"],
                           "probe_rows_n": len(chained["probe_rows"]),
                           "instrument_rows": chained["instrument_rows"],
-                          "canary": chained["canary"]})
+                          "canary": chained["canary"],
+                          "scoped_recall_cap": recall_mod.SCOPED_RECALL_CAP,
+                          "scoped_attribute_pool_cap": (
+                              recall_mod.SCOPED_ATTRIBUTE_POOL_CAP),
+                          "oracle_protocol_version": (
+                              ORACLE_PROTOCOL_VERSION
+                              if "oracle" in arms else None)})
     return result
 
 
@@ -595,6 +701,10 @@ def main(argv: list[str] | None = None):
     ap.add_argument("--episodes", default="",
                     help="comma-separated episode ids; enables fused "
                          "E1+perf output (default arms=real, canary on)")
+    ap.add_argument(
+        "--episodes-dir", type=Path, default=CASES / "episodes",
+        help="episode corpus directory (default: bench/cases/episodes; use "
+             "bench/cases/episodes-noisy for the OASST1-expanded corpus)")
     ap.add_argument("--arms", default="",
                     help="default: full arm panel for one episode; "
                          "real only when --episodes is set")
@@ -608,7 +718,34 @@ def main(argv: list[str] | None = None):
                          "(default: on with --episodes, off for single)")
     ap.add_argument("--workers", type=int, default=4,
                     help="episode-level parallelism (default 4)")
+    ap.add_argument(
+        "--scoped-cap", type=int, default=None,
+        help="bench ablation: override the product scoped recall cap for "
+             "this process")
+    ap.add_argument(
+        "--attribute-pool", type=int, default=None,
+        help="bench ablation: preselect this many scoped rules from "
+             "work_kinds + applies_when before body retrieval; 0 disables")
+    ap.add_argument(
+        "--save-trace", action=argparse.BooleanOptionalAction, default=False,
+        help="persist full per-probe inputs, store snapshots, translator "
+             "outputs and per-cid scores (default: scores only)")
     args = ap.parse_args(argv)
+    if args.scoped_cap is not None:
+        if args.scoped_cap < 1:
+            ap.error("--scoped-cap must be positive")
+        recall_mod.SCOPED_RECALL_CAP = args.scoped_cap
+    if args.attribute_pool is not None:
+        if args.attribute_pool < 0:
+            ap.error("--attribute-pool cannot be negative")
+        recall_mod.SCOPED_ATTRIBUTE_POOL_CAP = args.attribute_pool
+    if (recall_mod.SCOPED_ATTRIBUTE_POOL_CAP
+            and recall_mod.SCOPED_ATTRIBUTE_POOL_CAP
+            < recall_mod.SCOPED_RECALL_CAP):
+        ap.error("--attribute-pool must be at least --scoped-cap")
+    print(f"scoped recall cap: {recall_mod.SCOPED_RECALL_CAP}", flush=True)
+    print("scoped attribute pool: "
+          f"{recall_mod.SCOPED_ATTRIBUTE_POOL_CAP or 'disabled'}", flush=True)
 
     multi = bool(args.episodes.strip())
     ep_ids = ([e.strip() for e in args.episodes.split(",") if e.strip()]
@@ -616,7 +753,7 @@ def main(argv: list[str] | None = None):
     arms = ([a.strip() for a in args.arms.split(",") if a.strip()]
             if args.arms.strip()
             else (["real"] if multi else [
-                "real", "no_retire", "oracle-arm", "oracle-should",
+                "real", "no_retire", "oracle",
                 "full_context", "null-generic"]))
     if args.sizes is None:
         sizes = [4, 8, 16, 24, 32] if multi else None
@@ -625,10 +762,17 @@ def main(argv: list[str] | None = None):
     else:
         sizes = [int(s) for s in str(args.sizes).split(",") if s.strip()]
     use_canary = (bool(multi) if args.canary is None else args.canary)
+    episodes_dir = args.episodes_dir.resolve()
+    if not episodes_dir.is_dir():
+        ap.error(f"--episodes-dir is not a directory: {episodes_dir}")
 
     def _load_and_run(epid: str) -> dict:
-        ep = json.loads((CASES / "episodes" / f"{epid}.json").read_text())
-        return run_one(ep, arms, sizes, use_canary)
+        episode_path = episodes_dir / f"{epid}.json"
+        if not episode_path.is_file():
+            raise FileNotFoundError(f"episode not found: {episode_path}")
+        ep = json.loads(episode_path.read_text())
+        return run_one(ep, arms, sizes, use_canary,
+                       save_trace=args.save_trace, cases_dir=episodes_dir)
 
     results = []
     workers = max(1, args.workers)
@@ -660,7 +804,12 @@ def main(argv: list[str] | None = None):
         stamp = time.strftime("%Y%m%d-%H%M%S")
         payload = {"suite": "E1+P", "at": stamp,
                    "episodes": ",".join(ep_ids), "arms": arms,
+                   "episodes_dir": str(episodes_dir),
                    "sizes": sizes, "canary": use_canary,
+                   "scoped_recall_cap": recall_mod.SCOPED_RECALL_CAP,
+                   "scoped_attribute_pool_cap": (
+                       recall_mod.SCOPED_ATTRIBUTE_POOL_CAP),
+                   "save_trace": args.save_trace,
                    "results": results}
         out = Path(__file__).resolve().parents[1] / "results" / f"lifecycle-{stamp}.json"
         out.parent.mkdir(exist_ok=True)

@@ -19,9 +19,10 @@ def _reqs(*texts):
     return [Requirement(text=t) for t in texts]
 
 
-def _patch(monkeypatch, polished):
+def _patch(monkeypatch, original, polished):
     monkeypatch.setattr(llm, "complete", lambda *a, **k: json.dumps(
-        {"decision": "apply", "applied_ids": [], "polished": polished}))
+        {"decision": "apply", "applied": [],
+         "hunks": [{"old": original, "new": polished}]}))
 
 
 # ---------- the predicate ----------
@@ -61,29 +62,32 @@ def test_empty_original_is_vacuously_fine():
 # ---------- wired into translate ----------
 
 def test_translate_degrades_to_noop_on_destroyed_request(monkeypatch):
-    _patch(monkeypatch, "PATH 是怎么被查找的")
-    out = translate("环境变量里的 PATH 是怎么被查找的", _reqs("别复述我的问题"))
+    original = "环境变量里的 PATH 是怎么被查找的"
+    _patch(monkeypatch, original, "PATH 是怎么被查找的")
+    out = translate(original, _reqs("别复述我的问题"))
     assert out["decision"] == "noop" and out["polished"] is None
     assert out["reason"] == "rewrite_dropped_user_text"
 
 
 def test_translate_degrades_unchanged_apply_to_noop(monkeypatch):
     original = "帮我写封邮件给房东，热水器坏了让他找人来修，全文控制在78词以内"
-    _patch(monkeypatch, original)
+    _patch(monkeypatch, original, original)
     out = translate(original, _reqs("我让你写的邮件一律不超过78词"))
     assert out["decision"] == "noop" and out["polished"] is None
     assert out["reason"] == "rewrite_unchanged"
 
 
 def test_translate_keeps_a_legitimate_rewrite(monkeypatch):
-    _patch(monkeypatch, "给房东写封不超过120词的邮件，催他尽快修暖气")
-    out = translate("给房东写封邮件催修暖气", _reqs("邮件不超过120词"))
+    original = "给房东写封邮件催修暖气"
+    _patch(monkeypatch, original, "给房东写封不超过120词的邮件，催他尽快修暖气")
+    out = translate(original, _reqs("邮件不超过120词"))
     assert out["decision"] == "apply"
     assert "120" in out["polished"]
 
 
-def test_prompt_forbids_answering():
+def test_prompt_keeps_core_meaning_specialization_and_language():
     from memtranslator.translate import TRANSLATOR_SYSTEM
     low = TRANSLATOR_SYSTEM.lower()
-    assert "never answer" in low
-    assert "only adds" in low
+    assert "core meaning" in low
+    assert "specialize" in low
+    assert "language of the request" in low

@@ -1,6 +1,8 @@
 # MemTranslator v1.1 写路径最终设计
 
 > 代码引用均对照工作树 `/Users/siriux/Library/Mobile Documents/com~apple~CloudDocs/Documents/Codes/Projects/MemTranslator`（branch `dev`）核过。四份审计的 blocker/major 全部处置在 §9，被拒绝的 minor 同表列出理由。
+>
+> **2026-08-11 决策更新：** 本文原先的“禁止 embedding”约束已撤销。现在允许 BM25 与本地轻量 embedding 融合生成候选；embedding 模型必须可在 CPU 或集成显卡运行，不能要求独立 GPU，也不能把外部 embedding API 作为默认依赖。相似度只负责候选排序，最终生命周期动作仍由 consolidation 判断。
 
 ---
 
@@ -271,7 +273,7 @@ R3 "调研类的回答要给出处" → 规则 `research.citation`，breadth `�
   1. `buckets()` 增加按 facet **attribute** 分组（`key.split(".",1)[1]` → `citation`），`research.citation` 与 `doc.citation` 落进同一 bucket，走到 `merge`。
   2. `needs_widen` 在 attribute 组上计算：共享 attribute 的多条规则，其未解决分歧集势求并再计数。被拆开的证据流仍能触发标志。
 - 走一遍：R3 建 `research.citation` + founding 子行；R8 建 `doc.citation` + founding 子行；下一次 consolidation，attribute bucket 把两条一起呈现，模型 `merge` 成一条，两边子行全部改挂幸存者，幸存者继承 `max` 集势（merge 不得洗掉待处理的 breadth 压力）。若模型判定两条确实是不同规则而不合并，两条继续各自积累，attribute 组的集势并集在第三条证据到来时触发加宽。
-- 残留：跨语言重复（中文信号 vs 英文规则）BM25 恒为 0，attribute bucket 只在两边 `key` 的 attribute 部分恰好相同时才救得回来。这依赖 head 总是输出 `key`，而 key 的跨语言一致性依赖 `_KEY_LEXICON`。这是设计明确接受的代价：不要 dense embedding，就要接受双语重复率上升。初稿在 §5 声称 mutual-BM25 bucket "包括 §4 里的双语对"，与 §4 自己的诚实交代直接矛盾——那句话删掉。
+- 残留：跨语言重复（中文信号 vs 英文规则）会让 BM25 返回 0，attribute bucket 也依赖两边 `key` 的 attribute 恰好一致。新设计用本地轻量 embedding 补足这一召回缺口，再通过 RRF 与 BM25 融合；模型只产生候选，不能直接触发合并或退休。
 
 S-C（`代码回答不要写解释` 下挂 `调研回答也别铺垫那么多` 与 `邮件直接说结论`）是子行真正异质的情形，正确行为是弃权。弃权后 `needs_widen` 沿边解除，两次后 `widen_stalled=True` 进面板，带着互相矛盾的引文交给人——这正是 human-in-the-loop 存在的意义，也是拒绝 `split` 的理由（§5）。
 
@@ -310,7 +312,7 @@ v1.1 用手写 BM25F（stdlib，~120 行，k1=1.2 / b=0.75 的 Robertson 默认�
 
 ### 已知残留
 
-跨语言配对完全依赖 `_KEY_LEXICON`（`signals.py:167-175`，14 个 facet，移到共享的 `lexicon.py`）。中文信号对英文规则字面零共享 token，BM25 返回 0.0，head 被**正确地**强制回答 `new`。所以误配率下降、双语漏配（重复）率上升。两条都很弱的缓解：head 必须始终输出 `key`；exact-key 与 facet-prefix/attribute 闭包无条件运行。lexicon 只允许因产品推理增长。这正是 dense embedding 能免费解决的事，我们选择不要它。
+跨语言配对不再完全依赖 `_KEY_LEXICON`。BM25 与 key/scope 元数据保留可解释的词法召回，本地轻量 embedding 提供跨语言和改写召回，两路用 RRF 融合。lexicon 仍只允许因产品推理增长；dense 分数不设直接写库阈值，也不替代 consolidation 的关系判断。
 
 （顺带：overfit 审计核对过 `_KEY_LEXICON` 的 14 个 facet 本身是否是 bench 的镜像——不是，bench 用到的 `notification`/`deploy`/`test`/`log`/`backup`/`indentation` 全不在表里。有问题的是 `_META_PAT` 和 `_RULE_PAT`，见 §9 O2。）
 
@@ -407,7 +409,7 @@ def recall(reqs, *, query="", context=None, index=None) -> list[Requirement]
 
 摊薄：稳态下每轮 ≤0.25 次写调用。早期学习期 consolidation 更频繁（加宽落地后子行被打 `resolved_by`，同一条规则不会再触发，无加宽循环），随后收敛回 v1 的频率。
 
-相对 v1 变的是斜率不是次数：v1 的抽取 prompt 是 `O(store)`，~100 条时越界；v1.1 在 16 条以上是 `O(CAND_CAP)`，此后平坦。所有调用仍在 `MODELS["translator"] = claude-haiku-4-5`。无 embedding、无第二个模型家族、无 GPU、`pyproject.toml` 无新增依赖。
+相对 v1 变的是斜率不是次数：v1 的抽取 prompt 是 `O(store)`，~100 条时越界；v1.1 在候选 cap 以上保持平坦。生成式调用仍只走 writer/translator 通道；候选检索允许增加本地轻量 embedding 运行时，但必须支持 CPU 或集成显卡，且不得要求独立 GPU 或远程 API。
 
 Kill switch：`EVIDENCE_CAP = 0` 停止子行写入，`needs_widen` 永不触发，库内容与调用画像回退到 v1，无需回滚代码。`RETRIEVAL_FIRST = False` 让 `build_candidates` 直接返回 `store.rules()`，即 v1 的整库索引——L 和 E 可以在同一个二进制里做 A/B 而不是跨分支，鉴于 E 有 ±0.2 的运行方差，这一点很重要。
 
@@ -415,7 +417,7 @@ Kill switch：`EVIDENCE_CAP = 0` 停止子行写入，`needs_widen` 永不触发
 
 ## 8. 明确不做的事
 
-- **Dense embedding（本地或 API）。** 约束 1。接受的后果：双语配对靠 14 条手写 lexicon（§4），跨语言重复率会上升。
+- **重型或远程 embedding 基建。** 不引入要求独立 GPU 的模型，也不把外部 embedding API、常驻向量数据库作为默认依赖。允许 CPU/集成显卡可运行的本地轻量模型参与候选排序。
 - **`split`。** §5。复杂度最高、证据最少，且新增一种撕碎正确规则的方式。
 - **`provisional` 出生状态 + TTL 衰减。** 它的注入方式与 `active` 完全相同，买到的是一个 UI 徽章而不是精度，同时引入了微缩版的 blind statistical eviction：一条正确但少用的规则（季报格式）在第二次确认之前就衰减掉了。`SALIENCE_MIN=3` 已经在做出生过滤。
 - **recall 侧 breadth 过滤及其 "provisional 放宽"。** §6。

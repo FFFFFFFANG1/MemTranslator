@@ -43,6 +43,28 @@ def test_empty_text_rejected(tmp_path):
         pass
 
 
+def test_store_warms_index_once_per_flattened_item_version(tmp_path):
+    from memtranslator.retrieval import (clear_retrieval_caches,
+                                         retrieval_cache_info)
+
+    clear_retrieval_caches()
+    store = Store(tmp_path / "indexed.jsonl")
+    req = store.add("Emails under 120 words.", kinds=["email"],
+                    scope={"audience": "smith"}, key="email.length")
+    after_add = retrieval_cache_info()["bm25_documents"]
+
+    store.apply_ops([{"kind": "reinforce", "target_id": req.id}])
+    after_reinforce = retrieval_cache_info()["bm25_documents"]
+    assert after_reinforce["misses"] == after_add["misses"]
+
+    store.apply_feedback_ops([{
+        "kind": "update", "target_id": req.id,
+        "text": "Emails under 80 words.",
+    }])
+    after_update = retrieval_cache_info()["bm25_documents"]
+    assert after_update["misses"] == after_add["misses"] + 1
+
+
 def test_event_log_roundtrip(tmp_path):
     log = EventLog(tmp_path / "e.jsonl")
     log.append("translate", {"translate_id": "tr-1", "decision": "noop"})

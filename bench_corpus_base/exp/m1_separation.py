@@ -62,7 +62,9 @@ from pathlib import Path
 
 from memtranslator import llm, translate as tr_mod
 from memtranslator.bm25 import BM25
-from memtranslator.config import GEN_TEMPERATURE, MODELS, RECALL_CAP
+from memtranslator.config import (GEN_TEMPERATURE,
+                                  GLOBAL_RECALL_MAX_TOKENS, MODELS,
+                                  PATCH_OUTPUT_TOKENS)
 from memtranslator.recall import _scope_ok
 from memtranslator.schema import Requirement
 
@@ -264,12 +266,15 @@ def select_no_retire(reqs, query, context):
     pool = [r for r in reqs
             if r.kind == "requirement" and _scope_ok(r.scope, context)]
     pool.sort(key=lambda r: r.created_at)
-    if len(pool) <= RECALL_CAP:
+    from memtranslator.recall import (requirement_block_tokens,
+                                      select_within_token_budget)
+    if requirement_block_tokens(pool) <= GLOBAL_RECALL_MAX_TOKENS:
         return pool
     scores = BM25([f"{r.text} {r.key or ''}" for r in pool]).scores(query)
     order = sorted(range(len(pool)),
                    key=lambda i: (-scores[i], -pool[i].created_at))
-    picked = [pool[i] for i in order[:RECALL_CAP]]
+    picked = select_within_token_budget(
+        [pool[index] for index in order], GLOBAL_RECALL_MAX_TOKENS)
     picked.sort(key=lambda r: r.created_at)
     return picked
 
@@ -304,7 +309,7 @@ Rules:
 Output strictly one JSON object, nothing else:
 {"decision": "noop"}
 or
-{"decision": "apply", "polished": "..."}"""
+{"decision": "apply", "hunks": [{"old": "<verbatim snippet>", "new": "<replacement>"}]}"""
 
 FULL_CONTEXT_PREAMBLE = (
     "Below is this user's complete conversation history with you, oldest "
@@ -341,17 +346,21 @@ def _complete_with_block(text, system, block, header):
     user = f"{header}:\n{block}\n\nUser request:\n{text}\n\nJSON:"
     t0 = time.time()
     raw = llm.complete(MODELS["translator"], system, user,
-                       max_tokens=tr_mod.output_budget(text),
+                       max_tokens=PATCH_OUTPUT_TOKENS,
                        temperature=GEN_TEMPERATURE)
     latency_ms = int((time.time() - t0) * 1000)
     patch, parse_error = tr_mod.parse_patch(raw)
-    if (patch["decision"] == "apply"
-            and not tr_mod.preserves_request(text, patch["polished"])):
-        return {"decision": "noop", "polished": None, "applied_ids": [],
-                "parse_error": parse_error, "latency_ms": latency_ms,
-                "reason": "rewrite_dropped_user_text"}
     if patch["decision"] == "apply":
-        return {"decision": "apply", "polished": patch["polished"],
+        polished = tr_mod.apply_hunks(text, patch["hunks"])
+        if polished is None:
+            return {"decision": "noop", "polished": None, "applied_ids": [],
+                    "parse_error": True, "latency_ms": latency_ms,
+                    "reason": "patch_apply_failed"}
+        if not tr_mod.preserves_request(text, polished):
+            return {"decision": "noop", "polished": None, "applied_ids": [],
+                    "parse_error": parse_error, "latency_ms": latency_ms,
+                    "reason": "rewrite_dropped_user_text"}
+        return {"decision": "apply", "polished": polished,
                 "applied_ids": [], "parse_error": parse_error,
                 "latency_ms": latency_ms}
     return {"decision": "noop", "polished": None, "applied_ids": [],
@@ -523,7 +532,8 @@ def main():
     store = build_store(CP06, args.layout)
     active = [r for r in store if r.status == "active"]
     print(f"layout={args.layout}  store: {len(store)} entries, {len(active)} active, "
-          f"{len(store)-len(active)} retired, RECALL_CAP={RECALL_CAP}")
+          f"{len(store)-len(active)} retired, "
+          f"GLOBAL_RECALL_MAX_TOKENS={GLOBAL_RECALL_MAX_TOKENS}")
 
     jobs = [(a, f, f.requests[i])
             for a in ARMS for f in FACETS for i in range(args.n)]
@@ -621,7 +631,8 @@ def main():
     stamp = time.strftime("%Y%m%d-%H%M%S")
     path = OUT / f"M1-{args.layout}-{stamp}.json"
     path.write_text(json.dumps(
-        {"at": stamp, "probes_per_cell": args.n, "recall_cap": RECALL_CAP,
+        {"at": stamp, "probes_per_cell": args.n,
+         "global_recall_max_tokens": GLOBAL_RECALL_MAX_TOKENS,
          "layout": args.layout,
          "per_facet": {a: by_facet(rows, a) for a in ARMS},
          "store": {"total": len(store), "active": len(active)},

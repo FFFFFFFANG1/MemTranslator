@@ -38,6 +38,37 @@ EVENTS_FILE = DATA / "events.jsonl"
 VOCAB_FILE = DATA / "vocabulary.jsonl"
 WEB_DIR = ROOT / "web"
 
+
+def project_env(name: str, default: str = "") -> str:
+    """Read one setting from process env, then the repo-root ``.env``.
+
+    Product and bench previously loaded the same endpoint credentials through
+    different paths, so activating the project venv still left product calls
+    without a key. Keep the tiny loader dependency-free and make process env
+    win for deployments and one-off experiments.
+    """
+    if name in os.environ:
+        return os.environ[name]
+    path = ROOT / ".env"
+    if path.exists():
+        for line in path.read_text().splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            if key.strip() == name:
+                return value.strip()
+    return default
+
+# Candidate retrieval may fuse BM25 with a local multilingual embedding
+# model. The default points at an explicitly provisioned ONNX export and is
+# never downloaded at runtime. ONNX CPU execution is the compatibility floor;
+# alternative local backends may use an integrated GPU, but a discrete GPU or
+# remote embedding API must not be required for memory correctness.
+EMBED_MODEL_DIR = Path(os.environ.get(
+    "MT_EMBED_MODEL_DIR", ROOT / "models" / "multilingual-e5-small"))
+EMBED_ONNX_FILE = os.environ.get("MT_EMBED_ONNX_FILE", "onnx/model_O4.onnx")
+
 MODELS = {
     # anchor §5: flash tier. 2026-07-31 owner ruling: main model is
     # deepseek-v4-flash over Ark ("ark:" prefix routes the channel, ":think"
@@ -57,21 +88,19 @@ MODELS = {
         f"ark:{os.environ.get('LLM_MODEL', 'deepseek-v4-flash')}"),
 }
 
-# anchor §4 context budget: only the newest N active requirements reach the prompt
-RECALL_CAP = 32
-
-# Injection safety valve (2026-07-30, was a hard top-8 pre-screen). Primary
-# selection is now the work-kind filter (kinds.py): every rule tagged for
-# this request's kind of work is injected, and only a store whose FILTERED
-# pool still exceeds this valve falls back to the BM25 top-slice. Measured
-# motivation for the change: episode rounds routinely carry 10-23 genuinely
-# applicable rules, so any top-8 bounds recall at 8/n no matter how the 8
-# are chosen (both zero-LLM ranking and a flash pre-selector measured 0.80);
-# kind-filtered inject-all measured 0.963 selection recall at a median
-# block of 10 rules. 16 = p90 of filtered pool sizes across the suite; the
-# old 32-rule flat-injection refusal stays covered because the valve still
-# bounds the block.
-INJECT_CAP = 16
+# Translator recall has two independent prompt budgets. Explicitly broad
+# rules never compete with task-scoped rules: global requirements share a
+# 2048-token prompt budget, while structured applicability + retrieval
+# chooses up to sixteen scoped requirements. There is intentionally no fixed
+# total item cap: short global rules should not be discarded merely because
+# ten other short rules exist.
+GLOBAL_RECALL_MAX_TOKENS = 2048
+SCOPED_RECALL_CAP = 16
+# Optional two-stage read-path experiment. Zero preserves text-first recall;
+# a positive value first admits this many scoped rules using only work_kinds +
+# applies_when, then body BM25+dense selects SCOPED_RECALL_CAP prompt entries.
+SCOPED_ATTRIBUTE_POOL_CAP = int(os.environ.get(
+    "MT_SCOPED_ATTRIBUTE_POOL_CAP", "0"))
 
 # v1 pipeline knobs (design 2026-07-24 R5 — proposal defaults, single point).
 # The two write channels batch independently: route A waits for enough
@@ -84,14 +113,21 @@ BATCH_N = A_BATCH_N       # historical name for callers that know only route A
 FLUSH_IDLE_S = 30 * 60    # ...or 30min after the oldest one, either channel
 SALIENCE_MIN = 3          # extraction ops below this are dropped
 
-# Route B sends the complete changed sentence through 128 lexical tokens.
-# Longer run-on sentences retain a symmetric 56-token window on each side of
-# the marked change: enough local syntax for attribution, with one threshold
-# and one explicit context policy shared by code, tests, prompt and docs.
+# Route B sends the changed sentence as an apply_patch {old, new} hunk.
+# Longer run-on sentences retain a symmetric 56-token window on each side:
+# enough local syntax for attribution, with one threshold shared by code
+# and tests. The prompt only sees old/new, not the token policy.
 B_DIFF_SENTENCE_TOKENS = 128
 B_DIFF_CONTEXT_TOKENS = 56
 B_DIFF_CHANGE_TOKENS = 64
 B_DIFF_MERGE_GAP_TOKENS = 3
+
+# Raw-message views shown to generative calls. Over budget, both paths keep
+# the beginning and end and mark the hidden middle with [truncated]. Route A
+# is deliberately tight because up to A_BATCH_N messages share one call;
+# translator gets a larger single-message window.
+A_MESSAGE_MAX_TOKENS = 600
+TRANSLATOR_MESSAGE_MAX_TOKENS = 4096
 # Tightened 2026-07-29: at 48/16 the ACTIVE branch never fired in practice
 # (11/12 episodes) and stores accumulated visible triplicates ("只囤不并").
 # Dedup and conflict elimination are the WRITE path's job — the rewrite
@@ -108,27 +144,13 @@ INDEX_ROW_TOKENS = 20     # per-entry text budget in numbered indexes
 # 修暖气") while still catching deletion of user content.
 PRESERVE_MIN_RATIO = 0.85
 
-# Read-path wire format (2026-07-30, phase ③ latency tier). "edits": the
-# model emits INSERTIONS ONLY ({"after": snippet, "insert": text} /
-# {"append": text}) and the product splices mechanically — output tokens
-# then scale with the constraints woven in, not with the request length the
-# legacy "full" mode had to echo back verbatim. The rewrite contract is
-# add-only, so insertions express every legal rewrite; a splice that fails
-# (anchor missing/ambiguous) degrades to noop like every other error path.
-# "full" = legacy full-text polished; instant rollback switch.
-#
-# Routing (2026-07-30): edits wire engages only ABOVE a request-size floor.
-# Measured: the win is entirely on long inputs (2437→1123ms on a ~500-char
-# paste) while short requests echo cheaply in full mode (0.85-1.5s) — and
-# the injection family showed edits mode is "braver" next to short
-# attack-shaped tasks where full mode's cautious noop is the banked 46/46
-# behavior. Below the floor nothing changes; above it, protected-zone
-# splicing guards pasted material. One prompt-patch attempt at the caution
-# gap was spent without effect — this routing is the mechanical resolution,
-# not a third patch.
-TRANSLATE_WIRE = "edits"
-EDITS_MIN_TOKENS = 200     # request size (est. tokens) below which full wire is used
-EDITS_OUTPUT_TOKENS = 700  # flat budget: inserts are short by construction
+# Translator emits apply_patch hunks ({old, new}); the product splices them
+# against the original request. Output is short by construction, so the
+# budget is flat — no length routing between a full echo and a patch.
+# Sixteen scoped entries plus the global lane make the per-entry verdict JSON
+# materially larger than the former top-8 protocol.  Keep enough room for one
+# evidence string per applied/already-satisfied entry and the patch hunks.
+PATCH_OUTPUT_TOKENS = 2000
 
 # Every product generative call is pinned to greedy decoding. anchor §5 ranks
 # "predictable rewrite magnitude" above peak accuracy: the same request with

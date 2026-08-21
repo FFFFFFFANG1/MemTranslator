@@ -153,10 +153,10 @@ qwen/ling 降为辅助验证,只在主模型结果确定后开。judge 主通道
 配额耗尽,按预案切备用 plan key,**裁判模型 deepseek-v4-pro 不变,尺子可比**。
 (2026-08-02 owner 指令「所有 llm 走回主 api 的 ark」:探活确认 coding/v3
 配额已恢复,产品端与 judge 端一并切回主通道,备用 key 留在 .env 注释里。
-**运维坑**:Ubuntu 的 bashrc 对非交互 shell 提前 return,已开会话继承的
-`ARK_*` 仍是旧值,跑 bench 前要 `set -a && . ./.env && set +a &&
-export ARK_API_KEY=$LLM_API_KEY ARK_BASE_URL=$LLM_BASE_URL`,否则会
-悄悄走回备用通道。)
+**运维坑（已修复）**:过去产品侧只看进程里的 `ARK_*`,而 bench 从项目
+`.env` 读取 `LLM_*`,两条配置链会漂移。现在两侧统一读取
+`LLM_API_KEY` / `LLM_BASE_URL`:进程环境优先,本地运行自动回退到项目
+`.env`,不再需要导出 `ARK_*`。)
 基建:llm.py Ark 通道("ark:" 前缀 + ":think" 后缀语法)、writer 独立模型键
 (MT_WRITER env 覆盖,A/B 不改文件)、think 预算头寸、judge 跨进程限速器
 (6 路并发曾把共享 judge 通道打爆——AIMD 桶是进程内的,N 进程合力冲垮;

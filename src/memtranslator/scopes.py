@@ -1,19 +1,19 @@
-"""Controlled scope vocabulary (2026-07-29).
+"""Scope and work-kind spelling normalisation (2026-07-29 / 2026-08-11).
 
-Scope was a dead field: values measured on one real replay store included
-task=script, task=python脚本, task=code documentation and
-task=code_documentation — four spellings across two dimensions. The scope
-filter string-compares, and the hotkey context rarely supplies dimensions,
-so unnormalised free text could never match anything mechanically.
+Scope is a free key:value narrowness dict (audience, app, language, …).
+Genre / work class lives in Requirement.kinds, not in scope.task.
 
-Normalisation here is SPELLING-level only: casing, separators, and
-unambiguous zh→en value translation. It deliberately does NOT fold sibling
-categories into each other — the same store carried a 752-word cap scoped
-to blog and structural rules scoped to article; an ontology that merges
-blog into article would fire the wrong caps. When in doubt a value stays
-as its slug.
+Normalisation is SPELLING-level only: casing, separators, and unambiguous
+zh→en value translation. Sibling categories stay distinct — the same store
+carried a 752-word cap scoped to blog and structural rules scoped to
+article; an ontology that merges blog into article would fire the wrong
+caps. When in doubt a value stays as its slug.
 """
+from __future__ import annotations
+
 import re
+
+from memtranslator.schema import WORK_KIND_ANY, WORK_KINDS
 
 # Whole-value zh→en translations, 1:1 and unambiguous only. Compound values
 # are handled by slugging first, then translating exact matches.
@@ -47,6 +47,16 @@ _KEY_ALIASES = {"lang": "language", "语言": "language", "任务": "task",
 
 _SEP = re.compile(r"[\s\-/]+")
 
+# Values that historically lived in scope.task as the genre channel and now
+# belong in kinds. Seed work kinds plus common fine subtypes from the old
+# task vocabulary.
+_GENRE_FROM_SCOPE_TASK = (
+    set(WORK_KINDS) | {WORK_KIND_ANY}
+    | {"code_write", "weekly_report", "meeting_minutes", "script",
+       "python_script", "shell_script", "doc", "article", "blog",
+       "meeting", "translation", "paper", "research", "slide", "summary"}
+)
+
 
 def _slug(value: str) -> str:
     return _SEP.sub("_", value.strip().lower()).strip("_")
@@ -56,6 +66,14 @@ def normalize_value(value: str) -> str:
     s = _slug(str(value))
     s = _VALUE_ZH.get(s, s)
     return _VALUE_ALIASES.get(s, s)
+
+
+def normalize_kind(value: str) -> str:
+    """Spelling-normalise one work-kind slug."""
+    value = normalize_value(value)
+    # The LLM-facing protocol says ``all``; storage retains the historical
+    # ``any`` spelling so existing stores and matching code stay compatible.
+    return WORK_KIND_ANY if value == "all" else value
 
 
 def normalize_scope(scope: dict | None) -> dict:
@@ -69,38 +87,79 @@ def normalize_scope(scope: dict | None) -> dict:
     return out
 
 
-# ---------------------------------------------------------------------------
-# Comparison-side vocabulary (2026-07-30, weak-backbone iteration R6).
-#
-# Measured on a qwen-built chained store: extraction invents free-form task
-# values ("headings_and_subheadings", "client_facing_communications") that
-# no context can ever equal, so the scope filter turned those rules
-# permanently unreachable. Exclusion now requires BOTH sides to speak the
-# controlled vocabulary — an uninterpretable value degrades to "unknown
-# dimension, keep the entry", the same never-exclude-on-missing principle
-# the filter already follows. Storage stays untouched (spelling-level
-# doctrine above); only the comparison relaxes.
-#
-# The code family folds for comparison: a python_script rule governs a
-# code-write task — one activity, many spellings (mirrors kinds.py's
-# taxonomy). Prose genres deliberately stay distinct (blog caps must not
-# fire on articles — the doctrine's original counterexample).
-_TASK_VOCAB = (set(_VALUE_ZH.values()) | set(_VALUE_ALIASES.values())
-               | {"email", "code", "code_write", "script", "doc", "article",
-                  "blog", "report", "weekly_report", "meeting",
-                  "meeting_minutes", "postmortem", "translation", "paper",
-                  "research", "slide", "summary"})
-_CODE_FAMILY = {"code", "code_write", "coding", "script",
-                "python_script", "shell_script"}
-
-
-def task_comparable(want: str, have: str) -> bool | None:
-    """None = cannot compare (either side out of vocabulary) → caller keeps
-    the entry; True/False = a real vocabulary-level verdict."""
-    if want not in _TASK_VOCAB or have not in _TASK_VOCAB:
+def _kind_coverage(kinds: list[str] | None) -> frozenset[str] | None:
+    """Normalised coverage: None is broad; an empty set is legacy unknown."""
+    values = {normalize_kind(kind) for kind in (kinds or [])
+              if str(kind).strip()}
+    if not values:
+        return frozenset()
+    if values & {WORK_KIND_ANY, "agent_response"}:
         return None
-    if want == have:
-        return True
-    if want in _CODE_FAMILY and have in _CODE_FAMILY:
-        return True
-    return False
+    # The read path intentionally treats these as one prose family.
+    if values & {"report", "postmortem"}:
+        values -= {"report", "postmortem"}
+        values.add("__prose__")
+    return frozenset(values)
+
+
+def applicability_narrows(candidate_scope: dict | None,
+                          candidate_kinds: list[str] | None,
+                          target_scope: dict | None,
+                          target_kinds: list[str] | None) -> bool:
+    """Whether storing candidate metadata would cover less than target.
+
+    Consolidation uses this as a state-safety guard. Compatibility remains a
+    separate semantic check: this helper only detects a broad-to-narrow loss,
+    such as adding a scope dimension or replacing ``any`` with ``report``.
+    """
+    candidate_scope = normalize_scope(candidate_scope)
+    target_scope = normalize_scope(target_scope)
+    scope_narrows = any(
+        key not in target_scope for key in candidate_scope)
+
+    candidate_coverage = _kind_coverage(candidate_kinds)
+    target_coverage = _kind_coverage(target_kinds)
+    if (candidate_coverage == frozenset()
+            or target_coverage == frozenset()):
+        # Empty metadata is unknown, not proof that the old rule was broad.
+        kinds_narrow = False
+    elif candidate_coverage is None:
+        kinds_narrow = False
+    elif target_coverage is None:
+        kinds_narrow = True
+    else:
+        kinds_narrow = candidate_coverage < target_coverage
+    return scope_narrows or kinds_narrow
+
+
+def is_genre_scope_task(value: str) -> bool:
+    """True when a scope.task value is genre that should live in kinds."""
+    return normalize_kind(value) in _GENRE_FROM_SCOPE_TASK
+
+
+def migrate_genre_from_scope(req):
+    """Move genre out of scope.task into kinds (in place). Returns req.
+
+    - empty kinds + genre task → kinds=[task], drop task from scope
+    - kinds set and task is genre (dual tag or exact member) → drop task
+    - non-genre / unknown free task values stay in scope
+    """
+    scope = normalize_scope(req.scope)
+    task = scope.get("task")
+    kinds = [normalize_kind(k) for k in (req.kinds or []) if str(k).strip()]
+    kinds = list(dict.fromkeys(kinds))
+    if task and is_genre_scope_task(task):
+        if not kinds:
+            kinds = [task]
+        scope = {k: v for k, v in scope.items() if k != "task"}
+    req.scope = scope
+    req.kinds = kinds
+    # Under the new protocol global means every output must obey the rule.
+    # Migration may demote an invalid global declaration, but must never
+    # promote an explicitly retrieval-only scoped rule merely because its
+    # optional applicability metadata is incomplete.
+    explicit_all = WORK_KIND_ANY in kinds
+    if not (req.scope_mode == "global" and explicit_all
+            and not scope and not req.applies_when):
+        req.scope_mode = "scoped"
+    return req

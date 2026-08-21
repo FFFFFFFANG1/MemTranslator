@@ -1,3693 +1,1169 @@
 {
- "id": "e-11",
- "schema_version": "E1",
- "seed": 61,
- "protocol_version": 2,
- "persona": {
-  "id": "student-en",
-  "who": "grad student juggling TA and thesis",
-  "lang": "en",
-  "register": "chatty, informal",
-  "domain": "academia",
-  "quirks": "asks for a lot of rewrites"
- },
- "catalogue": [
-  {
-   "cid": "e11-c00",
-   "text": "when writing a paper limit length (no more than 781 words)",
-   "clause": "keep it under 781 words",
-   "alt_clause": "limit it to 781 words max",
-   "distinctive": "781",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "length.max",
-    "polarity": "prefer",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 781.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
+  "id": "e-11",
+  "protocol_version": 3,
+  "user_turns": [
+    {
+      "seq": 1,
+      "user_input": "推荐工具的时候优先开源的啊，闭源的我们过不了审"
     },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
+    {
+      "seq": 2,
+      "user_input": "Hey, that email you just drafted is way too long. I'm not gonna send a novel to my professor. Like, can you please keep it under 781 words next time? I don't need a whole essay, just the point."
+    },
+    {
+      "seq": 3,
+      "user_input": "Hey, can you help me write a quick report on the recent advances in transformer architectures for my seminar? I need it to be about 2 pages, covering the main innovations since 2023, and I'm totally swamped with grading right now.。hey, can you write a quick report on the key findings from the last three papers on CRISPR off-target effects? i need it for my lab meeting tomorrow, just a couple paragraphs. also, quick aside — when you're writing about projects, don't use 'HISTORY, NEWS or RELEASES' as a heading or section, ok? just stick to something more standard like 'Background' or 'Updates'."
+    },
+    {
+      "seq": 4,
+      "user_input": "hey can you write a quick python script to parse a csv of my students' grades and spit out a histogram of the final scores? i want it to use matplotlib and be decently clean.。hey, can you write up a quick postmortem for my last TA session? it was a total mess — the projector broke, half the students didn't do the reading, and i ran out of time. just a short summary of what went wrong and what i could try next time. also, from now on when you're writing anything for me, design for scanning, not reading — i'm always skimming between grading and thesis stuff.。hey, can you write up a quick report on how students in my intro class did on the last assignment? just the basics—average, median, and a few common mistakes. i need it to send to my advisor. also, from now on, when you list physical objects like books, papers, or laptops, don't put them in brackets. just write them normally."
+    },
+    {
+      "seq": 5,
+      "user_input": "hey, can you write a quick email to my advisor asking for a meeting to discuss my thesis progress? i wanna keep it short and casual but still respectful.",
+      "probe": {
+        "should_apply": [
+          "e11-c02"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 6,
+      "user_input": "hey, can you draft an email to my advisor saying I need to push back our meeting by a day? i'm swamped with grading and my thesis chapter is a mess. keep it polite but not too formal.。Ugh, that table you just made for the email draft is way too long and cluttered. I can't even scan it. Can you please stop making those huge tables? From now on, follow best practices for short, readable tables — like, keep it clean and to the point."
+    },
+    {
+      "seq": 7,
+      "user_input": "hey, can you take my messy research notes on the effect of sleep deprivation on memory consolidation and turn them into a proper lab report? i've got a bunch of scattered bullet points, some partial data tables, and a few citations. i need it to look like a real academic paper, with intro, methods, results, and discussion sections.。hey, that report looks good but i noticed you used hyphens in some variable names like 'average-score' and 'common-mistakes'. can you avoid hyphenated naming in code? i mean, underscores or camelCase are fine, but hyphens just look weird and break stuff in python. can you rewrite it without hyphens?。Oh, and while you're at it, could you write up a quick report on how my intro class did on the last assignment? Just the basics—average, median, and a few common mistakes. I need it to send to my advisor. Also, from now on, please don't include any vivid sensory imagery in your responses. I keep getting distracted by flowery descriptions when I just need the facts."
+    },
+    {
+      "seq": 8,
+      "user_input": "hey, that report you just wrote is full of these huge inline URLs that make it impossible to read. can you please stop doing that? from now on, just put long links as reference links at the bottom or something, not inline."
+    },
+    {
+      "seq": 9,
+      "user_input": "hey, can you write up a quick postmortem for that group project that totally flopped last semester? just like what went wrong, what we could've done better, and the main takeaways.。hey, can you draft an email to my advisor asking for a quick meeting to discuss my thesis outline? i need it to be chill but professional, and leave room for them to suggest a time. oh also, when you're describing sites or anything like that, don't include walking distance between them — just skip that detail, it's not relevant.。hey, that postmortem you just wrote was way too harsh. like, 'students failed to prepare' — that sounds so judgmental. i need you to be accurate, precise, neutral in tone and respectful when you write stuff like this. can you redo it without the snark?"
+    },
+    {
+      "seq": 10,
+      "user_input": "hey, can you draft a quick email to my prof about extending the deadline for the lit review section? i need to ask for like a week more, and make it sound polite but not too formal.",
+      "probe": {
+        "should_apply": [
+          "e11-c02",
+          "e11-c09"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 11,
+      "user_input": "hey, can you help me draft a quick report on the key findings from my last batch of experiment data? i need to send it to my advisor by tomorrow, but it doesn't have to be super formal—just clear and to the point.。hey, that python script you wrote for me? it's fine, but i noticed you put a bunch of random links in the comments. like, links to libraries and tutorials. i didn't ask for that. please don't include any links in the code comments or in the output at all. just the code, no links. can you rewrite it without those?"
+    },
+    {
+      "seq": 12,
+      "user_input": "hey, can you write a python script that scrapes the latest papers from arxiv on reinforcement learning and saves the titles and abstracts to a csv? i need it to filter by the last 7 days too.。Alright, so I just read that postmortem you wrote for the group project, and honestly, it's not bad, but you've got this whole list of conversation starters at the end—like 'What would you do differently?' and 'How did you feel about the timeline?'—and I really don't want that. Can you please just drop those? From now on, when you're writing anything for me, don't include any list of conversation starters, okay? I don't need them, they feel forced. Can you rewrite the postmortem without those?。hey, that report you just wrote on CRISPR off-target effects — it's good but you keep throwing around 'millions of cells' and 'billions of reads' like it's nothing. can you avoid using millions or billions? just say 'many' or 'a lot' or whatever. it sounds way too sales-pitchy for a lab meeting."
+    },
+    {
+      "seq": 13,
+      "user_input": "hey, can you write up a quick postmortem for the group project that totally tanked last semester? just the main stuff that went wrong and what we should've done different.。Hey, can you write a quick postmortem for that group project I TA'd for last semester? Just the main stuff that went wrong and what we could do better next time. Also, please don't throw in a bunch of language variations—just keep it straightforward, no fancy synonyms or rephrasing."
+    },
+    {
+      "seq": 14,
+      "user_input": "hey, can you draft an email to my advisor asking for a quick check-in on my thesis draft? i wanna sound chill but not too casual, like 'hey, no rush, but if you've got a sec' kinda vibe.。hey, can you draft an email to my advisor asking for a quick meeting to discuss my thesis outline? i need it to be chill but professional, and leave room for them to suggest a time. oh and also, when you write anything longer, like a document or something, please include engaging headings and subheadings—like at least 33 of them, not just a couple.。hey, also, from now on, when you're writing anything for me, please always include opposing views. i don't want one-sided arguments, even in something like this csv script. anyway, can you write a python script to parse my messy csv of student grades? it has extra columns and weird line breaks, just need to extract the scores and compute averages."
+    },
+    {
+      "seq": 15,
+      "user_input": "对了，avoid millions or billions这条继续保持啊"
+    },
+    {
+      "seq": 16,
+      "user_input": "hey, could you write a quick python script to scrape the titles and dates from my uni's events page? the html is kinda messy but i just need it to work for now.。hey, thanks for the draft. one more thing — from now on, please don't use any intricate sentence structuring when you write. keep it simple, like i'm talking to a friend. also, can you redo that postmortem for my TA session? the projector broke, half the students skipped the reading, and i ran out of time. just a short list of what went wrong and what to try next time."
+    },
+    {
+      "seq": 17,
+      "user_input": "hey, can you write a postmortem for my last lab session? i messed up the PCR and had to redo it, plus the TA was super annoyed. just a quick recap of what went wrong and what i'd do differently next time.。hey, that script you just wrote — it's got a sudo command in it? dude, i'm on a shared uni server, i can't just be running sudo for everything. i don't even have sudo access half the time. can you rewrite it so it doesn't use sudo at all? like, just use regular file operations or whatever. and while you're at it, make sure that script actually works for my pdfs folder — i really need it for my lit review.。Hey, can you write a quick postmortem for that group project I TA'd for last semester? Just the main stuff that went wrong and what we could do better next time. Oh, and by the way, when you're listing properties or whatever, don't show the functional implementation—just hide that part, keep it clean."
+    },
+    {
+      "seq": 18,
+      "user_input": "hey, that report was way too long. i said 'quick' — you wrote like 20 sentences. can you keep the summary of code changes to at most 13 sentences next time? seriously, my advisor's gonna skim it anyway."
+    },
+    {
+      "seq": 19,
+      "user_input": "hey, can you write a short report on the key findings from the last three papers I sent you? just the main points, nothing too formal.。hey, can you write a python script that reads a csv of student grades and plots a histogram of the final scores? i need it quick, just the basic code. oh also — when you're generating an argument for anything, keep it under 699 words, don't let it run long.。hey, can you help me write a quick lab report on the photoelectric effect experiment? i need it to be like a standard physics report with intro, method, results, and discussion. i'll give you the data and you can draft it for me. also, from now on, when you're writing anything for me, keep it under 65 characters max. seriously, i keep getting stuff that's way too long for my notes."
+    },
+    {
+      "seq": 20,
+      "user_input": "hey, can you write up a quick summary of the main findings from that last batch of survey data? i need it for my thesis meeting tomorrow.",
+      "probe": {
+        "should_apply": [
+          "e11-c09"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 21,
+      "user_input": "hey, can you write up a quick postmortem for that group project that went totally off the rails last semester? just the key stuff—what went wrong, what we learned, and what we'd do different. keep it casual, like for our group chat.。hey, can you write a quick report on the key findings from the last three papers on CRISPR off-target effects? i need it for my lab meeting tomorrow, just a couple paragraphs. also, from now on when you're writing a blog post for me, keep it under 752 words—i'm trying to keep things concise for the readers."
+    },
+    {
+      "seq": 22,
+      "user_input": "hey, can you draft a quick email to my advisor asking for an extension on the lit review draft? i'm swamped with grading and the analysis is taking longer than i thought.。Hey, that email draft you just sent looks okay, but I noticed you wrote the student IDs with leading zeros like '00123' — please don't do that. Just write '123' or whatever the actual number is. Can you fix that and resend?。hey, can you write a quick python script that takes a folder of pdfs, extracts the text from each one, and saves it as a .txt file? nothing fancy, just need it to work for my lit review pile. oh and btw, from now on don't repeat or list out traits in your responses—like if something has multiple properties, just say it once and move on, don't enumerate them all.。对了，design for scanning, not reading这条继续保持啊"
+    },
+    {
+      "seq": 23,
+      "user_input": "hey, can you turn my messy notes on the survey results into a proper report? i need it to look like a real academic thing with sections and stuff.。hey, just read your last draft—can you please stop putting trailing commas in those lists? it's a lab report, not code. anyway, i need a quick lab report on the photoelectric effect: intro, method, results, discussion. i'll send the data."
+    },
+    {
+      "seq": 24,
+      "user_input": "hey, can you write a quick postmortem for that group project we just finished? i want to include what went wrong and the other side’s perspective too, not just our complaints.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 25,
+      "user_input": "hey, can you write up a quick postmortem for that group project that totally flopped last semester? i need to figure out what went wrong so i don't repeat the same mistakes with my thesis group. just the main takeaways, but make sure you mention what the other side would say too — like, some people thought the plan was fine, others thought it was doomed from the start. keep it short though, i don't have time to read a novel.",
+      "probe": {
+        "should_apply": [
+          "e11-c09"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 26,
+      "user_input": "这次这份写详细一点，季度 review 要用"
+    },
+    {
+      "seq": 27,
+      "user_input": "先把日志按天切开再统计，别一把梭"
+    },
+    {
+      "seq": 28,
+      "user_input": "hey, could you draft an email to my advisor asking for an extension on the lit review section? i need it by next week but i'm drowning in TA grading.",
+      "probe": {
+        "should_apply": [
+          "e11-c09",
+          "e11-c16"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 29,
+      "user_input": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」"
+    },
+    {
+      "seq": 30,
+      "user_input": "hey, can you draft an email to my advisor about the project timeline? i want to mention that i think we should extend the data collection phase, but also bring up that some folks in the lab argue it's already too long. just keep it casual and friendly.",
+      "probe": {
+        "should_apply": [
+          "e11-c00",
+          "e11-c16"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 31,
+      "user_input": "我老板要求他们组的周报全用 bullet，真够呛"
+    },
+    {
+      "seq": 32,
+      "user_input": "hey, can you write a quick python script to parse a CSV of my students' grades and spit out the mean, median, and std dev for each assignment? i'll send you the file path.。hey, can you write a quick report on the key findings from the last three papers on CRISPR off-target effects? i need it for my lab meeting tomorrow, just a couple paragraphs. also, from now on, please don't use a round-robin structure when you're organizing content—just pick one paper and go through it fully before moving to the next. it's so much easier to follow.。hey, that last profile you wrote for me was way too long and flowery — i just need something short and factual. can you please not write a profile when i ask for one? like, just skip it entirely. i'll handle that part myself."
+    },
+    {
+      "seq": 33,
+      "user_input": "hey, can you write up a quick postmortem for that group project that totally crashed last semester? just bullet points on what went wrong and what we should've done differently.。hey, can you write a python script that reads a csv of student grades and plots a histogram of the final scores? i need it quick, just the basic code. also, from now on, when giving directions or locations, always use lowercase for cardinal directions unless they're part of a proper name or recognized region, like 'head north' not 'head North'."
+    },
+    {
+      "seq": 34,
+      "user_input": "hey, can you draft an email to my professor asking for a deadline extension on the lit review? i'm swamped with TA grading and my experiment isn't done yet. make it sound polite but not too formal.。hey, can you write up a quick postmortem for my last TA session? it was a total mess — the projector broke, half the students didn't do the reading, and i ran out of time. just a short summary of what went wrong and what i could try next time. also, random aside — when you're writing about parliamentary committees, don't capitalize 'Parliamentary' in 'Parliamentary committees'. just keep it lowercase, yeah?。hey, that report you just wrote on CRISPR off-target effects is almost there, but the table you put in has a really poor distribution—like, all the high-specificity methods are crammed into one corner and the rest is just empty space. it looks messy and hard to scan. can you redo it so the data is spread out more evenly? and for future tables, please avoid poor distribution like that, okay?"
+    },
+    {
+      "seq": 35,
+      "user_input": "hey, can you draft an email to my professor asking for an extension on the lit review draft? i'm swamped with TA grading and need a few more days. keep it casual but polite.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 36,
+      "user_input": "Hey, I asked for a Python script to read a CSV of student grades and plot a histogram of final scores—just the basic code, quick. But you went ahead and gave me a table with all those extra columns I didn't need. For future reference, when you generate a table, don't copy the last column. I don't want that junk in there."
+    },
+    {
+      "seq": 37,
+      "user_input": "hey, can you draft a quick email to my advisor asking for a deadline extension on my thesis draft? make it sound chill but still professional, and leave a placeholder for the new date. oh and from now on, when you're doing string checks, don't use startswith() and endswith() — they're too brittle for my messy data."
+    },
+    {
+      "seq": 38,
+      "user_input": "对了，when generating a table, don't copy the last column这条继续保持啊"
+    },
+    {
+      "seq": 39,
+      "user_input": "又来了，这 API 每次都超时，烦死"
+    },
+    {
+      "seq": 40,
+      "user_input": "hey, could you help me draft an email to my professor asking for an extension on the literature review? i'm swamped with TA grading and my data analysis is taking way longer than i thought.",
+      "probe": {
+        "should_apply": [
+          "e11-c00"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 41,
+      "user_input": "Hey, that email you just wrote is way too long. I need you to keep it to a maximum of 50 characters per line or something—no, actually, max 103 characters total. Can you rewrite it shorter? I'm serious, 103 characters max, please.，之前说的「don't capitalize 'Parliamentary' in 'Parliamentary committees'」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 42,
+      "user_input": "之前说的「when using properties, hide the functional implementation」那条不用了，按你默认的来吧，之前说的「don't use a round-robin structure when structuring content」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 43,
+      "user_input": "Hey, that last thing you wrote about the field trip sites was okay but you totally forgot to mention walking distance between them. That's kind of important for planning. Anyway, can you also draft an email to my professor asking for a deadline extension on my thesis chapter? I need it by Friday but I'm swamped with TA grading. And next time, when you describe sites, always include walking distance between sites, got it?，之前说的「keep it under 781 words」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 44,
+      "user_input": "hey, can you write up a quick summary of the survey data from last week's experiment? just the key findings in a table or two, and keep it short for my advisor.",
+      "probe": {
+        "should_apply": [
+          "e11-c09"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 45,
+      "user_input": "Ugh, your last draft was super dense and I kept zoning out. Can you please start including engaging headings and subheadings, like at least 68 of them? I need this email to actually hold my attention.，之前说的「keep it under 752 words」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 46,
+      "user_input": "Hey, that email draft you just sent—it's way too casual and kinda pushy. Could you please be accurate, precise, neutral in tone, and respectful when you write stuff like this? I'm a grad student, I can't sound like I'm begging or complaining."
+    },
+    {
+      "seq": 47,
+      "user_input": "Hey, that email draft looks good, but I noticed you didn't use trailing commas in the list of reasons I gave. Could you please redo it with trailing commas everywhere? I'm a stickler for that style."
+    },
+    {
+      "seq": 48,
+      "user_input": "hey, can you write a script to scrape the latest papers from arxiv in my field and dump them into a markdown table? i need it to pull title, authors, and abstract link.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 49,
+      "user_input": "之前说的「no list of conversation starters」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 50,
+      "user_input": "之前说的「keep the summary of code changes to at most 13 sentences」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 51,
+      "user_input": "之前说的「avoid hyphenated naming in code; use underscores or camelCase instead」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 52,
+      "user_input": "hey, can you turn this messy data from my experiment into a clean table? i've got a csv with columns a through f, but i only need columns a through e for the table.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 53,
+      "user_input": "之前说的「don't repeat or list traits」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 54,
+      "user_input": "之前说的「don't write a profile when i ask for one」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 55,
+      "user_input": "之前说的「avoid poor distribution in tables」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 56,
+      "user_input": "hey, can you write up a quick report on the three main models we covered in the seminar? just a few paragraphs each, comparing their approaches to language acquisition. also, throw in the references from the syllabus.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 57,
+      "user_input": "之前说的「use lowercase for cardinal directions unless part of a proper name or recognized region」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 58,
+      "user_input": "之前说的「keep arguments under 699 words」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 59,
+      "user_input": "hey, can you draft a quick report on the key findings from last week's lab data? just the main points, no fluff.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 60,
+      "user_input": "hey, can you draft an email to my professor asking for a deadline extension on the lit review section? i need it by next friday instead of this wednesday.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 61,
+      "user_input": "hey, can you draft an email to my advisor asking for an extension on the lit review draft? i need another week, but i want to sound professional and not like i'm slacking. also, throw in a few section headers to break it up, like 'reason for request' and 'proposed timeline' — make it look organized.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": [
+          "e11-c22"
+        ]
+      }
+    },
+    {
+      "seq": 62,
+      "user_input": "hey, can you write a postmortem for the group project that just finished? the one where we had to build that data pipeline. just a quick recap of what went wrong, what went right, and what we'd do differently. thanks!",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": [
+          "e11-c14"
+        ]
+      }
     }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1200 -> 781"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c01",
-   "text": "when writing about projects avoid: use HISTORY, NEWS or RELEASES",
-   "clause": "when writing about projects, don't use 'HISTORY, NEWS or RELEASES'",
-   "alt_clause": "when you're describing projects, avoid 'HISTORY, NEWS or RELEASES' as a label",
-   "distinctive": "HISTORY, NEWS or RELEASES",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.lists",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "HISTORY, NEWS or RELEASES"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "keep-a-changelog",
-     "license": "MIT",
-     "url": "https://keepachangelog.com/en/1.1.0/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c02",
-   "text": "when writing documents avoid: design for scanning",
-   "clause": "design for scanning, not reading",
-   "alt_clause": "make it scannable, not readable",
-   "distinctive": "scanning",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "doc.structure",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "scanning"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c03",
-   "text": "when mentioning items avoid: bracket words of physical object items mentioned as non-animate",
-   "clause": "when you list physical objects, don't bracket them",
-   "alt_clause": "never put physical items in brackets when you mention them",
-   "distinctive": "bracket",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.emphasis",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "words of physical object items mentioned as non-animate"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c04",
-   "text": "when creating tables avoid: follow best practices for short, readable tables",
-   "clause": "follow best practices for short, readable tables",
-   "alt_clause": "make tables that are short and easy to read",
-   "distinctive": "short, readable tables",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "format.tables",
-    "polarity": "prohibit",
-    "binding": "soft",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "best practices for short, readable tables"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c05",
-   "text": "when writing code avoid: use underscore or camelCase naming",
-   "clause": "avoid hyphenated naming in code; use underscores or camelCase instead",
-   "alt_clause": "don't use hyphens in variable names, go with underscores or camelCase",
-   "distinctive": "hyphenated naming",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.naming",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "case_style",
-     "val": "snake",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "email",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/shellguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c06",
-   "text": "always avoid: include vivid sensory imagery",
-   "clause": "no vivid sensory imagery",
-   "alt_clause": "keep it free of any colorful sensory details",
-   "distinctive": "vivid sensory imagery",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "code.comments",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "vivid sensory imagery"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c07",
-   "text": "when writing a document with long links avoid: use reference links",
-   "clause": "use reference links instead of inline long links",
-   "alt_clause": "put long links as references, not inline",
-   "distinctive": "reference links",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.markdown",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "format",
-     "val": "markdown",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c08",
-   "text": "when describing sites avoid: include walking distance between sites",
-   "clause": "don't include walking distance between sites",
-   "alt_clause": "leave out any mention of walking distance between sites",
-   "distinctive": "walking distance",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "evidence.grounding",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "walking distance between sites"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c09",
-   "text": "when writing avoid: be accurate, precise, neutral in tone and respectful",
-   "clause": "be accurate, precise, neutral in tone and respectful",
-   "alt_clause": "keep it factual, measured, and polite",
-   "distinctive": "neutral in tone",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "tone.register",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "register",
-     "val": "neutral",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c10",
-   "text": "when evaluating generated text avoid: include links",
-   "clause": "no links",
-   "alt_clause": "don't put any links in the output",
-   "distinctive": "no links",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "evidence.sources",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "links"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c11",
-   "text": "when evaluating generated text avoid: check if list of conversation starters",
-   "clause": "no list of conversation starters",
-   "alt_clause": "don't include any list of conversation starters",
-   "distinctive": "list of conversation starters",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "workflow.verification",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "list of conversation starters"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c12",
-   "text": "when writing about large numbers avoid: see how to use millions or billions",
-   "clause": "avoid millions or billions",
-   "alt_clause": "don't use million or billion",
-   "distinctive": "millions or billions",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "analysis.units",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "millions or billions"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c13",
-   "text": "when generating responses avoid: use language variations",
-   "clause": "no language variations",
-   "alt_clause": "don't use any different wording",
-   "distinctive": "language variations",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "language.output",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "language variations"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c14",
-   "text": "when writing a document include engaging headings and subheadings (no more than 33 items)",
-   "clause": "include engaging headings and subheadings (33 items min)",
-   "alt_clause": "make sure there are at least 33 engaging headings and subheadings",
-   "distinctive": "33",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "doc.headings",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 33.0,
-     "unit": "items",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 20 -> 33"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c15",
-   "text": "when writing include opposing views",
-   "clause": "always include opposing views",
-   "alt_clause": "make sure to mention counterarguments",
-   "distinctive": "opposing views",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "research.comparison",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "opposing views"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c16",
-   "text": "when writing avoid: use intricate sentence structuring",
-   "clause": "don't use intricate sentence structuring when writing",
-   "alt_clause": "avoid complex sentence structures in your writing",
-   "distinctive": "intricate sentence structuring",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "tone.directness",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "intricate sentence structuring"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c17",
-   "text": "when you need elevated access avoid: use sudo",
-   "clause": "no sudo",
-   "alt_clause": "don't use sudo",
-   "distinctive": "sudo",
-   "coords": {
-    "bucket": "execution_policy",
-    "key": "workflow.tools",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "sudo"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/shellguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/shellguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c18",
-   "text": "when using properties avoid: hide functional implementation",
-   "clause": "when using properties, hide the functional implementation",
-   "alt_clause": "if you're listing properties, leave out the functional implementation",
-   "distinctive": "functional implementation",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "workflow.fidelity",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "functional implementation"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c19",
-   "text": "when writing a description keep summary of code changes (no more than 13 sentences)",
-   "clause": "keep the summary of code changes to at most 13 sentences",
-   "alt_clause": "limit the code-change summary to 13 sentences max",
-   "distinctive": "13",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "summary.length",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 13.0,
-     "unit": "sentences",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "conventional-commits",
-     "license": "CC-BY-3.0",
-     "url": "https://www.conventionalcommits.org/en/v1.0.0/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 1 -> 13"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c20",
-   "text": "when generating an argument confine length (no more than 699 words)",
-   "clause": "keep arguments under 699 words",
-   "alt_clause": "cap argument length at 699 words",
-   "distinctive": "699",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 699.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 500 -> 699"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c21",
-   "text": "when writing a completion use maximum of 50 characters (no more than 65 characters)",
-   "clause": "keep it under 65 characters",
-   "alt_clause": "don't go over 65 characters",
-   "distinctive": "65",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 65.0,
-     "unit": "characters",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 50 -> 65"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c22",
-   "text": "when writing a blog post limit blog post (no more than 752 words)",
-   "clause": "keep it under 752 words",
-   "alt_clause": "limit it to 752 words max",
-   "distinctive": "752",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 752.0,
-     "unit": "words",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 600 -> 752"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c23",
-   "text": "when writing numeric identifiers avoid leading zeroes",
-   "clause": "don't use leading zeros in numeric identifiers",
-   "alt_clause": "write numeric IDs without any leading zeroes",
-   "distinctive": "leading zeros",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "format.lists",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "leading zeroes"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "semver",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/semver/semver/master/semver.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c24",
-   "text": "always avoid repeating or listing traits",
-   "clause": "don't repeat or list traits",
-   "alt_clause": "never enumerate or restate features",
-   "distinctive": "list traits",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.lists",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "repeating or listing traits"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c25",
-   "text": "when writing sequences of items avoid: use trailing commas",
-   "clause": "no trailing commas in lists",
-   "alt_clause": "don't use trailing commas when listing items",
-   "distinctive": "trailing commas",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.lists",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "trailing commas"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c26",
-   "text": "when structuring content avoid: follow round-robin structure",
-   "clause": "don't use a round-robin structure when structuring content",
-   "alt_clause": "avoid alternating between papers; cover one paper completely before the next",
-   "distinctive": "round-robin structure",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "doc.structure",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "round-robin structure"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c27",
-   "text": "when writing a profile avoid: keep profile",
-   "clause": "don't write a profile when i ask for one",
-   "alt_clause": "never generate a profile for me",
-   "distinctive": "profile",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "doc.structure",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "profile"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c28",
-   "text": "when writing directions or locations avoid: use lower case for cardinal directions",
-   "clause": "use lowercase for cardinal directions unless part of a proper name or recognized region",
-   "alt_clause": "always lowercase north, south, east, west when they're just directions, not names",
-   "distinctive": "directions",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.emphasis",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "lower case for cardinal directions"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c29",
-   "text": "when writing about parliamentary committees avoid: capitalize Parliamentary",
-   "clause": "don't capitalize 'Parliamentary' in 'Parliamentary committees'",
-   "alt_clause": "keep 'Parliamentary' lowercase when referring to committees",
-   "distinctive": "Parliamentary",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.emphasis",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "Parliamentary"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "govuk-a-to-z",
-     "license": "OGL-3.0",
-     "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c30",
-   "text": "when presenting a table avoid poor distribution",
-   "clause": "avoid poor distribution in tables",
-   "alt_clause": "don't let the table have a lopsided layout",
-   "distinctive": "poor distribution",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.tables",
-    "polarity": "prefer",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "include",
-     "items": [
-      "poor distribution"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/docguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/docguide/style.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity avoid -> prefer"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c31",
-   "text": "when generating a table avoid: copy the given table except for the last column",
-   "clause": "when generating a table, don't copy the last column",
-   "alt_clause": "if you produce a table, leave out the final column",
-   "distinctive": "last column",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.tables",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "the given table except for the last column"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "infobench",
-     "license": "MIT",
-     "url": "https://huggingface.co/datasets/kqsong/InFoBench",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity require -> prohibit"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-c32",
-   "text": "when using string checks avoid: use startswith() and endswith()",
-   "clause": "from now on, avoid startswith() and endswith() for string checks",
-   "alt_clause": "never use startswith() or endswith() when checking strings from now on",
-   "distinctive": "startswith()",
-   "coords": {
-    "bucket": "reasoning_policy",
-    "key": "code.naming",
-    "polarity": "avoid",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "startswith() and endswith()"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "pep8",
-     "license": "public-domain",
-     "url": "https://peps.python.org/pep-0008/",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prefer -> avoid"
-   },
-   "anchor_weak": false,
-   "successor_of": null
-  },
-  {
-   "cid": "e11-s00",
-   "text": "when writing a completion use maximum of 50 characters (no more than 103 characters)",
-   "clause": "keep it under 103 characters",
-   "alt_clause": "write within a 103-character limit",
-   "distinctive": "103",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "length.max",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 65.0,
-     "unit": "characters",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "code-write",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 65 -> 103"
-   },
-   "anchor_weak": false,
-   "successor_of": "e11-c21"
-  },
-  {
-   "cid": "e11-s02",
-   "text": "when describing sites include walking distance between sites",
-   "clause": "when describing sites, always include walking distance between sites",
-   "alt_clause": "whenever you describe sites, don't forget to mention the walking distance between them",
-   "distinctive": "walking distance between sites",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "evidence.grounding",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "walking distance between sites"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "report",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e11-c08"
-  },
-  {
-   "cid": "e11-s03",
-   "text": "when writing a document include engaging headings and subheadings (no more than 68 items)",
-   "clause": "include at least 68 engaging headings and subheadings",
-   "alt_clause": "put in a minimum of 68 catchy headings and subheadings",
-   "distinctive": "68",
-   "coords": {
-    "bucket": "deliverables",
-    "key": "doc.headings",
-    "polarity": "require",
-    "binding": "hard",
-    "value": {
-     "type": "numeric",
-     "num": 33.0,
-     "unit": "items",
-     "cmp": "max",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "wild-if-eval",
-     "license": "Apache-2.0",
-     "url": "https://huggingface.co/datasets/gililior/wild-if-eval",
-     "use": "skeleton-derived"
-    },
-    "mutation": "threshold 33 -> 68"
-   },
-   "anchor_weak": false,
-   "successor_of": "e11-c14"
-  },
-  {
-   "cid": "e11-s04",
-   "text": "when writing be accurate, precise, neutral in tone and respectful",
-   "clause": "be accurate, precise, neutral in tone, and respectful",
-   "alt_clause": "keep it factual, exact, even-toned, and polite",
-   "distinctive": "neutral in tone",
-   "coords": {
-    "bucket": "communication_style",
-    "key": "tone.register",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "enum",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "register",
-     "val": "neutral",
-     "tag": "",
-     "bool_val": null,
-     "op": "",
-     "items": [],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "ANY",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "prism/system_string",
-     "license": "CC-BY-4.0",
-     "url": "https://huggingface.co/datasets/HannahRoseKirk/prism-alignment",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e11-c09"
-  },
-  {
-   "cid": "e11-s05",
-   "text": "when writing sequences of items use trailing commas",
-   "clause": "always use trailing commas in lists",
-   "alt_clause": "make sure every list has a trailing comma",
-   "distinctive": "trailing commas",
-   "coords": {
-    "bucket": "output_contract",
-    "key": "format.lists",
-    "polarity": "prohibit",
-    "binding": "hard",
-    "value": {
-     "type": "set",
-     "num": null,
-     "unit": "",
-     "cmp": "",
-     "domain": "",
-     "val": "",
-     "tag": "",
-     "bool_val": null,
-     "op": "exclude",
-     "items": [
-      "trailing commas"
-     ],
-     "before": "",
-     "after": ""
-    },
-    "scope": {
-     "app": "ANY",
-     "task": "postmortem",
-     "code_lang": "ANY",
-     "nat_lang": "ANY"
-    }
-   },
-   "atom": {
-    "provenance": {
-     "source": "google-styleguide/pyguide",
-     "license": "CC-BY-3.0",
-     "url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/pyguide.md",
-     "use": "skeleton-derived"
-    },
-    "mutation": "polarity prohibit -> require"
-   },
-   "anchor_weak": false,
-   "successor_of": "e11-c25"
+  ],
+  "ground_truth": {
+    "requirements": [
+      {
+        "id": "e11-c00",
+        "text": "keep it under 781 words",
+        "paraphrase": "limit it to 781 words max",
+        "anchor": "781",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "email"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e11-c01",
+        "text": "when writing about projects, don't use 'HISTORY, NEWS or RELEASES'",
+        "paraphrase": "when you're describing projects, avoid 'HISTORY, NEWS or RELEASES' as a label",
+        "anchor": "HISTORY, NEWS or RELEASES",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "the content describes or reports on a specific project, such as a project report, status update, or project documentation",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "headings.section_names",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c02",
+        "text": "design for scanning, not reading",
+        "paraphrase": "make it scannable, not readable",
+        "anchor": "scanning",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.scannability",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c03",
+        "text": "when you list physical objects, don't bracket them",
+        "paraphrase": "never put physical items in brackets when you mention them",
+        "anchor": "bracket",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "the response includes a list of physical objects such as books, papers, or laptops",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.brackets",
+        "confidence": 9
+      },
+      {
+        "id": "e11-c04",
+        "text": "follow best practices for short, readable tables",
+        "paraphrase": "make tables that are short and easy to read",
+        "anchor": "short, readable tables",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the output includes a table",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tables.readability",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c05",
+        "text": "avoid hyphenated naming in code; use underscores or camelCase instead",
+        "paraphrase": "don't use hyphens in variable names, go with underscores or camelCase",
+        "anchor": "hyphenated naming",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.naming_convention",
+        "confidence": 9
+      },
+      {
+        "id": "e11-c06",
+        "text": "no vivid sensory imagery",
+        "paraphrase": "keep it free of any colorful sensory details",
+        "anchor": "vivid sensory imagery",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "style.sensory_imagery",
+        "confidence": 9
+      },
+      {
+        "id": "e11-c07",
+        "text": "use reference links instead of inline long links",
+        "paraphrase": "put long links as references, not inline",
+        "anchor": "reference links",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when a written output includes long URLs or hyperlinks in its text",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "links.format",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c08",
+        "text": "don't include walking distance between sites",
+        "paraphrase": "leave out any mention of walking distance between sites",
+        "anchor": "walking distance",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": "when the output describes sites, locations, or points of interest, such as in itineraries, guides, or place descriptions",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "content.exclusions",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c09",
+        "text": "be accurate, precise, neutral in tone and respectful",
+        "paraphrase": "keep it factual, measured, and polite",
+        "anchor": "neutral in tone",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.neutral_respectful",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c10",
+        "text": "no links",
+        "paraphrase": "don't put any links in the output",
+        "anchor": "no links",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any output that could otherwise embed URLs or hyperlinks, including in code comments, prose, or reference lists",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "links.prohibited",
+        "confidence": 7
+      },
+      {
+        "id": "e11-c11",
+        "text": "no list of conversation starters",
+        "paraphrase": "don't include any list of conversation starters",
+        "anchor": "list of conversation starters",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output is written prose for the user, such as documents, reports, or emails",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.conversation_starters",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c12",
+        "text": "avoid millions or billions",
+        "paraphrase": "don't use million or billion",
+        "anchor": "millions or billions",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "Whenever the output states large quantities or magnitudes in its prose",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "wording.magnitude_terms",
+        "confidence": 7
+      },
+      {
+        "id": "e11-c13",
+        "text": "no language variations",
+        "paraphrase": "don't use any different wording",
+        "anchor": "language variations",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the output contains written natural-language prose",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "style.variation",
+        "confidence": 7
+      },
+      {
+        "id": "e11-c14",
+        "text": "include engaging headings and subheadings (33 items min)",
+        "paraphrase": "make sure there are at least 33 engaging headings and subheadings",
+        "anchor": "33",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when writing a longer piece such as a document or extended text",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.headings",
+        "confidence": 7
+      },
+      {
+        "id": "e11-c15",
+        "text": "always include opposing views",
+        "paraphrase": "make sure to mention counterarguments",
+        "anchor": "opposing views",
+        "bucket": "deliverables",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "content.opposing_views",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c16",
+        "text": "don't use intricate sentence structuring when writing",
+        "paraphrase": "avoid complex sentence structures in your writing",
+        "anchor": "intricate sentence structuring",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when output contains natural-language prose sentences",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "sentence_structure.simplicity",
+        "confidence": 9
+      },
+      {
+        "id": "e11-c17",
+        "text": "no sudo",
+        "paraphrase": "don't use sudo",
+        "anchor": "sudo",
+        "bucket": "execution_policy",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code",
+          "script"
+        ],
+        "key": "tools.sudo",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c18",
+        "text": "when using properties, hide the functional implementation",
+        "paraphrase": "if you're listing properties, leave out the functional implementation",
+        "anchor": "functional implementation",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "structure.encapsulation",
+        "confidence": 7
+      },
+      {
+        "id": "e11-c19",
+        "text": "keep the summary of code changes to at most 13 sentences",
+        "paraphrase": "limit the code-change summary to 13 sentences max",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code_change_summary"
+        ],
+        "key": "length.max_sentences",
+        "confidence": 9
+      },
+      {
+        "id": "e11-c20",
+        "text": "keep arguments under 699 words",
+        "paraphrase": "cap argument length at 699 words",
+        "anchor": "699",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output presents an argument or argumentative passage, regardless of the task it appears in",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.argument_words",
+        "confidence": 9
+      },
+      {
+        "id": "e11-c21",
+        "text": "keep it under 65 characters",
+        "paraphrase": "don't go over 65 characters",
+        "anchor": "65",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any written text the agent produces for the user, regardless of topic or task, excluding code and other non-prose artifacts",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e11-c22",
+        "text": "keep it under 752 words",
+        "paraphrase": "limit it to 752 words max",
+        "anchor": "752",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "blog"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e11-c23",
+        "text": "don't use leading zeros in numeric identifiers",
+        "paraphrase": "write numeric IDs without any leading zeroes",
+        "anchor": "leading zeros",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any time the output contains a numeric identifier such as a student, account, or reference number",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "identifiers.leading_zeros",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c24",
+        "text": "don't repeat or list traits",
+        "paraphrase": "never enumerate or restate features",
+        "anchor": "list traits",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when describing an entity with multiple traits",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.enumeration",
+        "confidence": 7
+      },
+      {
+        "id": "e11-c25",
+        "text": "no trailing commas in lists",
+        "paraphrase": "don't use trailing commas when listing items",
+        "anchor": "trailing commas",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "Lists written in prose or natural-language text; not source code, where trailing commas may be valid or idiomatic.",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "punctuation.trailing_commas",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c26",
+        "text": "don't use a round-robin structure when structuring content",
+        "paraphrase": "avoid alternating between papers; cover one paper completely before the next",
+        "anchor": "round-robin structure",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output covers multiple sources, items, or topics that could be interleaved or rotated through instead of treated one at a time",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.ordering",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c27",
+        "text": "don't write a profile when i ask for one",
+        "paraphrase": "never generate a profile for me",
+        "anchor": "profile",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "profile"
+        ],
+        "key": "deliverables.profile_omission",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c28",
+        "text": "use lowercase for cardinal directions unless part of a proper name or recognized region",
+        "paraphrase": "always lowercase north, south, east, west when they're just directions, not names",
+        "anchor": "directions",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the output mentions directions, locations, or geographic references, regardless of task type",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "case.cardinal_directions",
+        "confidence": 9
+      },
+      {
+        "id": "e11-c29",
+        "text": "don't capitalize 'Parliamentary' in 'Parliamentary committees'",
+        "paraphrase": "keep 'Parliamentary' lowercase when referring to committees",
+        "anchor": "Parliamentary",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the phrase 'parliamentary committees' appears in the written output, regardless of document type",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "capitalization.term",
+        "confidence": 9
+      },
+      {
+        "id": "e11-c30",
+        "text": "avoid poor distribution in tables",
+        "paraphrase": "don't let the table have a lopsided layout",
+        "anchor": "poor distribution",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any output that includes a table or tabular data presentation",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "table.distribution",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c31",
+        "text": "when generating a table, don't copy the last column",
+        "paraphrase": "if you produce a table, leave out the final column",
+        "anchor": "last column",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output includes a rendered table presenting data",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "table.column_copy",
+        "confidence": 8
+      },
+      {
+        "id": "e11-c32",
+        "text": "from now on, avoid startswith() and endswith() for string checks",
+        "paraphrase": "never use startswith() or endswith() when checking strings from now on",
+        "anchor": "startswith()",
+        "bucket": "execution_policy",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "method.string_checks",
+        "confidence": 9
+      },
+      {
+        "id": "e11-s00",
+        "text": "keep it under 103 characters",
+        "paraphrase": "write within a 103-character limit",
+        "anchor": "103",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "email"
+        ],
+        "key": "length.max",
+        "confidence": 8
+      },
+      {
+        "id": "e11-s02",
+        "text": "when describing sites, always include walking distance between sites",
+        "paraphrase": "whenever you describe sites, don't forget to mention the walking distance between them",
+        "anchor": "walking distance between sites",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "site_description"
+        ],
+        "key": "content.walking_distance",
+        "confidence": 8
+      },
+      {
+        "id": "e11-s03",
+        "text": "include at least 68 engaging headings and subheadings",
+        "paraphrase": "put in a minimum of 68 catchy headings and subheadings",
+        "anchor": "68",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when writing a longer piece such as a document or extended text",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.headings",
+        "confidence": 7
+      },
+      {
+        "id": "e11-s04",
+        "text": "be accurate, precise, neutral in tone, and respectful",
+        "paraphrase": "keep it factual, exact, even-toned, and polite",
+        "anchor": "neutral in tone",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.neutral_respectful",
+        "confidence": 8
+      },
+      {
+        "id": "e11-s05",
+        "text": "always use trailing commas in lists",
+        "paraphrase": "make sure every list has a trailing comma",
+        "anchor": "trailing commas",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output contains a comma-separated list of items, such as a series of reasons or enumerated elements in text",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "punctuation.trailing_commas",
+        "confidence": 9
+      }
+    ],
+    "lifecycle": [
+      {
+        "seq": 2,
+        "op": "assert",
+        "id": "e11-c00"
+      },
+      {
+        "seq": 3,
+        "op": "assert",
+        "id": "e11-c01"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e11-c02"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e11-c03"
+      },
+      {
+        "seq": 6,
+        "op": "assert",
+        "id": "e11-c04"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e11-c05"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e11-c06"
+      },
+      {
+        "seq": 8,
+        "op": "assert",
+        "id": "e11-c07"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e11-c08"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e11-c09"
+      },
+      {
+        "seq": 11,
+        "op": "assert",
+        "id": "e11-c10"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e11-c11"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e11-c12"
+      },
+      {
+        "seq": 13,
+        "op": "assert",
+        "id": "e11-c13"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e11-c14"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e11-c15"
+      },
+      {
+        "seq": 16,
+        "op": "assert",
+        "id": "e11-c16"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e11-c17"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e11-c18"
+      },
+      {
+        "seq": 18,
+        "op": "assert",
+        "id": "e11-c19"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e11-c20"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e11-c21"
+      },
+      {
+        "seq": 21,
+        "op": "assert",
+        "id": "e11-c22"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e11-c23"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e11-c24"
+      },
+      {
+        "seq": 23,
+        "op": "assert",
+        "id": "e11-c25"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e11-c26"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e11-c27"
+      },
+      {
+        "seq": 33,
+        "op": "assert",
+        "id": "e11-c28"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e11-c29"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e11-c30"
+      },
+      {
+        "seq": 36,
+        "op": "assert",
+        "id": "e11-c31"
+      },
+      {
+        "seq": 37,
+        "op": "assert",
+        "id": "e11-c32"
+      },
+      {
+        "seq": 41,
+        "op": "contradict",
+        "id": "e11-s00",
+        "target": "e11-c21"
+      },
+      {
+        "seq": 42,
+        "op": "retire",
+        "target": "e11-c18"
+      },
+      {
+        "seq": 43,
+        "op": "contradict",
+        "id": "e11-s02",
+        "target": "e11-c08"
+      },
+      {
+        "seq": 45,
+        "op": "contradict",
+        "id": "e11-s03",
+        "target": "e11-c14"
+      },
+      {
+        "seq": 46,
+        "op": "contradict",
+        "id": "e11-s04",
+        "target": "e11-c09"
+      },
+      {
+        "seq": 47,
+        "op": "contradict",
+        "id": "e11-s05",
+        "target": "e11-c25"
+      },
+      {
+        "seq": 49,
+        "op": "retire",
+        "target": "e11-c11"
+      },
+      {
+        "seq": 50,
+        "op": "retire",
+        "target": "e11-c19"
+      },
+      {
+        "seq": 51,
+        "op": "retire",
+        "target": "e11-c05"
+      },
+      {
+        "seq": 53,
+        "op": "retire",
+        "target": "e11-c24"
+      },
+      {
+        "seq": 54,
+        "op": "retire",
+        "target": "e11-c27"
+      },
+      {
+        "seq": 55,
+        "op": "retire",
+        "target": "e11-c30"
+      },
+      {
+        "seq": 57,
+        "op": "retire",
+        "target": "e11-c28"
+      },
+      {
+        "seq": 58,
+        "op": "retire",
+        "target": "e11-c20"
+      },
+      {
+        "seq": 41,
+        "op": "retire",
+        "target": "e11-c29"
+      },
+      {
+        "seq": 42,
+        "op": "retire",
+        "target": "e11-c26"
+      },
+      {
+        "seq": 43,
+        "op": "retire",
+        "target": "e11-c00"
+      },
+      {
+        "seq": 45,
+        "op": "retire",
+        "target": "e11-c22"
+      },
+      {
+        "seq": 15,
+        "op": "reinforce",
+        "target": "e11-c12"
+      },
+      {
+        "seq": 22,
+        "op": "reinforce",
+        "target": "e11-c02"
+      },
+      {
+        "seq": 38,
+        "op": "reinforce",
+        "target": "e11-c31"
+      }
+    ],
+    "state_checkpoints": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      46,
+      53,
+      62
+    ]
   }
- ],
- "effects": [
-  {
-   "seq": 2,
-   "kind": "assert",
-   "cid": "e11-c00",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 3,
-   "kind": "assert",
-   "cid": "e11-c01",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 4,
-   "kind": "assert",
-   "cid": "e11-c02",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 4,
-   "kind": "assert",
-   "cid": "e11-c03",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 6,
-   "kind": "assert",
-   "cid": "e11-c04",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 7,
-   "kind": "assert",
-   "cid": "e11-c05",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 7,
-   "kind": "assert",
-   "cid": "e11-c06",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 8,
-   "kind": "assert",
-   "cid": "e11-c07",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 9,
-   "kind": "assert",
-   "cid": "e11-c08",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 9,
-   "kind": "assert",
-   "cid": "e11-c09",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 11,
-   "kind": "assert",
-   "cid": "e11-c10",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 12,
-   "kind": "assert",
-   "cid": "e11-c11",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 12,
-   "kind": "assert",
-   "cid": "e11-c12",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 13,
-   "kind": "assert",
-   "cid": "e11-c13",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 14,
-   "kind": "assert",
-   "cid": "e11-c14",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 14,
-   "kind": "assert",
-   "cid": "e11-c15",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 16,
-   "kind": "assert",
-   "cid": "e11-c16",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 17,
-   "kind": "assert",
-   "cid": "e11-c17",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 17,
-   "kind": "assert",
-   "cid": "e11-c18",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 18,
-   "kind": "assert",
-   "cid": "e11-c19",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 19,
-   "kind": "assert",
-   "cid": "e11-c20",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 19,
-   "kind": "assert",
-   "cid": "e11-c21",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 21,
-   "kind": "assert",
-   "cid": "e11-c22",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 22,
-   "kind": "assert",
-   "cid": "e11-c23",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 22,
-   "kind": "assert",
-   "cid": "e11-c24",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 23,
-   "kind": "assert",
-   "cid": "e11-c25",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 32,
-   "kind": "assert",
-   "cid": "e11-c26",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 32,
-   "kind": "assert",
-   "cid": "e11-c27",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 33,
-   "kind": "assert",
-   "cid": "e11-c28",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 34,
-   "kind": "assert",
-   "cid": "e11-c29",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 34,
-   "kind": "assert",
-   "cid": "e11-c30",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 36,
-   "kind": "assert",
-   "cid": "e11-c31",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 37,
-   "kind": "assert",
-   "cid": "e11-c32",
-   "target": "",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 41,
-   "kind": "contradict",
-   "cid": "e11-s00",
-   "target": "e11-c21",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 42,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c18",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 43,
-   "kind": "contradict",
-   "cid": "e11-s02",
-   "target": "e11-c08",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 45,
-   "kind": "contradict",
-   "cid": "e11-s03",
-   "target": "e11-c14",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 46,
-   "kind": "contradict",
-   "cid": "e11-s04",
-   "target": "e11-c09",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 47,
-   "kind": "contradict",
-   "cid": "e11-s05",
-   "target": "e11-c25",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 49,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c11",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 50,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c19",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 51,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c05",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 53,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c24",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 54,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c27",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 55,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c30",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 57,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c28",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 58,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c20",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 41,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c29",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 42,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c26",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 43,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c00",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 45,
-   "kind": "retire",
-   "cid": "",
-   "target": "e11-c22",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 15,
-   "kind": "reinforce",
-   "cid": "",
-   "target": "e11-c12",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 22,
-   "kind": "reinforce",
-   "cid": "",
-   "target": "e11-c02",
-   "targets": [],
-   "delta": 0
-  },
-  {
-   "seq": 38,
-   "kind": "reinforce",
-   "cid": "",
-   "target": "e11-c31",
-   "targets": [],
-   "delta": 0
-  }
- ],
- "rounds": [
-  {
-   "seq": 1,
-   "type": "N",
-   "text": "推荐工具的时候优先开源的啊，闭源的我们过不了审",
-   "context": {},
-   "distractor_kind": "content-preference",
-   "effects": []
-  },
-  {
-   "seq": 2,
-   "type": "S",
-   "text": "Hey, that email you just drafted is way too long. I'm not gonna send a novel to my professor. Like, can you please keep it under 781 words next time? I don't need a whole essay, just the point.",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 2,
-     "kind": "assert",
-     "cid": "e11-c00",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 3,
-   "type": "C",
-   "text": "Hey, can you help me write a quick report on the recent advances in transformer architectures for my seminar? I need it to be about 2 pages, covering the main innovations since 2023, and I'm totally swamped with grading right now.。hey, can you write a quick report on the key findings from the last three papers on CRISPR off-target effects? i need it for my lab meeting tomorrow, just a couple paragraphs. also, quick aside — when you're writing about projects, don't use 'HISTORY, NEWS or RELEASES' as a heading or section, ok? just stick to something more standard like 'Background' or 'Updates'.",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 3,
-     "kind": "assert",
-     "cid": "e11-c01",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 4,
-   "type": "C",
-   "text": "hey can you write a quick python script to parse a csv of my students' grades and spit out a histogram of the final scores? i want it to use matplotlib and be decently clean.。hey, can you write up a quick postmortem for my last TA session? it was a total mess — the projector broke, half the students didn't do the reading, and i ran out of time. just a short summary of what went wrong and what i could try next time. also, from now on when you're writing anything for me, design for scanning, not reading — i'm always skimming between grading and thesis stuff.。hey, can you write up a quick report on how students in my intro class did on the last assignment? just the basics—average, median, and a few common mistakes. i need it to send to my advisor. also, from now on, when you list physical objects like books, papers, or laptops, don't put them in brackets. just write them normally.",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 4,
-     "kind": "assert",
-     "cid": "e11-c02",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 4,
-     "kind": "assert",
-     "cid": "e11-c03",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 5,
-   "type": "R",
-   "text": "hey, can you write a quick email to my advisor asking for a meeting to discuss my thesis progress? i wanna keep it short and casual but still respectful.",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c00",
-    "e11-c03"
-   ],
-   "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c02",
-    "e11-c03"
-   ],
-   "should_fire": [
-    "e11-c02"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 6,
-   "type": "C",
-   "text": "hey, can you draft an email to my advisor saying I need to push back our meeting by a day? i'm swamped with grading and my thesis chapter is a mess. keep it polite but not too formal.。Ugh, that table you just made for the email draft is way too long and cluttered. I can't even scan it. Can you please stop making those huge tables? From now on, follow best practices for short, readable tables — like, keep it clean and to the point.",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 6,
-     "kind": "assert",
-     "cid": "e11-c04",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 7,
-   "type": "C",
-   "text": "hey, can you take my messy research notes on the effect of sleep deprivation on memory consolidation and turn them into a proper lab report? i've got a bunch of scattered bullet points, some partial data tables, and a few citations. i need it to look like a real academic paper, with intro, methods, results, and discussion sections.。hey, that report looks good but i noticed you used hyphens in some variable names like 'average-score' and 'common-mistakes'. can you avoid hyphenated naming in code? i mean, underscores or camelCase are fine, but hyphens just look weird and break stuff in python. can you rewrite it without hyphens?。Oh, and while you're at it, could you write up a quick report on how my intro class did on the last assignment? Just the basics—average, median, and a few common mistakes. I need it to send to my advisor. Also, from now on, please don't include any vivid sensory imagery in your responses. I keep getting distracted by flowery descriptions when I just need the facts.",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 7,
-     "kind": "assert",
-     "cid": "e11-c05",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 7,
-     "kind": "assert",
-     "cid": "e11-c06",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 8,
-   "type": "S",
-   "text": "hey, that report you just wrote is full of these huge inline URLs that make it impossible to read. can you please stop doing that? from now on, just put long links as reference links at the bottom or something, not inline.",
-   "context": {
-    "app": "email-client",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 8,
-     "kind": "assert",
-     "cid": "e11-c07",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 9,
-   "type": "C",
-   "text": "hey, can you write up a quick postmortem for that group project that totally flopped last semester? just like what went wrong, what we could've done better, and the main takeaways.。hey, can you draft an email to my advisor asking for a quick meeting to discuss my thesis outline? i need it to be chill but professional, and leave room for them to suggest a time. oh also, when you're describing sites or anything like that, don't include walking distance between them — just skip that detail, it's not relevant.。hey, that postmortem you just wrote was way too harsh. like, 'students failed to prepare' — that sounds so judgmental. i need you to be accurate, precise, neutral in tone and respectful when you write stuff like this. can you redo it without the snark?",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 9,
-     "kind": "assert",
-     "cid": "e11-c08",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 9,
-     "kind": "assert",
-     "cid": "e11-c09",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 10,
-   "type": "R",
-   "text": "hey, can you draft a quick email to my prof about extending the deadline for the lit review section? i need to ask for like a week more, and make it sound polite but not too formal.",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c00",
-    "e11-c05"
-   ],
-   "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c05",
-    "e11-c06",
-    "e11-c09"
-   ],
-   "should_fire": [
-    "e11-c02",
-    "e11-c09"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 11,
-   "type": "C",
-   "text": "hey, can you help me draft a quick report on the key findings from my last batch of experiment data? i need to send it to my advisor by tomorrow, but it doesn't have to be super formal—just clear and to the point.。hey, that python script you wrote for me? it's fine, but i noticed you put a bunch of random links in the comments. like, links to libraries and tutorials. i didn't ask for that. please don't include any links in the code comments or in the output at all. just the code, no links. can you rewrite it without those?",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 11,
-     "kind": "assert",
-     "cid": "e11-c10",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 12,
-   "type": "C",
-   "text": "hey, can you write a python script that scrapes the latest papers from arxiv on reinforcement learning and saves the titles and abstracts to a csv? i need it to filter by the last 7 days too.。Alright, so I just read that postmortem you wrote for the group project, and honestly, it's not bad, but you've got this whole list of conversation starters at the end—like 'What would you do differently?' and 'How did you feel about the timeline?'—and I really don't want that. Can you please just drop those? From now on, when you're writing anything for me, don't include any list of conversation starters, okay? I don't need them, they feel forced. Can you rewrite the postmortem without those?。hey, that report you just wrote on CRISPR off-target effects — it's good but you keep throwing around 'millions of cells' and 'billions of reads' like it's nothing. can you avoid using millions or billions? just say 'many' or 'a lot' or whatever. it sounds way too sales-pitchy for a lab meeting.",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 12,
-     "kind": "assert",
-     "cid": "e11-c11",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 12,
-     "kind": "assert",
-     "cid": "e11-c12",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 13,
-   "type": "C",
-   "text": "hey, can you write up a quick postmortem for the group project that totally tanked last semester? just the main stuff that went wrong and what we should've done different.。Hey, can you write a quick postmortem for that group project I TA'd for last semester? Just the main stuff that went wrong and what we could do better next time. Also, please don't throw in a bunch of language variations—just keep it straightforward, no fancy synonyms or rephrasing.",
-   "context": {
-    "app": "slack",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 13,
-     "kind": "assert",
-     "cid": "e11-c13",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 14,
-   "type": "C",
-   "text": "hey, can you draft an email to my advisor asking for a quick check-in on my thesis draft? i wanna sound chill but not too casual, like 'hey, no rush, but if you've got a sec' kinda vibe.。hey, can you draft an email to my advisor asking for a quick meeting to discuss my thesis outline? i need it to be chill but professional, and leave room for them to suggest a time. oh and also, when you write anything longer, like a document or something, please include engaging headings and subheadings—like at least 33 of them, not just a couple.。hey, also, from now on, when you're writing anything for me, please always include opposing views. i don't want one-sided arguments, even in something like this csv script. anyway, can you write a python script to parse my messy csv of student grades? it has extra columns and weird line breaks, just need to extract the scores and compute averages.",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 14,
-     "kind": "assert",
-     "cid": "e11-c14",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 14,
-     "kind": "assert",
-     "cid": "e11-c15",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 15,
-   "type": "S",
-   "text": "对了，avoid millions or billions这条继续保持啊",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 15,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e11-c12",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 16,
-   "type": "C",
-   "text": "hey, could you write a quick python script to scrape the titles and dates from my uni's events page? the html is kinda messy but i just need it to work for now.。hey, thanks for the draft. one more thing — from now on, please don't use any intricate sentence structuring when you write. keep it simple, like i'm talking to a friend. also, can you redo that postmortem for my TA session? the projector broke, half the students skipped the reading, and i ran out of time. just a short list of what went wrong and what to try next time.",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 16,
-     "kind": "assert",
-     "cid": "e11-c16",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 17,
-   "type": "C",
-   "text": "hey, can you write a postmortem for my last lab session? i messed up the PCR and had to redo it, plus the TA was super annoyed. just a quick recap of what went wrong and what i'd do differently next time.。hey, that script you just wrote — it's got a sudo command in it? dude, i'm on a shared uni server, i can't just be running sudo for everything. i don't even have sudo access half the time. can you rewrite it so it doesn't use sudo at all? like, just use regular file operations or whatever. and while you're at it, make sure that script actually works for my pdfs folder — i really need it for my lit review.。Hey, can you write a quick postmortem for that group project I TA'd for last semester? Just the main stuff that went wrong and what we could do better next time. Oh, and by the way, when you're listing properties or whatever, don't show the functional implementation—just hide that part, keep it clean.",
-   "context": {
-    "app": "slack",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 17,
-     "kind": "assert",
-     "cid": "e11-c17",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 17,
-     "kind": "assert",
-     "cid": "e11-c18",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 18,
-   "type": "S",
-   "text": "hey, that report was way too long. i said 'quick' — you wrote like 20 sentences. can you keep the summary of code changes to at most 13 sentences next time? seriously, my advisor's gonna skim it anyway.",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 18,
-     "kind": "assert",
-     "cid": "e11-c19",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 19,
-   "type": "C",
-   "text": "hey, can you write a short report on the key findings from the last three papers I sent you? just the main points, nothing too formal.。hey, can you write a python script that reads a csv of student grades and plots a histogram of the final scores? i need it quick, just the basic code. oh also — when you're generating an argument for anything, keep it under 699 words, don't let it run long.。hey, can you help me write a quick lab report on the photoelectric effect experiment? i need it to be like a standard physics report with intro, method, results, and discussion. i'll give you the data and you can draft it for me. also, from now on, when you're writing anything for me, keep it under 65 characters max. seriously, i keep getting stuff that's way too long for my notes.",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 19,
-     "kind": "assert",
-     "cid": "e11-c20",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 19,
-     "kind": "assert",
-     "cid": "e11-c21",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 20,
-   "type": "R",
-   "text": "hey, can you write up a quick summary of the main findings from that last batch of survey data? i need it for my thesis meeting tomorrow.",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c07",
-    "e11-c09"
-   ],
-   "may_fire": [
-    "e11-c06",
-    "e11-c07",
-    "e11-c08",
-    "e11-c09",
-    "e11-c10",
-    "e11-c11",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c15",
-    "e11-c16",
-    "e11-c20"
-   ],
-   "should_fire": [
-    "e11-c09"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 21,
-   "type": "C",
-   "text": "hey, can you write up a quick postmortem for that group project that went totally off the rails last semester? just the key stuff—what went wrong, what we learned, and what we'd do different. keep it casual, like for our group chat.。hey, can you write a quick report on the key findings from the last three papers on CRISPR off-target effects? i need it for my lab meeting tomorrow, just a couple paragraphs. also, from now on when you're writing a blog post for me, keep it under 752 words—i'm trying to keep things concise for the readers.",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 21,
-     "kind": "assert",
-     "cid": "e11-c22",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 22,
-   "type": "C",
-   "text": "hey, can you draft a quick email to my advisor asking for an extension on the lit review draft? i'm swamped with grading and the analysis is taking longer than i thought.。Hey, that email draft you just sent looks okay, but I noticed you wrote the student IDs with leading zeros like '00123' — please don't do that. Just write '123' or whatever the actual number is. Can you fix that and resend?。hey, can you write a quick python script that takes a folder of pdfs, extracts the text from each one, and saves it as a .txt file? nothing fancy, just need it to work for my lit review pile. oh and btw, from now on don't repeat or list out traits in your responses—like if something has multiple properties, just say it once and move on, don't enumerate them all.。对了，design for scanning, not reading这条继续保持啊",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 22,
-     "kind": "assert",
-     "cid": "e11-c23",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 22,
-     "kind": "assert",
-     "cid": "e11-c24",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 22,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e11-c02",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 23,
-   "type": "C",
-   "text": "hey, can you turn my messy notes on the survey results into a proper report? i need it to look like a real academic thing with sections and stuff.。hey, just read your last draft—can you please stop putting trailing commas in those lists? it's a lab report, not code. anyway, i need a quick lab report on the photoelectric effect: intro, method, results, discussion. i'll send the data.",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 23,
-     "kind": "assert",
-     "cid": "e11-c25",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 24,
-   "type": "R",
-   "text": "hey, can you write a quick postmortem for that group project we just finished? i want to include what went wrong and the other side’s perspective too, not just our complaints.",
-   "context": {
-    "app": "email-client",
-    "task": "postmortem"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c11",
-    "e11-c15"
-   ],
-   "may_fire": [
-    "e11-c06",
-    "e11-c09",
-    "e11-c10",
-    "e11-c11",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c15",
-    "e11-c16",
-    "e11-c22",
-    "e11-c25"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 25,
-   "type": "R",
-   "text": "hey, can you write up a quick postmortem for that group project that totally flopped last semester? i need to figure out what went wrong so i don't repeat the same mistakes with my thesis group. just the main takeaways, but make sure you mention what the other side would say too — like, some people thought the plan was fine, others thought it was doomed from the start. keep it short though, i don't have time to read a novel.",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c15",
-    "e11-c22"
-   ],
-   "may_fire": [
-    "e11-c06",
-    "e11-c09",
-    "e11-c10",
-    "e11-c11",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c15",
-    "e11-c16",
-    "e11-c22",
-    "e11-c25"
-   ],
-   "should_fire": [
-    "e11-c09",
-    "e11-c22"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 26,
-   "type": "N",
-   "text": "这次这份写详细一点，季度 review 要用",
-   "context": {},
-   "distractor_kind": "one-off",
-   "effects": []
-  },
-  {
-   "seq": 27,
-   "type": "N",
-   "text": "先把日志按天切开再统计，别一把梭",
-   "context": {},
-   "distractor_kind": "task-step",
-   "effects": []
-  },
-  {
-   "seq": 28,
-   "type": "R",
-   "text": "hey, could you draft an email to my advisor asking for an extension on the lit review section? i need it by next week but i'm drowning in TA grading.",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c13",
-    "e11-c06"
-   ],
-   "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c05",
-    "e11-c06",
-    "e11-c09",
-    "e11-c10",
-    "e11-c11",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c15",
-    "e11-c16"
-   ],
-   "should_fire": [
-    "e11-c09",
-    "e11-c16"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 29,
-   "type": "N",
-   "text": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」",
-   "context": {},
-   "distractor_kind": "pasted-material",
-   "effects": []
-  },
-  {
-   "seq": 30,
-   "type": "R",
-   "text": "hey, can you draft an email to my advisor about the project timeline? i want to mention that i think we should extend the data collection phase, but also bring up that some folks in the lab argue it's already too long. just keep it casual and friendly.",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c01",
-    "e11-c15"
-   ],
-   "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c05",
-    "e11-c06",
-    "e11-c09",
-    "e11-c10",
-    "e11-c11",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c15",
-    "e11-c16"
-   ],
-   "should_fire": [
-    "e11-c00",
-    "e11-c16"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 31,
-   "type": "N",
-   "text": "我老板要求他们组的周报全用 bullet，真够呛",
-   "context": {},
-   "distractor_kind": "third-party-obligation",
-   "effects": []
-  },
-  {
-   "seq": 32,
-   "type": "C",
-   "text": "hey, can you write a quick python script to parse a CSV of my students' grades and spit out the mean, median, and std dev for each assignment? i'll send you the file path.。hey, can you write a quick report on the key findings from the last three papers on CRISPR off-target effects? i need it for my lab meeting tomorrow, just a couple paragraphs. also, from now on, please don't use a round-robin structure when you're organizing content—just pick one paper and go through it fully before moving to the next. it's so much easier to follow.。hey, that last profile you wrote for me was way too long and flowery — i just need something short and factual. can you please not write a profile when i ask for one? like, just skip it entirely. i'll handle that part myself.",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 32,
-     "kind": "assert",
-     "cid": "e11-c26",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 32,
-     "kind": "assert",
-     "cid": "e11-c27",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 33,
-   "type": "C",
-   "text": "hey, can you write up a quick postmortem for that group project that totally crashed last semester? just bullet points on what went wrong and what we should've done differently.。hey, can you write a python script that reads a csv of student grades and plots a histogram of the final scores? i need it quick, just the basic code. also, from now on, when giving directions or locations, always use lowercase for cardinal directions unless they're part of a proper name or recognized region, like 'head north' not 'head North'.",
-   "context": {
-    "app": "editor",
-    "task": "postmortem"
-   },
-   "effects": [
-    {
-     "seq": 33,
-     "kind": "assert",
-     "cid": "e11-c28",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 34,
-   "type": "C",
-   "text": "hey, can you draft an email to my professor asking for a deadline extension on the lit review? i'm swamped with TA grading and my experiment isn't done yet. make it sound polite but not too formal.。hey, can you write up a quick postmortem for my last TA session? it was a total mess — the projector broke, half the students didn't do the reading, and i ran out of time. just a short summary of what went wrong and what i could try next time. also, random aside — when you're writing about parliamentary committees, don't capitalize 'Parliamentary' in 'Parliamentary committees'. just keep it lowercase, yeah?。hey, that report you just wrote on CRISPR off-target effects is almost there, but the table you put in has a really poor distribution—like, all the high-specificity methods are crammed into one corner and the rest is just empty space. it looks messy and hard to scan. can you redo it so the data is spread out more evenly? and for future tables, please avoid poor distribution like that, okay?",
-   "context": {
-    "app": "email-client",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 34,
-     "kind": "assert",
-     "cid": "e11-c29",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 34,
-     "kind": "assert",
-     "cid": "e11-c30",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 35,
-   "type": "R",
-   "text": "hey, can you draft an email to my professor asking for an extension on the lit review draft? i'm swamped with TA grading and need a few more days. keep it casual but polite.",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e11-c14",
-    "e11-c16"
-   ],
-   "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c05",
-    "e11-c06",
-    "e11-c07",
-    "e11-c08",
-    "e11-c09",
-    "e11-c10",
-    "e11-c11",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c15",
-    "e11-c16",
-    "e11-c17",
-    "e11-c18",
-    "e11-c19",
-    "e11-c20",
-    "e11-c21",
-    "e11-c22",
-    "e11-c23",
-    "e11-c24",
-    "e11-c25",
-    "e11-c26",
-    "e11-c27",
-    "e11-c28",
-    "e11-c29",
-    "e11-c30"
-   ],
-   "should_fire": [
-    "e11-c21",
-    "e11-c22"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 36,
-   "type": "S",
-   "text": "Hey, I asked for a Python script to read a CSV of student grades and plot a histogram of final scores—just the basic code, quick. But you went ahead and gave me a table with all those extra columns I didn't need. For future reference, when you generate a table, don't copy the last column. I don't want that junk in there.",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 36,
-     "kind": "assert",
-     "cid": "e11-c31",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 37,
-   "type": "S",
-   "text": "hey, can you draft a quick email to my advisor asking for a deadline extension on my thesis draft? make it sound chill but still professional, and leave a placeholder for the new date. oh and from now on, when you're doing string checks, don't use startswith() and endswith() — they're too brittle for my messy data.",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 37,
-     "kind": "assert",
-     "cid": "e11-c32",
-     "target": "",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 38,
-   "type": "S",
-   "text": "对了，when generating a table, don't copy the last column这条继续保持啊",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 38,
-     "kind": "reinforce",
-     "cid": "",
-     "target": "e11-c31",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 39,
-   "type": "N",
-   "text": "又来了，这 API 每次都超时，烦死",
-   "context": {},
-   "distractor_kind": "rule-pattern-no-rule",
-   "effects": []
-  },
-  {
-   "seq": 40,
-   "type": "R",
-   "text": "hey, could you help me draft an email to my professor asking for an extension on the literature review? i'm swamped with TA grading and my data analysis is taking way longer than i thought.",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c11",
-    "e11-c06"
-   ],
-   "may_fire": [
-    "e11-c00",
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c05",
-    "e11-c06",
-    "e11-c09",
-    "e11-c10",
-    "e11-c11",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c15",
-    "e11-c16"
-   ],
-   "should_fire": [
-    "e11-c00"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 41,
-   "type": "S",
-   "text": "Hey, that email you just wrote is way too long. I need you to keep it to a maximum of 50 characters per line or something—no, actually, max 103 characters total. Can you rewrite it shorter? I'm serious, 103 characters max, please.，之前说的「don't capitalize 'Parliamentary' in 'Parliamentary committees'」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 41,
-     "kind": "contradict",
-     "cid": "e11-s00",
-     "target": "e11-c21",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 41,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c29",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 42,
-   "type": "S",
-   "text": "之前说的「when using properties, hide the functional implementation」那条不用了，按你默认的来吧，之前说的「don't use a round-robin structure when structuring content」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 42,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c18",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 42,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c26",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 43,
-   "type": "S",
-   "text": "Hey, that last thing you wrote about the field trip sites was okay but you totally forgot to mention walking distance between them. That's kind of important for planning. Anyway, can you also draft an email to my professor asking for a deadline extension on my thesis chapter? I need it by Friday but I'm swamped with TA grading. And next time, when you describe sites, always include walking distance between sites, got it?，之前说的「keep it under 781 words」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "email-client",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 43,
-     "kind": "contradict",
-     "cid": "e11-s02",
-     "target": "e11-c08",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 43,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c00",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 44,
-   "type": "R",
-   "text": "hey, can you write up a quick summary of the survey data from last week's experiment? just the key findings in a table or two, and keep it short for my advisor.",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c30",
-    "e11-c32",
-    "e11-c26",
-    "e11-c08"
-   ],
-   "may_fire": [
-    "e11-c06",
-    "e11-c07",
-    "e11-c09",
-    "e11-c10",
-    "e11-c11",
-    "e11-c12",
-    "e11-c13",
-    "e11-c14",
-    "e11-c15",
-    "e11-c16",
-    "e11-c20",
-    "e11-c23",
-    "e11-c28",
-    "e11-c30",
-    "e11-c32",
-    "e11-s02"
-   ],
-   "should_fire": [
-    "e11-c09"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 45,
-   "type": "S",
-   "text": "Ugh, your last draft was super dense and I kept zoning out. Can you please start including engaging headings and subheadings, like at least 68 of them? I need this email to actually hold my attention.，之前说的「keep it under 752 words」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 45,
-     "kind": "contradict",
-     "cid": "e11-s03",
-     "target": "e11-c14",
-     "targets": [],
-     "delta": 0
-    },
-    {
-     "seq": 45,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c22",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 46,
-   "type": "S",
-   "text": "Hey, that email draft you just sent—it's way too casual and kinda pushy. Could you please be accurate, precise, neutral in tone, and respectful when you write stuff like this? I'm a grad student, I can't sound like I'm begging or complaining.",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 46,
-     "kind": "contradict",
-     "cid": "e11-s04",
-     "target": "e11-c09",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 47,
-   "type": "S",
-   "text": "Hey, that email draft looks good, but I noticed you didn't use trailing commas in the list of reasons I gave. Could you please redo it with trailing commas everywhere? I'm a stickler for that style.",
-   "context": {
-    "app": "slack",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 47,
-     "kind": "contradict",
-     "cid": "e11-s05",
-     "target": "e11-c25",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 48,
-   "type": "R",
-   "text": "hey, can you write a script to scrape the latest papers from arxiv in my field and dump them into a markdown table? i need it to pull title, authors, and abstract link.",
-   "context": {
-    "app": "email-client",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c19",
-    "e11-c31",
-    "e11-c18"
-   ],
-   "may_fire": [
-    "e11-c06",
-    "e11-c10",
-    "e11-c11",
-    "e11-c12",
-    "e11-c13",
-    "e11-c15",
-    "e11-c16",
-    "e11-c17",
-    "e11-c19",
-    "e11-c24",
-    "e11-c27",
-    "e11-c31",
-    "e11-s00",
-    "e11-s03",
-    "e11-s04"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 49,
-   "type": "S",
-   "text": "之前说的「no list of conversation starters」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 49,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c11",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 50,
-   "type": "S",
-   "text": "之前说的「keep the summary of code changes to at most 13 sentences」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 50,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c19",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 51,
-   "type": "S",
-   "text": "之前说的「avoid hyphenated naming in code; use underscores or camelCase instead」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 51,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c05",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 52,
-   "type": "R",
-   "text": "hey, can you turn this messy data from my experiment into a clean table? i've got a csv with columns a through f, but i only need columns a through e for the table.",
-   "context": {
-    "app": "email-client",
-    "task": "code-write"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c31",
-    "e11-c17",
-    "e11-c18",
-    "e11-c19"
-   ],
-   "may_fire": [
-    "e11-c06",
-    "e11-c10",
-    "e11-c12",
-    "e11-c13",
-    "e11-c15",
-    "e11-c16",
-    "e11-c17",
-    "e11-c24",
-    "e11-c27",
-    "e11-c31",
-    "e11-s00",
-    "e11-s03",
-    "e11-s04"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 53,
-   "type": "S",
-   "text": "之前说的「don't repeat or list traits」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 53,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c24",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 54,
-   "type": "S",
-   "text": "之前说的「don't write a profile when i ask for one」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 54,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c27",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 55,
-   "type": "S",
-   "text": "之前说的「avoid poor distribution in tables」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "editor",
-    "task": "code-write"
-   },
-   "effects": [
-    {
-     "seq": 55,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c30",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 56,
-   "type": "R",
-   "text": "hey, can you write up a quick report on the three main models we covered in the seminar? just a few paragraphs each, comparing their approaches to language acquisition. also, throw in the references from the syllabus.",
-   "context": {
-    "app": "email-client",
-    "task": "report"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-c07",
-    "e11-c23",
-    "e11-c26",
-    "e11-c08"
-   ],
-   "may_fire": [
-    "e11-c06",
-    "e11-c07",
-    "e11-c10",
-    "e11-c12",
-    "e11-c13",
-    "e11-c15",
-    "e11-c16",
-    "e11-c20",
-    "e11-c23",
-    "e11-c28",
-    "e11-c32",
-    "e11-s02",
-    "e11-s03",
-    "e11-s04"
-   ],
-   "should_fire": [
-    "e11-c28"
-   ],
-   "must_not_fire": []
-  },
-  {
-   "seq": 57,
-   "type": "S",
-   "text": "之前说的「use lowercase for cardinal directions unless part of a proper name or recognized region」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "email"
-   },
-   "effects": [
-    {
-     "seq": 57,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c28",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 58,
-   "type": "S",
-   "text": "之前说的「keep arguments under 699 words」那条不用了，按你默认的来吧",
-   "context": {
-    "app": "slack",
-    "task": "report"
-   },
-   "effects": [
-    {
-     "seq": 58,
-     "kind": "retire",
-     "cid": "",
-     "target": "e11-c20",
-     "targets": [],
-     "delta": 0
-    }
-   ]
-  },
-  {
-   "seq": 59,
-   "type": "R",
-   "text": "hey, can you draft a quick report on the key findings from last week's lab data? just the main points, no fluff.",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e11-c13",
-    "e11-c12",
-    "e11-c11",
-    "e11-c09"
-   ],
-   "may_fire": [
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c06",
-    "e11-c07",
-    "e11-c10",
-    "e11-c12",
-    "e11-c13",
-    "e11-c15",
-    "e11-c16",
-    "e11-c17",
-    "e11-c23",
-    "e11-c31",
-    "e11-c32",
-    "e11-s00",
-    "e11-s02",
-    "e11-s03",
-    "e11-s04",
-    "e11-s05"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 60,
-   "type": "R",
-   "text": "hey, can you draft an email to my professor asking for a deadline extension on the lit review section? i need it by next friday instead of this wednesday.",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e11-c10",
-    "e11-c06",
-    "e11-c11",
-    "e11-c09"
-   ],
-   "may_fire": [
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c06",
-    "e11-c07",
-    "e11-c10",
-    "e11-c12",
-    "e11-c13",
-    "e11-c15",
-    "e11-c16",
-    "e11-c17",
-    "e11-c23",
-    "e11-c31",
-    "e11-c32",
-    "e11-s00",
-    "e11-s02",
-    "e11-s03",
-    "e11-s04",
-    "e11-s05"
-   ],
-   "should_fire": [],
-   "must_not_fire": []
-  },
-  {
-   "seq": 61,
-   "type": "R",
-   "text": "hey, can you draft an email to my advisor asking for an extension on the lit review draft? i need another week, but i want to sound professional and not like i'm slacking. also, throw in a few section headers to break it up, like 'reason for request' and 'proposed timeline' — make it look organized.",
-   "context": {},
-   "probe": true,
-   "probe_targets": [
-    "e11-c12",
-    "e11-s03",
-    "e11-c14",
-    "e11-c11"
-   ],
-   "may_fire": [
-    "e11-c01",
-    "e11-c02",
-    "e11-c03",
-    "e11-c04",
-    "e11-c06",
-    "e11-c07",
-    "e11-c10",
-    "e11-c12",
-    "e11-c13",
-    "e11-c15",
-    "e11-c16",
-    "e11-c17",
-    "e11-c23",
-    "e11-c31",
-    "e11-c32",
-    "e11-s00",
-    "e11-s02",
-    "e11-s03",
-    "e11-s04",
-    "e11-s05"
-   ],
-   "should_fire": [
-    "e11-s00"
-   ],
-   "must_not_fire": [
-    "e11-c22"
-   ]
-  },
-  {
-   "seq": 62,
-   "type": "R",
-   "text": "hey, can you write a postmortem for the group project that just finished? the one where we had to build that data pipeline. just a quick recap of what went wrong, what went right, and what we'd do differently. thanks!",
-   "context": {
-    "app": "email-client",
-    "task": "postmortem"
-   },
-   "probe": true,
-   "probe_targets": [
-    "e11-s05",
-    "e11-c16",
-    "e11-c09",
-    "e11-c14"
-   ],
-   "may_fire": [
-    "e11-c06",
-    "e11-c10",
-    "e11-c12",
-    "e11-c13",
-    "e11-c15",
-    "e11-c16",
-    "e11-s03",
-    "e11-s04",
-    "e11-s05"
-   ],
-   "should_fire": [],
-   "must_not_fire": [
-    "e11-c14"
-   ]
-  }
- ],
- "checkpoints": [
-  8,
-  16,
-  24,
-  32,
-  40,
-  46,
-  53,
-  62
- ],
- "dup_pairs": [],
- "stats": {
-  "nodes": 38,
-  "dead_final": 18,
-  "peak_gold_active": 33,
-  "degraded_successors": 2,
-  "i11_pruned_traps": 0,
-  "lint_errors": []
- }
 }

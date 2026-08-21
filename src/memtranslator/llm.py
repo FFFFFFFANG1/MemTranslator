@@ -18,6 +18,8 @@ from collections.abc import Iterator
 import anthropic
 import httpx
 
+from memtranslator.config import project_env
+
 _client: anthropic.Anthropic | None = None
 _or_client: httpx.Client | None = None
 
@@ -28,11 +30,25 @@ ARK_BASE_DEFAULT = "https://ark.cn-beijing.volces.com/api/coding/v3"
 # writer needs headroom or content starves (measured on ling: 1024 budget,
 # ~1100 reasoning tokens, empty content on every call).
 THINK_HEADROOM = 2500
+# glm-5.x on Ark Coding Plan rejects thinking.type=disabled and still
+# thinks when the field is omitted. A large translator prompt spent
+# ~2700 completion tokens on reasoning before any JSON; 700 starved
+# content to empty (finish=length). 4000 still left most E1 gold
+# stores unparseable (185/209). Cap is the only lever; 10000 headroom
+# left 55/209 empty, so the translator budget is a flat 12000.
+GLM_MAX_TOKENS = 12000
+
+
+def _is_glm(model: str) -> bool:
+    name = model.split(":")[-1].removesuffix(":think").lower()
+    return name.startswith("glm")
 
 
 def budget_for(model: str, base: int) -> int:
-    """Output budget for `model`: base, plus headroom when its id carries
-    the ":think" suffix."""
+    """Output budget for `model`: base, plus headroom when the model will
+    spend completion tokens on reasoning before content."""
+    if _is_glm(model):
+        return GLM_MAX_TOKENS
     return base + (THINK_HEADROOM if model.endswith(":think") else 0)
 
 # Reasoning is OFF by default on this channel. Measured on ling-3.0-flash:
@@ -97,22 +113,24 @@ def _ark_complete(model: str, system: str, user: str,
     latency is free)."""
     global _or_client
     if _or_client is None:
-        _or_client = httpx.Client(timeout=180)
-    # Prefer ARK_*; fall back to LLM_* (common local .env naming for the
-    # same Ark coding/v3 endpoint). Missing key used to surface as a
-    # generic "channel unavailable" retry storm in the bench harness.
-    key = (os.environ.get("ARK_API_KEY")
-           or os.environ.get("LLM_API_KEY")
-           or "")
+        _or_client = httpx.Client(timeout=300)
+    # One credential contract for product and bench: deployments may export
+    # it, while local runs read the same repo-root .env as the judge path.
+    key = project_env("LLM_API_KEY")
     if not key:
-        raise LLMUnavailable("ARK_API_KEY not set")
-    base = (os.environ.get("ARK_BASE_URL")
-            or os.environ.get("LLM_BASE_URL")
-            or ARK_BASE_DEFAULT)
+        raise LLMUnavailable("LLM_API_KEY not set")
+    base = project_env("LLM_BASE_URL", ARK_BASE_DEFAULT)
     payload = {"model": model, "max_tokens": max_tokens,
-               "thinking": {"type": "enabled" if thinking else "disabled"},
                "messages": [{"role": "system", "content": system},
                             {"role": "user", "content": user}]}
+    # glm-5.2/5.3 reject thinking.type=disabled (400). They think by
+    # default; send enabled explicitly so the oracle path cannot
+    # accidentally inherit a disabled flag.
+    if _is_glm(model):
+        payload["thinking"] = {"type": "enabled"}
+    else:
+        payload["thinking"] = {
+            "type": "enabled" if thinking else "disabled"}
     if temperature is not None:
         payload["temperature"] = temperature
     try:

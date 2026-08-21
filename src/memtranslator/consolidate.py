@@ -1,294 +1,454 @@
-"""Write-path call #2: low-frequency store tidying (design §6).
+"""Candidate-first CASE consolidator (route A call 2).
 
-Mechanical bucketing first — exact facet key, then same-facet prefix for the
-leftovers — and ONLY buckets with ≥2 entries reach the prompt, so most
-trigger checks return without any LLM call. Entries are shown to the model
-with global index numbers (design R6); ops come back through the same
-numbered-candidate parser as extraction. Style_rule curation rides the same
-call when the cap is exceeded.
+Each CASE is one extracted candidate plus its own retrieved top-3 memories.
+Lifecycle decisions stay local to the CASE; Store mutations are append-only
+ops produced by parse_consolidation_output.
+
+The archived GROUPS store-tidy pass lives in consolidate_tidy_backup.py.
 """
-from memtranslator import llm
-from memtranslator.config import (CONSOLIDATE_ACTIVE, CONSOLIDATE_ADDS,
-                                  GEN_TEMPERATURE, MODELS, STYLE_RULE_CAP)
-from memtranslator.extraction import _index_block, parse_ops
-from memtranslator.schema import Requirement
-from memtranslator.store import Store
+from __future__ import annotations
 
-CONSOLIDATE_SYSTEM = """You tidy a store of a user's delivery requirements. You receive numbered
-entries grouped into GROUPS of possibly-redundant rules, and possibly a
-STYLE section of rewrite-style rules exceeding its cap. Within each group,
-numbers run OLDEST first — a later number is a more recent statement.
+import json
+import unicodedata
+from collections import defaultdict
+from dataclasses import dataclass
 
-Rules:
-1. Entries in one group that express the SAME durable rule (near
-   duplicates, translations of each other, the same obligation phrased
-   twice) → emit one "merge" with their numbers and a single merged text
-   (clearest phrasing, user's language). The merged text PRESERVES every
-   number, cap, and named format (a word-count limit, "APA", "snake_case")
-   that appears in the entries it replaces — a merge that paraphrases the
-   anchor away destroys the rule's testable core. Entries that are
-   genuinely different rules → leave alone. When unsure, do NOT merge.
-2. Entries in one group that CONFLICT — they govern the same aspect of the
-   same kind of work but demand incompatible things (different caps,
-   opposite tones, contradictory formats) → do NOT merge them: the LATEST
-   number is the user's current preference; emit "retire" for each older
-   conflicting number. Resolving the conflict here is the point — a store
-   that keeps both sides forces every later rewrite to re-litigate it.
-3. Never invent rules, never change meaning while merging, and never
-   retire an entry that neither duplicates nor conflicts with a newer one.
-4. STYLE section: keep the most broadly useful rules within the stated cap;
-   emit "retire" for the numbers to drop (most redundant / narrowest first).
+from memtranslator.extraction import (
+    CHANGE_REPLACE, CHANGE_WITHDRAW, POTENTIAL_CHANGE, MemoryCandidate, _array,
+)
+from memtranslator.schema import WORK_KIND_ANY, Requirement
+from memtranslator.scopes import applicability_narrows
 
-Output STRICTLY a JSON array (possibly empty), nothing else:
-[{"op": "merge", "targets": [<num>, <num>, ...], "text": "...",
-  "key": "facet.attr", "salience": 4}
- | {"op": "retire", "target": <num>, "salience": 4}]"""
+TOP_K = 3
 
 
-def should_consolidate(store: Store, adds_since: int) -> bool:
-    return (len(store.active()) > CONSOLIDATE_ACTIVE
-            or adds_since >= CONSOLIDATE_ADDS)
+@dataclass
+class CandidateCase:
+    candidate: MemoryCandidate
+    memories: list[Requirement]
 
 
-def buckets(reqs: list[Requirement]) -> list[list[Requirement]]:
-    """Group possibly-redundant entries for the merge call.
+CONSOLIDATION_SYSTEM = """You reconcile extracted memory candidates with retrieved stored requirements.
+The input contains independent CASES. Each CASE has exactly one candidate and
+that candidate's own top-3 memories. Decide only inside that CASE; never borrow
+a memory from another CASE. Candidate kind is a retrieval hint. For a
+potential_change, change_mode is the Extractor's explicit lifecycle intent:
+replace has a successor item; withdraw has no successor. Compare text together
+with bucket, scope_mode, applies_when, work_kinds, and key.
 
-    Bucket first, key second. Two rules can share a facet word and still be
-    different rules — "cite your sources" as an evidence standard and "cite in
-    APA" as a format both key on citations, and merging them would destroy
-    one. Grouping within a bucket makes that impossible by construction
-    (docs/2026-07-26-bucket-taxonomy.md). Entries with no bucket keep the old
-    key-only behaviour so pre-taxonomy records still deduplicate.
+Actions:
+- add: the candidate item is a distinct durable rule.
+- reaffirm: one retrieved memory already expresses the same rule; keep its text.
+- merge: a near-synonym of one or more retrieved memories on the same single
+  facet. Independently enforceable facets never merge merely because the user
+  mentioned them together. Attributes (bucket/scope_mode/applies_when/work_kinds/key) must be
+  compatible, and merge must not narrow a broad memory to one scoped instance.
+  You may enrich wording on that same facet (optional "text").
+- replace: the candidate item supersedes memories on the same facet with a
+  changed rule (not a paraphrase). A potential_change must have change_mode
+  replace.
+- retire: change_mode withdraw explicitly removes a retrieved rule and has no
+  successor item. A withdraw CASE may only retire a matching target or ignore
+  the CASE; never reaffirm, merge, add, or replace it.
+- ignore: evidence is unrelated, ambiguous, or insufficient for a safe state
+  change.
 
-    Pass 2 (2026-07-29): vocabulary-overlap clustering across keys AND
-    buckets. Measured miss that motivated it: one replay store held three
-    near-identical "email must state the maintenance window and impact"
-    rules under different keys/buckets — invisible to key grouping, obvious
-    to content_tokens overlap. LLM extraction never spells keys
-    consistently enough for exact-match grouping to be the only net.
-    Only groups of ≥2 come back; each group is oldest-first (the prompt's
-    conflict rule depends on that ordering).
-    """
-    from memtranslator.signals import content_tokens, overlap_is_reference
+Examples:
+- candidate "Keep emails under 80 words" vs memory "under 120 words" with the
+  same email scope and length facet → replace.
+- candidate "Write reports as narrative prose" vs memory "only bullets in reports" in the
+  same report scope and format facet → replace
+- candidate "Add a sources section" vs memory "keep reports under 500 words"
+  → add; these are orthogonal and can both hold.
+- candidate and memory express the same rule in different languages → reaffirm.
+- candidate "Cite primary sources in research surveys" vs memory "Research
+  summaries must cite sources" on the same citation facet → merge.
+- candidate "Put the conclusion first and cite sources" vs separate memories
+  about conclusion order and citations → keep the independently enforceable
+  facets separate; conjunction or co-occurrence is not synonymy.
+- pure withdrawal of email greetings vs a matching email-greeting memory → retire.
+- change_mode withdraw with a null item vs a matching stored constraint →
+  retire; do not invent a successor.
+- similar text but incompatible applicability or work_kinds → add or ignore, not merge
+  or replace.
 
-    reqs = [r for r in reqs if r.kind == "requirement"]
-    out: list[list[Requirement]] = []
-    for bucket in sorted({r.bucket for r in reqs}):
-        pool = [r for r in reqs if r.bucket == bucket]
-        by_key: dict[str, list[Requirement]] = {}
-        for r in pool:
-            if r.key:
-                by_key.setdefault(r.key, []).append(r)
-        out += [grp for grp in by_key.values() if len(grp) >= 2]
-        singles = [r for r in pool if r.key and len(by_key[r.key]) == 1]
-        by_facet: dict[str, list[Requirement]] = {}
-        for r in singles:
-            by_facet.setdefault(r.key.split(".", 1)[0], []).append(r)
-        out += [grp for grp in by_facet.values() if len(grp) >= 2]
-        unkeyed = [r for r in pool if not r.key]
-        if len(unkeyed) >= 2:
-            out.append(unkeyed)
+Use this judgement order for every CASE:
+1. Applicability: compare scope_mode, applies_when, and work_kinds. If both sides explicitly name
+   incompatible applicability, they are not the same rule; do not reaffirm,
+   merge, replace, or retire that memory.
+2. Facet: compare bucket and key together with the behavior described in text.
+   Orthogonal facets coexist and therefore use add. A merge may only target
+   one facet; it must not combine independently enforceable facets.
+3. Relation: equivalent (keep text) → reaffirm; near-synonym / enrich → merge;
+   same-facet successor with change_mode replace → replace; change_mode
+   withdraw without a successor →
+   retire; distinct → add; uncertain → ignore.
 
-    # pass 2: overlap clusters among entries no earlier group covers
-    grouped = {r.id for grp in out for r in grp}
-    rest = [r for r in reqs if r.id not in grouped]
-    toks = {r.id: content_tokens(r.text) for r in rest}
-    parent = {r.id: r.id for r in rest}
+Use the candidate item's text for add/replace. For merge, optional "text" is
+the unified wording; if omitted, use the candidate item. Do not invent a
+successor for replace. Only an explicit potential_change with change_mode
+replace may use replace; an ordinary merge must not narrow a stored rule,
+and reaffirm keeps the stored text and metadata. Output one judgement per CASE as a strict JSON array:
+[{"case":1,"action":"add|retire|replace|reaffirm|merge|ignore",
+  "targets":[1],"text":"optional for merge only"}]
+targets are memory numbers local to that CASE; add/ignore use [].
+merge needs ≥1 target; reaffirm needs exactly 1."""
 
-    def find(x):
-        while parent[x] != x:
-            parent[x] = parent[parent[x]]
-            x = parent[x]
-        return x
-
-    for i, a in enumerate(rest):
-        for b in rest[i + 1:]:
-            if overlap_is_reference(toks[a.id], toks[b.id]):
-                parent[find(a.id)] = find(b.id)
-    clusters: dict[str, list[Requirement]] = {}
-    for r in rest:
-        clusters.setdefault(find(r.id), []).append(r)
-    out += [grp for grp in clusters.values() if len(grp) >= 2]
-
-    for grp in out:
-        grp.sort(key=lambda r: r.created_at)
-    return out
-
-
-def consolidation_ops(reqs: list[Requirement]) -> dict:
-    """Pure half of consolidation: bucket → (maybe) call → parsed ops.
-    Persisting is the caller's job — the bench adapter grades these ops
-    directly, the product path applies them via run_consolidation."""
-    active = [r for r in reqs if r.status == "active"]
-    bucket_groups = buckets(active)
-    styles = [r for r in active if r.kind == "style_rule"]
-    style_over = len(styles) > STYLE_RULE_CAP
-
-    if not bucket_groups and not style_over:
-        return {"ops": [], "flags": []}
-
-    numbered: list[Requirement] = []
-    for grp in bucket_groups:
-        numbered += grp
-    if style_over:
-        numbered += styles
-    pos = {r.id: n for n, r in enumerate(numbered, 1)}
-
-    parts = [f"ENTRIES:\n{_index_block(numbered)}"]
-    if bucket_groups:
-        lines = [" & ".join(f"[{pos[r.id]}]" for r in grp)
-                 for grp in bucket_groups]
-        parts.append("BUCKETS (each line = one possibly-redundant group):\n"
-                     + "\n".join(lines))
-    if style_over:
-        nums = ", ".join(f"[{pos[r.id]}]" for r in styles)
-        parts.append(f"STYLE section: entries {nums} are rewrite-style "
-                     f"rules; keep at most {STYLE_RULE_CAP}, retire the rest.")
-    parts.append("JSON:")
-
-    writer = MODELS.get("writer") or MODELS["translator"]
-    raw = llm.complete(writer, CONSOLIDATE_SYSTEM,
-                       "\n\n".join(parts),
-                       max_tokens=llm.budget_for(writer, 1200),
-                       temperature=GEN_TEMPERATURE)
-    ops, flags = parse_ops(raw, numbered)
-    by_id = {r.id: r for r in numbered}
-    ops, aflags = _drop_anchor_losing_merges(ops, by_id)
-    ops, nflags = _sanitize_ops(ops, by_id)
-    return {"ops": ops, "flags": flags + aflags + nflags}
+def _candidate_payload(candidate: MemoryCandidate) -> dict:
+    """Fields shown to the consolidator. Sources and confidence stay out."""
+    if candidate.item is not None:
+        item = {
+            "text": candidate.item.text,
+            "bucket": candidate.item.bucket,
+            "scope_mode": candidate.item.scope_mode,
+            "applies_when": candidate.item.applies_when,
+            "work_kinds": candidate.item.work_kinds,
+            "key": candidate.item.key,
+        }
+    else:
+        item = None
+    payload = {
+        "id": candidate.id,
+        "kind": candidate.kind,
+        "change_mode": _effective_change_mode(candidate),
+        "item": item,
+        "target_query": candidate.change_candidate,
+    }
+    if candidate.item is None:
+        payload.update({"bucket": candidate.bucket,
+                        "scope_mode": candidate.scope_mode,
+                        "applies_when": candidate.applies_when,
+                        "work_kinds": candidate.work_kinds,
+                        "key": candidate.key})
+    return payload
 
 
-def _sanitize_ops(ops: list[dict], by_id: dict
-                  ) -> tuple[list[dict], list[str]]:
-    """Zero-LLM guards against consolidation over-eagerness, measured on a
-    chained-store replay (2026-07-30): rules the write path had learned
-    CORRECTLY ended up retired — unrelated entries glued into one compound
-    "merge" (its sources retired with it), plus bare retires that resolved
-    no conflict. Three mechanical drops, all erring toward keeping entries:
-
-    1. a merge whose sources share not a single content token is not a
-       dedup — different rules stay separate;
-    2. a retire aimed at an entry a same-batch merge already consumes is
-       double bookkeeping;
-    3. a retire whose target shares no content token with any entry that
-       SURVIVES the batch is deletion, not conflict resolution — rule 2
-       retires an entry because a newer conflicting statement exists, and
-       "conflicting" is checkable as content overlap with a survivor.
-    """
-    from memtranslator.signals import content_tokens
-    merged_ids = set()
-    for o in ops:
-        if o.get("kind") == "merge":
-            merged_ids |= set(o.get("target_ids") or [])
-    retired_ids = {o.get("target_id") for o in ops if o.get("kind") == "retire"}
-    out, flags = [], []
-    for o in ops:
-        if o.get("kind") == "merge":
-            srcs = [by_id[t].text for t in (o.get("target_ids") or [])
-                    if t in by_id]
-            toks = [set(content_tokens(t)) for t in srcs]
-            def _script(t):
-                return "cjk" if sum("一" <= ch <= "鿿" for ch in t) > \
-                    len(t) * 0.25 else "latin"
-            same_script = len({_script(t) for t in srcs}) == 1
-            # Cross-script sources are plausibly translations of each other
-            # (rule 1 merges those); token overlap cannot see that, so the
-            # disjoint check only applies within one script. The anchor
-            # guard still vets numbers on every merge.
-            if (len(toks) >= 2 and same_script
-                    and not set.intersection(*toks)):
-                flags.append(f"disjoint merge dropped: "
-                             f"{o.get('text', '')[:40]!r}")
-                continue
-            # Cross-facet compound guard (loop-7): sources under DIFFERENT
-            # facet keys may merge only as near-duplicates (sloppy key
-            # spellings of one rule — the measured maintenance-window
-            # triple). Weakly-related texts under different keys are two
-            # rules; compounding them sets up the collateral kill where a
-            # supersede on one facet buries the other.
-            import os
-            if "mergegate" in os.environ.get("MT_ABLATE", ""):
-                out.append(o); continue
-            srcs_r = [by_id[t] for t in (o.get("target_ids") or [])
-                      if t in by_id]
-            keys = {r.key for r in srcs_r if r.key}
-            if len(keys) >= 2 and len(toks) >= 2:
-                jmin = min(
-                    len(a & b) / max(1, len(a | b))
-                    for i, a in enumerate(toks) for b in toks[i + 1:])
-                if jmin < 0.5:
-                    flags.append(f"cross-facet merge dropped: "
-                                 f"{o.get('text', '')[:40]!r}")
-                    continue
-        if o.get("kind") == "retire":
-            tid = o.get("target_id")
-            if tid in merged_ids:
-                flags.append(f"redundant retire of merged source {tid}")
-                continue
-            target = by_id.get(tid)
-            if target is not None:
-                tt = set(content_tokens(target.text))
-                survivors = [r for r in by_id.values()
-                             if r.id != tid and r.id not in retired_ids
-                             and r.id not in merged_ids]
-                best, best_ov = None, 0
-                for r in survivors:
-                    ov = len(tt & set(content_tokens(r.text)))
-                    if ov > best_ov:
-                        best, best_ov = r, ov
-                merge_ov = any(tt & set(content_tokens(o2.get("text", "")))
-                               for o2 in ops if o2.get("kind") == "merge")
-                if tt and best is None and not merge_ov:
-                    flags.append(f"contentless retire dropped: {tid}")
-                    continue
-                # A consolidation retire is conflict resolution: the entry
-                # that won the conflict is the victim's heir. Recording it
-                # keeps the kill invariant-compliant (never heirless) and
-                # makes the victim resurrectable if the winner later dies.
-                if best is not None:
-                    o = {**o, "heir_id": best.id}
-        out.append(o)
-    return out, flags
+def _memory_payload(requirement: Requirement) -> dict:
+    return {"text": requirement.text, "bucket": requirement.bucket,
+            "scope_mode": requirement.scope_mode,
+            "applies_when": requirement.applies_when,
+            "legacy_scope": requirement.scope,
+            "work_kinds": requirement.kinds,
+            "key": requirement.key}
 
 
-def _anchor_tokens(text: str) -> set:
-    """Digit-bearing tokens — the mechanically checkable core of a rule
-    (word caps, counts, versions). Named formats are covered by the prompt
-    line; numbers are enforced here because they are exactly what the
-    lifecycle bench aligns STATE on, and the measured failure was a merge
-    paraphrasing a cap away (E1 round-3: e-05 STATE 0.60→0.51 while
-    consolidation went from never firing to 17 triggers)."""
-    from memtranslator.bm25 import tokenize
-    return {t for t in tokenize(text) if any(c.isdigit() for c in t)}
+def build_consolidation_user_prompt(cases: list[CandidateCase]) -> str:
+    blocks = []
+    for case_idx, case in enumerate(cases, 1):
+        candidate = json.dumps(_candidate_payload(case.candidate),
+                               ensure_ascii=False, sort_keys=True)
+        memories = "\n".join(
+            f"[{memory_idx}] " + json.dumps(_memory_payload(memory),
+                                             ensure_ascii=False,
+                                             sort_keys=True)
+            for memory_idx, memory in enumerate(case.memories, 1)) or "(none)"
+        blocks.append(f"CASE {case_idx}\nCANDIDATE: {candidate}\n"
+                      f"MEMORIES:\n{memories}")
+    return "\n\n".join(blocks) + "\n\nJSON:"
 
 
-def _drop_anchor_losing_merges(ops: list[dict], by_id: dict
+def _store_fields(candidate: MemoryCandidate) -> dict:
+    item = candidate.item
+    assert item is not None
+    return {"text": item.text, "bucket": item.bucket,
+            "scope_mode": item.scope_mode,
+            "applies_when": item.applies_when,
+            "kinds": item.work_kinds, "key": item.key,
+            "confidence": item.confidence,
+            "sources": list(candidate.source_texts)}
+
+
+def _source_fields(candidate: MemoryCandidate) -> dict:
+    confidence = (candidate.item.confidence if candidate.item is not None
+                  else candidate.confidence)
+    return {"sources": list(candidate.source_texts),
+            "confidence": confidence}
+
+
+def _candidate_applicability(candidate: MemoryCandidate
+                             ) -> tuple[str, list[str]]:
+    if candidate.item is not None:
+        return candidate.item.applies_when, candidate.item.work_kinds
+    return candidate.applies_when, candidate.work_kinds
+
+
+def _effective_change_mode(candidate: MemoryCandidate) -> str | None:
+    """Infer the pre-schema lifecycle bit for legacy in-memory candidates."""
+    if candidate.kind != POTENTIAL_CHANGE:
+        return None
+    if candidate.change_mode in {CHANGE_REPLACE, CHANGE_WITHDRAW}:
+        return candidate.change_mode
+    return CHANGE_WITHDRAW if candidate.item is None else CHANGE_REPLACE
+
+
+def _work_kinds_compatible(left: list[str], right: list[str]) -> bool:
+    """Unknown legacy metadata does not exclude; explicit disjoint kinds do."""
+    if not left or not right or WORK_KIND_ANY in left or WORK_KIND_ANY in right:
+        return True
+    if set(left) & set(right):
+        return True
+    prose = {"report", "postmortem"}
+    return bool(set(left) & prose and set(right) & prose)
+
+
+def _condition(requirement: Requirement) -> str:
+    if requirement.applies_when:
+        return requirement.applies_when
+    if requirement.scope:
+        return json.dumps(requirement.scope, ensure_ascii=False,
+                          sort_keys=True, separators=(",", ":"))
+    return ""
+
+
+def _conditions_compatible(left: str, right: str) -> bool:
+    """Explicitly different conditions are not deterministic synonyms."""
+    left = _normalized_text(left)
+    right = _normalized_text(right)
+    return not left or not right or left == right
+
+
+def _target_contract_valid(action: object, target_ids: list[str],
+                           candidate: MemoryCandidate) -> bool:
+    mode = _effective_change_mode(candidate)
+    if action == "reaffirm":
+        return len(target_ids) == 1 and mode != CHANGE_WITHDRAW
+    if action == "merge":
+        return (bool(target_ids) and candidate.item is not None
+                and mode != CHANGE_WITHDRAW)
+    if action == "replace":
+        return (bool(target_ids) and candidate.item is not None
+                and candidate.kind == POTENTIAL_CHANGE
+                and mode == CHANGE_REPLACE)
+    if action == "retire":
+        return (bool(target_ids) and candidate.kind == POTENTIAL_CHANGE
+                and mode == CHANGE_WITHDRAW and candidate.item is None)
+    return False
+
+
+def _same_facet(candidate: MemoryCandidate,
+                memories: list[Requirement]) -> bool:
+    """Reject only explicit facet disagreement; blanks are legacy unknowns."""
+    item = candidate.item
+    candidate_bucket = item.bucket if item is not None else candidate.bucket
+    candidate_key = item.key if item is not None else candidate.key
+    buckets = {value for value in
+               [candidate_bucket, *(memory.bucket for memory in memories)]
+               if value}
+    keys = {value for value in
+            [candidate_key, *(memory.key for memory in memories)] if value}
+    return len(buckets) <= 1 and len(keys) <= 1
+
+
+def _action_guard_error(action: object, candidate: MemoryCandidate,
+                        memories: list[Requirement]) -> str | None:
+    """Mechanical state-safety checks beyond the action shape contract."""
+    if action in {"merge", "replace"} and not _same_facet(
+            candidate, memories):
+        return "different facets"
+    if action == "merge" and candidate.item is not None:
+        item = candidate.item
+        if any((bool(item.applies_when) and not _condition(memory))
+               or applicability_narrows(
+                {}, item.work_kinds, {}, memory.kinds)
+                for memory in memories):
+            return "merge narrows applicability"
+    return None
+
+
+def _merge_text(value: dict, candidate: MemoryCandidate) -> str | None:
+    """Optional judgement text, else candidate item; None if unusable."""
+    raw = value.get("text")
+    if isinstance(raw, str) and raw.strip():
+        return raw.strip()
+    if candidate.item is not None and candidate.item.text.strip():
+        return candidate.item.text.strip()
+    return None
+
+
+def _normalized_text(text: str) -> str:
+    return " ".join(unicodedata.normalize("NFKC", text).casefold().split())
+
+
+def _exact_duplicate_target(case: CandidateCase) -> int | None:
+    """Return the one local target that is textually identical and applicable."""
+    if _effective_change_mode(case.candidate) == CHANGE_WITHDRAW:
+        return None
+    item = case.candidate.item
+    if item is None:
+        return None
+    matches = [
+        index for index, memory in enumerate(case.memories, 1)
+        if (_normalized_text(item.text) == _normalized_text(memory.text)
+            and _work_kinds_compatible(item.work_kinds, memory.kinds)
+            and _conditions_compatible(
+                item.applies_when, _condition(memory)))]
+    return matches[0] if len(matches) == 1 else None
+
+
+def parse_consolidation_output(raw: str, cases: list[CandidateCase]
                                ) -> tuple[list[dict], list[str]]:
-    """Zero-LLM guard: a merge whose text loses a numeric anchor present in
-    any source entry is dropped whole — the sources stay live, which is
-    strictly safer than a lossy merge. Two sources with DIFFERENT numbers
-    also land here: that pair is a conflict, not a duplicate, and the
-    conflict path (retire the older) is the correct resolution."""
-    kept, flags = [], []
-    for o in ops:
-        if o["kind"] == "merge":
-            need = set()
-            for tid in o.get("target_ids", []):
-                src = by_id.get(tid)
-                if src is not None:
-                    need |= _anchor_tokens(src.text)
-            have = _anchor_tokens(o.get("text", ""))
-            if need - have:
-                flags.append(f"merge dropped, loses anchors {need - have}: "
-                             f"{o.get('text', '')[:40]!r}")
+    values = _array(raw)
+    if values is None:
+        return [], ["consolidation output unparseable"]
+    by_case, flags = {}, []
+    for value in values:
+        if not isinstance(value, dict):
+            flags.append("consolidation judgement is not an object")
+            continue
+        case_idx = value.get("case")
+        if not isinstance(case_idx, int) or not 1 <= case_idx <= len(cases):
+            flags.append(f"consolidation case out of range: {case_idx!r}")
+            continue
+        if case_idx in by_case:
+            flags.append(f"duplicate consolidation case: {case_idx}")
+            continue
+        by_case[case_idx] = value
+
+    # Exact duplicates have a deterministic lifecycle. Normalise any
+    # non-retirement judgement before conflict detection so the target
+    # participates in the same fail-closed collision policy as an explicit
+    # reaffirm; an erroneous replace/merge must not mint a text-identical heir.
+    for case_idx, value in list(by_case.items()):
+        if value.get("action") not in {
+                "add", "ignore", "replace", "reaffirm", "merge"}:
+            continue
+        target = _exact_duplicate_target(cases[case_idx - 1])
+        targets = value.get("targets", [])
+        multi_target_merge = (value.get("action") == "merge"
+                              and isinstance(targets, list)
+                              and len(targets) > 1)
+        if target is not None and not multi_target_merge:
+            by_case[case_idx] = {**value, "action": "reaffirm",
+                                 "targets": [target]}
+
+    # Pre-scan the whole batch before building any op. If two otherwise-valid
+    # actions claim one Store target, every action involved in that collision
+    # is dropped. This is intentionally fail-closed rather than first-wins:
+    # CASE order is a rendering detail, not evidence priority.
+    target_cases: dict[str, list[int]] = defaultdict(list)
+    for case_idx, value in by_case.items():
+        case = cases[case_idx - 1]
+        targets = value.get("targets", [])
+        if (not isinstance(targets, list) or len(set(targets)) != len(targets)
+                or any(not isinstance(target, int)
+                       or not 1 <= target <= len(case.memories)
+                       for target in targets)):
+            continue
+        target_ids = [case.memories[target - 1].id for target in targets]
+        memories = [case.memories[target - 1] for target in targets]
+        if (_target_contract_valid(value.get("action"), target_ids,
+                                   case.candidate)
+                and _action_guard_error(value.get("action"), case.candidate,
+                                        memories) is None):
+            for target_id in target_ids:
+                target_cases[target_id].append(case_idx)
+    conflicted_cases = set()
+    for target_id, claimants in target_cases.items():
+        if len(claimants) < 2:
+            continue
+        ordered = sorted(claimants)
+        conflicted_cases.update(ordered)
+        flags.append(f"target conflict {target_id}: cases {ordered}")
+
+    ops = []
+    for case_idx, case in enumerate(cases, 1):
+        value = by_case.get(case_idx)
+        if value is None:
+            flags.append(f"missing consolidation case: {case_idx}")
+            continue
+        action = value.get("action")
+        targets = value.get("targets", [])
+        if not isinstance(targets, list) or any(
+                not isinstance(target, int)
+                or not 1 <= target <= len(case.memories)
+                for target in targets):
+            flags.append(f"case {case_idx}: target outside own top-{TOP_K}")
+            continue
+        if len(set(targets)) != len(targets):
+            flags.append(f"case {case_idx}: duplicate target")
+            continue
+        target_ids = [case.memories[target - 1].id for target in targets]
+        if case_idx in conflicted_cases:
+            continue
+
+        item = case.candidate.item
+        candidate_ops: list[dict] = []
+        if action == "ignore" and not targets:
+            continue
+        mode = _effective_change_mode(case.candidate)
+        if action in {"reaffirm", "merge", "replace", "retire"}:
+            if not _target_contract_valid(
+                    action, target_ids, case.candidate):
+                flags.append(f"case {case_idx}: invalid {action!r} contract")
                 continue
-        kept.append(o)
-    return kept, flags
+            target_memories = [case.memories[target - 1]
+                               for target in targets]
+            guard_error = _action_guard_error(
+                action, case.candidate, target_memories)
+            if guard_error:
+                flags.append(f"case {case_idx}: {guard_error}")
+                continue
+        if action == "add" and not targets and item is not None \
+                and mode != CHANGE_WITHDRAW:
+            candidate_ops = [{"kind": "new", **_store_fields(case.candidate)}]
+        elif (action == "reaffirm" and len(target_ids) == 1
+              and mode != CHANGE_WITHDRAW):
+            candidate_ops = [{"kind": "reinforce",
+                              "target_id": target_ids[0],
+                              **_source_fields(case.candidate)}]
+        elif (action == "merge" and target_ids and item is not None
+              and mode != CHANGE_WITHDRAW):
+            merged = _merge_text(value, case.candidate)
+            if merged is None:
+                flags.append(f"case {case_idx}: merge missing text")
+                continue
+            fields = {**_store_fields(case.candidate), "text": merged}
+            if len(target_ids) == 1:
+                candidate_ops = [{"kind": "contradict",
+                                  "target_id": target_ids[0], **fields}]
+            else:
+                candidate_ops = [{"kind": "merge",
+                                  "target_ids": target_ids, **fields}]
+        elif (action == "replace" and target_ids and item is not None
+              and case.candidate.kind == POTENTIAL_CHANGE
+              and mode == CHANGE_REPLACE):
+            fields = _store_fields(case.candidate)
+            if len(target_ids) == 1:
+                candidate_ops = [{"kind": "contradict",
+                                  "target_id": target_ids[0], **fields}]
+            else:
+                candidate_ops = [{"kind": "merge",
+                                  "target_ids": target_ids, **fields}]
+        elif (action == "retire" and target_ids
+              and case.candidate.kind == POTENTIAL_CHANGE
+              and mode == CHANGE_WITHDRAW and item is None):
+            extras = _source_fields(case.candidate)
+            candidate_ops = [{"kind": "retire", "target_id": target_id,
+                              "withdrawal": True, **extras}
+                             for target_id in target_ids]
+        else:
+            flags.append(f"case {case_idx}: invalid {action!r} contract")
+            continue
+
+        if action in {"reaffirm", "merge", "replace", "retire"}:
+            candidate_condition, candidate_kinds = _candidate_applicability(
+                case.candidate)
+            incompatible = [
+                memory.id for memory in
+                (case.memories[target - 1] for target in targets)
+                if (not _work_kinds_compatible(candidate_kinds, memory.kinds)
+                    or not _conditions_compatible(
+                        candidate_condition, _condition(memory)))]
+            if incompatible:
+                flags.append(
+                    f"case {case_idx}: incompatible applicability targets "
+                    f"{incompatible}")
+                continue
+        ops.extend(candidate_ops)
+    return ops, flags
 
 
-def run_consolidation(store: Store) -> dict:
-    out = consolidation_ops(store.active())
-    applied = store.apply_ops(out["ops"])
-    from memtranslator.kinds import backfill_kinds
-    backfill_kinds(store)               # merged entries re-enter untagged
-    return {"ops": out["ops"], "flags": out["flags"], "store": applied}
+__all__ = [
+    "CONSOLIDATION_SYSTEM", "CandidateCase", "TOP_K",
+    "build_consolidation_user_prompt", "parse_consolidation_output",
+]

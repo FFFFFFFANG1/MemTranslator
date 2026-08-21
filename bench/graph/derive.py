@@ -113,24 +113,46 @@ def scope_compatible(scope: dict, context: dict) -> bool:
 
 
 def to_product_scope(scope: dict) -> dict:
-    """Bench 4-dim scope → the product's {app?, task?, lang?} dict.
+    """Bench 4-dim scope → the product's free key:value narrowness dict.
 
-    The product's `lang` is one overloaded field serving both natural and
-    programming language. Projection rule (spec §4.4): code_lang wins when
-    both are concrete, nat_lang otherwise, ANY dims are omitted. This is a
-    KNOWN DISTORTION — a rule scoped {code_lang: python, nat_lang: zh-CN}
-    cannot round-trip — and it is recorded here rather than worked around,
-    because the workaround would be testing a product that does not exist."""
+    Genre (`task`) projects into kinds via `to_product_kinds`, not into
+    product scope. The product's `lang` is one overloaded field serving both
+    natural and programming language. Projection rule (spec §4.4): code_lang
+    wins when both are concrete, nat_lang otherwise, ANY dims are omitted.
+    This is a KNOWN DISTORTION — a rule scoped {code_lang: python,
+    nat_lang: zh-CN} cannot round-trip — and it is recorded here rather than
+    worked around, because the workaround would be testing a product that
+    does not exist."""
     out = {}
     if scope["app"] != ANY:
         out["app"] = scope["app"]
-    if scope["task"] != ANY:
-        out["task"] = scope["task"]
     if scope["code_lang"] != ANY:
         out["lang"] = scope["code_lang"]
     elif scope["nat_lang"] != ANY:
         out["lang"] = scope["nat_lang"]
     return out
+
+
+def to_product_kinds(scope: dict, existing: list | None = None) -> list[str]:
+    """Map bench scope.task genre into open product work-kind slugs.
+
+    `existing` may carry annotate_kinds tags and/or an optional explicit
+    `coords.kinds` list authored on the catalogue node. Genre still prefers
+    scope.task when present; product scope never receives task as a dim.
+    """
+    from memtranslator.scopes import normalize_kind
+    kinds = []
+    for value in existing or []:
+        if isinstance(value, str) and value.strip():
+            kinds.append(normalize_kind(value))
+    task = scope.get("task")
+    if task is not None and task != ANY:
+        slug = normalize_kind(str(task))
+        if slug in {"code_write", "coding"}:
+            slug = "code"
+        if slug not in kinds:
+            kinds.append(slug)
+    return list(dict.fromkeys(kinds))
 
 
 def to_product_context(context: dict) -> dict:

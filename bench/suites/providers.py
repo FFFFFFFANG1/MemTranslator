@@ -21,12 +21,18 @@ class ExtractionProvider(Protocol):
 
     def consolidate(self, existing: list[Requirement]) -> list[dict]: ...
 
+    def reconcile(self, candidate: dict,
+                  existing: list[Requirement]) -> list[dict]: ...
+
 
 class NullProvider:
     def extract(self, events, existing):
         return []
 
     def consolidate(self, existing):
+        return []
+
+    def reconcile(self, candidate, existing):
         return []
 
 
@@ -93,11 +99,21 @@ class ReferenceProvider:
                            f"Store:\n{idx}\n\nJSON:")
         return _parse_ops(raw)
 
+    def reconcile(self, candidate, existing):
+        # Naive baseline: treat a near-duplicate candidate as reinforce of
+        # the first existing entry; otherwise emit nothing.
+        item = (candidate or {}).get("item") or {}
+        text = item.get("text") or ""
+        if not text or not existing:
+            return []
+        return [{"kind": "reinforce", "target_id": existing[0].id,
+                 "text": existing[0].text}]
+
 
 class V1Provider:
-    """The real v1 pipeline behind the bench seam (design §9): signal layer
-    (screening + span attribution) → batched extraction → ops. Thin on
-    purpose — no time triggers (the bench feeds explicit batches), and
+    """The real v1 pipeline behind the bench seam (design §9): natural
+    messages → batched extraction → ops. Thin on purpose — no time triggers
+    (the bench feeds explicit batches), and
     style_rule ops are filtered out: they are product-internal rewrite
     feedback, not requirement ops in the bench contract."""
 
@@ -107,42 +123,131 @@ class V1Provider:
         `Store.apply_feedback_ops`, where an update edits the attributed
         entry in place."""
         from memtranslator.extraction import run_a_extraction, run_b_extraction
-        from memtranslator.signals import patch_diff, screen_message
+        from memtranslator.signals import patch_diff
 
-        keys = [r.key for r in existing if r.key]
-        texts = [r.text for r in existing]
-        a_spans, b_signals = [], []
+        self.last_trace = {"events": list(events), "route_a": None,
+                           "route_b": None, "ops": []}
+        a_messages, b_signals = [], []
         for e in events:
             if e.get("type") == "natural":
-                a_spans += screen_message(e["text"], existing_keys=keys,
-                                          existing_texts=texts)
+                text = e.get("text") or ""
+                if text.strip():
+                    # Keep bench and product admission identical: A sees the
+                    # complete natural message and decides candidate/discard.
+                    a_messages.append(text)
             elif e.get("type") == "edited_diff":
-                # The product records entry snapshots at translate time;
-                # the fixtures name them as indices into their fixed local
-                # store, which is the same thing one dereference earlier.
-                entries = [existing[i].to_dict() for i in e.get("applied", [])
-                           if isinstance(i, int) and 0 <= i < len(existing)]
+                # Prefer entry snapshots recorded at translate time (product
+                # / E2E shape). Suite L fixtures still use indices into the
+                # fixed local store via `applied`.
+                if e.get("entries"):
+                    entries = [entry for entry in e["entries"]
+                               if isinstance(entry, dict) and entry.get("id")]
+                else:
+                    entries = [existing[i].to_dict()
+                               for i in e.get("applied", [])
+                               if isinstance(i, int)
+                               and 0 <= i < len(existing)]
                 diff = patch_diff(e["polished"], e["final"])
                 if entries and diff:
                     b_signals.append({"entries": entries, "diff": diff})
         ops = []
-        if a_spans:
+        if a_messages:
             by_id = {r.id: r for r in existing}
-            for o in run_a_extraction(a_spans, existing)["ops"]:
+            a_out = run_a_extraction(a_messages, existing)
+            self.last_trace["route_a"] = a_out.get("trace")
+            for o in a_out["ops"]:
                 if o.get("rkind") == "style_rule":
                     continue
                 # the bench contract grades reinforce text against the gist;
                 # the rule being reinforced IS the target entry's text
                 if o["kind"] == "reinforce" and "text" not in o:
                     o = {**o, "text": by_id[o["target_id"]].text}
-                ops.append(o)
+                ops.append({**o, "channel": "a"})
         if b_signals:
-            ops += run_b_extraction(b_signals)["ops"]
+            b_out = run_b_extraction(b_signals)
+            self.last_trace["route_b"] = b_out.get("trace")
+            for o in b_out["ops"]:
+                ops.append({**o, "channel": "b"})
+        self.last_trace["ops"] = list(ops)
         return ops
 
     def consolidate(self, existing):
-        from memtranslator.consolidate import consolidation_ops
-        return consolidation_ops(existing)["ops"]
+        # GROUPS tidy consolidator archived to consolidate_tidy_backup.py.
+        return []
+
+    def reconcile(self, candidate, existing):
+        """Feed one structured candidate to the live CASE consolidator.
+
+        Retrieval is the product's hybrid top-3; the model only sees the
+        CASE payload, never Store IDs.
+        """
+        from memtranslator import llm
+        from memtranslator.config import GEN_TEMPERATURE, MODELS
+        from memtranslator.consolidate import (
+            CONSOLIDATION_SYSTEM, build_consolidation_user_prompt,
+            parse_consolidation_output)
+        from memtranslator.extraction import (
+            POTENTIAL_CHANGE, CandidateItem, MemoryCandidate)
+        from memtranslator.memory_write import retrieve_cases
+        kind = candidate.get("kind") or "potential_new"
+        item_raw = candidate.get("item")
+        item = None
+        if isinstance(item_raw, dict):
+            item_kinds = list(item_raw.get("work_kinds") or [])
+            item_condition = str(item_raw.get("applies_when") or "").strip()
+            item_mode = str(item_raw.get("scope_mode") or (
+                "global" if item_kinds in (["all"], ["any"])
+                and not item_condition else "scoped"))
+            item = CandidateItem(
+                text=str(item_raw.get("text") or "").strip(),
+                bucket=str(item_raw.get("bucket") or ""),
+                applies_when=item_condition,
+                scope_mode=item_mode,
+                work_kinds=item_kinds,
+                key=str(item_raw.get("key") or ""),
+                confidence=int(item_raw.get("confidence") or 0))
+        change = candidate.get("target_query", candidate.get("change_candidate"))
+        change = change.strip() if isinstance(change, str) else None
+        change_mode = candidate.get("change_mode")
+        source_text = candidate.get("source_text") or (
+            item.text if item else change or "")
+        mem = MemoryCandidate(
+            id="C1", kind=kind, item=item, change_candidate=change,
+            source_signal_ids=[1], source_texts=[source_text], ordinal=1,
+            bucket=(item.bucket if item else str(candidate.get("bucket") or "")),
+            applies_when=(item.applies_when if item else str(
+                candidate.get("applies_when") or "").strip()),
+            scope_mode=(item.scope_mode if item else str(
+                candidate.get("scope_mode") or "scoped")),
+            work_kinds=(item.work_kinds if item else list(
+                candidate.get("work_kinds") or [])),
+            key=(item.key if item else str(candidate.get("key") or "")),
+            confidence=(item.confidence if item else int(
+                candidate.get("confidence") or 0)),
+            change_mode=(change_mode if change_mode in {"replace", "withdraw"}
+                         else None))
+        if kind == POTENTIAL_CHANGE and not mem.change_candidate:
+            return []
+        if kind != POTENTIAL_CHANGE and (item is None or not item.text):
+            return []
+
+        cases = retrieve_cases([mem], existing)
+        writer = MODELS.get("writer") or MODELS["translator"]
+        raw = llm.complete(
+            writer, CONSOLIDATION_SYSTEM,
+            build_consolidation_user_prompt(cases),
+            max_tokens=llm.budget_for(writer, 500),
+            temperature=GEN_TEMPERATURE)
+        ops, _flags = parse_consolidation_output(raw, cases)
+        by_id = {r.id: r for r in existing}
+        out = []
+        for op in ops:
+            if op.get("kind") == "reinforce" and "text" not in op:
+                target = by_id.get(op.get("target_id") or "")
+                if target is not None:
+                    op = {**op, "text": target.text}
+            out.append(op)
+        return out
 
 
 PROVIDERS = {"null": NullProvider, "reference": ReferenceProvider,

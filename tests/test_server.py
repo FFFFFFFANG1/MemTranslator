@@ -33,9 +33,10 @@ def test_translate_endpoint_apply_and_event(tmp_path, monkeypatch):
     client, app = make_client(tmp_path)
     rid = client.post("/api/requirements",
                       json={"text": "Code without explanations."}).json()["id"]
-    monkeypatch.setattr(llm, "complete", lambda *a, **k: (
-        f'{{"decision": "apply", "applied_ids": ["{rid}"], '
-        f'"polished": "Write the function; code only, no explanations."}}'))
+    monkeypatch.setattr(llm, "complete", lambda *a, **k: json.dumps({
+        "decision": "apply", "applied_ids": [rid],
+        "hunks": [{"old": "Write the function.",
+                   "new": "Write the function; code only, no explanations."}]}))
 
     r = client.post("/api/translate", json={"text": "Write the function."})
     body = r.json()
@@ -45,14 +46,18 @@ def test_translate_endpoint_apply_and_event(tmp_path, monkeypatch):
 
     kinds = [e["kind"] for e in app.state.events.read_all()]
     assert "translate" in kinds
+    event = [e for e in app.state.events.read_all()
+             if e["kind"] == "translate"][-1]
+    assert event["applied_entries"][0]["id"] == rid
+    assert event["applied_entries"][0]["text"] == "Code without explanations."
 
 
 def test_chat_streams_and_logs_edit_diff(tmp_path, monkeypatch):
     client, app = make_client(tmp_path)
     rid = client.post("/api/requirements", json={"text": "Short."}).json()["id"]
-    monkeypatch.setattr(llm, "complete", lambda *a, **k: (
-        f'{{"decision": "apply", "applied_ids": ["{rid}"], '
-        f'"polished": "raw text, politely"}}'))
+    monkeypatch.setattr(llm, "complete", lambda *a, **k: json.dumps({
+        "decision": "apply", "applied_ids": [rid],
+        "hunks": [{"old": "raw text", "new": "raw text, politely"}]}))
     tr = client.post("/api/translate", json={"text": "raw text"}).json()
 
     monkeypatch.setattr(llm, "stream_text", lambda *a, **k: iter(["Hel", "lo"]))
@@ -83,9 +88,9 @@ def test_chat_rejects_bad_history(tmp_path):
 def test_submit_event_joins_with_translate(tmp_path, monkeypatch):
     client, app = make_client(tmp_path)
     rid = client.post("/api/requirements", json={"text": "Short."}).json()["id"]
-    monkeypatch.setattr(llm, "complete", lambda *a, **k: (
-        f'{{"decision": "apply", "applied_ids": ["{rid}"], '
-        f'"polished": "raw text, politely"}}'))
+    monkeypatch.setattr(llm, "complete", lambda *a, **k: json.dumps({
+        "decision": "apply", "applied_ids": [rid],
+        "hunks": [{"old": "raw text", "new": "raw text, politely"}]}))
     tr = client.post("/api/translate", json={"text": "raw text"}).json()
 
     r = client.post("/api/events/submit", json={
