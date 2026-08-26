@@ -1,0 +1,582 @@
+{
+ "suite": "E1-e-05",
+ "at": "20260729-091331",
+ "metric_version": 3,
+ "judge_model": "deepseek-v4-pro",
+ "cases_file": "/home/meme/MemTranslator/bench_archive/cases/episodes",
+ "cases_hash": "0398370e86b6",
+ "score": 0.7561728395061729,
+ "score_detail": {
+  "headline": 0.7561728395061729,
+  "micro": 0.7561728395061729,
+  "macro": 0.7561728395061729,
+  "gap": 0.0
+ },
+ "expected_shards": 1,
+ "completed_shards": 1,
+ "complete": true,
+ "category_rates": {
+  "episode": 0.7561728395061729
+ },
+ "strata": {
+  "episode": {
+   "e-05": 0.7561728395061729
+  }
+ },
+ "collapse_flags": [],
+ "judge_parse_flags": 0,
+ "protocol_version": 2,
+ "arms": {
+  "real": {
+   "carry": 0.6666666666666666,
+   "carry_mech_numeric": 0.0,
+   "carry_mech_n": 2,
+   "suppress": 1.0,
+   "noop_rate": 0.5882352941176471,
+   "mean_block_chars": 594.0,
+   "mean_latency_ms": 1433.4117647058824
+  },
+  "oracle-arm": {
+   "carry": 0.6666666666666666,
+   "carry_mech_numeric": 0.5,
+   "carry_mech_n": 2,
+   "suppress": 1.0,
+   "noop_rate": 0.17647058823529413,
+   "mean_block_chars": 1006.5294117647059,
+   "mean_latency_ms": 1935.235294117647
+  },
+  "null-generic": {
+   "carry": null,
+   "carry_mech_numeric": 0.0,
+   "carry_mech_n": 2,
+   "suppress": 1.0,
+   "noop_rate": 0.0,
+   "mean_block_chars": 6.0,
+   "mean_latency_ms": 2226.1176470588234
+  }
+ },
+ "state_band": 0.6018518518518519,
+ "state_rows": [
+  {
+   "seq": 8,
+   "ok": 6,
+   "n": 7,
+   "rate": 0.8571428571428571,
+   "misses": [
+    {
+     "cid": "e05-c03",
+     "gold": "active",
+     "aligned": false
+    }
+   ]
+  },
+  {
+   "seq": 16,
+   "ok": 10,
+   "n": 16,
+   "rate": 0.625,
+   "misses": [
+    {
+     "cid": "e05-c03",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c05",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c09",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c10",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c11",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c13",
+     "gold": "active",
+     "aligned": false
+    }
+   ]
+  },
+  {
+   "seq": 24,
+   "ok": 16,
+   "n": 25,
+   "rate": 0.64,
+   "misses": [
+    {
+     "cid": "e05-c03",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c05",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c09",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c10",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c13",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c15",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c20",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c21",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c22",
+     "gold": "active",
+     "aligned": false
+    }
+   ]
+  },
+  {
+   "seq": 32,
+   "ok": 16,
+   "n": 27,
+   "rate": 0.5925925925925926,
+   "misses": [
+    {
+     "cid": "e05-c03",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c04",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c05",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c09",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c10",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c13",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c15",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c19",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c20",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c22",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c27",
+     "gold": "active",
+     "aligned": false
+    }
+   ]
+  },
+  {
+   "seq": 40,
+   "ok": 20,
+   "n": 32,
+   "rate": 0.625,
+   "misses": [
+    {
+     "cid": "e05-c03",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c04",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c05",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c09",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c10",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c11",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c13",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c15",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c20",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c21",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c27",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c31",
+     "gold": "active",
+     "aligned": false
+    }
+   ]
+  },
+  {
+   "seq": 46,
+   "ok": 19,
+   "n": 35,
+   "rate": 0.5428571428571428,
+   "misses": [
+    {
+     "cid": "e05-c04",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c05",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c09",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c11",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c13",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c15",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c16",
+     "gold": "withdrawn",
+     "aligned": true
+    },
+    {
+     "cid": "e05-c20",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c21",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c22",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c25",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c27",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c29",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c31",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-s03",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-s04",
+     "gold": "active",
+     "aligned": false
+    }
+   ]
+  },
+  {
+   "seq": 53,
+   "ok": 20,
+   "n": 37,
+   "rate": 0.5405405405405406,
+   "misses": [
+    {
+     "cid": "e05-c04",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c05",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c09",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c11",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c13",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c14",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c18",
+     "gold": "superseded",
+     "aligned": true
+    },
+    {
+     "cid": "e05-c19",
+     "gold": "withdrawn",
+     "aligned": true
+    },
+    {
+     "cid": "e05-c20",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c23",
+     "gold": "withdrawn",
+     "aligned": true
+    },
+    {
+     "cid": "e05-c25",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c26",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c27",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c31",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-s03",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-s04",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-s05",
+     "gold": "active",
+     "aligned": false
+    }
+   ]
+  },
+  {
+   "seq": 62,
+   "ok": 23,
+   "n": 37,
+   "rate": 0.6216216216216216,
+   "misses": [
+    {
+     "cid": "e05-c04",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c05",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c09",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c13",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c14",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c24",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c25",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c26",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c27",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-c31",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-s03",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-s04",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-s05",
+     "gold": "active",
+     "aligned": false
+    },
+    {
+     "cid": "e05-s06",
+     "gold": "active",
+     "aligned": false
+    }
+   ]
+  }
+ ],
+ "consolidations": [
+  {
+   "seq": 20,
+   "trigger": "adds",
+   "n_ops": 2
+  },
+  {
+   "seq": 48,
+   "trigger": "adds",
+   "n_ops": 4
+  }
+ ],
+ "peak_sut_active": 19,
+ "probe_rows_n": 17,
+ "results": [
+  {
+   "id": "e-05",
+   "category": "episode",
+   "episode": "e-05",
+   "pass": true,
+   "score": 0.7561728395061729,
+   "score_is": "unweighted band mean",
+   "carry": 0.6666666666666666,
+   "suppress": 1.0,
+   "state": 0.6018518518518519
+  }
+ ]
+}

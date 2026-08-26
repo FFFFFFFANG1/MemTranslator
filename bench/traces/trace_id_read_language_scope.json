@@ -1,0 +1,78 @@
+{
+  "family": "language_scope",
+  "description": "cross-language pairs (the archive's en personas collapsed) and scope discipline: a scoped rule fires only when the context matches or is unknown",
+  "checks": [
+    {
+      "id": "en-rule-zh-task",
+      "store": [
+        {"text": "emails I ask you to draft must stay under 63 words"}
+      ],
+      "task": {"text": "帮我写封邮件给中介，确认下周三下午的看房时间"},
+      "expect": {
+        "behavior": "act",
+        "must_contain": ["63"]
+      }
+    },
+    {
+      "id": "zh-rule-en-task",
+      "store": [
+        {"text": "代码注释一律用英文写"}
+      ],
+      "task": {"text": "write a python function that walks a directory and dedupes files by content hash, with comments"},
+      "expect": {
+        "behavior": "act",
+        "must_contain": [
+          {"value": "comments in English", "matcher": "semantic",
+           "criterion": "The rewritten request explicitly asks for code comments to be written in English."}
+        ]
+      }
+    },
+    {
+      "id": "scope-match-fires",
+      "store": [
+        {"text": "邮件正文别用表情符号", "kinds": ["email"]}
+      ],
+      "task": {"text": "帮我写封邮件感谢面试官，语气自然点",
+               "context": {"task": "email"}},
+      "expect": {
+        "behavior": "act",
+        "must_contain": [
+          {"value": "no emoji", "matcher": "semantic",
+           "criterion": "The rewritten request explicitly asks to avoid emoji."}
+        ]
+      }
+    },
+    {
+      "id": "scope-mismatch-silent",
+      "store": [
+        {"text": "邮件正文别用表情符号", "kinds": ["email"]}
+      ],
+      "task": {"text": "帮我把这季度的销售数据整理成一份报告",
+               "context": {"task": "report"}},
+      "expect": {"behavior": "noop"}
+    },
+    {
+      "id": "scope-unknown-context-still-fires",
+      "store": [
+        {"text": "邮件正文别用表情符号", "kinds": ["email"]}
+      ],
+      "task": {"text": "帮我写封邮件感谢面试官，语气自然点"},
+      "expect": {
+        "behavior": "act",
+        "must_contain": [
+          {"value": "no emoji", "matcher": "semantic",
+           "criterion": "The rewritten request explicitly asks to avoid emoji."}
+        ]
+      }
+    },
+    {
+      "id": "code-lang-scope-mismatch",
+      "store": [
+        {"text": "Python 函数都要带 type hints", "scope": {"lang": "python"}}
+      ],
+      "task": {"text": "write a java method that parses an ISO date string",
+               "context": {"lang": "java"}},
+      "expect": {"behavior": "noop"}
+    }
+  ]
+}

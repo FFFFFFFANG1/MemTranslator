@@ -1,0 +1,157 @@
+{
+ "family": "conflict",
+ "description": "two live preferences clash (the zombie scenario the write path measurably produces — 31% of retirements go unrecorded). Correct behavior: newest wins, never both",
+ "checks": [
+  {
+   "id": "two-live-caps-newest-wins",
+   "store": [
+    {
+     "text": "我让你写的邮件一律不超过120词",
+     "age_rank": 0
+    },
+    {
+     "text": "邮件放宽点，78词以内就行",
+     "age_rank": 5
+    }
+   ],
+   "task": {
+    "text": "帮我写封邮件给房东，热水器坏了让他找人来修"
+   },
+   "expect": {
+    "behavior": "act",
+    "must_contain": [
+     "78"
+    ],
+    "must_not_contain": [
+     "120"
+    ]
+   }
+  },
+  {
+   "id": "retired-zombie-stays-dead",
+   "store": [
+    {
+     "text": "周报一律用 bullet point 列要点",
+     "status": "retired",
+     "age_rank": 0
+    },
+    {
+     "text": "周报改成叙述段落，别用 bullet",
+     "age_rank": 5
+    }
+   ],
+   "task": {
+    "text": "帮我把这周的工作整理成周报发给组长"
+   },
+   "expect": {
+    "behavior": "act",
+    "must_contain": [
+     {
+      "value": "叙述段落",
+      "matcher": "semantic",
+      "criterion": "The rewritten request asks for narrative paragraphs (叙述段落/连贯段落) as the weekly report format."
+     }
+    ],
+    "judge": [
+     "The rewritten request does not REQUIRE bullet-point formatting for the report. Explicitly prohibiting bullet points, or asking for narrative paragraphs instead, is correct and must count as passing."
+    ]
+   }
+  },
+  {
+   "id": "conflict-en-latest-tone",
+   "store": [
+    {
+     "text": "emails should sound formal and reserved",
+     "age_rank": 0
+    },
+    {
+     "text": "actually make my emails casual and warm from now on",
+     "age_rank": 7
+    }
+   ],
+   "task": {
+    "text": "draft an email to the design team asking them to review the new landing page this week"
+   },
+   "expect": {
+    "behavior": "act",
+    "judge": [
+     "The rewritten request asks for a casual, warm tone and does NOT ask for a formal or reserved tone."
+    ]
+   }
+  },
+  {
+   "id": "conflict-chain-three-caps",
+   "store": [
+    {
+     "text": "我让你写的邮件一律不超过120词",
+     "age_rank": 0
+    },
+    {
+     "text": "邮件上限改成90词吧",
+     "age_rank": 3
+    },
+    {
+     "text": "邮件还是控制在60词以内吧",
+     "age_rank": 7
+    }
+   ],
+   "task": {
+    "text": "帮我写封邮件给物业，反映楼道灯坏了两周没人修"
+   },
+   "expect": {
+    "behavior": "act",
+    "must_contain": [
+     "60"
+    ],
+    "must_not_contain": [
+     "120",
+     "90"
+    ]
+   }
+  },
+  {
+   "id": "conflict-crosslingual-tone",
+   "store": [
+    {
+     "text": "报告都用正式书面语写",
+     "age_rank": 0
+    },
+    {
+     "text": "actually, keep my reports conversational and plain from now on",
+     "age_rank": 6
+    }
+   ],
+   "task": {
+    "text": "帮我写一份这个季度的项目进展报告"
+   },
+   "expect": {
+    "behavior": "act",
+    "judge": [
+     "The rewritten request asks for a conversational/plain style and does NOT ask for a formal written style (正式书面语)."
+    ]
+   }
+  },
+  {
+   "id": "conflict-revocation-shaped",
+   "store": [
+    {
+     "text": "周报里每条进展都要附数据支撑",
+     "age_rank": 0
+    },
+    {
+     "text": "周报别再要求数据支撑了，列清楚要点就行",
+     "age_rank": 5
+    }
+   ],
+   "task": {
+    "text": "帮我把这周的工作整理成周报"
+   },
+   "expect": {
+    "behavior": "act",
+    "judge": [
+     "The rewritten request does NOT require data backing (数据支撑) for each item; asking for clear key points is correct. Explicitly saying data backing is not needed also counts as passing."
+    ]
+   }
+  }
+ ]
+}

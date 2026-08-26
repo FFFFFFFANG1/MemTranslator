@@ -1,0 +1,1185 @@
+{
+  "id": "e-07",
+  "protocol_version": 3,
+  "user_turns": [
+    {
+      "seq": 1,
+      "user_input": "推荐工具的时候优先开源的啊，闭源的我们过不了审"
+    },
+    {
+      "seq": 2,
+      "user_input": "draft an email to the infra team about the new idempotency key ttl config — we need to bump it from 24h to 72h on prod, staging stays as-is. attach the relevant env diff.。that last output used double underscores on a private method — wtf. i already told you, non-public stuff gets one underscore, not two. while you're at it, write me a function that takes a list of payment intents and returns a map from currency to total amount, ignoring null amounts."
+    },
+    {
+      "seq": 3,
+      "user_input": "Also, while you're at it — avoid single leading underscore in identifiers. Now give me a report on failed payment retries for the last 7 days, grouped by error code, with counts and first/last failure timestamps."
+    },
+    {
+      "seq": 4,
+      "user_input": "write a Go function that parses a Stripe webhook event and returns the charge ID, handling all error cases with typed errors。hey, also while you're at it — when you're writing about Python attributes, don't ever call them 'private'. just say it's a convention. ok now write a function that retries a failed db transaction up to 3 times with exponential backoff, starting at 100ms. return the result or raise.。Hey, while you're doing the postmortem for the 23m timeout yesterday, can you make sure you surround every top-level function and class definition with blank lines if it's more than 11 lines? Just a style thing I want going forward."
+    },
+    {
+      "seq": 5,
+      "user_input": "draft a postmortem for the 2025-03-11 payment timeout spike. include impact, root cause, timeline, and action items. keep it short.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 6,
+      "user_input": "That table you just gave me is a mess. You wrote 'PaymentGateway' as 'Pg' and 'InsufficientFunds' as 'If' — that's not how acronyms work in CapWords. From now on, when you use an acronym inside a CapWords identifier, every single letter has to be capitalized. No exceptions."
+    },
+    {
+      "seq": 7,
+      "user_input": "That last output had a bunch of pylint suggestions in the code block. Don't run pylint when writing Python code. Just give me the report on failed payment retries for the last 7 days, grouped by error code, with counts and first/last failure timestamps.，Hey, can you write a function that filters a list of payment intents to only return those that failed with card_declined, plus the reason string from the gateway response? Also, when writing the docstring or any comments, don't put a first heading — just skip the heading entirely."
+    },
+    {
+      "seq": 8,
+      "user_input": "write a function that takes a list of payment intents and returns a map from currency to total amount, summing only completed ones。dude, the last response had imports from sub-packages all over the place. just stop doing that — never use sub-package imports, period. anyway, back to the function: take a list of payment intents, filter to those where status is 'failed' and failure_code is 'card_declined', and also include the gateway_reason string."
+    },
+    {
+      "seq": 9,
+      "user_input": "draft a postmortem for the prod incident yesterday where idempotency keys silently failed on duplicate writes — include timeline, root cause, and action items.。That last response had a backslash for line continuation in the middle of a tuple. Don't do that. Just use implicit continuation inside brackets—it's cleaner. Now, write a postmortem for the 23m payment timeout yesterday. Include root cause, duration, affected services, and three action items with owners. Keep it to bullet points.。Hey, also—don't indent block comments. Just leave them flush left. Anyway, can you draft an email to infra saying our DB connection pool is hitting 80% under normal load and we need to bump max_connections from 50 to 75 before next deploy?"
+    },
+    {
+      "seq": 10,
+      "user_input": "draft an email to the infra team about the new payment gateway, keep it short",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 11,
+      "user_input": "hey, that postmortem draft you just sent — it's fine but you put a bunch of 'we should consider fixing this' and 'maybe we could look at that' stuff. just LGTM it and trust we'll fix the comments. stop hedging."
+    },
+    {
+      "seq": 12,
+      "user_input": "write a Go function that retries a failed HTTP POST up to 3 times with exponential backoff, returning the response body or the last error。Hey, write the postmortem for the 23m payment timeout yesterday—root cause, duration, affected services, three action items with owners, bullet points. Also, when you write a report, keep it under 151 words.。That last email draft was way too wordy for a simple ops request. For straightforward stuff like this, just say 'Decision Okay' and move on—no need to pad it with fluff. But for the SRE email: our payment retry queue is backing up under heavy load. Ask them to bump the concurrency limit from 20 to 40 and add a dead-letter alert if latency exceeds 5s."
+    },
+    {
+      "seq": 13,
+      "user_input": "write a postmortem for the 4/12 payment settlement delay. cause: idempotency key collision in the ledger batch. include the timeline, root cause, blast radius, and the fix we deployed (key namespace split by shard). keep it to one page.。That postmortem draft was way too long. I don't need a novel. Keep it under 3199 words — hard cap. And make sure the timeline, root cause, and action items are all in there."
+    },
+    {
+      "seq": 14,
+      "user_input": "Hey, can you draft an email to the fraud team asking them to review the new idempotency key logic in the payment retry flow? Also, no emojis when you're trying to warm up the tone — that's the opposite of what I want.，Hey, also while you're at it — when you generate any text response for me, keep it under 128 words. I don't want to read a novel. So for that function: write a function that takes a list of payment intents and returns only the ones that failed with a card_declined code, plus the reason string from the gateway response."
+    },
+    {
+      "seq": 15,
+      "user_input": "Summarize last week's payment failures. Bucket by decline reason. Show counts and total amounts. Keep it short.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 16,
+      "user_input": "write a Go function that takes a slice of Payment structs (each with a Status field, one of \"pending\", \"completed\", \"failed\") and returns a map[string]int counting how many are in each status.。From now on, when you write something that's supposed to be a first-hand account, don't use shorthand. Keep it full. Also, can you draft an email to the fraud team asking for a review of the new idempotency key logic in the payment retry flow?"
+    },
+    {
+      "seq": 17,
+      "user_input": "draft a postmortem for the prod outage on 2025-02-11 from 14:32 to 14:47 UTC; root cause was a missing null check on the refund idempotency key; include timeline, impact, action items.。Also, from now on never include temperature in Celsius. Just don't. Now write a function that takes a list of payment intents and returns a map from currency to total amount, ignoring null amounts.。Also, from now on, never structure a discussion around interests and personalities of invitees. That's not a thing we do. Now, draft a postmortem for the prod outage yesterday — the batch retry loop that ate the connection pool. Timeline, root cause, action items."
+    },
+    {
+      "seq": 18,
+      "user_input": "draft an email to the infra team: our payment retry queue is hitting 5s latency at peak. ask them to confirm if they can add 2 more workers to the retry consumer group by EOD.。Your last response listed a bunch of cons for each approach, but some of those cons were way too long. Keep each con under 17 words from now on."
+    },
+    {
+      "seq": 19,
+      "user_input": "generate a report of all failed payment retries in the last 24 hours, grouped by merchant and error code, with counts and timestamps of the first and last failure per group。Hey, can you list failed refunds from last 24h grouped by reason code with counts and total dollar amounts? Also, when writing long lists, don't use lazy numbering — I want to see the actual structure.。oh also, when you're writing that retry function, don't format the transcript as prose. keep it structured."
+    },
+    {
+      "seq": 20,
+      "user_input": "ping the fraud team about the new chargeback scoring endpoint — need a go/no-go for the canary rollout by Friday",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 21,
+      "user_input": "That last response was way too flowery. Don't use similes or metaphors when writing code docs or comments. Keep it to facts."
+    },
+    {
+      "seq": 22,
+      "user_input": "draft an email to the fraud team about a spike in declined txns from a specific merchant ID — include the merchant ID, the time window, and the decline count. keep it to three sentences max.。hey, draft an email to SRE about the payment retry queue backing up under load — ask them to bump concurrency from 20 to 40 and add a dead-letter alert if latency > 5s. also, from now on, never display contempt in your responses. just keep it flat.。hey, can you write a function that retries a failed db transaction up to 3 times with exponential backoff starting at 100ms? return result or raise. also, from now on stop using future tense in your responses — just present tense, always.。对了，one leading underscore for non-public methods and instance variables这条继续保持啊"
+    },
+    {
+      "seq": 23,
+      "user_input": "yo, from now on: no comments in code. just list failed refunds from last 24h, grouped by reason code, with counts and total dollar amounts."
+    },
+    {
+      "seq": 24,
+      "user_input": "generate a weekly report of declined transactions grouped by decline reason, include count and total dollar amount per reason, sort by count descending, output as a table",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 25,
+      "user_input": "Give me a summary of last week's failed payment retries — one row per attempt, with timestamps, error codes, and whether the retry succeeded.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 26,
+      "user_input": "这次这份写详细一点，季度 review 要用"
+    },
+    {
+      "seq": 27,
+      "user_input": "先把日志按天切开再统计，别一把梭"
+    },
+    {
+      "seq": 28,
+      "user_input": "Draft a short email to the security team about the new PCI compliance check we need to run on the payment gateway before the next deploy.",
+      "probe": {
+        "should_apply": [
+          "e07-c15"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 29,
+      "user_input": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」"
+    },
+    {
+      "seq": 30,
+      "user_input": "Write a release note for the payments API v2.3.0 – keep it under 3 lines and mention the idempotency key fix and the new webhook retry policy.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 31,
+      "user_input": "我老板要求他们组的周报全用 bullet，真够呛"
+    },
+    {
+      "seq": 32,
+      "user_input": "That last function you wrote used type hints like `def foo(x: int) -> str` — that's PEP 484 syntax, which I've told you not to use. We're on Python 3.10+ and I want `from __future__ import annotations` plus `str | None` style, not the old way. Now, write a function that retries a failed db transaction up to 3 times with exponential backoff, starting at 100ms. Return the result or raise.，That postmortem you just drafted is way too verbose. I said common annotations, not a full essay. Keep it to 18 items max, please. I don't need every single detail spelled out."
+    },
+    {
+      "seq": 33,
+      "user_input": "Hey, can you draft a postmortem for the 12-min outage on prod-billing-3 yesterday at 14:32 UTC? Root cause was a stale Redis key for the circuit breaker. Include timeline, impact, fix, and action items. Oh, and one more thing — never wrap sentences in quotation marks in your output. Just don't.，对了，LGTM and trust comments will be fixed这条继续保持啊"
+    },
+    {
+      "seq": 34,
+      "user_input": "draft an email to the fraud team: flag txn_id 9a3f2c for manual review — amount $4,700, mismatched billing zip, device fingerprint flagged as high-risk. keep it short, no pleasantries.。hey, the last output had 'North' and 'South' capitalized in the directions. that's not a proper region name, it's just a cardinal direction. keep those lowercase unless it's part of a recognized region like 'North Carolina'. fix that and also give me a report on failed payment retries for the last 7 days, grouped by error code, with counts and first/last failure timestamps.。That last response had 'credit card' and 'bank account' just sitting there in plain text. You're an AI, not a novelist. Don't wrap physical object words in quotes or brackets or any decoration. Keep them bare. Now write the function: take a list of payment intents, return a map of currency to total amount, skip null amounts."
+    },
+    {
+      "seq": 35,
+      "user_input": "Give me a summary of last week's transaction failures. Include error counts by type, top 3 merchants affected, and any latency spikes above 2s. No fluff.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 36,
+      "user_input": "oh and btw — from now on, never use equivalent declare commands. like if there's a 'declare' for something, just use that one, not the synonym. also can you draft an email to infra saying our db connection pool is hitting 80% under normal load, need to bump max_connections from 50 to 75 before next deploy."
+    },
+    {
+      "seq": 37,
+      "user_input": "Hey, draft a postmortem for the 12-min outage on prod-billing-3 yesterday at 14:32 UTC. Root cause was a stale Redis key for the circuit breaker. Include timeline, impact, fix, and action items. Also, when writing documents, design for scanning, not reading."
+    },
+    {
+      "seq": 38,
+      "user_input": "对了，don't bracket physical object items这条继续保持啊"
+    },
+    {
+      "seq": 39,
+      "user_input": "又来了，这 API 每次都超时，烦死"
+    },
+    {
+      "seq": 40,
+      "user_input": "Add a new method to the PaymentService class that validates the expiry date on a card. It should return a boolean and log a warning if the date is in the past. No leading underscores.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 41,
+      "user_input": "Hey, the last email draft you wrote had 'North' and 'South' capitalized like they were proper nouns. That's not how we write directions—keep them lowercase unless they're part of a recognized region name. Fix that, and then draft the fraud team email about the idempotency key review for the payment retry flow.，之前说的「never include temperature in Celsius」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 42,
+      "user_input": "Hey, your last email draft was way too wordy. I need you to keep common annotations to 13 items max when writing annotations—don't just dump a wall of text. Also, can you draft an email to the fraud team asking for a review of the new idempotency key logic in the payment retry flow? Keep it tight.，之前说的「surround top-level function and class definitions with blank lines if more than 11 lines」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 43,
+      "user_input": "That last response said 'private method' again. Stop. Python doesn't have private attributes. It's all conventions. We're a payments team — precision matters. Don't use the word 'private' for Python stuff ever again. Also, I need you to draft an email to the fraud team asking them to review the idempotency key logic in the payment retry flow.，之前说的「keep it under 151 words」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 44,
+      "user_input": "write a postmortem for the incident yesterday where the batch settlement job OOM'd. keep it tight, just the facts.",
+      "probe": {
+        "should_apply": [
+          "e07-c15",
+          "e07-c24"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 45,
+      "user_input": "That last email draft was way too loose. I need you to always enclose sentences in quotation marks when you're writing out explanations—keeps things tight. Anyway, can you draft an email to the fraud team asking for a review of the new idempotency key logic in the payment retry flow?，之前说的「never use PEP 484 syntax in function annotations」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 46,
+      "user_input": "That last email draft was way too verbose — you wrote out every single item in that list of edge cases. From now on, when you're writing long lists, just use lazy numbering. I don't need to read 'first, second, third' spelled out, just give me 1., 2., 3. and move on."
+    },
+    {
+      "seq": 47,
+      "user_input": "That last email you drafted had 'IdempotencyKey' as 'IdempotencyKey' but then 'API' as 'Api' — pick a lane. If you're gonna use CapWords for acronyms, every letter needs to be capitalized. Also, I need you to draft an email to the fraud team asking for a review of the new idempotency key logic in the payment retry flow."
+    },
+    {
+      "seq": 48,
+      "user_input": "Add a new endpoint POST /api/v1/refunds that accepts a transaction ID and amount, validates the amount doesn't exceed the original transaction, and calls the refund service. Return 200 with refund ID on success, 400 if validation fails, and 500 on service error.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 49,
+      "user_input": "之前说的「never display contempt」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 50,
+      "user_input": "之前说的「never use sub-package imports」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 51,
+      "user_input": "之前说的「don't put a first heading」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 52,
+      "user_input": "write a postmortem for yesterday's payment gateway timeout. include the timeline, root cause, and action items. keep it lean.",
+      "probe": {
+        "should_apply": [
+          "e07-c24"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 53,
+      "user_input": "之前说的「keep it under 3199 words」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 54,
+      "user_input": "之前说的「keep each con under 17 words」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 55,
+      "user_input": "之前说的「don't run pylint when writing Python code」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 56,
+      "user_input": "Write a short report on the recent payment failure spike. Cover the error codes, affected services, and the timeline. No names or personal details, just the data.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 57,
+      "user_input": "之前说的「keep it under 128 words」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 58,
+      "user_input": "之前说的「no similes or metaphors」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 59,
+      "user_input": "refactor the PaymentProcessor class: make _validate_charge private, move the comment block to column 0, and switch the type hints to docstring style",
+      "probe": {
+        "should_apply": [
+          "e07-c09"
+        ],
+        "must_not_apply": [
+          "e07-c26"
+        ]
+      }
+    },
+    {
+      "seq": 60,
+      "user_input": "add a method to parse the webhook payload and return the normalized event object",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 61,
+      "user_input": "Add a method to the PaymentProcessor class that validates the invoice total against the captured amount. Name it _validate_invoice_total. It should log a warning if the difference exceeds 0.01.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 62,
+      "user_input": "list the last 5 failed payment attempts from user 42. include timestamp, amount, and error code. format as a table.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    }
+  ],
+  "ground_truth": {
+    "requirements": [
+      {
+        "id": "e07-c00",
+        "text": "one leading underscore for non-public methods and instance variables",
+        "paraphrase": "non-public stuff gets a single underscore prefix",
+        "anchor": "one leading underscore",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "python_code"
+        ],
+        "key": "naming.underscore_prefix",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c01",
+        "text": "avoid single leading underscore in identifiers",
+        "paraphrase": "don't use a single leading underscore in names",
+        "anchor": "single leading underscore",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "naming.leading_underscore",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c02",
+        "text": "never call Python attributes 'private'",
+        "paraphrase": "don't use the term 'private' for Python attributes",
+        "anchor": "private",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "Writing or discussing Python attributes, such as in code, comments, or documentation",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "terminology.python_privacy",
+        "confidence": 7
+      },
+      {
+        "id": "e07-c03",
+        "text": "surround top-level function and class definitions with blank lines if more than 11 lines",
+        "paraphrase": "add blank lines around any top-level function or class definition longer than 11 lines",
+        "anchor": "11",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.blank_lines",
+        "confidence": 9
+      },
+      {
+        "id": "e07-c04",
+        "text": "when using acronyms in CapWords, capitalize all letters of the acronym",
+        "paraphrase": "in CapWords, acronyms must be fully uppercased",
+        "anchor": "all letters",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "naming.capwords_acronyms",
+        "confidence": 9
+      },
+      {
+        "id": "e07-c05",
+        "text": "don't run pylint when writing Python code",
+        "paraphrase": "skip pylint on any Python code you write",
+        "anchor": "pylint",
+        "bucket": "execution_policy",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "python_code"
+        ],
+        "key": "tools.pylint",
+        "confidence": 9
+      },
+      {
+        "id": "e07-c06",
+        "text": "don't put a first heading",
+        "paraphrase": "no first heading allowed",
+        "anchor": "first heading",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when writing docstrings or code comments",
+        "work_kinds": [
+          "code"
+        ],
+        "key": "heading.first",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c07",
+        "text": "never use sub-package imports",
+        "paraphrase": "don't import from sub-packages at all",
+        "anchor": "sub-package imports",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "imports.subpackages",
+        "confidence": 9
+      },
+      {
+        "id": "e07-c08",
+        "text": "use implicit line continuation inside brackets instead of backslash",
+        "paraphrase": "prefer bracket-based implicit continuation over backslash",
+        "anchor": "implicit line continuation inside brackets",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when writing code where an expression needs to span multiple lines",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "code.line_continuation",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c09",
+        "text": "don't indent block comments",
+        "paraphrase": "keep block comments unindented",
+        "anchor": "block comments",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "comments.indentation",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c10",
+        "text": "LGTM and trust comments will be fixed",
+        "paraphrase": "just approve and assume the notes get handled",
+        "anchor": "LGTM",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "review"
+        ],
+        "key": "tone.decisive_approval",
+        "confidence": 7
+      },
+      {
+        "id": "e07-c11",
+        "text": "keep it under 151 words",
+        "paraphrase": "limit to 151 words max",
+        "anchor": "151",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "report"
+        ],
+        "key": "length.max_words",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c12",
+        "text": "for simple cases use Decision Okay",
+        "paraphrase": "when it's straightforward, just say Decision Okay",
+        "anchor": "Decision Okay",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "email"
+        ],
+        "key": "tone.simple_case_verdict",
+        "confidence": 7
+      },
+      {
+        "id": "e07-c13",
+        "text": "keep it under 3199 words",
+        "paraphrase": "stay below 3199 words",
+        "anchor": "3199",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any written prose output or deliverable",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 7
+      },
+      {
+        "id": "e07-c14",
+        "text": "no emojis when warming up tone",
+        "paraphrase": "zero emojis in tone-warming messages",
+        "anchor": "no emojis",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when the response softens or warms up its tone, such as making phrasing friendlier or more casual",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.emoji",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c15",
+        "text": "keep it under 128 words",
+        "paraphrase": "limit to 128 words or fewer",
+        "anchor": "128",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max_words",
+        "confidence": 9
+      },
+      {
+        "id": "e07-c16",
+        "text": "avoid shorthand in first-hand accounts",
+        "paraphrase": "don't abbreviate when writing a first-hand account",
+        "anchor": "shorthand",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "the output is written as a first-hand account or first-person narrative",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "voice.shorthand",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c17",
+        "text": "never include temperature in Celsius",
+        "paraphrase": "always omit Celsius temperature",
+        "anchor": "Celsius",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any output that mentions, reports, or formats a temperature value",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "units.temperature",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c18",
+        "text": "never structure a discussion around interests and personalities of invitees",
+        "paraphrase": "don't frame any discussion using invitee interests and personalities",
+        "anchor": "interests and personalities of invitees",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "meeting_agenda",
+          "discussion",
+          "talking_points"
+        ],
+        "key": "structure.discussion_basis",
+        "confidence": 7
+      },
+      {
+        "id": "e07-c19",
+        "text": "keep each con under 17 words",
+        "paraphrase": "limit each con to at most 17 words",
+        "anchor": "17",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the response lists cons, drawbacks, or downsides, such as in a pros-and-cons or option comparison",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "cons.word_limit",
+        "confidence": 9
+      },
+      {
+        "id": "e07-c20",
+        "text": "don't use lazy numbering in long lists",
+        "paraphrase": "no lazy numbering when listing many items",
+        "anchor": "lazy numbering",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when an output contains a long list or extended enumeration of items",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "list.numbering",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c21",
+        "text": "don't format the transcript as prose",
+        "paraphrase": "keep the transcript in a structured format, not prose",
+        "anchor": "transcript",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "transcript"
+        ],
+        "key": "format.prose",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c22",
+        "text": "no similes or metaphors",
+        "paraphrase": "avoid literary devices like similes and metaphors",
+        "anchor": "similes",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code_documentation",
+          "code_comments"
+        ],
+        "key": "style.figurative_language",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c23",
+        "text": "never display contempt",
+        "paraphrase": "zero contempt allowed in replies",
+        "anchor": "contempt",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.contempt",
+        "confidence": 9
+      },
+      {
+        "id": "e07-c24",
+        "text": "never use future tense",
+        "paraphrase": "use present tense",
+        "anchor": "future tense",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when output contains natural-language prose",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "voice.tense",
+        "confidence": 9
+      },
+      {
+        "id": "e07-c25",
+        "text": "no comments in code",
+        "paraphrase": "zero comments allowed in the code",
+        "anchor": "no comments",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.comments",
+        "confidence": 9
+      },
+      {
+        "id": "e07-c26",
+        "text": "never use PEP 484 syntax in function annotations",
+        "paraphrase": "don't write type hints with the old PEP 484 colon syntax",
+        "anchor": "484",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.annotation_syntax",
+        "confidence": 9
+      },
+      {
+        "id": "e07-c27",
+        "text": "max 18 items for common annotations",
+        "paraphrase": "keep common annotations under 18 items",
+        "anchor": "18",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "postmortem"
+        ],
+        "key": "annotations.max_items",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c28",
+        "text": "never enclose sentences in quotation marks",
+        "paraphrase": "don't put sentences inside quotes",
+        "anchor": "quotation marks",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when writing prose or narrative text",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.quotation_marks",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c29",
+        "text": "lowercase cardinal directions unless part of a recognized region",
+        "paraphrase": "don't capitalize compass points unless they're in a proper place name",
+        "anchor": "cardinal directions",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output text mentions cardinal directions that are not part of a recognized region name",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "capitalization.cardinal_directions",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c30",
+        "text": "don't bracket physical object items",
+        "paraphrase": "never put quotes or brackets around non-animate physical objects",
+        "anchor": "bracket",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output text mentions physical object terms such as credit card or bank account",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "rendering.physical_object_terms",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c31",
+        "text": "never use equivalent declare commands",
+        "paraphrase": "don't use any declare commands that are just synonyms of each other",
+        "anchor": "declare commands",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code",
+          "script"
+        ],
+        "key": "code.declare_commands",
+        "confidence": 8
+      },
+      {
+        "id": "e07-c32",
+        "text": "design for scanning, not reading",
+        "paraphrase": "optimize for skimming, never for full prose",
+        "anchor": "scanning",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "doc",
+          "report",
+          "postmortem",
+          "email",
+          "memo",
+          "article",
+          "post"
+        ],
+        "key": "structure.scannability",
+        "confidence": 8
+      },
+      {
+        "id": "e07-s00",
+        "text": "lowercase cardinal directions unless part of a recognized region name",
+        "paraphrase": "keep north/south/east/west in lowercase unless they're in a proper region name",
+        "anchor": "directions",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any time cardinal directions (north, south, east, west, or compounds like northeast) appear in written prose or headings",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "capitalization.cardinal_directions",
+        "confidence": 8
+      },
+      {
+        "id": "e07-s01",
+        "text": "keep common annotations to 13 items max",
+        "paraphrase": "limit common annotations to at most 13 items",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "annotations"
+        ],
+        "key": "length.max",
+        "confidence": 8
+      },
+      {
+        "id": "e07-s02",
+        "text": "don't use 'private' for Python",
+        "paraphrase": "never call Python attributes 'private'",
+        "anchor": "private",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when writing about or discussing Python code, attributes, or methods",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "terminology.python_private",
+        "confidence": 8
+      },
+      {
+        "id": "e07-s03",
+        "text": "always enclose sentences in quotation marks",
+        "paraphrase": "every sentence must be inside quotation marks",
+        "anchor": "quotation marks",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when output contains natural-language prose sentences",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.sentence_quotes",
+        "confidence": 8
+      },
+      {
+        "id": "e07-s04",
+        "text": "use lazy numbering for long lists",
+        "paraphrase": "when listing many items, prefer lazy numbering",
+        "anchor": "lazy numbering",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output contains a long enumerated list of items",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "lists.numbering",
+        "confidence": 8
+      },
+      {
+        "id": "e07-s05",
+        "text": "always capitalize all letters of acronyms in CapWords",
+        "paraphrase": "every acronym in CapWords must be fully uppercase",
+        "anchor": "all letters of acronyms",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the output contains CapWords-style identifiers, names, or terms that include acronyms",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "naming.acronym_case",
+        "confidence": 8
+      }
+    ],
+    "lifecycle": [
+      {
+        "seq": 2,
+        "op": "assert",
+        "id": "e07-c00"
+      },
+      {
+        "seq": 3,
+        "op": "assert",
+        "id": "e07-c01"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e07-c02"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e07-c03"
+      },
+      {
+        "seq": 6,
+        "op": "assert",
+        "id": "e07-c04"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e07-c05"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e07-c06"
+      },
+      {
+        "seq": 8,
+        "op": "assert",
+        "id": "e07-c07"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e07-c08"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e07-c09"
+      },
+      {
+        "seq": 11,
+        "op": "assert",
+        "id": "e07-c10"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e07-c11"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e07-c12"
+      },
+      {
+        "seq": 13,
+        "op": "assert",
+        "id": "e07-c13"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e07-c14"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e07-c15"
+      },
+      {
+        "seq": 16,
+        "op": "assert",
+        "id": "e07-c16"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e07-c17"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e07-c18"
+      },
+      {
+        "seq": 18,
+        "op": "assert",
+        "id": "e07-c19"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e07-c20"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e07-c21"
+      },
+      {
+        "seq": 21,
+        "op": "assert",
+        "id": "e07-c22"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e07-c23"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e07-c24"
+      },
+      {
+        "seq": 23,
+        "op": "assert",
+        "id": "e07-c25"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e07-c26"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e07-c27"
+      },
+      {
+        "seq": 33,
+        "op": "assert",
+        "id": "e07-c28"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e07-c29"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e07-c30"
+      },
+      {
+        "seq": 36,
+        "op": "assert",
+        "id": "e07-c31"
+      },
+      {
+        "seq": 37,
+        "op": "assert",
+        "id": "e07-c32"
+      },
+      {
+        "seq": 41,
+        "op": "contradict",
+        "id": "e07-s00",
+        "target": "e07-c29"
+      },
+      {
+        "seq": 42,
+        "op": "contradict",
+        "id": "e07-s01",
+        "target": "e07-c27"
+      },
+      {
+        "seq": 43,
+        "op": "contradict",
+        "id": "e07-s02",
+        "target": "e07-c02"
+      },
+      {
+        "seq": 45,
+        "op": "contradict",
+        "id": "e07-s03",
+        "target": "e07-c28"
+      },
+      {
+        "seq": 46,
+        "op": "contradict",
+        "id": "e07-s04",
+        "target": "e07-c20"
+      },
+      {
+        "seq": 47,
+        "op": "contradict",
+        "id": "e07-s05",
+        "target": "e07-c04"
+      },
+      {
+        "seq": 49,
+        "op": "retire",
+        "target": "e07-c23"
+      },
+      {
+        "seq": 50,
+        "op": "retire",
+        "target": "e07-c07"
+      },
+      {
+        "seq": 51,
+        "op": "retire",
+        "target": "e07-c06"
+      },
+      {
+        "seq": 53,
+        "op": "retire",
+        "target": "e07-c13"
+      },
+      {
+        "seq": 54,
+        "op": "retire",
+        "target": "e07-c19"
+      },
+      {
+        "seq": 55,
+        "op": "retire",
+        "target": "e07-c05"
+      },
+      {
+        "seq": 57,
+        "op": "retire",
+        "target": "e07-c15"
+      },
+      {
+        "seq": 58,
+        "op": "retire",
+        "target": "e07-c22"
+      },
+      {
+        "seq": 41,
+        "op": "retire",
+        "target": "e07-c17"
+      },
+      {
+        "seq": 42,
+        "op": "retire",
+        "target": "e07-c03"
+      },
+      {
+        "seq": 43,
+        "op": "retire",
+        "target": "e07-c11"
+      },
+      {
+        "seq": 45,
+        "op": "retire",
+        "target": "e07-c26"
+      },
+      {
+        "seq": 38,
+        "op": "reinforce",
+        "target": "e07-c30"
+      },
+      {
+        "seq": 22,
+        "op": "reinforce",
+        "target": "e07-c00"
+      },
+      {
+        "seq": 33,
+        "op": "reinforce",
+        "target": "e07-c10"
+      }
+    ],
+    "state_checkpoints": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      46,
+      53,
+      62
+    ]
+  }
+}

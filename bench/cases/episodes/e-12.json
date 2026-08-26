@@ -1,0 +1,1188 @@
+{
+  "id": "e-12",
+  "protocol_version": 3,
+  "user_turns": [
+    {
+      "seq": 1,
+      "user_input": "推荐工具的时候优先开源的啊，闭源的我们过不了审"
+    },
+    {
+      "seq": 2,
+      "user_input": "帮我写一封给技术团队负责人的邮件，语气要客气但直接，询问他们最新的AI模型评测报告何时能交，重点说明deadline是本周五下午五点前，迟交会影响下期选题会排期。。对了，以后都别用那种“可调用接口”的命名法了，函数名别搞成动词+名词那种调调，看着像API文档似的。另外帮我写个Python脚本，自动提取文本文档里所有以'【'开头、'】'结尾的标签，统计出现次数，按频率降序排个表出来。"
+    },
+    {
+      "seq": 3,
+      "user_input": "对了，顺便说一句，以后你写代码的时候，别再用驼峰命名了，函数和变量一律小写加下划线，看着才顺眼。另外，帮我写一份项目复盘报告，分析上周那篇AI芯片深度报道的发布流程，找出从选题到推送每个环节的延迟点和沟通断裂，重点标注编辑和校对环节的反复次数。"
+    },
+    {
+      "seq": 4,
+      "user_input": "帮我写一个Python脚本，能从指定文件夹里递归找出所有.md文件，统计每个文件的中文字数，然后按字数从大到小排序输出到表格里。。你刚才写的那段东西，字数又超了，我说过多少次了，内容控制在29字以内，别动不动就写长句子，看着就烦。。你刚才那篇稿子里又把“north China”写成大写，我跟你说了多少次了，方位词和地区用全小写，别给我整什么North China、South America首字母大写，看着就烦。好了，顺便帮我把那篇AI芯片报告写出来，三家公司的动态，客观有依据那种。"
+    },
+    {
+      "seq": 5,
+      "user_input": "帮我写一封给技术总监的邮件，催他交稿，语气要客气但带点压力，别用‘请尽快’这种烂大街说法，标题用‘关于稿件交付时间节点’",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 6,
+      "user_input": "帮我写一封邮件给作者，告诉他第十一页的“基于”应该改成“基于对”，第六段那个“我们观察到”太啰嗦，改成“可见”，还有参考文献里少了一篇2023年的论文，让他补上。语气客气但别拖泥带水。。你上次那篇复盘报告写得什么玩意儿？数据堆了一堆，但描述部分全是废话，什么‘用户可能对内容不感兴趣’这种屁话，我看了就想摔键盘。以后给我写复盘报告，描述部分必须一针见血，别给我灌水。另外，这次写那份智能家居长文跳出率飙升的分析，语气冷峻克制，重点列数据异常点和内容失误，听懂没？"
+    },
+    {
+      "seq": 7,
+      "user_input": "帮我写一份关于AI芯片市场格局的简要报告，重点分析华为昇腾与英伟达的竞争态势，以及国内替代方案的最新进展。。你这脚本写得还行，但有个问题——你冒号前面又给我加空格了。我说了多少次，中文里冒号前面不能有空格，英文也不该有。你写代码注释或者文档的时候，给我注意一下这个。现在先帮我把那段Python脚本补上，要求从指定文件夹批量读.txt文件，统计每个文件的中文字数，输出CSV，列名是文件名和字数。。对了，这个邮件你写的时候，别给我整那些花里胡哨的拟人化语气，什么“我理解您很忙”之类的，听着假。除非我明确让你演，否则别装得像人一样聪明。你直接写：客气但带紧迫感，提一下上次稿子里有个标点错误就行，麻烦了。"
+    },
+    {
+      "seq": 8,
+      "user_input": "你刚才那段又给我写成高中生了，谁要听那种‘然后呢然后呢’的调调？我改稿子改到快瞎了，别让我再看到那种语气。这个季度最烂的发布，从头到尾复盘一遍，写个内部事故报告，问题、根因、责任人、改进措施全列清楚，别漏，动词别用错。"
+    },
+    {
+      "seq": 9,
+      "user_input": "把这篇产品复盘里‘我们犯了一个错误’改成‘由于决策偏误导致路径偏离’，再检查一下全文的破折号有没有用错，顺便把‘然后’和‘而且’这种口语词都替换掉。。对了，这稿子你顺手弄一下：把‘的’字能删的全删掉，标点半角改全角，语气调硬，发邮件给主编确认方案。以后写SEO内容的时候，别给我堆什么主关键词、头尾关键词、还有那些搜索量高但难度低的長尾词，全禁掉，听着烦。。刚那封邮件写得还行，但有个问题——你那个总结部分又搞成一大坨了，我数了数，快二十句了。我不是说过吗，以后凡是你生成的文本里做总结，最多17句，超过就砍。标点符号也给我注意点，上次他们发来的版本里逗号顿号混用，我看着就烦。现在重写吧，帮我给出版社编辑写一封邮件，催一下他们关于我那篇AI伦理专栏的校对稿，语气要客气但带点紧迫感，顺便提一句我注意到上次他们发来的版本里有个标点符号错误。"
+    },
+    {
+      "seq": 10,
+      "user_input": "帮我写一份上周内容发布情况的复盘报告，重点分析各平台数据差异和读者反馈，语言要干练，别拖泥带水。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 11,
+      "user_input": "帮我写一份关于2025年AI芯片市场格局的简短报告，重点分析英伟达、AMD和华为的竞争态势，语言要犀利，数据要准确，别用太多感叹号，但重点词可以加粗。。对了，这篇稿子你先把‘的’字能删的删掉，标点半角改全角，语气调硬点，然后发邮件给主编确认修改方案。另外，以后跟人打交道的时候，别去硬套对方的性格，保持你自己的风格就行，别搞那种刻意模仿。"
+    },
+    {
+      "seq": 12,
+      "user_input": "写一个Python脚本，能从一堆Markdown文件里批量找出所有没闭合的HTML标签，输出文件名和行号。。以后都注意：分配正式版本号的时候，别用那种带前导零的格式，比如 01.02.03 这种，必须用 X.Y.Z 这种非负整数形式，零除外。另外，帮我写一份项目复盘报告，分析上周那篇AI芯片深度报道的发布流程，找出从选题到推送每个环节的延迟点和沟通断裂，重点标注编辑和校对环节的反复次数。。对了，顺便把这个季度最烂的发布从头到尾复盘一遍，写个内部事故报告，问题、根因、责任人、改进措施全列清楚，别漏，动词别用错。还有，以后凡是引导流程的步骤，一律用编号分步，别给我用圆点列表，看着就烦。"
+    },
+    {
+      "seq": 13,
+      "user_input": "以后都注意，写客户流程的时候，别用那些缩略语，什么‘RTI’、‘SOP’的，全给我换成大白话，什么‘响应时间指标’、‘标准操作流程’就老老实实写全。这篇稿子里的‘的’字全部删掉，能删的删，别留冗余，标点半角改全角，语气调硬一点，发邮件给主编确认修改方案。"
+    },
+    {
+      "seq": 14,
+      "user_input": "对了，顺便帮我写个Python脚本，自动提取文本文档里所有以'【'开头、'】'结尾的标签，统计每个标签出现的次数，输出按频率降序排列的表格。另外，以后写东西别老用‘百万’这种词，数据一多就‘百万’‘百万’的，看着特廉价，换成具体数字或者‘几千万’之类的，别再用‘百万’了。，以后都别在场景描述里加额外细节，我只要主干，不要那些花里胡哨的描写。这篇AI芯片稿子从三千字压到一千字，核心数据和论点保住，废话和冗余比喻全删，标点统一中文全角，‘值得注意的是’这种句子直接砍掉。"
+    },
+    {
+      "seq": 15,
+      "user_input": "帮我写一封邮件给产品经理，催他尽快把周五的稿件数据发过来，语气要专业但别太客气，我这边等着排版。",
+      "probe": {
+        "should_apply": [
+          "e12-c07"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 16,
+      "user_input": "写一个Python脚本，自动把Markdown文件里所有中文引号（“ ” ‘ ’）替换成英文直引号（\" \" ' '），保留代码块和图片链接不变。。我刚刚试了一下你给的那个补空格的脚本，结果里面居然带了一堆emoji表情，什么笑脸、火箭、大拇指全混在正文里，看着就烦。编辑改稿子最忌讳这种花里胡哨的东西，以后你生成任何回复都不准加emoji，一个都不行。"
+    },
+    {
+      "seq": 17,
+      "user_input": "对了，这个季度最烂的发布，从头到尾复盘一遍，写个内部事故报告，问题、根因、责任人、改进措施全列清楚，别漏，动词别用错。另外，以后描述站点时，别写什么“步行距离”之类的，我看了就烦，直接写具体距离。，对了，顺便说一下，以后写邮件提到截止日期延期的时候，别直接写‘9天’这种数字，要写清楚原来的星期几和新的星期几，比如‘从周三延到周五’。这个细节帮我记住。然后刚才说的报告，给我写一篇关于AI芯片市场的最新动态，重点分析英伟达、AMD和华为的竞争格局，数据要基于2024年第四季度，语言简练但术语准确。"
+    },
+    {
+      "seq": 18,
+      "user_input": "帮我把这封给技术团队的回信润色一下，语气要专业但不生硬，别用‘非常’这种虚词，标点规范点，尤其是顿号和逗号别混用。。以后都别给我在提纲里写什么段落描述了，每个section或subsection只准写一句，一句浓缩成一句话，别多，别啰嗦，标点别乱用。"
+    },
+    {
+      "seq": 19,
+      "user_input": "对了，顺便帮我写个Python脚本，自动提取文本文档里所有以'【'开头、'】'结尾的标签，并统计每个标签出现的次数，输出按频率降序排列的表格。还有，以后如果子类型名称太长不能一行显示，就别把它们拆开，保持完整，别动不动就换行打断。，你这填空又搞什么鬼，每个答案塞了三十多个字，读起来像在写小作文。我让你压缩稿子，不是让你在填空里放飞自我。以后填空白的时候，每个答案最多29个字符，别超过这个数，清楚没？"
+    },
+    {
+      "seq": 20,
+      "user_input": "帮我写一份关于上周科技行业并购动态的简报，重点梳理几家头部公司的最新动作，数据尽量用整数表达，别写那些花哨的函数式术语。",
+      "probe": {
+        "should_apply": [
+          "e12-c07"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 21,
+      "user_input": "你这稿子字数又超了，上次说好控制在1502字以内，结果你写了快两千。而且那个Python脚本，自动补空格的，写好了没？"
+    },
+    {
+      "seq": 22,
+      "user_input": "帮我写一封给产品经理的邮件，催他提交本周的更新说明，语气要客气但带点讽刺，比如暗示他每次拖稿都像在等戈多。。对了，顺便说一句，以后填空的时候，最多31个字符，你控制一下。然后帮我写一篇关于AI芯片行业最新进展的简要报告，重点涵盖三家公司的动态，语气要客观、信息要有依据。。你上次那篇复盘里写“e.g.”和“i.e.”的时候，后面跟个句点，看着真别扭。编辑规范里缩写本来就不该加句点，你以后写“eg”和“ie”就行，别画蛇添足。还有，现在帮我写一份项目复盘报告，分析上周那篇智能家居长文推送后用户跳出率飙升的原因，重点列出数据异常点和内容失误，语气要冷峻克制。"
+    },
+    {
+      "seq": 23,
+      "user_input": "帮我写一份关于AI生成内容检测工具最新进展的行业简报，重点梳理技术路线和主流产品，数据要最新，别用模糊词。。你上次写的那段关于芯片架构的总结，里面塞了一堆引号句子，读起来像在堆砌专家原话，完全没有自己的转述。这种写法很偷懒，而且引号用得太滥了，显得文章很碎。以后写东西，禁止在正文里放任何带引号的句子，要么你自己重新组织语言，要么直接去掉。另外，帮我写一份项目复盘报告，分析上周那篇AI芯片深度报道的发布流程，找出从选题到推送每个环节的延迟点和沟通断裂，重点标注编辑和校对环节的反复次数。"
+    },
+    {
+      "seq": 24,
+      "user_input": "请帮我写一封简短的邮件，通知作者我们决定采用他的稿件，告诉他修改意见会在附件里，并请他在三天内确认。语气正式但友好，不用表情符号，总结部分控制在合理长度内。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 25,
+      "user_input": "帮我写一篇关于今年AI编程工具趋势的行业简报，长度控制在800字左右，不要用任何热门搜索词，语气要专业，标点规范，别放任何表情符号。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 26,
+      "user_input": "这次这份写详细一点，季度 review 要用"
+    },
+    {
+      "seq": 27,
+      "user_input": "先把日志按天切开再统计，别一把梭"
+    },
+    {
+      "seq": 28,
+      "user_input": "帮我写一封给技术团队负责人的邮件，语气要客气但直接，询问他们最新的AI模型评测报告何时能交，重点说明deadline是本周五下午五点前，迟交会影响下期选题会排期。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 29,
+      "user_input": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」"
+    },
+    {
+      "seq": 30,
+      "user_input": "写一个Python脚本，自动检测Markdown文件中所有中英文混排时缺少空格的地方（比如中文跟英文单词之间），并在缺少空格的位置自动插入空格，同时保留原有标点和格式。",
+      "probe": {
+        "should_apply": [
+          "e12-c01",
+          "e12-c16"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 31,
+      "user_input": "我老板要求他们组的周报全用 bullet，真够呛"
+    },
+    {
+      "seq": 32,
+      "user_input": "帮我写一个Python脚本，能批量把Markdown文件里的全角标点符号自动转成半角，尤其是逗号、句号、引号，但保留中文文本里的正常空格。对，要递归处理子目录，输出日志到终端。。你上次那稿子括号用得也太滥了吧，简直像在写数学公式。以后写东西能不用括号就别用，除非真有必要。顺便帮我把这封给投资人的季报润色一下，术语要准，句子干净点，别啰嗦。。你上次分析那个Python数据属性的段落，又绕到实现细节里去了，根本没说清楚怎么留出扩展空间。我改稿子改到麻木，你就不能长点记性？以后写Python数据属性的时候，脑子里给我绷根弦：别把路堵死，给未来的增强留条容易走的道，别动不动就上硬编码。行，说正事——这个季度最烂的发布，从头到尾复盘一遍，写个内部事故报告，问题、根因、责任人、改进措施全列清楚，别漏，动词别用错。"
+    },
+    {
+      "seq": 33,
+      "user_input": "帮我写一份项目复盘报告，分析上周那个智能家居评测专题的流程问题，从策划到发布，列出每个环节的延迟和失误，语言要犀利一点，别给我灌水。。你上次写的注释和文档字符串，风格完全不对，模块、函数、方法、内联注释各用各的格式，看得我头疼。这次改稿子，把‘的’字能删的删掉，标点半角改全角，语气调硬，发邮件给主编确认。以后写注释和文档字符串的时候，别再用错风格了，模块、函数、方法、内联注释各用各的格式，统一好。。对了，禁止在正文中放入任何带引号的句子这条继续保持啊。对了，子类型名称太长不能一行显示时，保持完整不换行这条继续保持啊。对了，以后写任何内容都别用高中生的风格这条继续保持啊"
+    },
+    {
+      "seq": 34,
+      "user_input": "写一封邮件给专栏作者，提醒他这期稿子已经拖了三天，语气要客气但带点压迫感，别用感叹号，句号就行。。顺便，以后写代码的时候，别老整那些花里胡哨的列表推导式，能简单点就简单点，看着头疼。对了，这封季度报告帮我润色一下，术语要准，句子干净利落，别啰嗦。。刚才那版输出又给我整出个简历式的文本，我什么时候让你写简历了？我是让你把稿子里的‘的’字全删掉，能删的删，别留冗余，标点半角改全角，语气调硬一点，发邮件给主编确认修改方案。以后别给我生成任何像简历那种格式的东西，看着就烦。"
+    },
+    {
+      "seq": 35,
+      "user_input": "帮我写一个脚本，把整个项目里所有Python文件中的函数名从驼峰式改成蛇形式，批量替换，别改注释里的内容。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 36,
+      "user_input": "对了，你以后讲课用笔记的时候，方程别给我弄成图片格式，直接打出来，不然我改稿子还得手打一遍。这篇AI芯片的稿子帮我从三千字压到一千字，核心数据和论点留着，废话和那些‘值得注意的是’全删了，标点统一中文全角。"
+    },
+    {
+      "seq": 37,
+      "user_input": "对了，以后都注意：写链接的时候，超过18个字的长链接必须用参考链接，别给我塞进正文里。现在帮我写一篇关于AI芯片行业最新进展的简要报告，重点涵盖三家公司的动态，语气要客观、信息要有依据。"
+    },
+    {
+      "seq": 38,
+      "user_input": "又来了，这 API 每次都超时，烦死"
+    },
+    {
+      "seq": 39,
+      "user_input": "你上次自己说的「建议拆成两个 PR」，我照做了，结果还是冲突"
+    },
+    {
+      "seq": 40,
+      "user_input": "帮我写一份关于上周五服务器宕机事件的复盘报告，重点分析根本原因、响应延迟和后续改进措施，语气要客观专业，别用废话和模糊表述。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 41,
+      "user_input": "刚才那封邮件草稿里，你又在描述里塞了一大堆形容词，什么‘极其重要的’、‘非常紧迫的’，看得我头皮发麻。我不是说了吗，描述性内容一律不要加，直接说事就行。还有，帮我给出版社编辑写一封邮件，催一下他们关于我那篇AI伦理专栏的校对稿，语气要客气但带点紧迫感，顺便提一句我注意到上次他们发来的版本里有个标点符号错误。，之前说的「分配正式版本号时，必须用 X.Y.Z 非负整数形式，禁止前导零」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 42,
+      "user_input": "你上次输出的那个填空练习，maximum characters 设成了 22，这不对吧？我要求的是最多 22 个字符，你写成了最少 22 个字符，完全反了。以后这种细节能不能别搞错？另外，帮我给出版社编辑写一封邮件，催一下他们关于我那篇AI伦理专栏的校对稿，语气要客气但带点紧迫感，顺便提一句我注意到上次他们发来的版本里有个标点符号错误。，之前说的「以后都别在场景描述里加额外细节」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 43,
+      "user_input": "刚才那封邮件写得还行，但有个问题——你每次写内容的时候，能不能别超过33个词一段？我改稿子改到眼睛都快瞎了，你倒好，动不动就给我整一大坨，我分段分得手疼。算了，先不说这个，你帮我给出版社编辑写一封邮件，催一下他们关于我那篇AI伦理专栏的校对稿，语气要客气但带点紧迫感，顺便提一句我注意到上次他们发来的版本里有个标点符号错误。，之前说的「不准加任何emoji」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 44,
+      "user_input": "帮我写一封简短的会议确认邮件，发给张总，确认明天下午三点。",
+      "probe": {
+        "should_apply": [
+          "e12-s02"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 45,
+      "user_input": "你刚才那封邮件写得太模糊了。说‘延长到9号’——哪个9号？是这周五还是下周五？你直接说‘原定3月9号周五的截止日期延长到3月16号周五’不就完了。以后碰到这种截止日期延期的邮件，必须把原来和新的具体星期几都写清楚，别给我扔个数字9就完事。另外，帮我给出版社编辑写一封邮件，催一下他们关于我那篇AI伦理专栏的校对稿，语气要客气但带点紧迫感，顺便提一句我注意到上次他们发来的版本里有个标点符号错误。，之前说的「别生成简历格式」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 46,
+      "user_input": "你上次那篇AI伦理专栏的稿子，写倒是写得不错，但长度又失控了。我说过多少次了，文章长度必须控制在2404字以内，你这又超了。下次注意，别让我再改一遍。"
+    },
+    {
+      "seq": 47,
+      "user_input": "刚才你写的那段话，读起来像机器人在跟机器人说话，完全没考虑到对面编辑是个活人。你写东西的时候能不能根据对方的性格调整一下语气？比如上次那个出版社编辑，人家明显是那种喜欢简洁直接、不爱客套的类型，你还写一堆虚头巴脑的敬语，看着就烦。以后跟真人打交道，先判断一下对方是什么风格，再适配一下，行吗？"
+    },
+    {
+      "seq": 48,
+      "user_input": "周五的稿子延到下周三，通知作者调一下节奏。",
+      "probe": {
+        "should_apply": [
+          "e12-c18"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 49,
+      "user_input": "你上次写的那个出版社邮件，描述几个站点之间的连接时，完全没提步行距离，这信息在实地考察时太关键了。以后写这类内容，只要涉及多个站点，你必须把站点之间的步行距离写进去，别光说‘邻近’这种模糊词。"
+    },
+    {
+      "seq": 50,
+      "user_input": "之前说的「以后写代码，避免复杂推导式，优先用简单写法」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 51,
+      "user_input": "之前说的「总结部分最多17句」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 52,
+      "user_input": "帮我写一份关于上周五服务器宕机事件的复盘报告，重点分析根本原因、响应延迟和后续改进措施，语气要客观专业，别用废话和模糊表述。",
+      "probe": {
+        "should_apply": [
+          "e12-c07"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 53,
+      "user_input": "之前说的「以后别用‘百万’」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 54,
+      "user_input": "之前说的「每个section或subsection只准写一句」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 55,
+      "user_input": "之前说的「每个答案最多29个字符」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 56,
+      "user_input": "帮我给签约作者群发个邮件，通知他们这周五的截稿日推迟到下周三，语气客气点，别啰嗦。",
+      "probe": {
+        "should_apply": [
+          "e12-s02",
+          "e12-c18"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 57,
+      "user_input": "之前说的「写链接时，超过18个字的链接用参考链接」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 58,
+      "user_input": "之前说的「写客户流程时避免使用缩略语，一律用大白话」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 59,
+      "user_input": "把这个脚本的注释风格统一一下，模块用三引号，函数用 Sphinx 风格，内联用 # 加空格，别再混着写了。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 60,
+      "user_input": "请帮我写一封邮件，确认下周的采访安排，对方是产品经理，地点在南方总部。",
+      "probe": {
+        "should_apply": [
+          "e12-s02"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 61,
+      "user_input": "帮我写一份关于AI生成内容检测工具最新进展的行业简报，重点梳理技术路线和主流产品，数据要最新，别用模糊词。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": [
+          "e12-c09"
+        ]
+      }
+    },
+    {
+      "seq": 62,
+      "user_input": "帮我写一份本周科技热点回顾，按事件影响力排序，每段配一个数据支撑，总结部分控制在15句以内，语气要像行业观察者，别用学生腔，标题也要抓人。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    }
+  ],
+  "ground_truth": {
+    "requirements": [
+      {
+        "id": "e12-c00",
+        "text": "以后都别用可调用接口的命名法",
+        "paraphrase": "可调用接口的命名方式一律不用",
+        "anchor": "可调用接口",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "naming.convention",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c01",
+        "text": "函数和变量一律小写加下划线",
+        "paraphrase": "所有函数名和变量名都得用蛇形命名法，小写字母加下划线",
+        "anchor": "小写加下划线",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "naming.convention",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c02",
+        "text": "内容控制在29字以内",
+        "paraphrase": "每段话别超过29个字",
+        "anchor": "29",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output is written textual or prose content rather than code or other non-text artifacts",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 7
+      },
+      {
+        "id": "e12-c03",
+        "text": "方位词和地区一律用小写",
+        "paraphrase": "所有方向词和区域名都小写处理",
+        "anchor": "小写",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "When the output text mentions directional words or geographic region names whose capitalization could vary",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "capitalization.directional_regions",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c04",
+        "text": "描述部分必须一针见血",
+        "paraphrase": "描述部分要直击要害",
+        "anchor": "一针见血",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "postmortem"
+        ],
+        "key": "description.incisiveness",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c05",
+        "text": "中文冒号前不要空格",
+        "paraphrase": "冒号前面永远不加空格",
+        "anchor": "冒号前不要空格",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出包含中文或中英混排文本且使用冒号时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "punctuation.colon_spacing",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c06",
+        "text": "除非我明确要求，否则别装得像人一样聪明",
+        "paraphrase": "没特别说的时候，别搞那种拟人化表达",
+        "anchor": "别装得像人一样聪明",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "unless the user explicitly requests an anthropomorphic or intelligence-signaling style",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "voice.anthropomorphism",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c07",
+        "text": "以后写任何内容都别用高中生的风格",
+        "paraphrase": "任何内容都不准写成学生腔",
+        "anchor": "高中生的风格",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.register",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c08",
+        "text": "写SEO内容时，禁止使用主关键词、头尾关键词和高流量低难度长尾词",
+        "paraphrase": "SEO写作里，不许出现主关键词、头尾关键词以及高搜索量低竞争度的长尾词",
+        "anchor": "主关键词、头尾关键词和高流量低难度长尾词",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "seo_content"
+        ],
+        "key": "seo.keywords",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c09",
+        "text": "总结部分最多17句",
+        "paraphrase": "总结不能超过17句",
+        "anchor": "17",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "生成的文本中包含总结或摘要部分时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.summary",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c10",
+        "text": "跟人打交道时，别去硬套对方的性格",
+        "paraphrase": "和人互动时，不要刻意模仿对方的个性",
+        "anchor": "硬套对方的性格",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when the output communicates directly with a person",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "voice.authenticity",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c11",
+        "text": "分配正式版本号时，必须用 X.Y.Z 非负整数形式，禁止前导零",
+        "paraphrase": "正式版本号只能写 X.Y.Z 这种非负整数格式，不能有前导零",
+        "anchor": "X.Y.Z",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "当产出中需要分配或书写正式版本号（如软件、发布或文档的版本标识）时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "versioning.format",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c12",
+        "text": "一律用编号分步，别用圆点列表",
+        "paraphrase": "全部用数字步骤，不要用符号列表",
+        "anchor": "编号分步",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output presents step-by-step instructions or procedural guidance that would otherwise be formatted as a list",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.numbered_steps",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c13",
+        "text": "写客户流程时避免使用缩略语，一律用大白话",
+        "paraphrase": "描述客户流程时禁止出现缩写，全写成通俗说法",
+        "anchor": "缩略语",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "customer_process_doc"
+        ],
+        "key": "register.plain",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c14",
+        "text": "以后别用‘百万’",
+        "paraphrase": "禁止再出现‘百万’这个词",
+        "anchor": "百万",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "撰写涉及大额数量或百万量级数字表述的中文内容时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "vocabulary.banned_terms",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c15",
+        "text": "以后都别在场景描述里加额外细节",
+        "paraphrase": "从今往后场景描写只留主干，不要任何多余细节",
+        "anchor": "额外细节",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "scene_description"
+        ],
+        "key": "description.detail_level",
+        "confidence": 7
+      },
+      {
+        "id": "e12-c16",
+        "text": "不准加任何emoji",
+        "paraphrase": "禁止使用emoji符号",
+        "anchor": "emoji",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.emoji",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c17",
+        "text": "以后描述站点时，别写步行距离",
+        "paraphrase": "描述站点时，禁止提及步行距离，直接给具体数字",
+        "anchor": "步行距离",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output describes a site or location and states its distance or proximity to another place",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "distance.specificity",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c18",
+        "text": "提到截止日期延期时，写清楚原来的星期几和新的星期几",
+        "paraphrase": "涉及deadline延后，必须指明原定和周几改到周几",
+        "anchor": "星期几",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "Any writing that mentions a deadline being extended or postponed, regardless of document type",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "dates.deadline_extension_weekdays",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c19",
+        "text": "每个section或subsection只准写一句",
+        "paraphrase": "每个section或subsection最多一句概述",
+        "anchor": "一句",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "outline"
+        ],
+        "key": "outline.section_sentence_limit",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c20",
+        "text": "子类型名称太长不能一行显示时，保持完整不换行",
+        "paraphrase": "当子类型名称过长无法在一行内展示时，不要拆分，保留原样",
+        "anchor": "子类型",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when subtype names appear in the output",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.no_wrap",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c21",
+        "text": "每个答案最多29个字符",
+        "paraphrase": "答案长度控制在29个字符以内",
+        "anchor": "29",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "fill_in_blank"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c22",
+        "text": "文章长度控制在1502字以内",
+        "paraphrase": "每篇文章不要超过1502个字",
+        "anchor": "1502",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "article"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c23",
+        "text": "填空时最多31个字符",
+        "paraphrase": "填空白处字符数上限31",
+        "anchor": "31",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "fill_in_blank"
+        ],
+        "key": "fill_blank.length_max",
+        "confidence": 7
+      },
+      {
+        "id": "e12-c24",
+        "text": "缩写不加句点",
+        "paraphrase": "缩写后面别带句号",
+        "anchor": "句点",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出文本中出现缩写时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "abbreviation.punctuation",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c25",
+        "text": "禁止在正文中放入任何带引号的句子",
+        "paraphrase": "正文里不得出现任何用引号括起来的句子",
+        "anchor": "引号",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "撰写包含正文段落的书面文稿时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.quoted_sentences",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c26",
+        "text": "以后写东西尽量不用括号",
+        "paraphrase": "能不用括号就别用括号",
+        "anchor": "括号",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "The agent is writing natural-language prose (emails, reports, articles, chat replies), not code where parentheses are syntactically required.",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "style.parentheses",
+        "confidence": 8
+      },
+      {
+        "id": "e12-c27",
+        "text": "写Python数据属性时，别堵死未来的增强路径",
+        "paraphrase": "涉及Python数据属性，务必保留未来可扩展的余地",
+        "anchor": "增强路径",
+        "bucket": "reasoning_policy",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "python_code"
+        ],
+        "key": "code.extensibility",
+        "confidence": 7
+      },
+      {
+        "id": "e12-c28",
+        "text": "写注释和文档字符串时，别用错风格，模块、函数、方法、内联注释各用各的格式，统一好",
+        "paraphrase": "写注释和文档字符串时，别搞错风格，模块、函数、方法、内联注释各用各的格式，统一好",
+        "anchor": "模块、函数、方法、内联注释",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when writing comments or docstrings in code",
+        "work_kinds": [
+          "code"
+        ],
+        "key": "comment_style.consistency",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c29",
+        "text": "以后写代码，避免复杂推导式，优先用简单写法",
+        "paraphrase": "代码里少用嵌套推导，能拆成普通循环就拆",
+        "anchor": "推导式",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.simplicity",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c30",
+        "text": "别生成简历格式",
+        "paraphrase": "不要搞成简历那种排版",
+        "anchor": "简历格式",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the agent formats or lays out a text-based deliverable, since resume-style layouts are barred across any document, email, report, or edited text output",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "format.resume_layout",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c31",
+        "text": "讲课用笔记时方程别用图片格式",
+        "paraphrase": "生成讲义时方程不许贴图，必须文本输入",
+        "anchor": "方程",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "lecture_notes"
+        ],
+        "key": "equation.format",
+        "confidence": 9
+      },
+      {
+        "id": "e12-c32",
+        "text": "写链接时，超过18个字的链接用参考链接",
+        "paraphrase": "链接字数超过18个，一律改用参考链接，别放正文",
+        "anchor": "18",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the response contains links or URLs, regardless of the kind of work being produced",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "links.format",
+        "confidence": 9
+      },
+      {
+        "id": "e12-s00",
+        "text": "描述性内容一律不要加",
+        "paraphrase": "所有描述性的词句全都删掉",
+        "anchor": "描述性内容",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when writing or editing any prose or message text for the user",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "style.descriptive_content",
+        "confidence": 8
+      },
+      {
+        "id": "e12-s01",
+        "text": "最多 22 个字符",
+        "paraphrase": "上限 22 个字符",
+        "anchor": "22",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "fill_in_blank_exercise"
+        ],
+        "key": "length.max",
+        "confidence": 7
+      },
+      {
+        "id": "e12-s02",
+        "text": "写内容时每段不超过33个词",
+        "paraphrase": "内容段落控制在33词以内",
+        "anchor": "33",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出包含成段的书面文字（如邮件、文章、报告等正文段落）时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.paragraph_max",
+        "confidence": 8
+      },
+      {
+        "id": "e12-s04",
+        "text": "文章长度必须控制在2404字以内",
+        "paraphrase": "每篇文章的字数不能超过2404字",
+        "anchor": "2404",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "article",
+          "column"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e12-s05",
+        "text": "跟真人打交道时，先判断对方性格再调整语气",
+        "paraphrase": "和人类互动时，摸清对方的路数后适配表达方式",
+        "anchor": "性格",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "email",
+          "message",
+          "letter",
+          "reply"
+        ],
+        "key": "tone.recipient_adaptation",
+        "confidence": 9
+      },
+      {
+        "id": "e12-s06",
+        "text": "描述站点时，必须包含站点之间的步行距离",
+        "paraphrase": "提到多个站点时，一定要写出它们之间的步行距离",
+        "anchor": "步行距离",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": "输出内容描述多个站点或地点之间的位置关系时，如行程安排、实地考察或导览介绍",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "sites.walking_distance",
+        "confidence": 9
+      }
+    ],
+    "lifecycle": [
+      {
+        "seq": 2,
+        "op": "assert",
+        "id": "e12-c00"
+      },
+      {
+        "seq": 3,
+        "op": "assert",
+        "id": "e12-c01"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e12-c02"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e12-c03"
+      },
+      {
+        "seq": 6,
+        "op": "assert",
+        "id": "e12-c04"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e12-c05"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e12-c06"
+      },
+      {
+        "seq": 8,
+        "op": "assert",
+        "id": "e12-c07"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e12-c08"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e12-c09"
+      },
+      {
+        "seq": 11,
+        "op": "assert",
+        "id": "e12-c10"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e12-c11"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e12-c12"
+      },
+      {
+        "seq": 13,
+        "op": "assert",
+        "id": "e12-c13"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e12-c14"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e12-c15"
+      },
+      {
+        "seq": 16,
+        "op": "assert",
+        "id": "e12-c16"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e12-c17"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e12-c18"
+      },
+      {
+        "seq": 18,
+        "op": "assert",
+        "id": "e12-c19"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e12-c20"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e12-c21"
+      },
+      {
+        "seq": 21,
+        "op": "assert",
+        "id": "e12-c22"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e12-c23"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e12-c24"
+      },
+      {
+        "seq": 23,
+        "op": "assert",
+        "id": "e12-c25"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e12-c26"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e12-c27"
+      },
+      {
+        "seq": 33,
+        "op": "assert",
+        "id": "e12-c28"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e12-c29"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e12-c30"
+      },
+      {
+        "seq": 36,
+        "op": "assert",
+        "id": "e12-c31"
+      },
+      {
+        "seq": 37,
+        "op": "assert",
+        "id": "e12-c32"
+      },
+      {
+        "seq": 41,
+        "op": "contradict",
+        "id": "e12-s00",
+        "target": "e12-c04"
+      },
+      {
+        "seq": 42,
+        "op": "contradict",
+        "id": "e12-s01",
+        "target": "e12-c23"
+      },
+      {
+        "seq": 43,
+        "op": "contradict",
+        "id": "e12-s02",
+        "target": "e12-c02"
+      },
+      {
+        "seq": 45,
+        "op": "reinforce",
+        "target": "e12-c18"
+      },
+      {
+        "seq": 46,
+        "op": "contradict",
+        "id": "e12-s04",
+        "target": "e12-c22"
+      },
+      {
+        "seq": 47,
+        "op": "contradict",
+        "id": "e12-s05",
+        "target": "e12-c10"
+      },
+      {
+        "seq": 49,
+        "op": "contradict",
+        "id": "e12-s06",
+        "target": "e12-c17"
+      },
+      {
+        "seq": 50,
+        "op": "retire",
+        "target": "e12-c29"
+      },
+      {
+        "seq": 51,
+        "op": "retire",
+        "target": "e12-c09"
+      },
+      {
+        "seq": 53,
+        "op": "retire",
+        "target": "e12-c14"
+      },
+      {
+        "seq": 54,
+        "op": "retire",
+        "target": "e12-c19"
+      },
+      {
+        "seq": 55,
+        "op": "retire",
+        "target": "e12-c21"
+      },
+      {
+        "seq": 57,
+        "op": "retire",
+        "target": "e12-c32"
+      },
+      {
+        "seq": 58,
+        "op": "retire",
+        "target": "e12-c13"
+      },
+      {
+        "seq": 41,
+        "op": "retire",
+        "target": "e12-c11"
+      },
+      {
+        "seq": 42,
+        "op": "retire",
+        "target": "e12-c15"
+      },
+      {
+        "seq": 43,
+        "op": "retire",
+        "target": "e12-c16"
+      },
+      {
+        "seq": 45,
+        "op": "retire",
+        "target": "e12-c30"
+      },
+      {
+        "seq": 33,
+        "op": "reinforce",
+        "target": "e12-c25"
+      },
+      {
+        "seq": 33,
+        "op": "reinforce",
+        "target": "e12-c20"
+      },
+      {
+        "seq": 33,
+        "op": "reinforce",
+        "target": "e12-c07"
+      }
+    ],
+    "state_checkpoints": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      46,
+      53,
+      62
+    ]
+  }
+}

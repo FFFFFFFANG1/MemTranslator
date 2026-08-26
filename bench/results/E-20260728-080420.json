@@ -1,0 +1,4006 @@
+{
+ "suite": "E",
+ "at": "20260728-080420",
+ "metric_version": 2,
+ "judge_model": "deepseek-v4-pro",
+ "cases_file": "/home/meme/MemTranslator/bench/cases/personas",
+ "cases_hash": "5f82ebfc690a",
+ "score": 0.8333333333333334,
+ "score_detail": {
+  "headline": 0.8333333333333334,
+  "micro": 0.8333333333333334,
+  "macro": 0.8333333333333334,
+  "gap": 0.0
+ },
+ "expected_shards": 8,
+ "completed_shards": 8,
+ "complete": true,
+ "category_rates": {
+  "persona": 0.8333333333333334
+ },
+ "strata": {
+  "mode": {
+   "chained": 0.8333333333333334
+  }
+ },
+ "collapse_flags": [],
+ "judge_parse_flags": 0,
+ "results": [
+  {
+   "id": "datasci-zh",
+   "category": "persona",
+   "mode": "chained",
+   "score": 0.875,
+   "pass": true,
+   "second_half_rate": 0.875,
+   "repeats": 3,
+   "rates": [
+    0.875,
+    0.875,
+    0.875
+   ],
+   "spread": 0.0,
+   "peak_active": 3,
+   "consolidation_triggers": [],
+   "runs": [
+    {
+     "id": "datasci-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.875,
+     "pass": true,
+     "second_half_rate": 0.875,
+     "second_half_round_rate": 0.875,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      }
+     ]
+    },
+    {
+     "id": "datasci-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.875,
+     "pass": true,
+     "second_half_rate": 0.875,
+     "second_half_round_rate": 0.875,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      }
+     ]
+    },
+    {
+     "id": "datasci-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.875,
+     "pass": true,
+     "second_half_rate": 0.875,
+     "second_half_round_rate": 0.875,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "dev-zh",
+   "category": "persona",
+   "mode": "chained",
+   "score": 0.75,
+   "pass": false,
+   "second_half_rate": 0.75,
+   "repeats": 3,
+   "rates": [
+    0.75,
+    0.75,
+    0.75
+   ],
+   "spread": 0.0,
+   "peak_active": 3,
+   "consolidation_triggers": [],
+   "runs": [
+    {
+     "id": "dev-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.75,
+     "pass": false,
+     "second_half_rate": 0.75,
+     "second_half_round_rate": 0.75,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 10,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 13,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      }
+     ]
+    },
+    {
+     "id": "dev-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.75,
+     "pass": false,
+     "second_half_rate": 0.75,
+     "second_half_round_rate": 0.75,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 10,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 13,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      }
+     ]
+    },
+    {
+     "id": "dev-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.75,
+     "pass": false,
+     "second_half_rate": 0.75,
+     "second_half_round_rate": 0.75,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 10,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 13,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "minimalist-zh",
+   "category": "persona",
+   "mode": "chained",
+   "score": 0.8888888888888888,
+   "pass": true,
+   "second_half_rate": 0.8888888888888888,
+   "repeats": 3,
+   "rates": [
+    0.875,
+    0.875,
+    0.9166666666666666
+   ],
+   "spread": 0.04166666666666663,
+   "peak_active": 1,
+   "consolidation_triggers": [],
+   "runs": [
+    {
+     "id": "minimalist-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.875,
+     "pass": true,
+     "second_half_rate": 0.875,
+     "second_half_round_rate": 0.75,
+     "peak_active": 1,
+     "store_final": {
+      "active": 1,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 6,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 7,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 1,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 14,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 2,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 15,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 1,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      }
+     ]
+    },
+    {
+     "id": "minimalist-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.875,
+     "pass": true,
+     "second_half_rate": 0.875,
+     "second_half_round_rate": 0.75,
+     "peak_active": 1,
+     "store_final": {
+      "active": 1,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 6,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 7,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 1,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 14,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 1,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 15,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 2,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      }
+     ]
+    },
+    {
+     "id": "minimalist-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.9166666666666666,
+     "pass": true,
+     "second_half_rate": 0.9166666666666666,
+     "second_half_round_rate": 0.875,
+     "peak_active": 1,
+     "store_final": {
+      "active": 1,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 6,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 7,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 1,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 14,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 1,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mixed-lang",
+   "category": "persona",
+   "mode": "chained",
+   "score": 0.7083333333333334,
+   "pass": false,
+   "second_half_rate": 0.7083333333333334,
+   "repeats": 3,
+   "rates": [
+    0.625,
+    0.625,
+    0.875
+   ],
+   "spread": 0.25,
+   "peak_active": 4,
+   "consolidation_triggers": [],
+   "runs": [
+    {
+     "id": "mixed-lang",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.625,
+     "pass": false,
+     "second_half_rate": 0.625,
+     "second_half_round_rate": 0.625,
+     "peak_active": 4,
+     "store_final": {
+      "active": 5,
+      "retired": 1
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 4
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 4
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 4
+      },
+      {
+       "n": 16,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 4
+      }
+     ]
+    },
+    {
+     "id": "mixed-lang",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.625,
+     "pass": false,
+     "second_half_rate": 0.625,
+     "second_half_round_rate": 0.625,
+     "peak_active": 3,
+     "store_final": {
+      "active": 4,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      }
+     ]
+    },
+    {
+     "id": "mixed-lang",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.875,
+     "pass": true,
+     "second_half_rate": 0.875,
+     "second_half_round_rate": 0.875,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pm-en",
+   "category": "persona",
+   "mode": "chained",
+   "score": 1.0,
+   "pass": true,
+   "second_half_rate": 1.0,
+   "repeats": 3,
+   "rates": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "spread": 0.0,
+   "peak_active": 4,
+   "consolidation_triggers": [],
+   "runs": [
+    {
+     "id": "pm-en",
+     "category": "persona",
+     "mode": "chained",
+     "score": 1.0,
+     "pass": true,
+     "second_half_rate": 1.0,
+     "second_half_round_rate": 1.0,
+     "peak_active": 4,
+     "store_final": {
+      "active": 6,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 5,
+       "hit": false,
+       "misses": [
+        0,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 6,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      }
+     ]
+    },
+    {
+     "id": "pm-en",
+     "category": "persona",
+     "mode": "chained",
+     "score": 1.0,
+     "pass": true,
+     "second_half_rate": 1.0,
+     "second_half_round_rate": 1.0,
+     "peak_active": 4,
+     "store_final": {
+      "active": 6,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 5,
+       "hit": false,
+       "misses": [
+        0,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 6,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      }
+     ]
+    },
+    {
+     "id": "pm-en",
+     "category": "persona",
+     "mode": "chained",
+     "score": 1.0,
+     "pass": true,
+     "second_half_rate": 1.0,
+     "second_half_round_rate": 1.0,
+     "peak_active": 4,
+     "store_final": {
+      "active": 6,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 5,
+       "hit": false,
+       "misses": [
+        0,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 6,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "researcher-zh",
+   "category": "persona",
+   "mode": "chained",
+   "score": 0.6666666666666666,
+   "pass": false,
+   "second_half_rate": 0.6666666666666666,
+   "repeats": 3,
+   "rates": [
+    0.6666666666666666,
+    0.6666666666666666,
+    0.6666666666666666
+   ],
+   "spread": 0.0,
+   "peak_active": 3,
+   "consolidation_triggers": [],
+   "runs": [
+    {
+     "id": "researcher-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.6666666666666666,
+     "pass": false,
+     "second_half_rate": 0.6666666666666666,
+     "second_half_round_rate": 0.75,
+     "peak_active": 3,
+     "store_final": {
+      "active": 4,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 2
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 10,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 2
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      }
+     ]
+    },
+    {
+     "id": "researcher-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.6666666666666666,
+     "pass": false,
+     "second_half_rate": 0.6666666666666666,
+     "second_half_round_rate": 0.75,
+     "peak_active": 3,
+     "store_final": {
+      "active": 4,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 2
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 10,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 2
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      }
+     ]
+    },
+    {
+     "id": "researcher-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.6666666666666666,
+     "pass": false,
+     "second_half_rate": 0.6666666666666666,
+     "second_half_round_rate": 0.75,
+     "peak_active": 3,
+     "store_final": {
+      "active": 4,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        1
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 2
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 2
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 2
+      },
+      {
+       "n": 10,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 2
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": false,
+       "misses": [
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "student-en",
+   "category": "persona",
+   "mode": "chained",
+   "score": 1.0,
+   "pass": true,
+   "second_half_rate": 1.0,
+   "repeats": 3,
+   "rates": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "spread": 0.0,
+   "peak_active": 3,
+   "consolidation_triggers": [],
+   "runs": [
+    {
+     "id": "student-en",
+     "category": "persona",
+     "mode": "chained",
+     "score": 1.0,
+     "pass": true,
+     "second_half_rate": 1.0,
+     "second_half_round_rate": 1.0,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 6,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      }
+     ]
+    },
+    {
+     "id": "student-en",
+     "category": "persona",
+     "mode": "chained",
+     "score": 1.0,
+     "pass": true,
+     "second_half_rate": 1.0,
+     "second_half_round_rate": 1.0,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 6,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 7,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      }
+     ]
+    },
+    {
+     "id": "student-en",
+     "category": "persona",
+     "mode": "chained",
+     "score": 1.0,
+     "pass": true,
+     "second_half_rate": 1.0,
+     "second_half_round_rate": 1.0,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 0
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 6,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 7,
+       "hit": false,
+       "misses": [
+        0,
+        1,
+        2
+       ],
+       "carried": 0,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 3,
+       "applicable": 3,
+       "store_active": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "writer-zh",
+   "category": "persona",
+   "mode": "chained",
+   "score": 0.7777777777777778,
+   "pass": false,
+   "second_half_rate": 0.7777777777777778,
+   "repeats": 3,
+   "rates": [
+    0.75,
+    0.75,
+    0.8333333333333334
+   ],
+   "spread": 0.08333333333333337,
+   "peak_active": 3,
+   "consolidation_triggers": [],
+   "runs": [
+    {
+     "id": "writer-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.75,
+     "pass": false,
+     "second_half_rate": 0.75,
+     "second_half_round_rate": 0.625,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        1
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 4,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      }
+     ]
+    },
+    {
+     "id": "writer-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.75,
+     "pass": false,
+     "second_half_rate": 0.75,
+     "second_half_round_rate": 0.625,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 0
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        1
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 4,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      }
+     ]
+    },
+    {
+     "id": "writer-zh",
+     "category": "persona",
+     "mode": "chained",
+     "score": 0.8333333333333334,
+     "pass": true,
+     "second_half_rate": 0.8333333333333334,
+     "second_half_round_rate": 0.75,
+     "peak_active": 3,
+     "store_final": {
+      "active": 3,
+      "retired": 1
+     },
+     "consolidations": [],
+     "rounds": [
+      {
+       "n": 1,
+       "hit": false,
+       "misses": [
+        0,
+        1
+       ],
+       "carried": 0,
+       "applicable": 2,
+       "store_active": 0
+      },
+      {
+       "n": 2,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 0
+      },
+      {
+       "n": 3,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 4,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 5,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 6,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 7,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 8,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 9,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 10,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 11,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 12,
+       "hit": false,
+       "misses": [
+        2
+       ],
+       "carried": 0,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 13,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 14,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      },
+      {
+       "n": 15,
+       "hit": true,
+       "misses": [],
+       "carried": 2,
+       "applicable": 2,
+       "store_active": 3
+      },
+      {
+       "n": 16,
+       "hit": true,
+       "misses": [],
+       "carried": 1,
+       "applicable": 1,
+       "store_active": 3
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

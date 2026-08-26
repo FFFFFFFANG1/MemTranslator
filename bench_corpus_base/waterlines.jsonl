@@ -1,0 +1,29 @@
+{"at": "20260728-080420", "cases": {"datasci-zh": 0.875, "dev-zh": 0.75, "minimalist-zh": 0.8889, "mixed-lang": 0.7083, "pm-en": 1.0, "researcher-zh": 0.6667, "student-en": 1.0, "writer-zh": 0.7778}, "judge_model": "deepseek-v4-pro", "score": 0.8333333333333334, "suite": "E"}
+{"at": "20260728-093409", "cases": {"e-01-full_context": 1.0, "e-01-no_retire": 1.0, "e-01-null-generic": 1.0, "e-01-oracle-arm": 1.0, "e-01-real": 1.0}, "judge_model": "deepseek-v4-pro", "score": 1.0, "suite": "E1-e-01"}
+{"at": "20260728-101540", "cases": {"e-01": 0.6206}, "judge_model": "deepseek-v4-pro", "score": 0.6206362612612613, "suite": "E1-e-01"}
+{"at": "20260728-103155", "cases": {"e-01": 0.5744}, "judge_model": "deepseek-v4-pro", "score": 0.5744207599629286, "suite": "E1-e-01"}
+{"at": "20260728-104450", "cases": {"e-01": 0.5958}, "judge_model": "deepseek-v4-pro", "score": 0.5958333333333333, "suite": "E1-e-01"}
+{"at": "20260728-115127", "cases": {"e-01": 0.5652}, "judge_model": "deepseek-v4-pro", "score": 0.5652392563242914, "suite": "E1-e-01"}
+{"at": "20260728-124450", "cases": {"e-01": 0.5201}, "judge_model": "deepseek-v4-pro", "score": 0.5201158183480645, "suite": "E1-e-01"}
+{"at": "20260728-115055", "cases": {"e-02": 0.4186}, "judge_model": "deepseek-v4-pro", "score": 0.41857193354542244, "suite": "E1-e-02"}
+{"at": "20260728-124445", "cases": {"e-02": 0.4183}, "judge_model": "deepseek-v4-pro", "score": 0.41830039525691703, "suite": "E1-e-02"}
+{"at": "20260728-115826", "cases": {"e-03": 0.6561}, "judge_model": "deepseek-v4-pro", "score": 0.6560633558818676, "suite": "E1-e-03"}
+{"at": "20260728-125154", "cases": {"e-03": 0.6288}, "judge_model": "deepseek-v4-pro", "score": 0.6288334472544999, "suite": "E1-e-03"}
+{"at": "20260728-120124", "cases": {"e-04": 0.6016}, "judge_model": "deepseek-v4-pro", "score": 0.6015863689776734, "suite": "E1-e-04"}
+{"at": "20260728-125504", "cases": {"e-04": 0.5864}, "judge_model": "deepseek-v4-pro", "score": 0.5864042303172738, "suite": "E1-e-04"}
+{"at": "20260728-120413", "cases": {"e-05": 0.5559}, "judge_model": "deepseek-v4-pro", "score": 0.5558695652173913, "suite": "E1-e-05"}
+{"at": "20260728-125750", "cases": {"e-05": 0.5559}, "judge_model": "deepseek-v4-pro", "score": 0.5558695652173913, "suite": "E1-e-05"}
+{"at": "20260728-120908", "cases": {"e-06": 0.6593}, "judge_model": "deepseek-v4-pro", "score": 0.6593137254901961, "suite": "E1-e-06"}
+{"at": "20260728-130634", "cases": {"e-06": 0.675}, "judge_model": "deepseek-v4-pro", "score": 0.675, "suite": "E1-e-06"}
+{"at": "20260728-120958", "cases": {"e-07": 0.7238}, "judge_model": "deepseek-v4-pro", "score": 0.7238461538461539, "suite": "E1-e-07"}
+{"at": "20260728-130629", "cases": {"e-07": 0.7179}, "judge_model": "deepseek-v4-pro", "score": 0.7178571428571429, "suite": "E1-e-07"}
+{"at": "20260728-121919", "cases": {"e-08": 0.6124}, "judge_model": "deepseek-v4-pro", "score": 0.6124338624338624, "suite": "E1-e-08"}
+{"at": "20260728-131700", "cases": {"e-08": 0.6104}, "judge_model": "deepseek-v4-pro", "score": 0.6103670634920635, "suite": "E1-e-08"}
+{"at": "20260728-121528", "cases": {"e-09": 0.5346}, "judge_model": "deepseek-v4-pro", "score": 0.5346004439511653, "suite": "E1-e-09"}
+{"at": "20260728-131335", "cases": {"e-09": 0.298}, "judge_model": "deepseek-v4-pro", "score": 0.29795312900196363, "suite": "E1-e-09"}
+{"at": "20260728-122701", "cases": {"e-10": 0.6504}, "judge_model": "deepseek-v4-pro", "score": 0.6504129584490675, "suite": "E1-e-10"}
+{"at": "20260728-132338", "cases": {"e-10": 0.6121}, "judge_model": "deepseek-v4-pro", "score": 0.6120839580209895, "suite": "E1-e-10"}
+{"at": "20260728-122612", "cases": {"e-11": 0.5621}, "judge_model": "deepseek-v4-pro", "score": 0.562106971975393, "suite": "E1-e-11"}
+{"at": "20260728-132410", "cases": {"e-11": 0.5817}, "judge_model": "deepseek-v4-pro", "score": 0.5817498291182501, "suite": "E1-e-11"}
+{"at": "20260728-123611", "cases": {"e-12": 0.583}, "judge_model": "deepseek-v4-pro", "score": 0.5829861111111111, "suite": "E1-e-12"}
+{"at": "20260728-133414", "cases": {"e-12": 0.5611}, "judge_model": "deepseek-v4-pro", "score": 0.5611111111111111, "suite": "E1-e-12"}

@@ -34,6 +34,26 @@ def test_persistence_last_record_wins(tmp_path):
     assert len(reloaded.list()) == 1
 
 
+def test_manual_update_persists_work_kinds_and_scope_metadata(tmp_path):
+    path = tmp_path / "s.jsonl"
+    store = Store(path)
+    requirement = store.add(
+        "Keep replies short.", kinds=["email"],
+        applies_when="for external clients", scope_mode="scoped")
+
+    updated = store.update(
+        requirement.id, kinds=["report", "email"],
+        scope={"audience": "Leadership"}, applies_when="",
+        scope_mode="scoped")
+
+    assert updated.kinds == ["report", "email"]
+    assert updated.scope == {"audience": "leadership"}
+    assert updated.applies_when == ""
+    reloaded = Store(path).get(requirement.id)
+    assert reloaded.kinds == ["report", "email"]
+    assert reloaded.scope == {"audience": "leadership"}
+
+
 def test_empty_text_rejected(tmp_path):
     store = Store(tmp_path / "s.jsonl")
     try:
@@ -41,6 +61,28 @@ def test_empty_text_rejected(tmp_path):
         assert False, "should have raised"
     except ValueError:
         pass
+
+
+def test_store_warms_index_once_per_flattened_item_version(tmp_path):
+    from memtranslator.retrieval import (clear_retrieval_caches,
+                                         retrieval_cache_info)
+
+    clear_retrieval_caches()
+    store = Store(tmp_path / "indexed.jsonl")
+    req = store.add("Emails under 120 words.", kinds=["email"],
+                    scope={"audience": "smith"}, key="email.length")
+    after_add = retrieval_cache_info()["bm25_documents"]
+
+    store.apply_ops([{"kind": "reinforce", "target_id": req.id}])
+    after_reinforce = retrieval_cache_info()["bm25_documents"]
+    assert after_reinforce["misses"] == after_add["misses"]
+
+    store.apply_feedback_ops([{
+        "kind": "update", "target_id": req.id,
+        "text": "Emails under 80 words.",
+    }])
+    after_update = retrieval_cache_info()["bm25_documents"]
+    assert after_update["misses"] == after_add["misses"] + 1
 
 
 def test_event_log_roundtrip(tmp_path):

@@ -1,0 +1,431 @@
+{
+ "family": "dilution",
+ "description": "the same applicable rule must survive 0, 8 and 24 distractors — the archive measured carry decaying 0.70→0.50 as density rose; this pins the curve on a controlled pair; 2026-07-29: +40-distractor checks — above INJECT_CAP the selection stage must keep the one applicable rule (it is also the OLDEST entry, so recency alone cannot save it)",
+ "checks": [
+  {
+   "id": "dilution-0",
+   "store": [
+    {
+     "text": "会议纪要一律按时间倒序排列"
+    }
+   ],
+   "task": {
+    "text": "帮我把今天站会的记录整理成会议纪要"
+   },
+   "expect": {
+    "behavior": "act",
+    "must_contain": [
+     "倒序"
+    ]
+   }
+  },
+  {
+   "id": "dilution-8",
+   "store": [
+    {
+     "text": "会议纪要一律按时间倒序排列"
+    },
+    {
+     "text": "周报里的数字必须带环比"
+    },
+    {
+     "text": "代码注释统一用英文"
+    },
+    {
+     "text": "调研结论开头先给一句话结论"
+    },
+    {
+     "text": "对外文档用简体中文"
+    },
+    {
+     "text": "说明文档用主动语态"
+    },
+    {
+     "text": "解释技术概念时先给类比"
+    },
+    {
+     "text": "引用统一用 APA 格式"
+    },
+    {
+     "text": "摘要控制在 200 字以内"
+    }
+   ],
+   "task": {
+    "text": "帮我把今天站会的记录整理成会议纪要"
+   },
+   "expect": {
+    "behavior": "act",
+    "must_contain": [
+     "倒序"
+    ]
+   }
+  },
+  {
+   "id": "dilution-24",
+   "store": [
+    {
+     "text": "会议纪要一律按时间倒序排列"
+    },
+    {
+     "text": "周报里的数字必须带环比"
+    },
+    {
+     "text": "代码注释统一用英文"
+    },
+    {
+     "text": "调研结论开头先给一句话结论"
+    },
+    {
+     "text": "对外文档用简体中文"
+    },
+    {
+     "text": "说明文档用主动语态"
+    },
+    {
+     "text": "解释技术概念时先给类比"
+    },
+    {
+     "text": "引用统一用 APA 格式"
+    },
+    {
+     "text": "摘要控制在 200 字以内"
+    },
+    {
+     "text": "步骤类内容用有序列表"
+    },
+    {
+     "text": "给客户的邮件结尾加公司落款"
+    },
+    {
+     "text": "报表里的金额保留两位小数"
+    },
+    {
+     "text": "翻译时保留原文里的英文术语"
+    },
+    {
+     "text": "标题不超过 15 个字"
+    },
+    {
+     "text": "别在正文里用感叹号"
+    },
+    {
+     "text": "代码片段要带语言标注"
+    },
+    {
+     "text": "季度总结先写风险再写成绩"
+    },
+    {
+     "text": "面向新人的文档要有前置知识清单"
+    },
+    {
+     "text": "commit message 用英文祈使句"
+    },
+    {
+     "text": "PPT 每页只讲一个论点"
+    },
+    {
+     "text": "数据图表的坐标轴必须标单位"
+    },
+    {
+     "text": "对外声明先过一遍法务措辞"
+    },
+    {
+     "text": "招聘 JD 里不写年龄要求"
+    },
+    {
+     "text": "回复投诉邮件先道歉再解释"
+    },
+    {
+     "text": "文件命名用小写加连字符"
+    }
+   ],
+   "task": {
+    "text": "帮我把今天站会的记录整理成会议纪要"
+   },
+   "expect": {
+    "behavior": "act",
+    "must_contain": [
+     "倒序"
+    ]
+   }
+  },
+  {
+   "id": "dilution-40-selection",
+   "store": [
+    {
+     "text": "会议纪要一律按时间倒序排列"
+    },
+    {
+     "text": "周报里的数字必须带环比"
+    },
+    {
+     "text": "代码注释统一用英文"
+    },
+    {
+     "text": "调研结论开头先给一句话结论"
+    },
+    {
+     "text": "对外文档用简体中文"
+    },
+    {
+     "text": "说明文档用主动语态"
+    },
+    {
+     "text": "解释技术概念时先给类比"
+    },
+    {
+     "text": "引用统一用 APA 格式"
+    },
+    {
+     "text": "摘要控制在 200 字以内"
+    },
+    {
+     "text": "步骤类内容用有序列表"
+    },
+    {
+     "text": "给客户的邮件结尾加公司落款"
+    },
+    {
+     "text": "报表里的金额保留两位小数"
+    },
+    {
+     "text": "翻译时保留原文里的英文术语"
+    },
+    {
+     "text": "标题不超过 15 个字"
+    },
+    {
+     "text": "别在正文里用感叹号"
+    },
+    {
+     "text": "代码片段要带语言标注"
+    },
+    {
+     "text": "季度总结先写风险再写成绩"
+    },
+    {
+     "text": "面向新人的文档要有前置知识清单"
+    },
+    {
+     "text": "commit message 用英文祈使句"
+    },
+    {
+     "text": "PPT 每页只讲一个论点"
+    },
+    {
+     "text": "数据图表的坐标轴必须标单位"
+    },
+    {
+     "text": "对外声明先过一遍法务措辞"
+    },
+    {
+     "text": "招聘 JD 里不写年龄要求"
+    },
+    {
+     "text": "回复投诉邮件先道歉再解释"
+    },
+    {
+     "text": "文件命名用小写加连字符"
+    },
+    {
+     "text": "Slide decks open with a summary slide."
+    },
+    {
+     "text": "SQL queries in docs use uppercase keywords."
+    },
+    {
+     "text": "Changelog entries start with the affected component."
+    },
+    {
+     "text": "API examples show the curl command first."
+    },
+    {
+     "text": "Budget tables list amounts in thousands."
+    },
+    {
+     "text": "User-facing error messages avoid stack traces."
+    },
+    {
+     "text": "Design docs include a rollback plan section."
+    },
+    {
+     "text": "Test names describe the expected behavior."
+    },
+    {
+     "text": "README files list prerequisites before install steps."
+    },
+    {
+     "text": "Press releases spell out acronyms on first use."
+    },
+    {
+     "text": "Dashboards default to the last 30 days."
+    },
+    {
+     "text": "Contracts quote payment terms in calendar days."
+    },
+    {
+     "text": "Onboarding guides link the glossary at the top."
+    },
+    {
+     "text": "Postmortem action items name a single owner."
+    },
+    {
+     "text": "Survey questions avoid double negatives."
+    },
+    {
+     "text": "Release notes group changes by severity."
+    }
+   ],
+   "task": {
+    "text": "帮我把今天站会的记录整理成会议纪要"
+   },
+   "expect": {
+    "behavior": "act",
+    "must_contain": [
+     "倒序"
+    ]
+   }
+  },
+  {
+   "id": "dilution-40-crosslingual-rule",
+   "store": [
+    {
+     "text": "Meeting minutes must be ordered reverse-chronologically, newest item first."
+    },
+    {
+     "text": "周报里的数字必须带环比"
+    },
+    {
+     "text": "代码注释统一用英文"
+    },
+    {
+     "text": "调研结论开头先给一句话结论"
+    },
+    {
+     "text": "对外文档用简体中文"
+    },
+    {
+     "text": "说明文档用主动语态"
+    },
+    {
+     "text": "解释技术概念时先给类比"
+    },
+    {
+     "text": "引用统一用 APA 格式"
+    },
+    {
+     "text": "摘要控制在 200 字以内"
+    },
+    {
+     "text": "步骤类内容用有序列表"
+    },
+    {
+     "text": "给客户的邮件结尾加公司落款"
+    },
+    {
+     "text": "报表里的金额保留两位小数"
+    },
+    {
+     "text": "翻译时保留原文里的英文术语"
+    },
+    {
+     "text": "标题不超过 15 个字"
+    },
+    {
+     "text": "别在正文里用感叹号"
+    },
+    {
+     "text": "代码片段要带语言标注"
+    },
+    {
+     "text": "季度总结先写风险再写成绩"
+    },
+    {
+     "text": "面向新人的文档要有前置知识清单"
+    },
+    {
+     "text": "commit message 用英文祈使句"
+    },
+    {
+     "text": "PPT 每页只讲一个论点"
+    },
+    {
+     "text": "数据图表的坐标轴必须标单位"
+    },
+    {
+     "text": "对外声明先过一遍法务措辞"
+    },
+    {
+     "text": "招聘 JD 里不写年龄要求"
+    },
+    {
+     "text": "回复投诉邮件先道歉再解释"
+    },
+    {
+     "text": "文件命名用小写加连字符"
+    },
+    {
+     "text": "Slide decks open with a summary slide."
+    },
+    {
+     "text": "SQL queries in docs use uppercase keywords."
+    },
+    {
+     "text": "Changelog entries start with the affected component."
+    },
+    {
+     "text": "API examples show the curl command first."
+    },
+    {
+     "text": "Budget tables list amounts in thousands."
+    },
+    {
+     "text": "User-facing error messages avoid stack traces."
+    },
+    {
+     "text": "Design docs include a rollback plan section."
+    },
+    {
+     "text": "Test names describe the expected behavior."
+    },
+    {
+     "text": "README files list prerequisites before install steps."
+    },
+    {
+     "text": "Press releases spell out acronyms on first use."
+    },
+    {
+     "text": "Dashboards default to the last 30 days."
+    },
+    {
+     "text": "Contracts quote payment terms in calendar days."
+    },
+    {
+     "text": "Onboarding guides link the glossary at the top."
+    },
+    {
+     "text": "Postmortem action items name a single owner."
+    },
+    {
+     "text": "Survey questions avoid double negatives."
+    },
+    {
+     "text": "Release notes group changes by severity."
+    }
+   ],
+   "task": {
+    "text": "帮我把今天站会的记录整理成会议纪要"
+   },
+   "expect": {
+    "behavior": "act",
+    "must_contain": [
+     {
+      "value": "倒序",
+      "matcher": "semantic",
+      "criterion": "The rewritten request asks for the minutes to be ordered newest-first / reverse chronological (倒序/从新到旧)."
+     }
+    ]
+   }
+  }
+ ]
+}

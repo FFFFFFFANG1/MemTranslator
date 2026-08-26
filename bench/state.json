@@ -1,0 +1,64 @@
+{
+ "at": "20260819-015143",
+ "paths": {
+  "read": {
+   "conflict": {
+    "score": 1.0,
+    "n": 6,
+    "fails": []
+   },
+   "dilution": {
+    "score": 0.8,
+    "n": 5,
+    "fails": [
+     {
+      "id": "dilution-40-crosslingual-rule",
+      "why": [
+       "expected an injection, product nooped (model_noop)",
+       "missing: {'value': '倒序', 'matcher': 'semantic', 'criterion': 'The rewritten request asks for the minutes to be ordered newest-first / reverse chronological (倒序/从新到旧).'}"
+      ]
+     }
+    ]
+   },
+   "idempotence_degenerate": {
+    "score": 1.0,
+    "n": 4,
+    "fails": []
+   },
+   "injection": {
+    "score": 1.0,
+    "n": 4,
+    "fails": []
+   },
+   "instantiation": {
+    "score": 0.8,
+    "n": 5,
+    "fails": [
+     {
+      "id": "sections-to-postmortem-en",
+      "why": []
+     }
+    ]
+   },
+   "invariance": {
+    "score": 1.0,
+    "n": 9,
+    "fails": []
+   },
+   "language_scope": {
+    "score": 1.0,
+    "n": 6,
+    "fails": []
+   },
+   "noop_both_ways": {
+    "score": 1.0,
+    "n": 7,
+    "fails": []
+   },
+   "_overall": 0.957
+  }
+ },
+ "artifacts": {
+  "snapshot": "/Users/fang/Documents/codespace/MemTranslator/bench/results/R-20260819-015143.json"
+ }
+}
