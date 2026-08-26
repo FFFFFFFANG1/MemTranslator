@@ -34,8 +34,7 @@ class Client:
 
     def feedback(self, event):
         self.feedback_events.append(event)
-        return {"classification": "edited_after_polish",
-                "vocabulary_added": []}
+        return {"classification": "edited_after_polish"}
 
 
 def test_controller_runs_write_track_feedback_loop():
@@ -76,3 +75,24 @@ def test_controller_can_use_a_pre_captured_snapshot():
     out = DesktopController(adapter, client).polish(snapshot=captured)
     assert out["status"] == "tracking"
     assert captures == ["polished"]
+
+
+def test_noop_tracks_confirmed_raw_without_writing():
+    adapter, client = Adapter(), Client()
+    writes = []
+    adapter.write = lambda *_args: writes.append(True)
+    client.translate = lambda _text, _context: {
+        "decision": "noop", "polished": "raw",
+        "translate_id": "tr-noop", "applied": [],
+    }
+    controller = DesktopController(adapter, client)
+
+    out = controller.polish()
+    observed = controller.observe(key="Enter")
+
+    assert out["status"] == "noop_tracking"
+    assert writes == []
+    assert observed["status"] == "feedback_sent"
+    assert client.feedback_events[0].translate_id == "tr-noop"
+    assert client.feedback_events[0].original == "raw"
+    assert client.feedback_events[0].final_text == "raw"

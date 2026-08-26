@@ -28,6 +28,9 @@ from Quartz import (
     kCGEventFlagMaskAlternate,
     kCGEventFlagMaskCommand,
     kCGEventKeyDown,
+    kCGEventLeftMouseDown,
+    kCGEventOtherMouseDown,
+    kCGEventRightMouseDown,
     kCGEventTapOptionDefault,
     kCGHeadInsertEventTap,
     kCGKeyboardEventKeycode,
@@ -39,10 +42,17 @@ from memtranslator.hotkey import axtext
 from memtranslator.hotkey.client import DaemonClient
 from memtranslator.hotkey.controller import DesktopController
 from memtranslator.hotkey.overlay import StatusOverlay
+from memtranslator.config import DAEMON_URL
 
-DAEMON = "http://127.0.0.1:8123"
+DAEMON = DAEMON_URL
 KEY_R = 15
 ENTER_KEYS = {36, 76}
+POINTER_DOWN_EVENTS = {
+    kCGEventLeftMouseDown,
+    kCGEventRightMouseDown,
+    kCGEventOtherMouseDown,
+}
+POINTER_SETTLE_SECONDS = 0.08
 
 
 def polish_flow(read=None, write=None, post=None) -> str:
@@ -81,6 +91,7 @@ class App(NSObject):
             axtext.MacOSInputAdapter(), DaemonClient(DAEMON),
             on_feedback=self._on_feedback, on_progress=self._on_progress)
         self._poll_timer = None
+        self._pointer_timer = None
         self.status_item = NSStatusBar.systemStatusBar() \
             .statusItemWithLength_(NSVariableStatusItemLength)
         self.status_item.button().setTitle_("⇄")
@@ -104,10 +115,6 @@ class App(NSObject):
             "Open Control Center", "openControlCenter:", "")
         control.setTarget_(self)
         menu.addItem_(control)
-        demo = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
-            "Open Interactive Demo", "openDemo:", "")
-        demo.setTarget_(self)
-        menu.addItem_(demo)
         menu.addItem_(NSMenuItem.separatorItem())
         menu.addItemWithTitle_action_keyEquivalent_("Quit", "terminate:", "q")
         self.status_item.setMenu_(menu)
@@ -120,10 +127,6 @@ class App(NSObject):
     def openControlCenter_(self, _sender):
         NSWorkspace.sharedWorkspace().openURL_(
             NSURL.URLWithString_(DAEMON + "/"))
-
-    def openDemo_(self, _sender):
-        NSWorkspace.sharedWorkspace().openURL_(
-            NSURL.URLWithString_(DAEMON + "/demo"))
 
     def _set_state(self, glyph: str, text: str, reset_after: float = 0) -> None:
         def update():
@@ -139,26 +142,16 @@ class App(NSObject):
             self._set_state("!", "Feedback queued failed", 2.2)
             self.overlay.show("未能保存修改", auto_hide=1.8)
             return
-        added = result.get("response", {}).get("vocabulary_added", [])
-        if added:
-            terms = ", ".join(entry["term"] for entry in added)
-            self._set_state("✓", f"Learned vocabulary · {terms}", 3.0)
-            self.overlay.show(f"✓  已记住 {terms}", auto_hide=2.2)
-        else:
-            classification = result.get("response", {}).get(
-                "classification", "")
-            if classification == "edited_after_polish":
-                self._set_state("✓", "Edit feedback saved", 2.2)
-                self.overlay.show("✓  已记录修改", auto_hide=1.8)
+        classification = result.get("response", {}).get(
+            "classification", "")
+        if classification == "edited_after_polish":
+            self._set_state("✓", "Edit feedback saved", 2.2)
+            self.overlay.show("✓  已记录修改", auto_hide=1.8)
 
     def _on_progress(self, state: str, snapshot) -> None:
         bounds = snapshot.screen_bounds if snapshot is not None else None
-        label = {
-            "translating": "正在整理…",
-            "writing": "正在回填…",
-        }.get(state)
-        if label:
-            self.overlay.show(label, bounds)
+        if state in {"translating", "writing"}:
+            self.overlay.move(bounds)
 
     def _schedule_poll(self) -> None:
         if self._poll_timer is not None:
@@ -180,15 +173,39 @@ class App(NSObject):
         threading.Thread(target=lambda: self.controller.observe(key="Enter"),
                          daemon=True).start()
 
+    def on_pointer_down(self) -> None:
+        """Re-check after a click has had time to clear or move the input.
+
+        A click inside the same composer merely refreshes its snapshot. A
+        send-button click, tab switch, or click into another field finishes
+        through the tracker's existing cleared/focus-changed rules.
+        """
+        if not self.controller.tracker.active:
+            return
+        if self._pointer_timer is not None:
+            self._pointer_timer.cancel()
+
+        def observe_after_click():
+            self._pointer_timer = None
+            self.controller.observe()
+
+        self._pointer_timer = threading.Timer(
+            POINTER_SETTLE_SECONDS, observe_after_click)
+        self._pointer_timer.daemon = True
+        self._pointer_timer.start()
+
     def on_hotkey(self) -> None:
         print("hotkey accepted: option+command+r", flush=True)
+        if self._pointer_timer is not None:
+            self._pointer_timer.cancel()
+            self._pointer_timer = None
         if self.controller.tracker.active:
             self.controller.tracker.cancel()
         self._set_state("…", "Compiling requirements…")
         captured_snapshot = self.controller.adapter.capture()
         bounds = (captured_snapshot.screen_bounds
                   if captured_snapshot is not None else None)
-        self.overlay.show("正在读取…", bounds)
+        self.overlay.start(bounds)
 
         def run():
             result = self.controller.polish(snapshot=captured_snapshot)
@@ -199,14 +216,19 @@ class App(NSObject):
                 result_snapshot = result["snapshot"]
                 self._set_state("●", f"Tracking · {result_snapshot.app_name} · "
                                       f"{write.strategy}")
-                self.overlay.show("✓  已回填", result_snapshot.screen_bounds,
-                                  auto_hide=1.0)
+                self.overlay.complete(result_snapshot.screen_bounds)
+                self._schedule_poll()
+            elif status == "noop_tracking":
+                result_snapshot = result["snapshot"]
+                self._set_state("●", f"Tracking · {result_snapshot.app_name} · "
+                                      "no changes")
+                self.overlay.show("无需调整", result_snapshot.screen_bounds,
+                                  auto_hide=1.2)
                 self._schedule_poll()
             else:
                 glyph, label = {
                     "empty": ("·", "Focused composer is empty"),
                     "unsupported": ("×", "Protected or unsupported input"),
-                    "noop": ("·", "No applicable requirement"),
                     "daemon_down": ("!", "Daemon unavailable"),
                     "write_failed": ("!", "Write verification failed"),
                 }.get(status, ("!", status))
@@ -214,7 +236,6 @@ class App(NSObject):
                 overlay_label = {
                     "empty": "未找到可编辑文字",
                     "unsupported": "此输入框暂不支持",
-                    "noop": "无需调整",
                     "daemon_down": "本地服务未连接",
                     "write_failed": "回填失败",
                 }.get(status, "处理失败")
@@ -230,6 +251,9 @@ def main():
     app = App.alloc().init()
 
     def tap_callback(_proxy, event_type, event, _refcon):
+        if event_type in POINTER_DOWN_EVENTS:
+            app.on_pointer_down()
+            return event
         if event_type != kCGEventKeyDown:
             return event
         keycode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode)
@@ -250,9 +274,12 @@ def main():
             app.on_enter()
         return event
 
+    event_mask = CGEventMaskBit(kCGEventKeyDown)
+    for pointer_event in POINTER_DOWN_EVENTS:
+        event_mask |= CGEventMaskBit(pointer_event)
     tap = CGEventTapCreate(kCGSessionEventTap, kCGHeadInsertEventTap,
                            kCGEventTapOptionDefault,
-                           CGEventMaskBit(kCGEventKeyDown), tap_callback, None)
+                           event_mask, tap_callback, None)
     if tap is None:
         raise SystemExit("Event tap failed — check Accessibility permission.")
     source = CFMachPortCreateRunLoopSource(None, tap, 0)

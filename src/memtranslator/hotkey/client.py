@@ -4,11 +4,12 @@ from __future__ import annotations
 import json
 import urllib.request
 
+from memtranslator.config import DAEMON_URL
 from memtranslator.hotkey.models import FeedbackEvent
 
 
 class DaemonClient:
-    def __init__(self, base_url: str = "http://127.0.0.1:8123"):
+    def __init__(self, base_url: str = DAEMON_URL):
         self.base_url = base_url.rstrip("/")
 
     def _post(self, path: str, payload: dict, timeout: float = 20) -> dict:

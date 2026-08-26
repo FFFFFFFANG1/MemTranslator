@@ -22,6 +22,7 @@ class InputSnapshot:
     target_range: TextRange
     app_name: str = ""
     app_bundle_id: str = ""
+    web_domain: str = ""
     window_title: str = ""
     role: str = ""
     subrole: str = ""

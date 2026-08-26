@@ -34,7 +34,18 @@ class DesktopController:
             except Exception:
                 return {"status": "daemon_down"}
             if translated.get("decision") != "apply":
-                return {"status": "noop", "translate": translated}
+                # With the old hook removed, even a no-op transaction needs a
+                # short AX session so the confirmed raw message can reach
+                # Extractor-A. Nothing is written back in this branch.
+                self.tracker.start(
+                    snapshot,
+                    translate_id=translated["translate_id"],
+                    original=snapshot.target_text,
+                    polished=translated.get("polished")
+                    or snapshot.target_text,
+                )
+                return {"status": "noop_tracking", "translate": translated,
+                        "snapshot": snapshot}
             self._progress("writing", snapshot)
             result = self.adapter.write(snapshot, translated["polished"])
             if not result.ok:

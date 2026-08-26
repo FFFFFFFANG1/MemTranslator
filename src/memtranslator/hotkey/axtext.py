@@ -8,8 +8,11 @@ editors select only the captured range and paste, with the clipboard restored.
 from __future__ import annotations
 
 import hashlib
+import json
+import os
 import time
 from dataclasses import replace
+from urllib.parse import urlsplit
 
 from AppKit import (NSPasteboard, NSPasteboardItem, NSPasteboardTypeString,
                     NSWorkspace)
@@ -50,6 +53,7 @@ from Quartz import (
 
 from memtranslator.hotkey.models import InputSnapshot, TextRange, WriteResult
 from memtranslator.hotkey.profiles import resolve_profile
+from memtranslator.source_policy import AI_APP_BUNDLES, is_ai_app
 
 KEY_A, KEY_V = 0, 9
 
@@ -60,7 +64,7 @@ _CHROMIUM_BUNDLES = {
     "com.microsoft.edgemac",
     "company.thebrowser.Browser",
     "com.brave.Browser",
-}
+} | set(AI_APP_BUNDLES)
 _WEB_AX_ENABLED_PIDS: set[int] = set()
 
 
@@ -83,7 +87,12 @@ def _enable_frontmost_web_accessibility() -> bool:
     long-standing macOS activation contract; failures remain non-fatal.
     """
     app = NSWorkspace.sharedWorkspace().frontmostApplication()
-    if app is None or (app.bundleIdentifier() or "") not in _CHROMIUM_BUNDLES:
+    if app is None:
+        return False
+    bundle_id = app.bundleIdentifier() or ""
+    app_name = app.localizedName() or ""
+    if (bundle_id not in _CHROMIUM_BUNDLES
+            and not is_ai_app(app_bundle_id=bundle_id, app_name=app_name)):
         return False
     pid = int(app.processIdentifier())
     if pid in _WEB_AX_ENABLED_PIDS:
@@ -114,6 +123,8 @@ def _focused_element():
     _enable_frontmost_web_accessibility()
     err, element = AXUIElementCopyAttributeValue(
         AXUIElementCreateSystemWide(), kAXFocusedUIElementAttribute, None)
+    if err != 0 or element is None:
+        _debug_capture_failure("focused_element_unavailable", error=err)
     return element if err == 0 else None
 
 
@@ -180,6 +191,90 @@ def _frontmost_app() -> tuple[str, str]:
     return app.localizedName() or "", app.bundleIdentifier() or ""
 
 
+def _url_string(value) -> str:
+    if isinstance(value, str):
+        return value
+    try:
+        absolute = value.absoluteString()
+        return absolute if isinstance(absolute, str) else ""
+    except Exception:
+        return ""
+
+
+def _domain_from_url(value) -> str:
+    raw = _url_string(value).strip()
+    if not raw:
+        return ""
+    try:
+        parsed = urlsplit(raw)
+    except ValueError:
+        return ""
+    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+        return ""
+    domain = parsed.hostname.casefold().rstrip(".")
+    return domain[4:] if domain.startswith("www.") else domain
+
+
+def _focused_web_domain(element) -> str:
+    """Read only the page hostname, never retain its path or query string."""
+    current = element
+    visited = set()
+    for _ in range(16):
+        if current is None:
+            break
+        try:
+            marker = hash(current)
+        except Exception:
+            marker = id(current)
+        if marker in visited:
+            break
+        visited.add(marker)
+        for attribute in ("AXURL", "AXDocument"):
+            domain = _domain_from_url(_copy(current, attribute))
+            if domain:
+                return domain
+        current = _copy(current, "AXParent")
+    window = _copy(element, kAXWindowAttribute)
+    for target in (window,):
+        for attribute in ("AXURL", "AXDocument"):
+            domain = _domain_from_url(_copy(target, attribute)) if target else ""
+            if domain:
+                return domain
+    return ""
+
+
+def _debug_capture_failure(reason: str, *, element=None, error=None,
+                           value=None, value_error=None) -> None:
+    """Emit privacy-safe AX metadata for opt-in composer diagnosis."""
+    if os.environ.get("MT_AX_DEBUG", "").strip().lower() not in {
+            "1", "true", "yes", "on"}:
+        return
+    app_name, bundle_id = _frontmost_app()
+    report = {
+        "reason": reason,
+        "app_name": app_name,
+        "app_bundle_id": bundle_id,
+        "focused_error": error,
+        "value_error": value_error,
+        "value_type": type(value).__name__ if value is not None else None,
+        "value_length": len(value) if isinstance(value, str) else None,
+    }
+    if element is not None:
+        report.update({
+            "role": _string_attr(element, kAXRoleAttribute),
+            "subrole": _string_attr(element, kAXSubroleAttribute),
+            "identifier_present": bool(
+                _string_attr(element, kAXIdentifierAttribute)),
+            "description_present": bool(
+                _string_attr(element, kAXDescriptionAttribute)),
+            "value_settable": _is_settable(element, kAXValueAttribute),
+            "selection_settable": _is_settable(
+                element, kAXSelectedTextRangeAttribute),
+        })
+    print("[MT_AX_DEBUG] " + json.dumps(
+        report, ensure_ascii=False, sort_keys=True), flush=True)
+
+
 def _identity(element, *, app_bundle_id: str, role: str, subrole: str,
               identifier: str, description: str, window_title: str) -> str:
     try:
@@ -195,9 +290,17 @@ def capture_focused_input() -> InputSnapshot | None:
     element = _focused_element()
     if element is None:
         return None
-    value = _copy(element, kAXValueAttribute)
+    value_error, value = AXUIElementCopyAttributeValue(
+        element, kAXValueAttribute, None)
     if not isinstance(value, str):
+        _debug_capture_failure(
+            "focused_value_not_text", element=element, value=value,
+            value_error=value_error)
         return None
+    if not value.strip():
+        _debug_capture_failure(
+            "focused_value_empty", element=element, value=value,
+            value_error=value_error)
     role = _string_attr(element, kAXRoleAttribute)
     subrole = _string_attr(element, kAXSubroleAttribute)
     identifier = _string_attr(element, kAXIdentifierAttribute)
@@ -205,6 +308,7 @@ def capture_focused_input() -> InputSnapshot | None:
     window = _copy(element, kAXWindowAttribute)
     window_title = _string_attr(window, kAXTitleAttribute) if window else ""
     app_name, bundle_id = _frontmost_app()
+    web_domain = _focused_web_domain(element)
     position = _decode_pair(_copy(element, kAXPositionAttribute),
                             kAXValueCGPointType)
     size = _decode_pair(_copy(element, kAXSizeAttribute),
@@ -229,6 +333,7 @@ def capture_focused_input() -> InputSnapshot | None:
         target_range=selected,
         app_name=app_name,
         app_bundle_id=bundle_id,
+        web_domain=web_domain,
         window_title=window_title,
         role=role,
         subrole=subrole,

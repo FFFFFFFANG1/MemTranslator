@@ -33,13 +33,23 @@ class Pipeline:
             return len(self._b)
         return len(self._a) + len(self._b)
 
-    def add_natural(self, spans: list[str], now: float) -> None:
-        for s in spans:
+    def add_natural(self, messages: list[str], now: float) -> int:
+        """Queue non-empty raw messages for Route A.
+
+        Source eligibility is enforced by the server before background
+        capture reaches this method.  There is intentionally no lexical or
+        rule-based filter here.  The extraction prompt applies the sole
+        content guardrail: a deterministic per-message length truncation.
+        """
+        added = 0
+        for s in messages:
             if not s.strip():
                 continue
             self._a.append(s)
+            added += 1
             if self._a_oldest_at is None:
                 self._a_oldest_at = now
+        return added
 
     def add_feedback(self, entries: list[dict], diff: list[dict],
                      now: float) -> bool:

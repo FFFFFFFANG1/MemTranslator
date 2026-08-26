@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from memtranslator.hotkey.models import InputSnapshot
+from memtranslator.source_policy import AI_APP_BUNDLES, BROWSER_BUNDLES
 
 
 @dataclass(frozen=True)
@@ -28,13 +29,8 @@ _ELECTRON_BUNDLES = {
     "com.hnc.Discord",
     "notion.id",
     "com.openai.chat",
-}
-_BROWSER_BUNDLES = {
-    "com.google.Chrome",
-    "company.thebrowser.Browser",
-    "com.apple.Safari",
-    "org.mozilla.firefox",
-}
+} | set(AI_APP_BUNDLES)
+_BROWSER_BUNDLES = set(BROWSER_BUNDLES)
 _TERMINAL_BUNDLES = {
     "com.apple.Terminal",
     "com.googlecode.iterm2",

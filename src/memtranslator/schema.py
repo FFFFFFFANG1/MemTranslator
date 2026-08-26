@@ -94,6 +94,10 @@ class Requirement:
     updated_at: float = field(default_factory=_now)
 
     def __post_init__(self) -> None:
+        self.normalize_applicability()
+
+    def normalize_applicability(self) -> None:
+        """Normalise mutable applicability metadata after create or edit."""
         if not isinstance(self.applies_when, str):
             self.applies_when = ""
         else:

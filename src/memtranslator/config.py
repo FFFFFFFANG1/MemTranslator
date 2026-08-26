@@ -1,17 +1,30 @@
 """Single source of truth for models, paths, and budgets."""
 import os
 import re
+import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+PACKAGE_ROOT = Path(__file__).resolve().parent
+SOURCE_ROOT = PACKAGE_ROOT.parents[1]
+
+
+def default_home() -> Path:
+    """Writable product state, independent from the installed wheel."""
+    if sys.platform == "darwin":
+        return Path.home() / "Library" / "Application Support" / "MemTranslator"
+    return Path.home() / ".memtranslator"
+
+
+ROOT = Path(os.environ.get("MT_HOME", default_home())).expanduser()
+ENV_FILE = ROOT / ".env"
 
 
 def _load_project_env(path: Path) -> None:
     """Load simple KEY=VALUE entries without overriding the launch shell.
 
-    The product keeps provider credentials in the gitignored project `.env`.
-    `uvicorn` and the menu-bar process do not source that file themselves, so
-    loading it here keeps every entry point on the same configuration path.
+    Installed builds keep provider credentials in the application home.
+    Process variables always win so deployments and one-off experiments can
+    override the saved configuration without mutating it.
     """
     if not path.exists():
         return
@@ -30,17 +43,25 @@ def _load_project_env(path: Path) -> None:
         os.environ.setdefault(key, value)
 
 
-_load_project_env(ROOT / ".env")
+_load_project_env(ENV_FILE)
+# Development-checkout compatibility: ``memtranslator init`` migrates these
+# values into ENV_FILE, but direct source runs remain usable before migration.
+if not ENV_FILE.exists() and (SOURCE_ROOT / "pyproject.toml").exists():
+    _load_project_env(SOURCE_ROOT / ".env")
 
 DATA = ROOT / "data"
 STORE_FILE = DATA / "store.jsonl"
 EVENTS_FILE = DATA / "events.jsonl"
-VOCAB_FILE = DATA / "vocabulary.jsonl"
-WEB_DIR = ROOT / "web"
+SOURCE_ALLOWLIST_FILE = DATA / "source_allowlist.json"
+_PACKAGED_WEB = PACKAGE_ROOT / "web"
+WEB_DIR = (_PACKAGED_WEB if _PACKAGED_WEB.exists()
+           else SOURCE_ROOT / "web")
+PORT = int(os.environ.get("MT_PORT", "8123"))
+DAEMON_URL = os.environ.get("MT_DAEMON_URL", f"http://127.0.0.1:{PORT}")
 
 
 def project_env(name: str, default: str = "") -> str:
-    """Read one setting from process env, then the repo-root ``.env``.
+    """Read one setting from process env, then the application ``.env``.
 
     Product and bench previously loaded the same endpoint credentials through
     different paths, so activating the project venv still left product calls
@@ -60,11 +81,9 @@ def project_env(name: str, default: str = "") -> str:
                 return value.strip()
     return default
 
-# Candidate retrieval may fuse BM25 with a local multilingual embedding
-# model. The default points at an explicitly provisioned ONNX export and is
-# never downloaded at runtime. ONNX CPU execution is the compatibility floor;
-# alternative local backends may use an integrated GPU, but a discrete GPU or
-# remote embedding API must not be required for memory correctness.
+# Candidate retrieval may fuse BM25 with embedding.py's local or remote
+# service. Local ONNX CPU remains the default and is provisioned by `init`;
+# neither backend is required for memory correctness.
 EMBED_MODEL_DIR = Path(os.environ.get(
     "MT_EMBED_MODEL_DIR", ROOT / "models" / "multilingual-e5-small"))
 EMBED_ONNX_FILE = os.environ.get("MT_EMBED_ONNX_FILE", "onnx/model_O4.onnx")
@@ -74,7 +93,7 @@ MODELS = {
     # deepseek-v4-flash over Ark ("ark:" prefix routes the channel, ":think"
     # suffix enables reasoning — llm.py); the read path never thinks
     # (latency-bound). qwen/ling are auxiliary verification backbones.
-    "translator": "ark:deepseek-v4-flash",
+    "translator": os.environ.get("MT_TRANSLATOR", "ark:deepseek-v4-flash"),
     # write path (extraction/consolidation/kind tagging): may think — it is
     # asynchronous, its latency is free. MT_WRITER env overrides for A/B
     # runs without touching this file (parallel experiments must not race
@@ -104,9 +123,9 @@ SCOPED_ATTRIBUTE_POOL_CAP = int(os.environ.get(
 
 # v1 pipeline knobs (design 2026-07-24 R5 — proposal defaults, single point).
 # The two write channels batch independently: route A waits for enough
-# screened statements to be worth a call, route B fires far sooner because a
-# diff is scarce, already attributed, and stale feedback is worth less — the
-# entry it judges may have moved on.
+# source-allowlisted messages to be worth a call, route B fires far sooner
+# because a diff is scarce, already attributed, and stale feedback is worth
+# less — the entry it judges may have moved on.
 A_BATCH_N = 8             # extraction fires at N queued candidates...
 B_BATCH_N = 3             # ...route B at three attributed diffs
 BATCH_N = A_BATCH_N       # historical name for callers that know only route A

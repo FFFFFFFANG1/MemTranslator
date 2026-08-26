@@ -8,7 +8,7 @@ from memtranslator.hotkey.models import FeedbackEvent, InputSnapshot
 
 
 class EditTracker:
-    def __init__(self, timeout_s: float = 15.0):
+    def __init__(self, timeout_s: float = 5 * 60):
         self.timeout_s = timeout_s
         self._lock = threading.Lock()
         self._state: dict | None = None

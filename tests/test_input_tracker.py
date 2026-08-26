@@ -12,6 +12,10 @@ def _snapshot(text: str, identity: str = "box-1") -> InputSnapshot:
                          role="AXTextArea")
 
 
+def test_default_timeout_is_five_minutes():
+    assert EditTracker().timeout_s == 5 * 60
+
+
 def test_enter_finishes_with_latest_edited_text():
     tracker = EditTracker(timeout_s=15)
     tracker.start(_snapshot("polished"), translate_id="tr-1",
@@ -50,3 +54,10 @@ def test_edit_refreshes_timeout():
     event = tracker.observe(_snapshot("edited"), now=9.1)
     assert event is not None and event.trigger == "timeout"
 
+
+def test_pointer_recheck_inside_same_input_keeps_tracking():
+    tracker = EditTracker(timeout_s=15)
+    tracker.start(_snapshot("polished"), translate_id="tr-1",
+                  original="raw", polished="polished", now=0)
+    assert tracker.observe(_snapshot("polished"), now=1) is None
+    assert tracker.active is True

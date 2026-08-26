@@ -40,12 +40,20 @@ def test_no_flush_below_batch(monkeypatch, tmp_path):
     assert calls == []
 
 
+def test_plain_task_is_queued_without_lexical_screen(tmp_path):
+    p = _pipe(tmp_path)
+
+    assert p.add_natural(
+        ["帮我给房东写封邮件催修暖气"], now=1000.0) == 1
+    assert p._a == ["帮我给房东写封邮件催修暖气"]
+
+
 def test_flush_at_batch_n(monkeypatch, tmp_path):
     calls = []
     _fake_ops(monkeypatch, calls)
     p = _pipe(tmp_path)
     for i in range(BATCH_N):
-        p.add_natural([f"以后规则{i}"], now=1000.0 + i)
+        p.add_natural([f"以后第{i}类邮件都保持简短"], now=1000.0 + i)
     out = p.maybe_flush(now=1000.0 + BATCH_N)
     # candidate extraction + consolidation; kinds arrive with the candidate
     assert out is not None and len(calls) == 2
@@ -122,7 +130,7 @@ def test_route_a_queue_does_not_trip_the_route_b_threshold(monkeypatch,
     _fake_ops(monkeypatch, calls)
     p = _pipe(tmp_path)
     for i in range(B_BATCH_N):
-        p.add_natural([f"以后规则{i}"], now=1000.0 + i)
+        p.add_natural([f"以后第{i}类邮件都保持简短"], now=1000.0 + i)
     assert p.maybe_flush(now=1000.0 + B_BATCH_N) is None
     assert calls == []
 

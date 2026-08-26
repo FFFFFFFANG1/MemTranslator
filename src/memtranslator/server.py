@@ -7,6 +7,7 @@ from in v1).
 """
 import json
 import hashlib
+import re
 import time
 from pathlib import Path
 
@@ -16,22 +17,27 @@ from pydantic import BaseModel
 
 from memtranslator import config, llm
 from memtranslator.pipeline import Pipeline
-from memtranslator.signals import attribute_diff, classify_submit, patch_diff
+from memtranslator.runtime_settings import RuntimeSettings
+from memtranslator.scopes import normalize_kind
+from memtranslator.signals import attribute_diff, classify_feedback, patch_diff
+from memtranslator.source_policy import SourceAllowlist, route_a_source_allowed
 from memtranslator.store import EventLog, Store
 from memtranslator.translate import translate
-from memtranslator.vocabulary import (VocabularyStore, apply_vocabulary,
-                                      vocabulary_replacements)
 
 DOWNSTREAM_SYSTEM = "You are a helpful assistant."
 
 
 class RequirementIn(BaseModel):
     text: str
+    work_kind: str | list[str] | None = None
+    scope_text: str | None = None
 
 
 class RequirementPatch(BaseModel):
     text: str | None = None
     status: str | None = None
+    work_kind: str | list[str] | None = None
+    scope_text: str | None = None
 
 
 class TranslateIn(BaseModel):
@@ -44,13 +50,6 @@ class ChatIn(BaseModel):
     translate_id: str | None = None
 
 
-class SubmitIn(BaseModel):
-    text: str
-    source: str
-    session_id: str | None = None
-    cwd: str | None = None
-
-
 class DesktopFeedbackIn(BaseModel):
     translate_id: str
     final_text: str
@@ -59,92 +58,152 @@ class DesktopFeedbackIn(BaseModel):
     input_context: dict | None = None
 
 
-class VocabularyIn(BaseModel):
-    term: str
-    alias: str = ""
+class SourceAllowlistIn(BaseModel):
+    label: str
+    kind: str
+    patterns: str | list[str]
 
 
-class VocabularyPatch(BaseModel):
-    term: str | None = None
-    status: str | None = None
+class SourceAllowlistPatch(BaseModel):
+    label: str | None = None
+    kind: str | None = None
+    patterns: str | list[str] | None = None
+
+
+class LLMSettingsIn(BaseModel):
+    api_format: str
+    model: str
+    base_url: str = ""
+    api_key: str | None = None
+
+
+class EmbeddingSettingsIn(BaseModel):
+    model: str
+    base_url: str = ""
+    api_key: str = ""
 
 
 def create_app(store_path: Path | None = None,
                events_path: Path | None = None,
-               vocab_path: Path | None = None) -> FastAPI:
+               allowlist_path: Path | None = None,
+               settings_path: Path | None = None) -> FastAPI:
     resolved_store_path = store_path or config.STORE_FILE
     resolved_events_path = events_path or config.EVENTS_FILE
-    resolved_vocab_path = vocab_path or (
-        resolved_store_path.parent / "vocabulary.jsonl"
-        if store_path is not None else config.VOCAB_FILE)
+    resolved_allowlist_path = (allowlist_path
+                               or resolved_store_path.parent
+                               / config.SOURCE_ALLOWLIST_FILE.name)
+    resolved_settings_path = (settings_path
+                              or (resolved_store_path.parent / ".env"
+                                  if store_path is not None
+                                  else config.ENV_FILE))
     store = Store(resolved_store_path)
     events = EventLog(resolved_events_path)
-    vocabulary = VocabularyStore(resolved_vocab_path)
+    source_allowlist = SourceAllowlist(resolved_allowlist_path)
+    runtime_settings = RuntimeSettings(resolved_settings_path)
     pipeline = Pipeline(store)
     app = FastAPI(title="MemTranslator")
     app.state.store = store
     app.state.events = events
     app.state.pipeline = pipeline
-    app.state.vocabulary = vocabulary
+    app.state.source_allowlist = source_allowlist
+    app.state.runtime_settings = runtime_settings
     translate_counter = {"n": 0}
 
-    def _learn_from_submit(text: str, verdict: dict, now: float) -> bool:
+    def _work_kinds(value: str | list[str] | None) -> list[str]:
+        if value is None:
+            return []
+        raw = re.split(r"[,，]", value) if isinstance(value, str) else value
+        kinds = [str(item).strip() for item in raw if str(item).strip()]
+        return list(dict.fromkeys(kinds))
+
+    def _scope_fields(value: str) -> tuple[dict, str, str]:
+        text = " ".join(value.split())
+        if text.lower() in {"global", "all", "any", "全局"}:
+            return {}, "", "global"
+        if text.startswith("{"):
+            try:
+                parsed = json.loads(text)
+            except json.JSONDecodeError as exc:
+                raise ValueError("scope JSON is invalid") from exc
+            if not isinstance(parsed, dict) or not parsed:
+                raise ValueError("scope JSON must be a non-empty object")
+            return parsed, "", "scoped"
+        parts = [part.strip() for part in re.split(r"[,，]", text)
+                 if part.strip()]
+        filters: dict[str, str] = {}
+        if parts and all("=" in part or ":" in part for part in parts):
+            for part in parts:
+                key, separator, item = part.partition("=")
+                if not separator:
+                    key, separator, item = part.partition(":")
+                if not key.strip() or not item.strip():
+                    raise ValueError("scope filters must use key=value")
+                filters[key.strip()] = item.strip()
+            return filters, "", "scoped"
+        return {}, text, "scoped"
+
+    def _source_patterns(value: str | list[str]) -> list[str]:
+        raw = re.split(r"[,，\n]", value) if isinstance(value, str) else value
+        return [str(item).strip() for item in raw if str(item).strip()]
+
+    def _source_event(entry: dict) -> dict:
+        return {
+            "entry_id": entry["id"],
+            "label": entry["label"],
+            "source_kind": entry["kind"],
+            "patterns": entry["patterns"],
+            "is_default": entry["is_default"],
+        }
+
+    def _learn_from_feedback(text: str, verdict: dict, now: float) -> bool:
         """The v1 learning loop (design §4/§5): classify → mechanical
         strength → queue → lazy flush. Learning must never break the API —
         an unreachable LLM leaves candidates queued for the next flush."""
         cls = verdict["classification"]
         matched_id = verdict.get("matched_translate_id")
-        if matched_id:
-            digest = hashlib.sha256(" ".join(text.split()).encode()).hexdigest()
-            duplicate = any(
-                event.get("kind") == "learning_feedback"
-                and event.get("translate_id") == matched_id
-                and event.get("text_hash") == digest
-                for event in events.read_all())
-            if duplicate:
-                return False
-            events.append("learning_feedback", {
-                "translate_id": matched_id,
-                "text_hash": digest,
-                "classification": cls,
-            })
-        if cls == "natural":
-            # Extractor-A owns semantic admission.  Every natural message
-            # reaches it unchanged; the only input reduction happens later
-            # at the model token boundary in build_candidate_user_prompt().
-            pipeline.add_natural([text], now)
-        else:
-            tr = next((e for e in reversed(events.read_all())
-                       if e.get("translate_id") == verdict["matched_translate_id"]
-                       and e["kind"] == "translate"), None)
-            if tr:
-                # Route A learns only text authored by the user.  A matched
-                # submit may contain Translator-generated wording, so recover
-                # the original composer input from the translate event rather
-                # than feeding either polished or final text back into A.
-                original = tr.get("original")
-                if isinstance(original, str) and original.strip():
-                    pipeline.add_natural([original], now)
-                applied = tr.get("applied_ids", [])
-                # Vocabulary normalization happens before the requirement
-                # compiler.  Attribute only the compiler's own patch here;
-                # otherwise an alias replacement can look like a requirement
-                # insertion and distort strength/Route-B feedback.
-                compiler_input = tr.get("compiler_input", tr["original"])
-                attr = attribute_diff(compiler_input, tr["polished"], text)
-                if attr["strength_delta"]:
-                    store.bump_strength(applied, attr["strength_delta"])
-                if cls in ("reverted", "edited_after_polish"):
-                    # Route B judges the entries this patch used, so it gets
-                    # their snapshots as recorded at translate time. Events
-                    # written before snapshots were added fall back to the
-                    # current Store during the short join window.
-                    entries = tr.get("applied_entries")
-                    if not isinstance(entries, list):
-                        entries = [store.get(i).to_dict() for i in applied
-                                   if i in store._items]
-                    pipeline.add_feedback(
-                        entries, patch_diff(tr["polished"], text), now)
+        if not matched_id:
+            return False
+        digest = hashlib.sha256(" ".join(text.split()).encode()).hexdigest()
+        duplicate = any(
+            event.get("kind") == "learning_feedback"
+            and event.get("translate_id") == matched_id
+            and event.get("text_hash") == digest
+            for event in events.read_all())
+        if duplicate:
+            return False
+        events.append("learning_feedback", {
+            "translate_id": matched_id,
+            "text_hash": digest,
+            "classification": cls,
+        })
+        tr = next((e for e in reversed(events.read_all())
+                   if e.get("translate_id") == matched_id
+                   and e["kind"] == "translate"), None)
+        if tr is None:
+            return False
+
+        # Route A learns only the raw text authored before translation. The
+        # full polished/final text and polished→final fragments are never A
+        # evidence. Human changes remain Route-B feedback for now.
+        original = tr.get("original")
+        if (isinstance(original, str) and original.strip()
+                and route_a_source_allowed(
+                    tr.get("context"), source_allowlist.list())):
+            pipeline.add_natural([original], now)
+        applied = tr.get("applied_ids", [])
+        attr = attribute_diff(tr["original"], tr["polished"], text)
+        if attr["strength_delta"]:
+            store.bump_strength(applied, attr["strength_delta"])
+        if cls in ("reverted", "edited_after_polish"):
+            # Route B judges the entries this patch used, so it gets their
+            # snapshots as recorded at translate time. Older events fall back
+            # to the current Store.
+            entries = tr.get("applied_entries")
+            if not isinstance(entries, list):
+                entries = [store.get(i).to_dict() for i in applied
+                           if i in store._items]
+            pipeline.add_feedback(
+                entries, patch_diff(tr["polished"], text), now)
         try:
             pipeline.maybe_flush(now)
         except llm.LLMUnavailable:
@@ -156,11 +215,6 @@ def create_app(store_path: Path | None = None,
         return FileResponse(config.WEB_DIR / "index.html",
                             headers={"Cache-Control": "no-cache"})
 
-    @app.get("/demo")
-    def demo():
-        return FileResponse(config.WEB_DIR / "demo.html",
-                            headers={"Cache-Control": "no-cache"})
-
     @app.get("/api/health")
     def health():
         return {"ok": True, "models": config.MODELS}
@@ -169,61 +223,200 @@ def create_app(store_path: Path | None = None,
     def pipeline_state():
         return {"pending": pipeline.pending_count(),
                 "adds_since_consolidate": pipeline.adds_since_consolidate,
-                "active_requirements": len(store.active()),
-                "active_vocabulary": len(vocabulary.list(
-                    include_retired=False))}
+                "active_requirements": len(store.active())}
 
-    @app.get("/api/vocabulary")
-    def list_vocabulary():
-        return {"vocabulary": [entry.to_dict()
-                               for entry in vocabulary.list()]}
+    @app.get("/api/settings")
+    def get_settings():
+        return runtime_settings.snapshot()
 
-    @app.post("/api/vocabulary")
-    def add_vocabulary(body: VocabularyIn):
+    @app.put("/api/settings/llm")
+    def update_llm_settings(body: LLMSettingsIn):
         try:
-            entry, created = vocabulary.upsert(
-                body.term, alias=body.alias, source="manual")
+            result = runtime_settings.update_llm(
+                api_format=body.api_format, model=body.model,
+                base_url=body.base_url, api_key=body.api_key)
         except ValueError as exc:
             raise HTTPException(400, str(exc))
-        events.append("vocabulary_added", {
-            "id": entry.id, "term": entry.term, "alias": entry.alias,
-            "created": created, "source": "manual",
+        events.append("llm_settings_updated", {
+            "api_format": result["llm"]["api_format"],
+            "model": result["llm"]["model"],
+            "base_url": result["llm"]["base_url"],
+            "has_api_key": result["llm"]["has_api_key"],
         })
-        return {**entry.to_dict(), "created": created}
+        return result
 
-    @app.patch("/api/vocabulary/{entry_id}")
-    def patch_vocabulary(entry_id: str, body: VocabularyPatch):
+    @app.put("/api/settings/embedding")
+    def update_embedding_settings(body: EmbeddingSettingsIn):
         try:
-            return vocabulary.update(entry_id, term=body.term,
-                                     status=body.status).to_dict()
-        except KeyError:
-            raise HTTPException(404, "unknown vocabulary entry")
+            result = runtime_settings.update_remote_embedding(
+                model=body.model, base_url=body.base_url,
+                api_key=body.api_key)
         except ValueError as exc:
             raise HTTPException(400, str(exc))
+        events.append("embedding_settings_updated", {
+            "mode": "remote", "model": result["embedding"]["model"],
+            "uses_llm_api_key": result["embedding"]["uses_llm_api_key"],
+            "uses_llm_base_url": result["embedding"]["uses_llm_base_url"],
+        })
+        return result
+
+    @app.post("/api/settings/embedding/default")
+    def use_default_embedding():
+        from memtranslator.embedding import EmbeddingUnavailable
+        try:
+            result, downloaded = runtime_settings.use_default_embedding()
+        except EmbeddingUnavailable as exc:
+            raise HTTPException(502, str(exc))
+        events.append("embedding_settings_updated", {
+            "mode": "local", "model": result["embedding"]["model"],
+            "downloaded": downloaded,
+        })
+        return {**result, "downloaded": downloaded}
+
+    @app.post("/api/demo/seed")
+    def seed_demo():
+        from memtranslator.demo import seed_demo_requirements
+        result = seed_demo_requirements(store)
+        events.append("demo_seeded", result)
+        return result
 
     @app.get("/api/requirements")
     def list_requirements():
         return {"requirements": [r.to_dict() for r in store.list()]}
 
+    @app.get("/api/source-allowlist")
+    def list_source_allowlist():
+        return {"entries": source_allowlist.list()}
+
+    @app.post("/api/source-allowlist")
+    def add_source_allowlist(body: SourceAllowlistIn):
+        try:
+            entry = source_allowlist.add(
+                label=body.label, kind=body.kind,
+                patterns=_source_patterns(body.patterns))
+        except ValueError as exc:
+            raise HTTPException(400, str(exc))
+        events.append("source_allowlist_added", _source_event(entry))
+        return entry
+
+    @app.patch("/api/source-allowlist/{entry_id}")
+    def patch_source_allowlist(entry_id: str, body: SourceAllowlistPatch):
+        try:
+            entry = source_allowlist.update(
+                entry_id, label=body.label, kind=body.kind,
+                patterns=(_source_patterns(body.patterns)
+                          if body.patterns is not None else None))
+        except KeyError:
+            raise HTTPException(404, "unknown source allowlist entry")
+        except ValueError as exc:
+            raise HTTPException(400, str(exc))
+        events.append("source_allowlist_updated", _source_event(entry))
+        return entry
+
+    @app.delete("/api/source-allowlist/{entry_id}")
+    def delete_source_allowlist(entry_id: str):
+        try:
+            entry = source_allowlist.delete(entry_id)
+        except KeyError:
+            raise HTTPException(404, "unknown source allowlist entry")
+        events.append("source_allowlist_deleted", _source_event(entry))
+        return entry
+
     @app.post("/api/requirements")
     def add_requirement(body: RequirementIn):
+        text = body.text.strip()
+        if not text:
+            raise HTTPException(400, "requirement text is empty")
+        kinds = _work_kinds(body.work_kind)
+        scope_text = (body.scope_text or "").strip()
+        if not kinds or not scope_text:
+            now = time.time()
+            pipeline.add_natural([text], now)
+            events.append("manual_message_queued", {
+                "text": text,
+                "provided_work_kind": kinds,
+                "provided_scope": scope_text,
+                "route": "extractor_a",
+            })
+            try:
+                flushed = pipeline.maybe_flush(now)
+            except llm.LLMUnavailable:
+                flushed = None
+            return {
+                "queued": True,
+                "route": "extractor_a",
+                "pending": pipeline.pending_count("a"),
+                "processed": flushed is not None,
+            }
         try:
-            req = store.add(body.text)
+            scope, applies_when, scope_mode = _scope_fields(scope_text)
+            if (scope_mode == "global"
+                    and "any" not in {normalize_kind(kind) for kind in kinds}):
+                raise ValueError("global scope requires work kind any")
+            req = store.add(text, kinds=kinds, scope=scope,
+                            applies_when=applies_when,
+                            scope_mode=scope_mode)
         except ValueError as e:
             raise HTTPException(400, str(e))
-        events.append("requirement_added", {"id": req.id, "text": req.text})
+        events.append("requirement_added", {
+            "id": req.id, "text": req.text, "kinds": req.kinds,
+            "scope": req.scope, "applies_when": req.applies_when,
+            "scope_mode": req.scope_mode,
+        })
         return req.to_dict()
 
     @app.patch("/api/requirements/{req_id}")
     def patch_requirement(req_id: str, body: RequirementPatch):
         try:
-            req = store.update(req_id, text=body.text, status=body.status)
+            current = store.get(req_id)
+            updates = {"text": body.text, "status": body.status}
+            if body.work_kind is not None:
+                kinds = _work_kinds(body.work_kind)
+                if not kinds:
+                    raise ValueError("work kind is empty")
+                updates["kinds"] = kinds
+            if body.scope_text is not None:
+                scope_text = body.scope_text.strip()
+                if not scope_text:
+                    raise ValueError("scope is empty")
+                scope, applies_when, scope_mode = _scope_fields(scope_text)
+                updates.update({
+                    "scope": scope,
+                    "applies_when": applies_when,
+                    "scope_mode": scope_mode,
+                })
+            pending_kinds = updates.get("kinds", current.kinds)
+            pending_scope_mode = updates.get("scope_mode", current.scope_mode)
+            if (pending_scope_mode == "global"
+                    and "any" not in {
+                        normalize_kind(kind) for kind in pending_kinds}):
+                raise ValueError("global scope requires work kind any")
+            req = store.update(req_id, **updates)
         except KeyError:
             raise HTTPException(404, "unknown requirement")
         except ValueError as e:
             raise HTTPException(400, str(e))
         events.append("requirement_updated",
-                      {"id": req.id, "text": req.text, "status": req.status})
+                      {"id": req.id, "text": req.text, "status": req.status,
+                       "kinds": req.kinds, "scope": req.scope,
+                       "applies_when": req.applies_when,
+                       "scope_mode": req.scope_mode})
+        return req.to_dict()
+
+    @app.delete("/api/requirements/{req_id}")
+    def delete_requirement(req_id: str):
+        try:
+            req = store.get(req_id)
+        except KeyError:
+            raise HTTPException(404, "unknown requirement")
+        # The store is intentionally append-only. A user deletion therefore
+        # persists a retired version: it disappears from active memory
+        # immediately while remaining recoverable from the control center.
+        if req.status != "retired":
+            req = store.update(req_id, status="retired")
+            events.append("requirement_deleted", {
+                "id": req.id, "text": req.text, "status": req.status,
+            })
         return req.to_dict()
 
     @app.post("/api/translate")
@@ -231,64 +424,33 @@ def create_app(store_path: Path | None = None,
         text = body.text.strip()
         if not text:
             raise HTTPException(400, "empty request")
-        normalized, vocabulary_ids = apply_vocabulary(
-            text, vocabulary.list(include_retired=False))
         try:
-            result = translate(normalized, store.list(), context=body.context)
+            result = translate(text, store.list(), context=body.context)
         except llm.LLMUnavailable:
-            if not vocabulary_ids:
-                raise HTTPException(502, "llm_unreachable")
-            result = {"decision": "noop", "polished": None,
-                      "applied_ids": [], "parse_error": False,
-                      "latency_ms": 0, "reason": "vocabulary_only"}
-        if vocabulary_ids and result["decision"] == "noop":
-            result = {**result, "decision": "apply", "polished": normalized,
-                      "reason": "vocabulary_only"}
+            raise HTTPException(502, "llm_unreachable")
         applied = result.get("applied_entries")
         if not isinstance(applied, list):
             # Compatibility for tests/adapters that still return only ids.
             applied = [store.get(i).to_dict() for i in result["applied_ids"]
                        if i in store._items]
-        vocabulary_applied = [vocabulary.get(entry_id).to_dict()
-                              for entry_id in vocabulary_ids]
+        polished = result.get("polished") or text
         translate_counter["n"] += 1
         translate_id = f"tr-{translate_counter['n']}-{int(len(text))}"
         events.append("translate", {
             "translate_id": translate_id,
             "original": text,
-            "compiler_input": normalized,
             "decision": result["decision"],
-            "polished": result["polished"],
+            "polished": polished,
             "applied_ids": result["applied_ids"],
             "applied_entries": applied,
             "parse_error": result["parse_error"],
             "latency_ms": result["latency_ms"],
             "context": body.context or {},
-            "vocabulary_applied": vocabulary_ids,
         })
         return {"translate_id": translate_id, "decision": result["decision"],
-                "polished": result["polished"], "applied": applied,
-                "vocabulary_applied": vocabulary_applied,
+                "polished": polished, "applied": applied,
                 "parse_error": result["parse_error"],
                 "latency_ms": result["latency_ms"]}
-
-    @app.post("/api/events/submit")
-    def submit_event(body: SubmitIn):
-        text = body.text.strip()
-        if not text:
-            raise HTTPException(400, "empty text")
-        now = time.time()
-        translates = [e for e in events.read_all() if e["kind"] == "translate"]
-        verdict = classify_submit(text, now, translates)
-        events.append("submit", {
-            "text": text, "source": body.source,
-            "session_id": body.session_id, "cwd": body.cwd,
-            "classification": verdict["classification"],
-            "matched_translate_id": verdict["matched_translate_id"],
-            "similarity": verdict["similarity"],
-        })
-        _learn_from_submit(text, verdict, now)
-        return verdict
 
     @app.post("/api/desktop/feedback")
     def desktop_feedback(body: DesktopFeedbackIn):
@@ -302,24 +464,8 @@ def create_app(store_path: Path | None = None,
         if translated is None:
             raise HTTPException(404, "unknown translate_id")
         now = time.time()
-        verdict = classify_submit(text, now, [translated])
+        verdict = classify_feedback(text, translated)
         diffs = patch_diff(translated.get("polished") or "", text)
-        added = []
-        if verdict["classification"] == "edited_after_polish":
-            bundle_id = (body.input_context or {}).get("app_bundle_id", "")
-            for candidate in vocabulary_replacements(
-                    translated.get("polished") or "", text):
-                entry, created = vocabulary.upsert(
-                    candidate["term"], alias=candidate["alias"],
-                    source="desktop-edit", app_bundle_id=bundle_id)
-                if created:
-                    added.append(entry.to_dict())
-                    events.append("vocabulary_added", {
-                        "id": entry.id, "term": entry.term,
-                        "alias": entry.alias, "created": True,
-                        "source": "desktop-edit",
-                        "translate_id": body.translate_id,
-                    })
         events.append("desktop_feedback", {
             "text": text,
             "source": body.source,
@@ -329,11 +475,9 @@ def create_app(store_path: Path | None = None,
             "matched_translate_id": verdict["matched_translate_id"],
             "similarity": verdict["similarity"],
             "diff": diffs,
-            "vocabulary_added": [entry["id"] for entry in added],
         })
-        learned = _learn_from_submit(text, verdict, now)
-        return {**verdict, "diff": diffs, "vocabulary_added": added,
-                "learning_applied": learned}
+        learned = _learn_from_feedback(text, verdict, now)
+        return {**verdict, "diff": diffs, "learning_applied": learned}
 
     @app.get("/api/events")
     def list_events(limit: int = 50):
@@ -360,27 +504,14 @@ def create_app(store_path: Path | None = None,
         events.append("send", send_event)
         if body.translate_id and translated is not None:
             now = time.time()
-            verdict = classify_submit(sent_text, now, [translated])
+            verdict = classify_feedback(sent_text, translated)
             events.append("web_feedback", {
                 "text": sent_text,
                 "classification": verdict["classification"],
                 "matched_translate_id": verdict["matched_translate_id"],
                 "similarity": verdict["similarity"],
             })
-            if verdict["classification"] == "edited_after_polish":
-                for candidate in vocabulary_replacements(
-                        translated.get("polished") or "", sent_text):
-                    entry, created = vocabulary.upsert(
-                        candidate["term"], alias=candidate["alias"],
-                        source="web-edit")
-                    if created:
-                        events.append("vocabulary_added", {
-                            "id": entry.id, "term": entry.term,
-                            "alias": entry.alias, "created": True,
-                            "source": "web-edit",
-                            "translate_id": body.translate_id,
-                        })
-            _learn_from_submit(sent_text, verdict, now)
+            _learn_from_feedback(sent_text, verdict, now)
 
         def sse():
             try:

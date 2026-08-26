@@ -1,47 +1,141 @@
-"""M6: the learning loop wired into the server — submits feed the pipeline,
-strength rules fire, batch flush lands ops, outages never break the API."""
+"""The desktop feedback loop feeds both memory-write channels safely."""
 import json
 
 from fastapi.testclient import TestClient
 
 import memtranslator.llm as llm
-import memtranslator.server as server
 from memtranslator.config import BATCH_N
 from memtranslator.llm import LLMUnavailable
 from memtranslator.server import create_app
 
 
-def _client(tmp_path, monkeypatch=None):
+def _client(tmp_path):
     app = create_app(store_path=tmp_path / "store.jsonl",
                      events_path=tmp_path / "events.jsonl")
     return TestClient(app), app
 
 
 def _seed_translate(app, original, polished, applied_ids,
-                    applied_entries=None):
+                    applied_entries=None, *, translate_id="tr-t1",
+                    context=None):
     payload = {
-        "translate_id": "tr-t1", "original": original, "decision": "apply",
-        "polished": polished, "applied_ids": applied_ids,
-        "parse_error": False, "latency_ms": 5}
+        "translate_id": translate_id, "original": original,
+        "decision": "apply", "polished": polished,
+        "applied_ids": applied_ids, "parse_error": False, "latency_ms": 5,
+    }
     if applied_entries is not None:
         payload["applied_entries"] = applied_entries
+    if context is not None:
+        payload["context"] = context
     app.state.events.append("translate", payload)
 
 
-def test_natural_rule_setting_queues_candidate(tmp_path):
+def _feedback(client, translate_id, final_text):
+    return client.post("/api/desktop/feedback", json={
+        "translate_id": translate_id,
+        "final_text": final_text,
+        "trigger": "enter",
+    })
+
+
+def _accepted_feedback(client, app, text, ordinal=1):
+    translate_id = f"tr-accepted-{ordinal}"
+    polished = f"{text} [polished]"
+    _seed_translate(
+        app, text, polished, [], translate_id=translate_id,
+        context={"app_bundle_id": "com.openai.codex"})
+    return _feedback(client, translate_id, polished)
+
+
+def test_raw_rule_setting_queues_candidate_after_feedback(tmp_path):
     client, app = _client(tmp_path)
-    r = client.post("/api/events/submit",
-                    json={"text": "以后我让你写周报，一律用 bullet points",
-                          "source": "hook"})
-    assert r.status_code == 200
+    response = _accepted_feedback(
+        client, app, "以后我让你写周报，一律用 bullet points")
+    assert response.status_code == 200
+    assert response.json()["classification"] == "accepted_verbatim"
     assert app.state.pipeline.pending_count() == 1
 
 
-def test_plain_task_submit_queues_for_extractor_admission(tmp_path):
+def test_plain_task_from_allowed_app_enters_extractor_a(tmp_path):
     client, app = _client(tmp_path)
-    client.post("/api/events/submit",
-                json={"text": "帮我给房东写封邮件催修暖气", "source": "hook"})
-    assert app.state.pipeline.pending_count() == 1
+    _accepted_feedback(client, app, "帮我给房东写封邮件催修暖气")
+    assert app.state.pipeline._a == ["帮我给房东写封邮件催修暖气"]
+
+
+def test_input_from_unlisted_app_does_not_enter_extractor_a(tmp_path):
+    client, app = _client(tmp_path)
+    _seed_translate(
+        app, "ordinary task", "ordinary task [polished]", [],
+        context={"app_bundle_id": "com.apple.TextEdit"})
+    _feedback(client, "tr-t1", "ordinary task [polished]")
+    assert app.state.pipeline.pending_count("a") == 0
+
+
+def test_allowed_ai_webpage_enters_extractor_a(tmp_path):
+    client, app = _client(tmp_path)
+    _seed_translate(
+        app, "ordinary web task", "ordinary web task [polished]", [],
+        context={"app_bundle_id": "com.google.Chrome",
+                 "web_domain": "gemini.google.com"})
+    _feedback(client, "tr-t1", "ordinary web task [polished]")
+    assert app.state.pipeline._a == ["ordinary web task"]
+
+
+def test_browser_without_allowed_domain_does_not_enter_a(tmp_path):
+    client, app = _client(tmp_path)
+    _seed_translate(
+        app, "mail task", "mail task [polished]", [],
+        context={"app_bundle_id": "com.google.Chrome",
+                 "web_domain": "mail.google.com"})
+    _feedback(client, "tr-t1", "mail task [polished]")
+    assert app.state.pipeline.pending_count("a") == 0
+
+
+def test_allowlist_crud_changes_route_a_without_restart(tmp_path):
+    client, app = _client(tmp_path)
+
+    removed = client.delete("/api/source-allowlist/source-app-codex")
+    assert removed.status_code == 200
+    _seed_translate(
+        app, "codex task", "codex task [polished]", [],
+        translate_id="tr-removed-codex",
+        context={"app_bundle_id": "com.openai.codex"})
+    _feedback(client, "tr-removed-codex", "codex task [polished]")
+    assert app.state.pipeline.pending_count("a") == 0
+
+    created = client.post("/api/source-allowlist", json={
+        "label": "My Agent",
+        "kind": "app",
+        "patterns": ["com.example.my-agent", "My Agent"],
+    })
+    assert created.status_code == 200
+    _seed_translate(
+        app, "custom task", "custom task [polished]", [],
+        translate_id="tr-custom-agent",
+        context={"app_bundle_id": "com.example.my-agent"})
+    _feedback(client, "tr-custom-agent", "custom task [polished]")
+    assert app.state.pipeline._a == ["custom task"]
+
+
+def test_noop_transaction_still_sends_only_raw_to_extractor_a(
+        tmp_path, monkeypatch):
+    monkeypatch.setattr(
+        llm, "complete", lambda *_args, **_kwargs: json.dumps({
+            "decision": "noop",
+        }))
+    client, app = _client(tmp_path)
+    raw = "以后周报都用 bullet points"
+
+    translated = client.post("/api/translate", json={
+        "text": raw,
+        "context": {"app_bundle_id": "com.openai.codex"},
+    }).json()
+    response = _feedback(client, translated["translate_id"], raw)
+
+    assert response.status_code == 200
+    assert response.json()["classification"] == "accepted_verbatim"
+    assert app.state.pipeline._a == [raw]
+    assert app.state.pipeline._b == []
 
 
 def test_translate_does_not_receive_unflushed_natural_messages(
@@ -53,9 +147,9 @@ def test_translate_does_not_receive_unflushed_natural_messages(
         return json.dumps({"decision": "noop"})
 
     monkeypatch.setattr(llm, "complete", fake)
-    client, _app = _client(tmp_path)
-    client.post("/api/events/submit", json={
-        "text": "以后我让你写邮件，一律保持专业语气", "source": "hook"})
+    client, app = _client(tmp_path)
+    _accepted_feedback(
+        client, app, "以后我让你写邮件，一律保持专业语气")
 
     response = client.post("/api/translate", json={"text": "写封邮件催进度"})
 
@@ -70,45 +164,43 @@ def test_accepted_verbatim_bumps_strength(tmp_path):
     original = "给房东写邮件催修暖气"
     polished = "给房东写封不超过120词的邮件，催他尽快修暖气"
     _seed_translate(app, original, polished, [req.id])
-    client.post("/api/events/submit", json={"text": polished, "source": "hook"})
+    _feedback(client, "tr-t1", polished)
     assert app.state.store.get(req.id).strength == 2
-    assert app.state.pipeline._a == [original]
+    assert app.state.pipeline._a == []
     assert polished not in app.state.pipeline._a
     assert app.state.pipeline._b == []
 
 
-def test_edited_submit_feeds_diff_batch(tmp_path):
+def test_edited_feedback_feeds_diff_batch(tmp_path):
     client, app = _client(tmp_path)
     req = app.state.store.add("邮件不超过120词")
     original = "给房东写邮件催修暖气"
     polished = "给房东写封不超过120词的邮件，催他尽快修暖气"
     _seed_translate(app, original, polished, [req.id])
-    client.post("/api/events/submit",
-                json={"text": polished + "，用英文写", "source": "hook"})
-    assert app.state.pipeline.pending_count("a") == 1
+    _feedback(client, "tr-t1", polished + "，用英文写")
+    assert app.state.pipeline.pending_count("a") == 0
     assert app.state.pipeline.pending_count("b") == 1
-    assert app.state.pipeline._a == [original]
+    assert app.state.pipeline._a == []
     assert polished not in app.state.pipeline._a
-    assert app.state.store.get(req.id).strength == 2   # injections kept → +1
+    assert app.state.store.get(req.id).strength == 2
 
 
-def test_reverted_submit_sends_original_to_a_and_feedback_to_b(tmp_path):
+def test_reverted_feedback_sends_original_to_a_and_diff_to_b(tmp_path):
     client, app = _client(tmp_path)
     req = app.state.store.add("邮件不超过120词")
     original = "给房东写邮件催修暖气"
     polished = "给房东写封不超过120词的邮件，催他尽快修暖气"
     _seed_translate(app, original, polished, [req.id])
 
-    client.post("/api/events/submit",
-                json={"text": original, "source": "hook"})
+    _feedback(client, "tr-t1", original)
 
-    assert app.state.pipeline._a == [original]
+    assert app.state.pipeline._a == []
     assert polished not in app.state.pipeline._a
     assert app.state.pipeline.pending_count("b") == 1
     assert app.state.store.get(req.id).strength == 0
 
 
-def test_edited_submit_uses_entry_snapshot_from_translate_time(tmp_path):
+def test_edited_feedback_uses_entry_snapshot_from_translate_time(tmp_path):
     client, app = _client(tmp_path)
     req = app.state.store.add("邮件不超过120词")
     snapshot = req.to_dict()
@@ -117,41 +209,10 @@ def test_edited_submit_uses_entry_snapshot_from_translate_time(tmp_path):
                     applied_entries=[snapshot])
 
     app.state.store.update(req.id, text="邮件不超过80词")
-    client.post("/api/events/submit",
-                json={"text": polished + "，用英文写", "source": "hook"})
+    _feedback(client, "tr-t1", polished + "，用英文写")
 
     queued = app.state.pipeline._b[0]["entries"]
     assert queued[0]["text"] == "邮件不超过120词"
-
-
-def test_feedback_attributes_from_vocabulary_normalized_compiler_input(
-        tmp_path, monkeypatch):
-    client, app = _client(tmp_path)
-    req = app.state.store.add("Messages should be polite.")
-    app.state.events.append("translate", {
-        "translate_id": "tr-vocab",
-        "original": "Ask Sirius for the result",
-        "compiler_input": "Ask siriux for the result",
-        "decision": "apply",
-        "polished": "Please ask siriux for the result",
-        "applied_ids": [req.id],
-        "applied_entries": [req.to_dict()],
-        "parse_error": False,
-        "latency_ms": 5,
-    })
-    attributed = []
-
-    def fake_attribute(raw, polished, final):
-        attributed.append((raw, polished, final))
-        return {"strength_delta": 0}
-
-    monkeypatch.setattr(server, "attribute_diff", fake_attribute)
-    client.post("/api/events/submit", json={
-        "text": "Please ask siriux for the result today",
-        "source": "hook",
-    })
-
-    assert attributed[0][0] == "Ask siriux for the result"
 
 
 def test_batch_full_flush_lands_learned_requirement(tmp_path, monkeypatch):
@@ -160,17 +221,19 @@ def test_batch_full_flush_lands_learned_requirement(tmp_path, monkeypatch):
             return json.dumps([{"decision": "candidate",
                                 "kind": "potential_new", "item": {
                 "text": "Format recurring documents as Markdown.",
-                    "bucket": "output_contract", "scope_mode": "scoped",
-                    "applies_when": None,
-                "work_kinds": ["report"], "key": "document.format", "confidence": 8},
+                "bucket": "output_contract", "scope_mode": "scoped",
+                "applies_when": None, "work_kinds": ["report"],
+                "key": "document.format", "confidence": 8},
                 "change_candidate": None, "sources": [1]}])
         return json.dumps([{"case": 1, "action": "add", "targets": []}])
+
     monkeypatch.setattr(llm, "complete", fake)
     client, app = _client(tmp_path)
     for i in range(BATCH_N):
-        client.post("/api/events/submit",
-                    json={"text": f"以后第{i}类文档一律用 markdown 格式",
-                          "source": "hook"})
+        _accepted_feedback(
+            client, app,
+            f"以后第{i}类文档一律用 markdown 格式", ordinal=i)
+
     learned = [r for r in app.state.store.active() if r.source == "learned"]
     assert learned and learned[0].text == "Format recurring documents as Markdown."
     assert learned[0].kinds == ["report"]
@@ -179,13 +242,14 @@ def test_batch_full_flush_lands_learned_requirement(tmp_path, monkeypatch):
 
 
 def test_flush_outage_keeps_queue_and_returns_200(tmp_path, monkeypatch):
-    def dead(*a, **k):
+    def dead(*_args, **_kwargs):
         raise LLMUnavailable("connection")
+
     monkeypatch.setattr(llm, "complete", dead)
     client, app = _client(tmp_path)
     for i in range(BATCH_N):
-        r = client.post("/api/events/submit",
-                        json={"text": f"以后第{i}类文档一律用 markdown 格式",
-                              "source": "hook"})
-        assert r.status_code == 200                    # outage never breaks the API
-    assert app.state.pipeline.pending_count() == BATCH_N   # queue survives
+        response = _accepted_feedback(
+            client, app,
+            f"以后第{i}类文档一律用 markdown 格式", ordinal=i)
+        assert response.status_code == 200
+    assert app.state.pipeline.pending_count() == BATCH_N

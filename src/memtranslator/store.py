@@ -70,7 +70,10 @@ class Store:
         for value in kinds:
             if not isinstance(value, str) or not value.strip():
                 raise ValueError(f"unknown work kinds: {kinds!r}")
-            normalised.append(normalize_kind(value))
+            kind_value = normalize_kind(value)
+            if not kind_value:
+                raise ValueError(f"unknown work kinds: {kinds!r}")
+            normalised.append(kind_value)
         kinds = list(dict.fromkeys(normalised))
         scope = normalize_scope(scope)
         if bucket and bucket not in BUCKETS:
@@ -107,6 +110,15 @@ class Store:
         carried kinds=[] while the running process saw them tagged."""
         if req.id in self._items:
             self._append(req)
+
+    def insert_if_absent(self, req: Requirement) -> bool:
+        """Append a caller-owned deterministic record exactly once."""
+        if req.id in self._items:
+            return False
+        migrate_genre_from_scope(req)
+        self._items[req.id] = req
+        self._append(req)
+        return True
 
     def bump_strength(self, req_ids: list[str], delta: int) -> None:
         """Mechanical strength rule (0 token): accepted → +1, reverted → -1;
@@ -310,7 +322,10 @@ class Store:
         return {"applied": applied, "skipped": skipped, "retired": retired}
 
     def update(self, req_id: str, *, text: str | None = None,
-               status: str | None = None) -> Requirement:
+               status: str | None = None, scope: dict | None = None,
+               applies_when: str | None = None,
+               scope_mode: str | None = None,
+               kinds: list | None = None) -> Requirement:
         req = self._items[req_id]
         if text is not None:
             text = text.strip()
@@ -321,6 +336,26 @@ class Store:
             if status not in STATUSES:
                 raise ValueError(f"unknown status: {status}")
             req.status = status
+        if kinds is not None:
+            if not isinstance(kinds, list):
+                raise ValueError(f"unknown work kinds: {kinds!r}")
+            normalised = []
+            for value in kinds:
+                if not isinstance(value, str) or not value.strip():
+                    raise ValueError(f"unknown work kinds: {kinds!r}")
+                kind = normalize_kind(value)
+                if not kind:
+                    raise ValueError(f"unknown work kinds: {kinds!r}")
+                normalised.append(kind)
+            req.kinds = list(dict.fromkeys(normalised))
+        if scope is not None:
+            req.scope = normalize_scope(scope)
+        if applies_when is not None:
+            req.applies_when = applies_when
+        if scope_mode is not None:
+            req.scope_mode = scope_mode
+        migrate_genre_from_scope(req)
+        req.normalize_applicability()
         req.updated_at = time.time()
         self._append(req)
         return req

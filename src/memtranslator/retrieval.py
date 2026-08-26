@@ -1,27 +1,23 @@
 """Small-store hybrid retrieval for memory candidates.
 
-BM25 and a local embedding ranker produce independent orders. Reciprocal
+BM25 and the configured embedding service produce independent orders. Reciprocal
 rank fusion combines positions rather than incomparable raw scores. The dense
-backend is deliberately optional and local: when the configured ONNX model is
-absent, retrieval degrades to BM25 without adding a network dependency.
+backend is deliberately optional: when it is unavailable, retrieval degrades
+to BM25.
 """
 from __future__ import annotations
 
 import json
 from functools import lru_cache
-from pathlib import Path
-from typing import Protocol
 
 from memtranslator.bm25 import (BM25, bm25_document_cache_info,
                                 clear_bm25_document_cache,
                                 prepare_bm25_documents)
+from memtranslator.embedding import (EmbeddingRanker, OnnxE5Ranker,
+                                     default_embedding_ranker)
 from memtranslator.schema import Requirement
 
 RRF_K = 60
-
-
-class EmbeddingRanker(Protocol):
-    def rank(self, query: str, texts: list[str]) -> list[int]: ...
 
 
 def flatten_memory_fields(text: str, *, work_kinds: list[str] | None = None,
@@ -248,108 +244,6 @@ def hybrid_order(query: str, bm25_texts: list[str], *,
     return rrf_order(rankings, tie_order=list(range(len(bm25_texts))))
 
 
-class OnnxE5Ranker:
-    """Lazy multilingual-e5 ranker using local ONNX Runtime on CPU.
-
-    Imports live inside ``__init__`` so the base product remains usable
-    without the optional ``memory-embedding`` dependency set. No model is
-    downloaded here; provisioning the local directory is an explicit install
-    step and therefore cannot turn a memory flush into a network operation.
-    """
-
-    def __init__(self, model_path: Path, tokenizer_path: Path):
-        import numpy as np
-        import onnxruntime as ort
-        from tokenizers import Tokenizer
-
-        self._np = np
-        # model_O4.onnx is an fp16 GPU export. On Apple Silicon, CoreML is
-        # first in ORT's provider list but barely offloads this graph; CPU
-        # matches it on a cached query (~2.4ms) and avoids compile jitter.
-        # Cap intra-op threads: M4's default 10 oversubscribes a 12-layer
-        # MiniLM, 4 P-cores were the fastest of 1/4/8 in a 24-doc batch.
-        options = ort.SessionOptions()
-        options.graph_optimization_level = (
-            ort.GraphOptimizationLevel.ORT_ENABLE_ALL)
-        options.intra_op_num_threads = 4
-        options.inter_op_num_threads = 1
-        self._session = ort.InferenceSession(
-            str(model_path), sess_options=options,
-            providers=["CPUExecutionProvider"])
-        self._tokenizer = Tokenizer.from_file(str(tokenizer_path))
-        self._tokenizer.enable_truncation(max_length=512)
-        self._pad_id = self._tokenizer.token_to_id("<pad>") or 0
-        self._input_names = {item.name for item in self._session.get_inputs()}
-        self._document_vectors = {}
-        self._document_matrices = {}
-
-    def _encode(self, texts: list[str]):
-        np = self._np
-        encoded = self._tokenizer.encode_batch(texts)
-        width = max((len(item.ids) for item in encoded), default=1)
-        ids, masks = [], []
-        for item in encoded:
-            pad = width - len(item.ids)
-            ids.append(item.ids + [self._pad_id] * pad)
-            masks.append(item.attention_mask + [0] * pad)
-        inputs = {
-            "input_ids": np.asarray(ids, dtype=np.int64),
-            "attention_mask": np.asarray(masks, dtype=np.int64),
-        }
-        if "token_type_ids" in self._input_names:
-            inputs["token_type_ids"] = np.zeros_like(inputs["input_ids"])
-        inputs = {name: value for name, value in inputs.items()
-                  if name in self._input_names}
-        output = self._session.run(None, inputs)[0]
-        if output.ndim == 3:
-            mask = inputs["attention_mask"][..., None]
-            output = (output * mask).sum(axis=1) / mask.sum(axis=1).clip(min=1)
-        norms = np.linalg.norm(output, axis=1, keepdims=True).clip(min=1e-12)
-        return output / norms
-
-    def prepare(self, texts: list[str]) -> None:
-        missing = list(dict.fromkeys(
-            text for text in texts if text not in self._document_vectors))
-        if not missing:
-            return
-        vectors = self._encode([f"passage: {text}" for text in missing])
-        for text, vector in zip(missing, vectors):
-            self._document_vectors[text] = vector
-
-    def clear(self) -> None:
-        self._document_vectors.clear()
-        self._document_matrices.clear()
-
-    def rank(self, query: str, texts: list[str]) -> list[int]:
-        if not texts:
-            return []
-        self.prepare(texts)
-        query_vector = self._encode([f"query: {query}"])[0]
-        corpus_key = tuple(texts)
-        documents = self._document_matrices.get(corpus_key)
-        if documents is None:
-            documents = self._np.asarray(
-                [self._document_vectors[text] for text in texts])
-            self._document_matrices[corpus_key] = documents
-        scores = documents @ query_vector
-        return sorted(range(len(texts)), key=lambda idx: (-scores[idx], idx))
-
-
-@lru_cache(maxsize=1)
-def default_embedding_ranker() -> EmbeddingRanker | None:
-    """Load the configured local model if all artifacts are present."""
-    from memtranslator.config import EMBED_MODEL_DIR, EMBED_ONNX_FILE
-
-    model_path = Path(EMBED_MODEL_DIR) / EMBED_ONNX_FILE
-    tokenizer_path = Path(EMBED_MODEL_DIR) / "onnx" / "tokenizer.json"
-    if not model_path.is_file() or not tokenizer_path.is_file():
-        return None
-    try:
-        return OnnxE5Ranker(model_path, tokenizer_path)
-    except Exception:
-        return None
-
-
 def clear_retrieval_caches() -> None:
     """Test/maintenance hook; production caches are content-addressed."""
     clear_bm25_document_cache()
@@ -359,6 +253,7 @@ def clear_retrieval_caches() -> None:
         clear = getattr(ranker, "clear", None) if ranker is not None else None
         if clear is not None:
             clear()
+    default_embedding_ranker.cache_clear()
 
 
 def retrieval_cache_info() -> dict:

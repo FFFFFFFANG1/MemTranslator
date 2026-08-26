@@ -19,6 +19,10 @@ def test_electron_and_browser_inputs_prefer_verified_paste():
         "com.tinyspeck.slackmacgap")).write_order[0] == "paste"
     assert resolve_profile(_snapshot(
         "com.google.Chrome")).write_order == ("paste",)
+    assert resolve_profile(_snapshot(
+        "com.openai.codex")).write_order[0] == "paste"
+    assert resolve_profile(_snapshot(
+        "com.microsoft.edgemac")).write_order == ("paste",)
 
 
 def test_capability_probe_routes_unknown_read_only_ax_value_to_paste():
