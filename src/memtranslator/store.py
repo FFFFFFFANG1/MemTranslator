@@ -325,7 +325,8 @@ class Store:
                status: str | None = None, scope: dict | None = None,
                applies_when: str | None = None,
                scope_mode: str | None = None,
-               kinds: list | None = None) -> Requirement:
+               kinds: list | None = None,
+               bucket: str | None = None) -> Requirement:
         req = self._items[req_id]
         if text is not None:
             text = text.strip()
@@ -354,6 +355,11 @@ class Store:
             req.applies_when = applies_when
         if scope_mode is not None:
             req.scope_mode = scope_mode
+        if bucket is not None:
+            bucket = bucket.strip()
+            if bucket and bucket not in BUCKETS:
+                raise ValueError(f"unknown bucket: {bucket}")
+            req.bucket = bucket
         migrate_genre_from_scope(req)
         req.normalize_applicability()
         req.updated_at = time.time()

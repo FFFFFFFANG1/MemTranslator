@@ -1,5 +1,8 @@
 import stat
+import sys
+from types import SimpleNamespace
 
+from memtranslator import cli
 from memtranslator.cli import _read_env, build_parser
 
 
@@ -154,6 +157,60 @@ def test_start_accepts_demo_short_and_long_flags():
 
     assert parser.parse_args(["start", "-demo"]).demo is True
     assert parser.parse_args(["start", "--demo"]).demo is True
+
+
+def test_macos_start_supervises_and_stops_hotkey_process(
+        tmp_path, monkeypatch):
+    """Ctrl+C must return through a plain CLI supervisor, not Cocoa."""
+    home = tmp_path / "runtime"
+    home.mkdir()
+    (home / ".env").write_text("LLM_API_KEY=test-key\n")
+    processes = []
+
+    class FakeProcess:
+        def __init__(self, command):
+            self.command = command
+            self.returncode = None
+            self.terminated = False
+            processes.append(self)
+
+        def poll(self):
+            return self.returncode
+
+        def terminate(self):
+            self.terminated = True
+            self.returncode = 0
+
+        def wait(self, timeout=None):
+            return self.returncode
+
+        def kill(self):
+            self.returncode = -9
+
+    health_checks = iter([False, True])
+    monkeypatch.setattr(cli.sys, "platform", "darwin")
+    monkeypatch.setattr(cli, "_health", lambda _url: next(health_checks))
+    monkeypatch.setattr(
+        cli.subprocess, "Popen", lambda command: FakeProcess(command))
+    monkeypatch.setattr(
+        cli.time, "sleep", lambda _seconds: (_ for _ in ()).throw(
+            KeyboardInterrupt))
+    monkeypatch.setitem(
+        sys.modules, "memtranslator.hotkey.__main__",
+        SimpleNamespace(main=lambda: (_ for _ in ()).throw(
+            KeyboardInterrupt)))
+    args = build_parser().parse_args([
+        "start", "--home", str(home), "--no-open",
+    ])
+
+    assert args.handler(args) == 0
+
+    assert len(processes) == 2
+    backend, hotkey = processes
+    assert backend.command[2:4] == ["uvicorn", "memtranslator.server:app"]
+    assert hotkey.command[-2:] == ["-m", "memtranslator.hotkey"]
+    assert backend.terminated is True
+    assert hotkey.terminated is True
 
 
 def test_init_accepts_native_anthropic_api_format(tmp_path, monkeypatch):

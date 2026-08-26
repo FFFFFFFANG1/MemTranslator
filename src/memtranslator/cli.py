@@ -355,11 +355,26 @@ def start_command(args: argparse.Namespace) -> int:
     if not args.no_open:
         webbrowser.open(url)
 
+    hotkey: subprocess.Popen | None = None
     try:
         if sys.platform == "darwin" and not args.server_only:
-            from memtranslator.hotkey.__main__ import main as hotkey_main
             print("Starting macOS menu-bar client (hotkey: ⌥⌘R)")
-            hotkey_main()
+            # Keep Cocoa/PyObjC out of the CLI supervisor process. PyObjC's
+            # run-loop interrupt bridge replaces SIGINT with a Mach handler;
+            # importing and running it here used to leave `uv run` waiting on
+            # this process after the first Ctrl+C had already stopped the tap.
+            hotkey = subprocess.Popen([
+                sys.executable, "-m", "memtranslator.hotkey",
+            ])
+            while hotkey.poll() is None:
+                if backend is not None and backend.poll() is not None:
+                    raise SystemExit(
+                        f"Backend exited with status {backend.returncode}")
+                time.sleep(0.5)
+            if hotkey.returncode:
+                raise SystemExit(
+                    "macOS menu-bar client exited with status "
+                    f"{hotkey.returncode}")
         else:
             print("Press Ctrl+C to stop MemTranslator")
             while backend is None or backend.poll() is None:
@@ -367,6 +382,7 @@ def start_command(args: argparse.Namespace) -> int:
     except KeyboardInterrupt:
         pass
     finally:
+        _stop(hotkey)
         _stop(backend)
     return 0
 

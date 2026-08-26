@@ -7,7 +7,9 @@ result back, then watches the same composer briefly for human edits.
 from __future__ import annotations
 
 import json
+import signal
 import threading
+import time
 import urllib.request
 
 from AppKit import (NSApplication, NSApplicationActivationPolicyAccessory,
@@ -53,6 +55,7 @@ POINTER_DOWN_EVENTS = {
     kCGEventOtherMouseDown,
 }
 POINTER_SETTLE_SECONDS = 0.08
+HOTKEY_SETTLE_SECONDS = 0.04
 
 
 def polish_flow(read=None, write=None, post=None) -> str:
@@ -92,6 +95,8 @@ class App(NSObject):
             on_feedback=self._on_feedback, on_progress=self._on_progress)
         self._poll_timer = None
         self._pointer_timer = None
+        self._state_timer = None
+        self._shutting_down = False
         self.status_item = NSStatusBar.systemStatusBar() \
             .statusItemWithLength_(NSVariableStatusItemLength)
         self.status_item.button().setTitle_("⇄")
@@ -129,13 +134,35 @@ class App(NSObject):
             NSURL.URLWithString_(DAEMON + "/"))
 
     def _set_state(self, glyph: str, text: str, reset_after: float = 0) -> None:
+        if self._shutting_down:
+            return
         def update():
             self.status_item.button().setTitle_(glyph)
             self.state_item.setTitle_(text)
         AppHelper.callAfter(update)
+        if self._state_timer is not None:
+            self._state_timer.cancel()
+            self._state_timer = None
         if reset_after:
-            threading.Timer(reset_after, lambda: self._set_state(
-                "⇄", "Ready · ⌥⌘R")).start()
+            def reset_state():
+                self._state_timer = None
+                self._set_state("⇄", "Ready · ⌥⌘R")
+
+            self._state_timer = threading.Timer(reset_after, reset_state)
+            self._state_timer.daemon = True
+            self._state_timer.start()
+
+    def shutdown(self) -> None:
+        """Stop every timer before Cocoa tears down its run loop."""
+        self._shutting_down = True
+        for timer_name in ("_state_timer", "_poll_timer", "_pointer_timer"):
+            timer = getattr(self, timer_name)
+            if timer is not None:
+                timer.cancel()
+                setattr(self, timer_name, None)
+        self.controller.tracker.cancel()
+        self.overlay.shutdown()
+        NSStatusBar.systemStatusBar().removeStatusItem_(self.status_item)
 
     def _on_feedback(self, result: dict) -> None:
         if result["status"] == "feedback_failed":
@@ -202,15 +229,23 @@ class App(NSObject):
         if self.controller.tracker.active:
             self.controller.tracker.cancel()
         self._set_state("…", "Compiling requirements…")
-        captured_snapshot = self.controller.adapter.capture()
-        bounds = (captured_snapshot.screen_bounds
-                  if captured_snapshot is not None else None)
-        self.overlay.start(bounds)
 
         def run():
+            # The event-tap callback must return before querying Accessibility.
+            # Otherwise Electron can expose the focused composer with the value
+            # from just before the hotkey's key-down/modifier sequence settled.
+            time.sleep(HOTKEY_SETTLE_SECONDS)
+            captured_snapshot = self.controller.adapter.capture()
+            bounds = (captured_snapshot.screen_bounds
+                      if captured_snapshot is not None else None)
+            self.overlay.start(bounds)
             result = self.controller.polish(snapshot=captured_snapshot)
             status = result["status"]
-            print(f"polish result: {status}", flush=True)
+            detail = ""
+            if status == "write_failed" and result.get("write") is not None:
+                write = result["write"]
+                detail = f" strategy={write.strategy} reason={write.reason}"
+            print(f"polish result: {status}{detail}", flush=True)
             if status == "tracking":
                 write = result["write"]
                 result_snapshot = result["snapshot"]
@@ -258,13 +293,6 @@ def main():
             return event
         keycode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode)
         flags = CGEventGetFlags(event)
-        if keycode == KEY_R:
-            print(
-                "R key observed: "
-                f"command={bool(flags & kCGEventFlagMaskCommand)} "
-                f"option={bool(flags & kCGEventFlagMaskAlternate)}",
-                flush=True,
-            )
         if (keycode == KEY_R
                 and flags & kCGEventFlagMaskCommand
                 and flags & kCGEventFlagMaskAlternate):
@@ -285,7 +313,18 @@ def main():
     source = CFMachPortCreateRunLoopSource(None, tap, 0)
     CFRunLoopAddSource(CFRunLoopGetCurrent(), source, kCFRunLoopCommonModes)
     CGEventTapEnable(tap, True)
-    AppHelper.runEventLoop()
+    previous_sigint = signal.getsignal(signal.SIGINT)
+    try:
+        # PyObjC does not install its SIGINT-to-run-loop bridge by default.
+        # Without this, Ctrl+C stops the Uvicorn child but leaves the Cocoa
+        # event loop and global keyboard tap alive in the CLI parent process.
+        AppHelper.runEventLoop(installInterrupt=True)
+    finally:
+        # AppHelper's Mach interrupt bridge is process-global and does not
+        # restore Python's SIGINT handler when the run loop ends.
+        signal.signal(signal.SIGINT, previous_sigint)
+        CGEventTapEnable(tap, False)
+        app.shutdown()
 
 
 if __name__ == "__main__":
