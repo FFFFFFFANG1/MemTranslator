@@ -5,8 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MemTranslator</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23181818'/%3E%3Cg fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 12h17m-4-4 4 4-4 4M25 20H8m4-4-4 4 4 4'/%3E%3C/g%3E%3C/svg%3E">
+<script>
+try {
+  const initialTheme = localStorage.getItem("memtranslator-theme");
+  document.documentElement.dataset.theme = ["light", "dark"].includes(initialTheme)
+    ? initialTheme : "system";
+} catch { document.documentElement.dataset.theme = "system"; }
+</script>
 <style>
 :root{
+  color-scheme:light;
   --ink:#181818;
   --paper:#ffffff;
   --canvas:#f7f7f8;
@@ -15,20 +23,57 @@
   --line-soft:#ececec;
   --dim:#666666;
   --faint:#929292;
+  --muted:#777777;
+  --muted-soft:#898989;
+  --muted-strong:#555555;
+  --surface:#fafafa;
+  --surface-hover:#f5f5f5;
+  --raised:#ffffff;
+  --control:#ededee;
+  --control-active:#e5e5e6;
+  --focus:#aaaaaa;
+  --disabled:#eeeeee;
+  --primary:#181818;
+  --primary-hover:#303030;
+  --on-primary:#ffffff;
+  --shadow:rgba(0,0,0,.08);
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB",sans-serif;
   --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ink:#f1f1f1;--paper:#151516;--canvas:#0e0e0f;--well:#1d1d1f;
+  --line:#3a3a3c;--line-soft:#2b2b2d;--dim:#b7b7b8;--faint:#77777a;
+  --muted:#aaaaac;--muted-soft:#89898c;--muted-strong:#d0d0d2;
+  --surface:#1a1a1c;--surface-hover:#212123;--raised:#242426;
+  --control:#252527;--control-active:#333336;--focus:#707074;
+  --disabled:#2a2a2d;--primary:#f1f1f1;--primary-hover:#d9d9da;
+  --on-primary:#111112;--shadow:rgba(0,0,0,.35);
+}
+@media(prefers-color-scheme:dark){
+  :root[data-theme="system"]{
+    color-scheme:dark;
+    --ink:#f1f1f1;--paper:#151516;--canvas:#0e0e0f;--well:#1d1d1f;
+    --line:#3a3a3c;--line-soft:#2b2b2d;--dim:#b7b7b8;--faint:#77777a;
+    --muted:#aaaaac;--muted-soft:#89898c;--muted-strong:#d0d0d2;
+    --surface:#1a1a1c;--surface-hover:#212123;--raised:#242426;
+    --control:#252527;--control-active:#333336;--focus:#707074;
+    --disabled:#2a2a2d;--primary:#f1f1f1;--primary-hover:#d9d9da;
+    --on-primary:#111112;--shadow:rgba(0,0,0,.35);
+  }
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100%}
 body{
   background:var(--canvas);color:var(--ink);
   font-family:var(--sans);font-weight:400;
+  transition:background .2s ease,color .2s ease;
 }
 #app{
-  width:100%;height:100vh;max-width:1040px;margin:0 auto;
+  width:100%;height:100vh;margin:0 auto;
   display:grid;grid-template-rows:68px minmax(0,1fr);
   grid-template-areas:"header" "panel";
-  padding:0 24px 32px;
+  padding:0 clamp(18px,3vw,56px) 28px;
 }
 header{
   grid-area:header;display:flex;align-items:center;gap:22px;
@@ -43,45 +88,47 @@ header{
 .brand-mark{width:30px;height:30px;display:grid;place-items:center}
 .brand-mark svg{width:28px;height:28px;color:var(--ink)}
 .tagline{
-  color:#777;font-size:10px;font-weight:500;
+  color:var(--muted);font-size:10px;font-weight:500;
   letter-spacing:.08em;
 }
 .page-nav{display:flex;align-items:center;gap:3px;margin-left:12px}
 .page-nav button{
   padding:6px 9px;border:0;border-radius:7px;background:transparent;
-  color:#858585;font-size:10.5px;font-weight:570;
+  color:var(--muted-soft);font-size:10.5px;font-weight:570;
 }
-.page-nav button:hover{color:var(--ink);background:#f0f0f0}
-.page-nav button[aria-pressed="true"]{color:var(--ink);background:#e9e9ea}
+.page-nav button:hover{color:var(--ink);background:var(--control)}
+.page-nav button[aria-pressed="true"]{color:var(--ink);background:var(--control-active)}
 .header-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
 .settings-button{
   width:31px;height:31px;display:grid;place-items:center;padding:0;
   background:transparent;border:1px solid transparent;border-radius:8px;
-  color:#777;
+  color:var(--muted);
 }
 .settings-button svg{width:16px;height:16px}
-.settings-button:hover{color:var(--ink);background:#ededee}
+.settings-button:hover{color:var(--ink);background:var(--control)}
 .settings-button[aria-pressed="true"]{
-  color:var(--ink);background:#fff;border-color:#dedede;
-  box-shadow:0 1px 2px rgba(0,0,0,.06);
+  color:var(--ink);background:var(--raised);border-color:var(--line);
+  box-shadow:0 1px 2px var(--shadow);
 }
-.language-switch{
+.theme-switch,.language-switch{
   display:flex;gap:2px;padding:3px;
-  background:#ededee;border:1px solid #e4e4e4;border-radius:9px;
+  background:var(--control);border:1px solid var(--line-soft);border-radius:9px;
 }
-.language-switch button{
+.theme-switch button,.language-switch button{
   min-width:31px;padding:5px 7px;border:0;border-radius:6px;
-  background:transparent;color:#777;cursor:pointer;
+  background:transparent;color:var(--muted);cursor:pointer;
   font-family:var(--sans);font-size:10px;font-weight:580;
 }
-.language-switch button[aria-pressed="true"]{
-  color:var(--ink);background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.08);
+.theme-switch button{display:flex;align-items:center;justify-content:center;gap:4px}
+.theme-switch svg{width:12px;height:12px}
+.theme-switch button[aria-pressed="true"],.language-switch button[aria-pressed="true"]{
+  color:var(--ink);background:var(--raised);box-shadow:0 1px 2px var(--shadow);
 }
-.language-switch button:hover{color:var(--ink)}
+.theme-switch button:hover,.language-switch button:hover{color:var(--ink)}
 
 #panel{
-  grid-area:panel;width:min(100%,820px);min-height:0;
-  justify-self:center;margin-top:32px;padding:28px;
+  grid-area:panel;width:100%;min-height:0;
+  justify-self:stretch;margin-top:20px;padding:clamp(22px,2.4vw,38px);
   display:flex;flex-direction:column;
   background:var(--paper);border:1px solid var(--line-soft);
   border-radius:14px;animation:fadeup .4s .05s ease-out both;
@@ -90,14 +137,14 @@ header{
   font-size:18px;font-weight:630;letter-spacing:-.02em;
 }
 #panel .sub{
-  margin:5px 0 18px;color:#898989;
+  margin:5px 0 18px;color:var(--muted-soft);
   font-size:10px;font-weight:500;letter-spacing:.04em;
 }
-#panel .sub b{color:#555;font-weight:620}
+#panel .sub b{color:var(--muted-strong);font-weight:620}
 .page{display:flex;flex:1;min-height:0;flex-direction:column}
 .page[hidden]{display:none}
 #add-form{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(180px,.65fr) auto;
   gap:8px;margin-bottom:14px;
 }
 #add-input{
@@ -107,13 +154,13 @@ header{
   font-family:var(--sans);font-size:12.5px;
 }
 #add-input:focus{
-  border-color:#aaa;background:#fff;
-  box-shadow:0 0 0 2px rgba(0,0,0,.04);
+  border-color:var(--focus);background:var(--raised);
+  box-shadow:0 0 0 2px var(--shadow);
 }
 #add-input::placeholder{color:var(--faint)}
 .field-group,.edit-field{display:flex;flex-direction:column;gap:5px;min-width:0}
 .field-group>label,.edit-field>label{
-  color:#777;font-size:9.5px;font-weight:600;letter-spacing:.02em;
+  color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.02em;
 }
 .meta-control{display:flex;align-items:center;gap:7px;min-width:0}
 .meta-input{
@@ -121,12 +168,12 @@ header{
   background:var(--well);border:1px solid var(--line);border-radius:8px;
   outline:0;color:var(--ink);font-family:var(--mono);font-size:10.5px;
 }
-.meta-input:focus{border-color:#aaa;background:#fff;box-shadow:0 0 0 2px rgba(0,0,0,.04)}
-.meta-input:disabled{color:#999;background:#eee}
+.meta-input:focus{border-color:var(--focus);background:var(--raised);box-shadow:0 0 0 2px var(--shadow)}
+.meta-input:disabled{color:var(--faint);background:var(--disabled)}
 .meta-input::placeholder{color:var(--faint)}
 .check-control{
   display:flex;align-items:center;gap:4px;flex:0 0 auto;
-  color:#555;font-family:var(--mono);font-size:9.5px;cursor:pointer;
+  color:var(--muted-strong);font-family:var(--mono);font-size:9.5px;cursor:pointer;
 }
 .check-control input{width:13px;height:13px;accent-color:var(--ink)}
 button{
@@ -134,130 +181,130 @@ button{
   letter-spacing:0;white-space:nowrap;cursor:pointer;
 }
 #add-btn{
-  align-self:end;min-height:35px;padding:0 15px;background:var(--ink);
-  border:1px solid var(--ink);border-radius:8px;
-  color:#fff;font-size:12px;
+  align-self:end;min-height:36px;padding:0 17px;background:var(--primary);
+  border:1px solid var(--primary);border-radius:8px;
+  color:var(--on-primary);font-size:12px;
 }
-#add-btn:hover{background:#303030;border-color:#303030}
+#add-btn:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
 #add-btn:disabled{opacity:.4;cursor:default}
 #memory-notice{
   min-height:18px;margin:-5px 0 8px;
-  color:#666;font-size:10px;font-weight:500;
+  color:var(--dim);font-size:10px;font-weight:500;
 }
-#memory-notice.error{color:#222}
+#memory-notice.error{color:var(--ink)}
 #allowlist-notice{
   min-height:18px;margin:-5px 0 8px;
-  color:#666;font-size:10px;font-weight:500;
+  color:var(--dim);font-size:10px;font-weight:500;
 }
-#allowlist-notice.error{color:#222}
+#allowlist-notice.error{color:var(--ink)}
 #settings-notice{
-  min-height:18px;margin:0 0 4px;color:#666;font-size:10px;font-weight:500;
+  min-height:18px;margin:0 0 4px;color:var(--dim);font-size:10px;font-weight:500;
 }
-#settings-notice.error{color:#222}
+#settings-notice.error{color:var(--ink)}
 #req-list{
   flex:1;min-height:0;overflow-y:auto;padding-right:4px;
-  scrollbar-width:thin;scrollbar-color:#ccc transparent;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent;
 }
 .req{
-  margin:0 0 8px;padding:12px;
-  background:#fafafa;border:1px solid var(--line-soft);
+  margin:0 0 10px;padding:17px 18px;
+  background:var(--surface);border:1px solid var(--line-soft);
   border-radius:10px;transition:border-color .18s,background .18s;
 }
-.req:hover{border-color:#dedede;background:#f8f8f8}
+.req:hover{border-color:var(--line);background:var(--surface-hover)}
 .req .text{
-  color:var(--ink);font-size:12.5px;
-  font-weight:450;line-height:1.55;word-break:break-word;
+  color:var(--ink);font-size:15.5px;
+  font-weight:500;line-height:1.55;word-break:break-word;
 }
 .req .date{
-  margin-top:5px;color:#999;
-  font-family:var(--mono);font-size:9.5px;
+  margin-top:7px;color:var(--faint);
+  font-family:var(--mono);font-size:10px;
 }
 .req .metadata{
-  display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;
-  color:#777;font-family:var(--mono);font-size:9.5px;line-height:1.45;
+  display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:11px;
+  color:var(--muted);font-family:var(--mono);font-size:12px;line-height:1.5;
 }
-.req .metadata b{color:#444;font-family:var(--sans);font-weight:620}
+.req .metadata b{color:var(--muted-strong);font-family:var(--sans);font-weight:620}
 .req .item-actions,.allow-entry .item-actions{
   display:flex;align-items:center;gap:6px;margin-top:9px
 }
 .req .item-action,.allow-entry .item-action{
-  padding:4px 8px;background:#fff;
-  border:1px solid #dedede;border-radius:6px;
-  color:#666;font-size:9.5px;font-weight:550;
+  padding:5px 9px;background:var(--raised);
+  border:1px solid var(--line);border-radius:6px;
+  color:var(--dim);font-size:10px;font-weight:550;
 }
 .req .item-action.modify:hover,.req .item-action.save:hover,
 .req .item-action.restore:hover,.req .item-action.cancel:hover,
 .allow-entry .item-action.modify:hover,.allow-entry .item-action.save:hover,
 .allow-entry .item-action.cancel:hover{
-  background:#eee;border-color:#d3d3d3;color:var(--ink);
+  background:var(--control);border-color:var(--line);color:var(--ink);
 }
 .req .item-action.delete:hover,.allow-entry .item-action.delete:hover{
-  background:var(--ink);border-color:var(--ink);color:#fff;
+  background:var(--primary);border-color:var(--primary);color:var(--on-primary);
 }
 .edit-input{
   display:block;width:100%;min-height:64px;resize:vertical;
-  padding:9px;background:#fff;border:1px solid #bdbdbd;
+  padding:11px;background:var(--raised);border:1px solid var(--focus);
   border-radius:8px;outline:0;color:var(--ink);
-  font-family:var(--sans);font-size:12px;line-height:1.55;
-  box-shadow:0 0 0 2px rgba(0,0,0,.035);
+  font-family:var(--sans);font-size:15px;line-height:1.55;
+  box-shadow:0 0 0 2px var(--shadow);
 }
-.edit-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-.req.retired{background:#fafafa;border-color:#eee}
-.req.retired .text{color:#777;text-decoration:line-through}
+.edit-fields{display:grid;grid-template-columns:1fr 1fr minmax(180px,.65fr);gap:8px;margin-top:10px}
+.req.retired{background:var(--surface);border-color:var(--line-soft)}
+.req.retired .text{color:var(--muted);text-decoration:line-through}
 #retired-toggle{
   padding:8px 2px;background:none;border:0;
-  color:#777;font-size:11px;font-weight:520;text-align:left;
+  color:var(--muted);font-size:11px;font-weight:520;text-align:left;
 }
 #retired-toggle:hover{color:var(--ink)}
 .empty-state{
-  padding:18px;background:#fafafa;
-  border:1px dashed #d8d8d8;border-radius:10px;
-  color:#777;font-size:12.5px;line-height:1.75;
+  padding:18px;background:var(--surface);
+  border:1px dashed var(--line);border-radius:10px;
+  color:var(--muted);font-size:12.5px;line-height:1.75;
 }
 .empty-state .seed{
   display:inline-block;margin-top:10px;padding:6px 10px;
-  background:#fff;border:1px solid #d2d2d2;border-radius:7px;
-  color:#333;font-family:var(--mono);font-size:11px;
+  background:var(--raised);border:1px solid var(--line);border-radius:7px;
+  color:var(--ink);font-family:var(--mono);font-size:11px;
 }
-.empty-state .seed:hover{background:#eee}
+.empty-state .seed:hover{background:var(--control)}
 #allowlist-add-form{
   display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1.5fr) auto;
   gap:8px;margin-bottom:14px;align-items:end;
 }
-.source-select{
+.source-select,.bucket-select{
   width:100%;min-height:35px;padding:8px 10px;
   background:var(--well);border:1px solid var(--line);border-radius:8px;
   outline:0;color:var(--ink);font-family:var(--sans);font-size:11px;
 }
-.source-select:focus{border-color:#aaa;background:#fff}
+.source-select:focus,.bucket-select:focus{border-color:var(--focus);background:var(--raised)}
 #allowlist-add-btn{
-  min-height:35px;padding:0 15px;background:var(--ink);
-  border:1px solid var(--ink);border-radius:8px;color:#fff;font-size:12px;
+  min-height:35px;padding:0 15px;background:var(--primary);
+  border:1px solid var(--primary);border-radius:8px;color:var(--on-primary);font-size:12px;
 }
-#allowlist-add-btn:hover{background:#303030;border-color:#303030}
+#allowlist-add-btn:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
 #allowlist-add-btn:disabled{opacity:.4;cursor:default}
 #allowlist-list{
   flex:1;min-height:0;overflow-y:auto;padding-right:4px;
-  scrollbar-width:thin;scrollbar-color:#ccc transparent;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent;
 }
 .allow-entry{
-  margin:0 0 8px;padding:12px;background:#fafafa;
+  margin:0 0 8px;padding:12px;background:var(--surface);
   border:1px solid var(--line-soft);border-radius:10px;
 }
 .allow-head{display:flex;align-items:center;gap:7px;min-width:0}
-.allow-label{font-size:12.5px;font-weight:590;word-break:break-word}
+.allow-label{font-size:14px;font-weight:590;word-break:break-word}
 .source-badge{
-  display:inline-flex;padding:3px 6px;background:#ededed;border-radius:5px;
-  color:#666;font-family:var(--mono);font-size:8.5px;font-weight:600;
+  display:inline-flex;padding:3px 6px;background:var(--control);border-radius:5px;
+  color:var(--dim);font-family:var(--mono);font-size:8.5px;font-weight:600;
   letter-spacing:.02em;
 }
-.source-badge.default{background:#fff;border:1px solid #e0e0e0;padding:2px 5px}
+.source-badge.default{background:var(--raised);border:1px solid var(--line);padding:2px 5px}
 .allow-patterns{
   display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;
 }
 .allow-patterns code{
-  padding:4px 6px;background:#fff;border:1px solid #e4e4e4;
-  border-radius:5px;color:#555;font-family:var(--mono);font-size:9.5px;
+  padding:4px 6px;background:var(--raised);border:1px solid var(--line-soft);
+  border-radius:5px;color:var(--muted-strong);font-family:var(--mono);font-size:9.5px;
   word-break:break-all;
 }
 .allow-entry .item-actions{display:flex;gap:6px;margin-top:9px}
@@ -267,7 +314,7 @@ button{
 }
 .settings-stack{display:flex;flex-direction:column;gap:14px;overflow-y:auto}
 .settings-card{
-  padding:16px;background:#fafafa;border:1px solid var(--line-soft);
+  padding:16px;background:var(--surface);border:1px solid var(--line-soft);
   border-radius:10px;
 }
 .settings-card-head{
@@ -276,23 +323,23 @@ button{
 }
 .settings-card h3{font-size:13px;font-weight:630;letter-spacing:-.01em}
 .settings-status{
-  padding:3px 7px;background:#ededed;border-radius:999px;
-  color:#666;font-family:var(--mono);font-size:8.5px;font-weight:600;
+  padding:3px 7px;background:var(--control);border-radius:999px;
+  color:var(--dim);font-family:var(--mono);font-size:8.5px;font-weight:600;
 }
 .settings-fields{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px}
 .settings-fields .wide{grid-column:1/-1}
 .settings-note{
-  margin-top:10px;color:#7a7a7a;font-size:10px;line-height:1.55;
+  margin-top:10px;color:var(--muted);font-size:10px;line-height:1.55;
 }
-.settings-note code{font-family:var(--mono);font-size:9.5px;color:#555}
+.settings-note code{font-family:var(--mono);font-size:9.5px;color:var(--muted-strong)}
 .settings-actions{display:flex;align-items:center;gap:7px;margin-top:13px}
 .settings-primary,.settings-secondary{
   min-height:34px;padding:0 13px;border-radius:8px;font-size:11px;
 }
-.settings-primary{background:var(--ink);border:1px solid var(--ink);color:#fff}
-.settings-primary:hover{background:#303030;border-color:#303030}
-.settings-secondary{background:#fff;border:1px solid #d8d8d8;color:#444}
-.settings-secondary:hover{background:#eee;color:var(--ink)}
+.settings-primary{background:var(--primary);border:1px solid var(--primary);color:var(--on-primary)}
+.settings-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+.settings-secondary{background:var(--raised);border:1px solid var(--line);color:var(--ink)}
+.settings-secondary:hover{background:var(--control);color:var(--ink)}
 .settings-primary:disabled,.settings-secondary:disabled{opacity:.4;cursor:default}
 @keyframes fadeup{
   from{opacity:0;transform:translateY(7px)}
@@ -301,6 +348,14 @@ button{
 @keyframes fadedown{
   from{opacity:0;transform:translateY(-5px)}
   to{opacity:1;transform:none}
+}
+@media(max-width:900px){
+  #add-form{grid-template-columns:1fr 1fr}
+  #add-btn{min-height:38px}
+  .edit-fields{grid-template-columns:1fr 1fr}
+  .edit-field.bucket-field{grid-column:1/-1}
+  .theme-switch .theme-copy{display:none}
+  .theme-switch button{width:29px;min-width:29px;padding:5px}
 }
 @media(max-width:640px){
   #app{padding:0 14px 14px;grid-template-rows:60px minmax(0,1fr)}
@@ -314,8 +369,14 @@ button{
   #add-input{grid-column:auto}
   #add-btn{min-height:38px}
   .edit-fields{grid-template-columns:1fr}
+  .edit-field.bucket-field{grid-column:auto}
   #allowlist-add-form,.allow-edit-fields,.settings-fields{grid-template-columns:1fr}
   .settings-fields .wide{grid-column:auto}
+}
+@media(max-width:500px){
+  .wordmark>span:last-child{display:none}
+  .header-actions{gap:5px}
+  .language-switch button{min-width:28px;padding:5px}
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{
@@ -340,6 +401,20 @@ button{
       <button id="nav-allowlist" type="button" aria-pressed="false" data-i18n="navAllowlist">白名单</button>
     </nav>
     <div class="header-actions">
+      <div class="theme-switch" role="group" data-i18n-aria-label="themeSwitcher">
+        <button id="theme-system" type="button" aria-pressed="true" data-theme-choice="system" data-i18n-title="themeSystem">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="2.5" width="12" height="8.5" rx="1.5" stroke="currentColor"/><path d="M6 13.5h4M8 11v2.5" stroke="currentColor" stroke-linecap="round"/></svg>
+          <span class="theme-copy" data-i18n="themeSystem">自动</span>
+        </button>
+        <button id="theme-light" type="button" aria-pressed="false" data-theme-choice="light" data-i18n-title="themeLight">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="2.5" stroke="currentColor"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6 13 13M13 3l-1.4 1.4M4.4 11.6 3 13" stroke="currentColor" stroke-linecap="round"/></svg>
+          <span class="theme-copy" data-i18n="themeLight">亮</span>
+        </button>
+        <button id="theme-dark" type="button" aria-pressed="false" data-theme-choice="dark" data-i18n-title="themeDark">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M12.8 10.2A5.5 5.5 0 0 1 5.8 3.1a5.5 5.5 0 1 0 7 7.1Z" stroke="currentColor" stroke-linejoin="round"/></svg>
+          <span class="theme-copy" data-i18n="themeDark">暗</span>
+        </button>
+      </div>
       <button id="nav-settings" class="settings-button" type="button"
               aria-pressed="false" data-i18n-title="settings"
               data-i18n-aria-label="settings">
@@ -374,6 +449,10 @@ button{
           <input class="meta-input" id="add-scope" data-i18n-placeholder="scopePlaceholder" autocomplete="off">
           <label class="check-control"><input id="add-global" type="checkbox"><span data-i18n="global">Global</span></label>
         </div>
+      </div>
+      <div class="field-group">
+        <label for="add-bucket" data-i18n="bucket">Bucket</label>
+        <select class="bucket-select" id="add-bucket"></select>
       </div>
       <button id="add-btn" type="submit"><span data-i18n="newMemory">新建</span></button>
     </form>
@@ -490,6 +569,10 @@ const STRINGS = {
     settings: "设置",
     chinese: "中文",
     english: "English",
+    themeSwitcher: "界面主题",
+    themeSystem: "自动",
+    themeLight: "亮色",
+    themeDark: "暗色",
     memoryTitle: "Memory",
     memorySubtitle: "任务应当如何完成",
     activeUnit: "条生效",
@@ -497,6 +580,14 @@ const STRINGS = {
     newMemory: "新建",
     workKind: "Work kind",
     scope: "Scope",
+    bucket: "Bucket",
+    bucketUnclassified: "未分类",
+    bucketTaskGoal: "任务目标",
+    bucketReasoningPolicy: "推理策略",
+    bucketDeliverables: "必须交付内容",
+    bucketOutputContract: "输出约定",
+    bucketCommunicationStyle: "沟通风格",
+    bucketExecutionPolicy: "执行策略",
     any: "Any",
     global: "Global",
     workKindPlaceholder: "例如 email, report",
@@ -587,6 +678,10 @@ const STRINGS = {
     settings: "Settings",
     chinese: "Chinese",
     english: "English",
+    themeSwitcher: "Interface theme",
+    themeSystem: "Auto",
+    themeLight: "Light",
+    themeDark: "Dark",
     memoryTitle: "Memory",
     memorySubtitle: "how the task should be done",
     activeUnit: "active",
@@ -594,6 +689,14 @@ const STRINGS = {
     newMemory: "New",
     workKind: "Work kind",
     scope: "Scope",
+    bucket: "Bucket",
+    bucketUnclassified: "Unclassified",
+    bucketTaskGoal: "Task goal",
+    bucketReasoningPolicy: "Reasoning policy",
+    bucketDeliverables: "Required deliverables",
+    bucketOutputContract: "Output contract",
+    bucketCommunicationStyle: "Communication style",
+    bucketExecutionPolicy: "Execution policy",
     any: "Any",
     global: "Global",
     workKindPlaceholder: "e.g. email, report",
@@ -678,10 +781,28 @@ const STRINGS = {
 };
 
 let savedLanguage = "";
-try { savedLanguage = localStorage.getItem("memtranslator-language") || ""; } catch {}
+let savedTheme = "";
+try {
+  savedLanguage = localStorage.getItem("memtranslator-language") || "";
+  savedTheme = localStorage.getItem("memtranslator-theme") || "";
+} catch {}
+
+const DEFAULT_BUCKETS = [
+  "task_goal", "reasoning_policy", "deliverables", "output_contract",
+  "communication_style", "execution_policy",
+];
+const BUCKET_I18N = {
+  task_goal: "bucketTaskGoal",
+  reasoning_policy: "bucketReasoningPolicy",
+  deliverables: "bucketDeliverables",
+  output_contract: "bucketOutputContract",
+  communication_style: "bucketCommunicationStyle",
+  execution_policy: "bucketExecutionPolicy",
+};
 
 const state = {
   requirements: [],
+  buckets: DEFAULT_BUCKETS.slice(),
   allowlist: [],
   showRetired: false,
   editingId: null,
@@ -689,6 +810,7 @@ const state = {
   settings: null,
   activePage: "memory",
   language: savedLanguage === "en" ? "en" : "zh",
+  theme: ["light", "dark"].includes(savedTheme) ? savedTheme : "system",
   panelNotice: null,
   allowlistNotice: null,
   settingsNotice: null,
@@ -702,6 +824,34 @@ const t = (key, vars = {}) => {
 };
 const fmtDate = (ts) => new Date(ts * 1000).toLocaleDateString(
   state.language === "zh" ? "zh-CN" : "en-US", {month:"2-digit", day:"2-digit"});
+const bucketLabel = (bucket) => bucket
+  ? t(BUCKET_I18N[bucket] || "bucketUnclassified")
+  : t("bucketUnclassified");
+const bucketOptionsHtml = (selected = "") => ["", ...state.buckets]
+  .map(bucket => `<option value="${esc(bucket)}" ${bucket === selected ? "selected" : ""}>${esc(bucketLabel(bucket))}${bucket ? ` · ${esc(bucket)}` : ""}</option>`)
+  .join("");
+
+function renderBucketOptions() {
+  const select = $("#add-bucket");
+  if (!select) return;
+  const selected = select.value;
+  select.innerHTML = bucketOptionsHtml(
+    state.buckets.includes(selected) ? selected : "");
+}
+
+function applyTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  document.querySelectorAll("[data-theme-choice]").forEach((button) => {
+    button.setAttribute(
+      "aria-pressed", String(button.dataset.themeChoice === state.theme));
+  });
+}
+
+function setTheme(theme) {
+  state.theme = ["light", "dark"].includes(theme) ? theme : "system";
+  try { localStorage.setItem("memtranslator-theme", state.theme); } catch {}
+  applyTheme();
+}
 
 async function requestJSON(url, options = {}) {
   const response = await fetch(url, options);
@@ -792,6 +942,8 @@ function applyLanguage() {
   $("#nav-memory").setAttribute("aria-pressed", String(state.activePage === "memory"));
   $("#nav-allowlist").setAttribute("aria-pressed", String(state.activePage === "allowlist"));
   $("#nav-settings").setAttribute("aria-pressed", String(state.activePage === "settings"));
+  renderBucketOptions();
+  applyTheme();
   renderRequirements();
   renderAllowlist();
   renderPanelNotice();
@@ -810,7 +962,10 @@ function setLanguage(language) {
 async function loadRequirements() {
   try {
     const payload = await requestJSON("/api/requirements");
-    state.requirements = payload.requirements;
+    state.requirements = payload.requirements || [];
+    state.buckets = Array.isArray(payload.buckets) && payload.buckets.length
+      ? payload.buckets : DEFAULT_BUCKETS.slice();
+    renderBucketOptions();
     renderRequirements();
   } catch (error) {
     showPanelNotice("error", "loadFailed", {message: error.message});
@@ -835,6 +990,7 @@ const itemScopeDisplay = (item) => itemIsGlobal(item)
 const metadataHtml = (item) => `<div class="metadata">
   <span><b>${esc(t("workKind"))}</b> · ${esc(itemWorkKindDisplay(item))}</span>
   <span><b>${esc(t("scope"))}</b> · ${esc(itemScopeDisplay(item))}</span>
+  <span><b>${esc(t("bucket"))}</b> · ${esc(bucketLabel(item.bucket))}${item.bucket ? ` · ${esc(item.bucket)}` : ""}</span>
 </div>`;
 
 function activeRequirementHtml(item) {
@@ -855,6 +1011,10 @@ function activeRequirementHtml(item) {
             <input class="meta-input edit-scope" value="${esc(itemScopeText(item))}" placeholder="${esc(t("scopePlaceholder"))}" ${itemIsGlobal(item) ? "disabled" : ""}>
             <label class="check-control"><input class="edit-global" type="checkbox" ${itemIsGlobal(item) ? "checked" : ""}>${esc(t("global"))}</label>
           </div>
+        </div>
+        <div class="edit-field bucket-field">
+          <label>${esc(t("bucket"))}</label>
+          <select class="bucket-select edit-bucket">${bucketOptionsHtml(item.bucket || "")}</select>
         </div>
       </div>
       <div class="item-actions">
@@ -914,6 +1074,7 @@ function renderRequirements() {
     $("#add-any").checked = false;
     $("#add-scope").value = state.language === "zh" ? "所有邮件任务" : "all email tasks";
     $("#add-global").checked = false;
+    $("#add-bucket").value = "output_contract";
     syncAddMetadataControls();
     $("#add-input").focus();
   };
@@ -939,7 +1100,8 @@ function renderRequirements() {
         row.querySelector(".edit-any").checked
           ? "any" : row.querySelector(".edit-work-kind").value,
         row.querySelector(".edit-global").checked
-          ? "global" : row.querySelector(".edit-scope").value);
+          ? "global" : row.querySelector(".edit-scope").value,
+        row.querySelector(".edit-bucket").value);
     };
   });
   reqListEl.querySelectorAll('[data-action="delete"]').forEach((button) => {
@@ -965,7 +1127,7 @@ function renderRequirements() {
     global.onchange = sync;
     sync();
   });
-  reqListEl.querySelectorAll(".edit-input,.edit-work-kind,.edit-scope").forEach((input) => {
+  reqListEl.querySelectorAll(".edit-input,.edit-work-kind,.edit-scope,.edit-bucket").forEach((input) => {
     input.onkeydown = (event) => {
       if (event.isComposing || event.keyCode === 229) return;
       if (event.key === "Escape") {
@@ -985,7 +1147,7 @@ function renderRequirements() {
   renderPanelNotice();
 }
 
-async function saveRequirement(id, text, workKind, scopeText) {
+async function saveRequirement(id, text, workKind, scopeText, bucket) {
   text = text.trim();
   if (!text) {
     showPanelNotice("error", "memoryEmpty");
@@ -1000,7 +1162,9 @@ async function saveRequirement(id, text, workKind, scopeText) {
   try {
     await requestJSON(`/api/requirements/${id}`, {
       method: "PATCH", headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({text, work_kind: workKind, scope_text: scopeText}),
+      body: JSON.stringify({
+        text, work_kind: workKind, scope_text: scopeText, bucket,
+      }),
     });
     state.editingId = null;
     await loadRequirements();
@@ -1056,6 +1220,7 @@ $("#add-form").onsubmit = async (e) => {
     ? "any" : $("#add-work-kind").value.trim();
   const scopeText = $("#add-global").checked
     ? "global" : $("#add-scope").value.trim();
+  const bucket = $("#add-bucket").value;
   if (!text) {
     showPanelNotice("error", "memoryEmpty");
     return;
@@ -1065,11 +1230,12 @@ $("#add-form").onsubmit = async (e) => {
   try {
     const result = await requestJSON("/api/requirements", {
       method: "POST", headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({text, work_kind: workKind, scope_text: scopeText}),
+      body: JSON.stringify({text, work_kind: workKind, scope_text: scopeText, bucket}),
     });
     $("#add-input").value = "";
     $("#add-work-kind").value = "";
     $("#add-scope").value = "";
+    $("#add-bucket").value = "";
     $("#add-any").checked = false;
     $("#add-global").checked = false;
     syncAddMetadataControls();
@@ -1380,6 +1546,9 @@ $("#add-input").addEventListener("keydown", (event) => {
 syncAddMetadataControls();
 $("#lang-zh").onclick = () => setLanguage("zh");
 $("#lang-en").onclick = () => setLanguage("en");
+document.querySelectorAll("[data-theme-choice]").forEach((button) => {
+  button.onclick = () => setTheme(button.dataset.themeChoice);
+});
 $("#nav-memory").onclick = () => setPage("memory");
 $("#nav-allowlist").onclick = () => setPage("allowlist");
 $("#nav-settings").onclick = () => setPage("settings");

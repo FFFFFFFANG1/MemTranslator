@@ -16,28 +16,33 @@ def make_client(tmp_path):
     return TestClient(app), app
 
 
-def add_requirement(client, text, *, work_kind="any", scope="global"):
+def add_requirement(client, text, *, work_kind="any", scope="global",
+                    bucket=""):
     return client.post("/api/requirements", json={
         "text": text, "work_kind": work_kind, "scope_text": scope,
+        "bucket": bucket,
     })
 
 
 def test_requirement_crud(tmp_path):
     client, app = make_client(tmp_path)
     r = add_requirement(client, "Emails under 120 words.",
-                        work_kind="email", scope="audience=client")
+                        work_kind="email", scope="audience=client",
+                        bucket="output_contract")
     assert r.status_code == 200
     rid = r.json()["id"]
 
     r = client.patch(f"/api/requirements/{rid}",
                      json={"text": "Emails under 80 words.",
                            "work_kind": "email, report",
-                           "scope_text": "audience=client, language=English"})
+                           "scope_text": "audience=client, language=English",
+                           "bucket": "communication_style"})
     assert r.status_code == 200
     assert r.json()["text"] == "Emails under 80 words."
     assert r.json()["kinds"] == ["email", "report"]
     assert r.json()["scope"] == {"audience": "client",
                                   "language": "english"}
+    assert r.json()["bucket"] == "communication_style"
 
     r = client.delete(f"/api/requirements/{rid}")
     assert r.status_code == 200
@@ -46,12 +51,17 @@ def test_requirement_crud(tmp_path):
     persisted = Store(app.state.store.path).get(rid)
     assert persisted.text == "Emails under 80 words."
     assert persisted.status == "retired"
+    assert persisted.bucket == "communication_style"
 
     r = client.get("/api/requirements")
     assert len(r.json()["requirements"]) == 1
     assert r.json()["requirements"][0]["text"] == "Emails under 80 words."
     assert r.json()["requirements"][0]["status"] == "retired"
     assert r.json()["requirements"][0]["kinds"] == ["email", "report"]
+    assert r.json()["buckets"] == [
+        "task_goal", "reasoning_policy", "deliverables",
+        "output_contract", "communication_style", "execution_policy",
+    ]
 
     kinds = [event["kind"] for event in app.state.events.read_all()]
     assert "requirement_added" in kinds
@@ -62,6 +72,42 @@ def test_requirement_crud(tmp_path):
                         json={"status": "retired"}).status_code == 404
     assert client.delete("/api/requirements/req-nope").status_code == 404
     assert client.post("/api/requirements", json={"text": "  "}).status_code == 400
+
+
+def test_requirement_bucket_is_a_closed_api_choice(tmp_path):
+    client, _ = make_client(tmp_path)
+
+    invalid = add_requirement(
+        client, "Use a made-up bucket.", bucket="whatever_the_user_types")
+    assert invalid.status_code == 400
+    assert invalid.json()["detail"] == "unknown bucket: whatever_the_user_types"
+
+    created = add_requirement(
+        client, "Return a checklist.", bucket="output_contract")
+    req_id = created.json()["id"]
+    cleared = client.patch(
+        f"/api/requirements/{req_id}", json={"bucket": ""})
+    assert cleared.status_code == 200
+    assert cleared.json()["bucket"] == ""
+    invalid_patch = client.patch(
+        f"/api/requirements/{req_id}", json={"bucket": "free-form"})
+    assert invalid_patch.status_code == 400
+
+
+def test_control_center_exposes_theme_and_controlled_bucket_ui(tmp_path):
+    client, _ = make_client(tmp_path)
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+    html = response.text
+    assert 'data-theme-choice="system"' in html
+    assert 'data-theme-choice="light"' in html
+    assert 'data-theme-choice="dark"' in html
+    assert "prefers-color-scheme:dark" in html
+    assert 'id="add-bucket"' in html
+    assert 'class="bucket-select edit-bucket"' in html
+    assert "payload.buckets" in html
 
 
 def test_source_allowlist_crud_and_persistence(tmp_path):

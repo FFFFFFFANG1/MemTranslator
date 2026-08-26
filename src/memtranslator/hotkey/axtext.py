@@ -56,6 +56,10 @@ from memtranslator.hotkey.profiles import resolve_profile
 from memtranslator.source_policy import AI_APP_BUNDLES, is_ai_app
 
 KEY_A, KEY_V = 0, 9
+CAPTURE_ATTEMPTS = 4
+CAPTURE_RETRY_SECONDS = 0.04
+VERIFY_ATTEMPTS = 9
+VERIFY_RETRY_SECONDS = 0.04
 
 _CHROMIUM_BUNDLES = {
     "com.google.Chrome",
@@ -353,6 +357,20 @@ def capture_focused_input() -> InputSnapshot | None:
     return snapshot
 
 
+def _capture_with_ax_retries() -> InputSnapshot | None:
+    """Read through a bounded Electron focus/value propagation gap."""
+    last_snapshot = None
+    for attempt in range(CAPTURE_ATTEMPTS):
+        current = capture_focused_input()
+        if current is not None:
+            last_snapshot = current
+            if current.target_text.strip():
+                return current
+        if attempt + 1 < CAPTURE_ATTEMPTS:
+            time.sleep(CAPTURE_RETRY_SECONDS)
+    return last_snapshot
+
+
 def _tap_key(keycode: int, cmd: bool = False) -> None:
     for down in (True, False):
         event = CGEventCreateKeyboardEvent(None, keycode, down)
@@ -372,9 +390,23 @@ def _set_selection(element, selection: TextRange) -> bool:
 
 
 def _verify(expected: str, identity: str) -> bool:
-    current = capture_focused_input()
-    return bool(current and current.identity == identity
-                and current.full_text == expected)
+    """Wait briefly for an asynchronous web/Electron write to reach AX.
+
+    Posting Command-V updates the editor before Chromium necessarily publishes
+    the new AXValue.  Verification is still guarded by the captured element
+    identity, but a stale value or a temporarily unavailable value is retried
+    instead of being reported as a failed write immediately.
+    """
+    for attempt in range(VERIFY_ATTEMPTS):
+        current = capture_focused_input()
+        if current is not None and current.identity != identity:
+            return False
+        if (current is not None and current.identity == identity
+                and current.full_text == expected):
+            return True
+        if attempt + 1 < VERIFY_ATTEMPTS:
+            time.sleep(VERIFY_RETRY_SECONDS)
+    return False
 
 
 def _write_value(element, snapshot: InputSnapshot, polished: str,
@@ -436,7 +468,7 @@ def _write_paste(element, snapshot: InputSnapshot, polished: str,
 def write_snapshot(snapshot: InputSnapshot, polished: str) -> WriteResult:
     if snapshot.secure or not snapshot.editable:
         return WriteResult(False, "none", reason="protected_input")
-    current = capture_focused_input()
+    current = _capture_with_ax_retries()
     if current is None or current.identity != snapshot.identity:
         return WriteResult(False, "none", reason="focus_changed")
     if current.full_text != snapshot.full_text:
@@ -460,7 +492,16 @@ def write_snapshot(snapshot: InputSnapshot, polished: str) -> WriteResult:
 
 
 class MacOSInputAdapter:
-    capture = staticmethod(capture_focused_input)
+    @staticmethod
+    def capture() -> InputSnapshot | None:
+        """Read through short-lived AX focus/value propagation gaps.
+
+        Electron may publish the focused element before the last typed text is
+        visible as AXValue.  Keep a genuinely empty snapshot as the fallback so
+        an empty composer is still reported correctly after the bounded wait.
+        """
+        return _capture_with_ax_retries()
+
     write = staticmethod(write_snapshot)
 
 

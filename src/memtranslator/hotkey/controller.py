@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import threading
 
+from memtranslator.hotkey.models import WriteResult
 from memtranslator.hotkey.tracker import EditTracker
 
 
@@ -52,7 +53,12 @@ class DesktopController:
                 return {"status": "write_failed", "write": result}
             post_write = self.adapter.capture()
             if post_write is None:
-                return {"status": "write_failed", "write": result}
+                return {
+                    "status": "write_failed",
+                    "write": WriteResult(
+                        False, result.strategy,
+                        reason="post_write_capture_failed"),
+                }
             self.tracker.start(
                 post_write,
                 translate_id=translated["translate_id"],

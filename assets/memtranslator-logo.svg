@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">MemTranslator</title>
+  <desc id="desc">Two horizontal arrows pointing in opposite directions</desc>
+  <rect width="160" height="160" rx="36" fill="#f7f7f8"/>
+  <g fill="none" stroke="#181818" stroke-width="9.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M28 56h100m-24-24 24 24-24 24M132 104H32m24-24-24 24 24 24"/>
+  </g>
+</svg>

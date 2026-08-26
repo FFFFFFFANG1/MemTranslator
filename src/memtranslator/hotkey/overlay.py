@@ -18,6 +18,7 @@ from AppKit import (
     NSFloatingWindowLevel,
     NSFont,
     NSFontWeightMedium,
+    NSGradient,
     NSMakePoint,
     NSMakeRect,
     NSPanel,
@@ -107,12 +108,16 @@ class NetworkView(NSView):
 
     def drawRect_(self, _dirty_rect):
         bounds = self.bounds()
-        card = NSBezierPath.bezierPathWithRoundedRect_xRadius_yRadius_(
-            NSMakeRect(2, 2, bounds.size.width - 4, bounds.size.height - 4),
-            20, 20)
-        _paper(0.98).setFill()
-        card.fill()
-        self._stroke(card, 1.15, _graphite(0.24))
+        center = NSMakePoint(bounds.size.width / 2.0,
+                             bounds.size.height / 2.0)
+        # Keep the graph readable over arbitrary editors without drawing a
+        # visible card: white at the core, then a circular fade to fully
+        # transparent exactly around the network's outer edge.
+        backdrop = NSGradient.alloc().initWithStartingColor_endingColor_(
+            _paper(0.96), _paper(0.0))
+        backdrop.drawFromCenter_radius_toCenter_radius_options_(
+            center, 7.0, center, min(bounds.size.width,
+                                     bounds.size.height) / 2.0, 0)
 
         if self.completed:
             pulse = (math.sin(self.phase * 1.35) + 1.0) / 2.0
@@ -176,7 +181,7 @@ class StatusOverlay:
         )
         self.panel.setOpaque_(False)
         self.panel.setBackgroundColor_(NSColor.clearColor())
-        self.panel.setHasShadow_(True)
+        self.panel.setHasShadow_(False)
         self.panel.setLevel_(NSFloatingWindowLevel)
         self.panel.setHidesOnDeactivate_(False)
         self.panel.setIgnoresMouseEvents_(True)
@@ -322,6 +327,10 @@ class StatusOverlay:
 
     def hide(self) -> None:
         AppHelper.callAfter(self._hide)
+
+    def shutdown(self) -> None:
+        """Synchronously release timers and the panel on the Cocoa thread."""
+        self._hide()
 
     def _hide(self) -> None:
         self._cancel_timer("_hide_timer")

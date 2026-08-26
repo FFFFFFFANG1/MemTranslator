@@ -18,6 +18,7 @@ from pydantic import BaseModel
 from memtranslator import config, llm
 from memtranslator.pipeline import Pipeline
 from memtranslator.runtime_settings import RuntimeSettings
+from memtranslator.schema import BUCKETS
 from memtranslator.scopes import normalize_kind
 from memtranslator.signals import attribute_diff, classify_feedback, patch_diff
 from memtranslator.source_policy import SourceAllowlist, route_a_source_allowed
@@ -31,6 +32,7 @@ class RequirementIn(BaseModel):
     text: str
     work_kind: str | list[str] | None = None
     scope_text: str | None = None
+    bucket: str | None = None
 
 
 class RequirementPatch(BaseModel):
@@ -38,6 +40,7 @@ class RequirementPatch(BaseModel):
     status: str | None = None
     work_kind: str | list[str] | None = None
     scope_text: str | None = None
+    bucket: str | None = None
 
 
 class TranslateIn(BaseModel):
@@ -141,6 +144,12 @@ def create_app(store_path: Path | None = None,
                 filters[key.strip()] = item.strip()
             return filters, "", "scoped"
         return {}, text, "scoped"
+
+    def _bucket(value: str | None) -> str:
+        bucket = (value or "").strip()
+        if bucket and bucket not in BUCKETS:
+            raise ValueError(f"unknown bucket: {bucket}")
+        return bucket
 
     def _source_patterns(value: str | list[str]) -> list[str]:
         raw = re.split(r"[,，\n]", value) if isinstance(value, str) else value
@@ -282,7 +291,10 @@ def create_app(store_path: Path | None = None,
 
     @app.get("/api/requirements")
     def list_requirements():
-        return {"requirements": [r.to_dict() for r in store.list()]}
+        return {
+            "requirements": [r.to_dict() for r in store.list()],
+            "buckets": list(BUCKETS),
+        }
 
     @app.get("/api/source-allowlist")
     def list_source_allowlist():
@@ -329,6 +341,10 @@ def create_app(store_path: Path | None = None,
             raise HTTPException(400, "requirement text is empty")
         kinds = _work_kinds(body.work_kind)
         scope_text = (body.scope_text or "").strip()
+        try:
+            bucket = _bucket(body.bucket)
+        except ValueError as exc:
+            raise HTTPException(400, str(exc))
         if not kinds or not scope_text:
             now = time.time()
             pipeline.add_natural([text], now)
@@ -336,6 +352,7 @@ def create_app(store_path: Path | None = None,
                 "text": text,
                 "provided_work_kind": kinds,
                 "provided_scope": scope_text,
+                "provided_bucket": bucket,
                 "route": "extractor_a",
             })
             try:
@@ -355,13 +372,13 @@ def create_app(store_path: Path | None = None,
                 raise ValueError("global scope requires work kind any")
             req = store.add(text, kinds=kinds, scope=scope,
                             applies_when=applies_when,
-                            scope_mode=scope_mode)
+                            scope_mode=scope_mode, bucket=bucket)
         except ValueError as e:
             raise HTTPException(400, str(e))
         events.append("requirement_added", {
             "id": req.id, "text": req.text, "kinds": req.kinds,
             "scope": req.scope, "applies_when": req.applies_when,
-            "scope_mode": req.scope_mode,
+            "scope_mode": req.scope_mode, "bucket": req.bucket,
         })
         return req.to_dict()
 
@@ -385,6 +402,8 @@ def create_app(store_path: Path | None = None,
                     "applies_when": applies_when,
                     "scope_mode": scope_mode,
                 })
+            if body.bucket is not None:
+                updates["bucket"] = _bucket(body.bucket)
             pending_kinds = updates.get("kinds", current.kinds)
             pending_scope_mode = updates.get("scope_mode", current.scope_mode)
             if (pending_scope_mode == "global"
@@ -400,7 +419,7 @@ def create_app(store_path: Path | None = None,
                       {"id": req.id, "text": req.text, "status": req.status,
                        "kinds": req.kinds, "scope": req.scope,
                        "applies_when": req.applies_when,
-                       "scope_mode": req.scope_mode})
+                       "scope_mode": req.scope_mode, "bucket": req.bucket})
         return req.to_dict()
 
     @app.delete("/api/requirements/{req_id}")
