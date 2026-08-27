@@ -1,8 +1,9 @@
 """MemTranslator macOS menu-bar client.
 
-⌥⌘R captures the focused composer as a guarded Accessibility transaction,
+⌥⌃R captures the focused composer as a guarded Accessibility transaction,
 asks the local daemon to compile applicable requirements into it, writes the
 result back, then watches the same composer briefly for human edits.
+⌥⌃Enter forwards a normal Enter and explicitly queues the message for memory.
 """
 from __future__ import annotations
 
@@ -21,6 +22,7 @@ from Quartz import (
     CFMachPortCreateRunLoopSource,
     CFRunLoopAddSource,
     CFRunLoopGetCurrent,
+    CGEventCreateCopy,
     CGEventGetFlags,
     CGEventGetIntegerValueField,
     CGEventMaskBit,
@@ -29,13 +31,18 @@ from Quartz import (
     kCFRunLoopCommonModes,
     kCGEventFlagMaskAlternate,
     kCGEventFlagMaskCommand,
+    kCGEventFlagMaskControl,
+    kCGEventFlagMaskShift,
     kCGEventKeyDown,
+    kCGEventKeyUp,
     kCGEventLeftMouseDown,
     kCGEventOtherMouseDown,
     kCGEventRightMouseDown,
+    kCGEventSourceUserData,
     kCGEventTapOptionDefault,
     kCGHeadInsertEventTap,
     kCGKeyboardEventKeycode,
+    kCGKeyboardEventAutorepeat,
     kCGSessionEventTap,
 )
 from objc import super
@@ -56,6 +63,10 @@ POINTER_DOWN_EVENTS = {
 }
 POINTER_SETTLE_SECONDS = 0.08
 HOTKEY_SETTLE_SECONDS = 0.04
+READY_LABEL = "Ready · ⌥⌃R rewrite / ⌥⌃Enter capture + send"
+SHORTCUT_MODIFIERS = kCGEventFlagMaskAlternate | kCGEventFlagMaskControl
+MODIFIER_MASK = (SHORTCUT_MODIFIERS | kCGEventFlagMaskCommand
+                 | kCGEventFlagMaskShift)
 
 
 def polish_flow(read=None, write=None, post=None) -> str:
@@ -97,6 +108,8 @@ class App(NSObject):
         self._pointer_timer = None
         self._state_timer = None
         self._shutting_down = False
+        self._shortcut_lock = threading.Lock()
+        self._action_generation = 0
         self.status_item = NSStatusBar.systemStatusBar() \
             .statusItemWithLength_(NSVariableStatusItemLength)
         self.status_item.button().setTitle_("⇄")
@@ -107,7 +120,7 @@ class App(NSObject):
         title.setEnabled_(False)
         menu.addItem_(title)
         self.state_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
-            "Ready · ⌥⌘R", None, "")
+            READY_LABEL, None, "")
         self.state_item.setEnabled_(False)
         menu.addItem_(self.state_item)
         menu.addItem_(NSMenuItem.separatorItem())
@@ -146,7 +159,7 @@ class App(NSObject):
         if reset_after:
             def reset_state():
                 self._state_timer = None
-                self._set_state("⇄", "Ready · ⌥⌘R")
+                self._set_state("⇄", READY_LABEL)
 
             self._state_timer = threading.Timer(reset_after, reset_state)
             self._state_timer.daemon = True
@@ -195,7 +208,7 @@ class App(NSObject):
         self._schedule_poll()
 
     def on_enter(self) -> None:
-        if not self.controller.tracker.active:
+        if not self.controller.has_pending_draft:
             return
         threading.Thread(target=lambda: self.controller.observe(key="Enter"),
                          daemon=True).start()
@@ -221,8 +234,70 @@ class App(NSObject):
         self._pointer_timer.daemon = True
         self._pointer_timer.start()
 
-    def on_hotkey(self) -> None:
-        print("hotkey accepted: option+command+r", flush=True)
+    def on_shortcut(self, keycode: int, original_event) -> None:
+        pid = axtext.frontmost_pid()
+        if not self._shortcut_lock.acquire(blocking=False):
+            self.overlay.show("正在处理上一条操作，请稍候", auto_hide=1.8)
+            return
+        self._action_generation += 1
+        generation = self._action_generation
+
+        def save(event):
+            result = self.controller.save_capture(event)
+            if (self._shutting_down
+                    or (generation != self._action_generation
+                        and result["status"] == "captured")):
+                return
+            if result["status"] == "captured":
+                self._set_state("✓", "Message queued for memory", 2.2)
+                self.overlay.show("✓ 已提交记忆提取", auto_hide=1.8)
+            else:
+                self._set_state("!", "Enter forwarded; capture unconfirmed", 3)
+                self.overlay.show("已触发发送；未能确认采集", auto_hide=3)
+
+        def run():
+            try:
+                # Let the event tap return before asking Electron for AXValue.
+                time.sleep(HOTKEY_SETTLE_SECONDS)
+                if self._shutting_down or not pid or axtext.frontmost_pid() != pid:
+                    return
+                captured = self.controller.adapter.capture()
+                if self._shutting_down or axtext.frontmost_pid() != pid:
+                    return
+                if not self.controller.shortcut_allowed(captured):
+                    axtext.replay_shortcut(original_event, pid)
+                    if keycode in ENTER_KEYS:
+                        self.overlay.show("未采集：来源或输入框不受支持", auto_hide=2.2)
+                    return
+                if keycode == KEY_R:
+                    self.on_hotkey(snapshot=captured, _synchronous=True)
+                    return
+                result = self.controller.prepare_send(captured)
+                if result["status"] == "sent":
+                    self._schedule_poll()
+                    self._set_state("…", "Enter forwarded; saving capture…")
+                    # A slow/offline daemon must not block the next gesture.
+                    threading.Thread(target=save, args=(result["event"],),
+                                     daemon=True).start()
+                else:
+                    message = {
+                        "empty": "输入为空，未采集或发送",
+                        "unsupported": "来源或输入框不受支持，未发送",
+                        "send_failed": "焦点或内容已变化，未采集或发送",
+                        "unverified_origin": "无法确认改写前原文，未发送；请使用普通 Enter",
+                    }.get(result["status"], "未能采集或发送")
+                    self._set_state("!", message, 3)
+                    self.overlay.show(message, auto_hide=3)
+            except Exception:
+                self._set_state("!", "Shortcut failed", 3)
+                self.overlay.show("快捷键操作未完成", auto_hide=3)
+            finally:
+                self._shortcut_lock.release()
+
+        threading.Thread(target=run, daemon=True).start()
+
+    def on_hotkey(self, snapshot=None, _synchronous: bool = False) -> None:
+        print("rewrite requested: option+control+r / menu", flush=True)
         if self._pointer_timer is not None:
             self._pointer_timer.cancel()
             self._pointer_timer = None
@@ -234,8 +309,10 @@ class App(NSObject):
             # The event-tap callback must return before querying Accessibility.
             # Otherwise Electron can expose the focused composer with the value
             # from just before the hotkey's key-down/modifier sequence settled.
-            time.sleep(HOTKEY_SETTLE_SECONDS)
-            captured_snapshot = self.controller.adapter.capture()
+            if snapshot is None:
+                time.sleep(HOTKEY_SETTLE_SECONDS)
+            captured_snapshot = (snapshot if snapshot is not None
+                                 else self.controller.adapter.capture())
             bounds = (captured_snapshot.screen_bounds
                       if captured_snapshot is not None else None)
             self.overlay.start(bounds)
@@ -275,7 +352,46 @@ class App(NSObject):
                     "write_failed": "回填失败",
                 }.get(status, "处理失败")
                 self.overlay.show(overlay_label, bounds, auto_hide=1.6)
-        threading.Thread(target=run, daemon=True).start()
+        if _synchronous:
+            run()
+        else:
+            threading.Thread(target=run, daemon=True).start()
+
+
+def make_tap_callback(app):
+    consumed: set[int] = set()
+
+    def tap_callback(_proxy, event_type, event, _refcon):
+        if (CGEventGetIntegerValueField(event, kCGEventSourceUserData)
+                == axtext.SYNTHETIC_EVENT_TAG):
+            return event
+        if event_type in POINTER_DOWN_EVENTS:
+            app.on_pointer_down()
+            return event
+        if event_type not in {kCGEventKeyDown, kCGEventKeyUp}:
+            return event
+        keycode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode)
+        if event_type == kCGEventKeyUp:
+            if keycode in consumed:
+                consumed.remove(keycode)
+                return None
+            return event
+        if keycode in consumed:
+            return None
+        flags = CGEventGetFlags(event) & MODIFIER_MASK
+        repeat = CGEventGetIntegerValueField(event, kCGKeyboardEventAutorepeat)
+        if keycode in (KEY_R, *ENTER_KEYS) and flags == SHORTCUT_MODIFIERS:
+            consumed.add(keycode)
+            if not repeat:
+                app.on_shortcut(keycode, CGEventCreateCopy(event))
+            return None
+        # Shift+Enter/IME modifiers are not send feedback. Explicit capture's
+        # synthetic Enter is tagged and already handled before this branch.
+        if keycode in ENTER_KEYS and flags == 0 and not repeat:
+            app.on_enter()
+        return event
+
+    return tap_callback
 
 
 def main():
@@ -285,24 +401,8 @@ def main():
     nsapp.setActivationPolicy_(NSApplicationActivationPolicyAccessory)
     app = App.alloc().init()
 
-    def tap_callback(_proxy, event_type, event, _refcon):
-        if event_type in POINTER_DOWN_EVENTS:
-            app.on_pointer_down()
-            return event
-        if event_type != kCGEventKeyDown:
-            return event
-        keycode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode)
-        flags = CGEventGetFlags(event)
-        if (keycode == KEY_R
-                and flags & kCGEventFlagMaskCommand
-                and flags & kCGEventFlagMaskAlternate):
-            app.on_hotkey()
-            return None
-        if keycode in ENTER_KEYS:
-            app.on_enter()
-        return event
-
-    event_mask = CGEventMaskBit(kCGEventKeyDown)
+    tap_callback = make_tap_callback(app)
+    event_mask = CGEventMaskBit(kCGEventKeyDown) | CGEventMaskBit(kCGEventKeyUp)
     for pointer_event in POINTER_DOWN_EVENTS:
         event_mask |= CGEventMaskBit(pointer_event)
     tap = CGEventTapCreate(kCGSessionEventTap, kCGHeadInsertEventTap,

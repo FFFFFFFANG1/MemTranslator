@@ -141,3 +141,37 @@ def test_empty_queue_never_calls(monkeypatch, tmp_path):
     p = _pipe(tmp_path)
     assert p.maybe_flush(now=99999.0) is None
     assert calls == []
+
+
+def test_concurrent_capture_is_not_erased_by_an_in_flight_flush(monkeypatch, tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Event
+    from memtranslator import pipeline
+
+    started, release, adding = Event(), Event(), Event()
+
+    def extract(messages, _items):
+        assert messages == ["first message"]
+        started.set()
+        assert release.wait(2)
+        return {"ops": [], "flags": []}
+
+    monkeypatch.setattr(pipeline, "run_a_extraction", extract)
+    p = _pipe(tmp_path)
+    p.add_natural(["first message"], now=0)
+
+    def add_next():
+        adding.set()
+        return p.add_natural(["second message"], now=1)
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        flush = pool.submit(p.maybe_flush, 0, force=True)
+        try:
+            assert started.wait(2)
+            add = pool.submit(add_next)
+            assert adding.wait(2)
+        finally:
+            release.set()
+        flush.result(timeout=2)
+        assert add.result(timeout=2) == 1
+    assert p._a == ["second message"]

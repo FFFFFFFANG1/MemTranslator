@@ -22,6 +22,7 @@ class InputSnapshot:
     target_range: TextRange
     app_name: str = ""
     app_bundle_id: str = ""
+    app_pid: int = 0
     web_domain: str = ""
     window_title: str = ""
     role: str = ""
@@ -68,3 +69,12 @@ class FeedbackEvent:
     final_text: str
     trigger: str
     input_context: dict
+
+
+@dataclass(frozen=True)
+class CaptureEvent:
+    capture_id: str
+    text: str
+    input_context: dict
+    translate_id: str | None = None
+    feedback: FeedbackEvent | None = None

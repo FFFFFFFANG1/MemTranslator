@@ -44,10 +44,16 @@ from ApplicationServices import (
     kAXWindowAttribute,
 )
 from Quartz import (
+    CGEventCreateCopy,
     CGEventCreateKeyboardEvent,
     CGEventPost,
+    CGEventPostToPid,
     CGEventSetFlags,
+    CGEventSetIntegerValueField,
+    CGEventSetType,
     kCGEventFlagMaskCommand,
+    kCGEventKeyUp,
+    kCGEventSourceUserData,
     kCGHIDEventTap,
 )
 
@@ -56,6 +62,7 @@ from memtranslator.hotkey.profiles import resolve_profile
 from memtranslator.source_policy import AI_APP_BUNDLES, is_ai_app
 
 KEY_A, KEY_V = 0, 9
+SYNTHETIC_EVENT_TAG = 0x4D54524E
 CAPTURE_ATTEMPTS = 4
 CAPTURE_RETRY_SECONDS = 0.04
 VERIFY_ATTEMPTS = 9
@@ -195,6 +202,11 @@ def _frontmost_app() -> tuple[str, str]:
     return app.localizedName() or "", app.bundleIdentifier() or ""
 
 
+def frontmost_pid() -> int:
+    app = NSWorkspace.sharedWorkspace().frontmostApplication()
+    return int(app.processIdentifier()) if app is not None else 0
+
+
 def _url_string(value) -> str:
     if isinstance(value, str):
         return value
@@ -294,6 +306,14 @@ def capture_focused_input() -> InputSnapshot | None:
     element = _focused_element()
     if element is None:
         return None
+    role = _string_attr(element, kAXRoleAttribute)
+    subrole = _string_attr(element, kAXSubroleAttribute)
+    role_text = f"{role} {subrole}".casefold()
+    if "secure" in role_text or "password" in role_text:
+        # Do not even read AXValue for a protected field.
+        return InputSnapshot(identity="protected", full_text="",
+                             target_range=TextRange(0, 0), role=role,
+                             subrole=subrole, secure=True, editable=False)
     value_error, value = AXUIElementCopyAttributeValue(
         element, kAXValueAttribute, None)
     if not isinstance(value, str):
@@ -305,8 +325,6 @@ def capture_focused_input() -> InputSnapshot | None:
         _debug_capture_failure(
             "focused_value_empty", element=element, value=value,
             value_error=value_error)
-    role = _string_attr(element, kAXRoleAttribute)
-    subrole = _string_attr(element, kAXSubroleAttribute)
     identifier = _string_attr(element, kAXIdentifierAttribute)
     description = _string_attr(element, kAXDescriptionAttribute)
     window = _copy(element, kAXWindowAttribute)
@@ -337,6 +355,7 @@ def capture_focused_input() -> InputSnapshot | None:
         target_range=selected,
         app_name=app_name,
         app_bundle_id=bundle_id,
+        app_pid=frontmost_pid(),
         web_domain=web_domain,
         window_title=window_title,
         role=role,
@@ -364,6 +383,8 @@ def _capture_with_ax_retries() -> InputSnapshot | None:
         current = capture_focused_input()
         if current is not None:
             last_snapshot = current
+            if current.secure or not current.editable:
+                return current
             if current.target_text.strip():
                 return current
         if attempt + 1 < CAPTURE_ATTEMPTS:
@@ -491,6 +512,38 @@ def write_snapshot(snapshot: InputSnapshot, polished: str) -> WriteResult:
     return last
 
 
+def replay_shortcut(event, pid: int) -> bool:
+    """Leave unsupported inputs' native shortcut behavior intact."""
+    if not pid or frontmost_pid() != pid:
+        return False
+    for key_up in (False, True):
+        replay = CGEventCreateCopy(event)
+        if key_up:
+            CGEventSetType(replay, kCGEventKeyUp)
+        CGEventSetIntegerValueField(replay, kCGEventSourceUserData,
+                                    SYNTHETIC_EVENT_TAG)
+        CGEventPostToPid(pid, replay)
+    return True
+
+
+def send_enter(snapshot: InputSnapshot) -> bool:
+    current = _capture_with_ax_retries()
+    if (current is None or current.secure or not current.editable
+            or current.identity != snapshot.identity
+            or current.full_text != snapshot.full_text
+            or not snapshot.app_pid or frontmost_pid() != snapshot.app_pid):
+        return False
+    # Explicitly clear ALL modifiers: the physical Option/Control keys may
+    # still be held. Mark both events so our tap cannot capture them again.
+    for down in (True, False):
+        event = CGEventCreateKeyboardEvent(None, 36, down)
+        CGEventSetFlags(event, 0)
+        CGEventSetIntegerValueField(event, kCGEventSourceUserData,
+                                    SYNTHETIC_EVENT_TAG)
+        CGEventPostToPid(snapshot.app_pid, event)
+    return True
+
+
 class MacOSInputAdapter:
     @staticmethod
     def capture() -> InputSnapshot | None:
@@ -503,6 +556,7 @@ class MacOSInputAdapter:
         return _capture_with_ax_retries()
 
     write = staticmethod(write_snapshot)
+    send_enter = staticmethod(send_enter)
 
 
 # Compatibility surface for the original spike and third-party imports.

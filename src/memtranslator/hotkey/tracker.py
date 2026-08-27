@@ -36,6 +36,11 @@ class EditTracker:
         with self._lock:
             self._state = None
 
+    def matches(self, snapshot: InputSnapshot) -> bool:
+        with self._lock:
+            return (self._state is not None
+                    and self._state["identity"] == snapshot.identity)
+
     def observe(self, snapshot: InputSnapshot | None, *, key: str = "",
                 now: float | None = None) -> FeedbackEvent | None:
         at = time.monotonic() if now is None else now

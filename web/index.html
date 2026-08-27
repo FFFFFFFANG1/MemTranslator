@@ -462,7 +462,7 @@ button{
 
     <section id="allowlist-page" class="page" hidden>
       <h2 data-i18n="allowlistTitle">采集白名单</h2>
-      <div class="sub"><span data-i18n="allowlistSubtitle">允许静默写入 Extractor-A 的来源</span> · <b id="allowlist-count">0</b> <span data-i18n="sourceUnit">个来源</span></div>
+      <div class="sub"><span data-i18n="allowlistSubtitle">允许通过 Option+Control+Enter 显式采集的来源</span> · <b id="allowlist-count">0</b> <span data-i18n="sourceUnit">个来源</span></div>
       <form id="allowlist-add-form">
         <div class="field-group">
           <label for="allowlist-label" data-i18n="sourceLabel">名称</label>
@@ -616,7 +616,7 @@ const STRINGS = {
     deleteFailed: "删除失败：{message}",
     restoreFailed: "恢复失败：{message}",
     allowlistTitle: "采集白名单",
-    allowlistSubtitle: "允许静默写入 Extractor-A 的来源",
+    allowlistSubtitle: "允许通过 Option+Control+Enter 显式采集的来源",
     sourceUnit: "个来源",
     sourceLabel: "名称",
     sourceType: "类型",
@@ -627,7 +627,7 @@ const STRINGS = {
     sourceWeb: "Website",
     newSource: "新增",
     defaultSource: "默认",
-    emptyAllowlist: "白名单为空。普通输入仍可翻译，但不会静默进入 Extractor-A。",
+    emptyAllowlist: "白名单为空。快捷键不接管输入，仍可通过菜单改写。",
     sourceRequired: "名称和匹配值不能为空。",
     confirmSourceDelete: "确定从采集白名单中删除这个来源吗？",
     sourceCreateSuccess: "白名单来源已新增。",
@@ -725,7 +725,7 @@ const STRINGS = {
     deleteFailed: "Could not delete memory: {message}",
     restoreFailed: "Could not restore memory: {message}",
     allowlistTitle: "Capture allowlist",
-    allowlistSubtitle: "sources allowed to write silently to Extractor-A",
+    allowlistSubtitle: "sources allowed for explicit Option+Control+Enter capture",
     sourceUnit: "sources",
     sourceLabel: "Name",
     sourceType: "Type",
@@ -736,7 +736,7 @@ const STRINGS = {
     sourceWeb: "Website",
     newSource: "New",
     defaultSource: "Default",
-    emptyAllowlist: "The allowlist is empty. Translation still works, but no input is silently queued for Extractor-A.",
+    emptyAllowlist: "The allowlist is empty. Shortcuts pass through; rewriting remains available from the menu.",
     sourceRequired: "Name and match values are required.",
     confirmSourceDelete: "Remove this source from the capture allowlist?",
     sourceCreateSuccess: "Allowlist source created.",

@@ -8,12 +8,14 @@ from in v1).
 import json
 import hashlib
 import re
+import threading
 import time
+import uuid
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from memtranslator import config, llm
 from memtranslator.pipeline import Pipeline
@@ -59,6 +61,13 @@ class DesktopFeedbackIn(BaseModel):
     trigger: str
     source: str = "macos-accessibility"
     input_context: dict | None = None
+
+
+class DesktopCaptureIn(BaseModel):
+    capture_id: str = Field(min_length=1, max_length=128)
+    text: str
+    input_context: dict
+    translate_id: str | None = None
 
 
 class SourceAllowlistIn(BaseModel):
@@ -110,7 +119,34 @@ def create_app(store_path: Path | None = None,
     app.state.pipeline = pipeline
     app.state.source_allowlist = source_allowlist
     app.state.runtime_settings = runtime_settings
-    translate_counter = {"n": 0}
+    capture_lock = threading.Lock()
+    capture_history = events.read_all()
+    processed_captures = {
+        capture_id for event in capture_history
+        if event["kind"] == "desktop_capture_processed"
+        for capture_id in event.get("capture_ids", [])
+    }
+    pending_capture_ids: set[str] = set()
+    for event in capture_history:
+        if (event["kind"] == "desktop_capture"
+                and event["capture_id"] not in processed_captures
+                and event["capture_id"] not in pending_capture_ids):
+            pipeline.add_natural([event["original"]], event["at"])
+            pending_capture_ids.add(event["capture_id"])
+
+    def _flush_pipeline(now: float):
+        # Serialize the explicit-capture journal with Route A consumption.
+        # A daemon restart can then restore messages accepted but not flushed.
+        with capture_lock:
+            before = pipeline.a_flush_count
+            try:
+                return pipeline.maybe_flush(now)
+            finally:
+                if pipeline.a_flush_count != before and pending_capture_ids:
+                    events.append("desktop_capture_processed", {
+                        "capture_ids": sorted(pending_capture_ids),
+                    })
+                    pending_capture_ids.clear()
 
     def _work_kinds(value: str | list[str] | None) -> list[str]:
         if value is None:
@@ -191,14 +227,8 @@ def create_app(store_path: Path | None = None,
         if tr is None:
             return False
 
-        # Route A learns only the raw text authored before translation. The
-        # full polished/final text and polished→final fragments are never A
-        # evidence. Human changes remain Route-B feedback for now.
-        original = tr.get("original")
-        if (isinstance(original, str) and original.strip()
-                and route_a_source_allowed(
-                    tr.get("context"), source_allowlist.list())):
-            pipeline.add_natural([original], now)
+        # Feedback only judges the rewrite (Route B). Raw messages enter
+        # Route A through the separate, explicit Option+Control+Enter API.
         applied = tr.get("applied_ids", [])
         attr = attribute_diff(tr["original"], tr["polished"], text)
         if attr["strength_delta"]:
@@ -214,7 +244,7 @@ def create_app(store_path: Path | None = None,
             pipeline.add_feedback(
                 entries, patch_diff(tr["polished"], text), now)
         try:
-            pipeline.maybe_flush(now)
+            _flush_pipeline(now)
         except llm.LLMUnavailable:
             pass          # queue survives; the next submit retries the flush
         return True
@@ -356,7 +386,7 @@ def create_app(store_path: Path | None = None,
                 "route": "extractor_a",
             })
             try:
-                flushed = pipeline.maybe_flush(now)
+                flushed = _flush_pipeline(now)
             except llm.LLMUnavailable:
                 flushed = None
             return {
@@ -453,8 +483,7 @@ def create_app(store_path: Path | None = None,
             applied = [store.get(i).to_dict() for i in result["applied_ids"]
                        if i in store._items]
         polished = result.get("polished") or text
-        translate_counter["n"] += 1
-        translate_id = f"tr-{translate_counter['n']}-{int(len(text))}"
+        translate_id = f"tr-{uuid.uuid4().hex}"
         events.append("translate", {
             "translate_id": translate_id,
             "original": text,
@@ -470,6 +499,61 @@ def create_app(store_path: Path | None = None,
                 "polished": polished, "applied": applied,
                 "parse_error": result["parse_error"],
                 "latency_ms": result["latency_ms"]}
+
+    @app.post("/api/desktop/capture")
+    def desktop_capture(body: DesktopCaptureIn):
+        text = body.text.strip()
+        if not text:
+            raise HTTPException(400, "empty capture text")
+        context = body.input_context
+        if (context.get("secure") or not context.get("editable", True)
+                or not route_a_source_allowed(context, source_allowlist.list())):
+            raise HTTPException(403, "capture source not allowed")
+        now = time.time()
+        # One physical gesture gets one ID. A retry after an uncertain HTTP
+        # result must never queue another copy, including after a restart.
+        with capture_lock:
+            history = events.read_all()
+            previous = next((event for event in history
+                             if event["kind"] == "desktop_capture"
+                             and event.get("capture_id") == body.capture_id), None)
+            if previous is not None:
+                if (previous["text"] != text
+                        or previous.get("input_context") != context
+                        or previous.get("translate_id") != body.translate_id):
+                    raise HTTPException(409, "capture_id already used")
+                return {"queued": True, "duplicate": True,
+                        "capture_id": body.capture_id, "route": "extractor_a"}
+            original = text
+            if body.translate_id:
+                translated = next((event for event in reversed(history)
+                                   if event["kind"] == "translate"
+                                   and event.get("translate_id") == body.translate_id), None)
+                if translated is None:
+                    raise HTTPException(404, "unknown translate_id")
+                origin_context = translated.get("context") or {}
+                if (not route_a_source_allowed(
+                        origin_context, source_allowlist.list())
+                        or any(origin_context.get(key) != context.get(key)
+                               for key in ("app_bundle_id", "app_name",
+                                           "web_domain", "identity"))):
+                    raise HTTPException(403, "capture source changed")
+                # Never teach Route A the model's own rewritten output.
+                original = translated["original"]
+            events.append("desktop_capture", {
+                "capture_id": body.capture_id, "text": text,
+                "original": original, "translate_id": body.translate_id,
+                "input_context": context, "trigger": "option_control_enter",
+                "route": "extractor_a",
+            })
+            pipeline.add_natural([original], now)
+            pending_capture_ids.add(body.capture_id)
+        try:
+            _flush_pipeline(now)
+        except llm.LLMUnavailable:
+            pass  # The desktop has already forwarded Enter; keep the queue.
+        return {"queued": True, "duplicate": False,
+                "capture_id": body.capture_id, "route": "extractor_a"}
 
     @app.post("/api/desktop/feedback")
     def desktop_feedback(body: DesktopFeedbackIn):

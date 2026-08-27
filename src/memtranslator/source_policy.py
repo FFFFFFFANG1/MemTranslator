@@ -1,14 +1,12 @@
-"""Persistent source allowlist for silent Route-A capture.
+"""Persistent source allowlist for desktop shortcuts and Route-A capture.
 
-The translator hotkey remains usable wherever the macOS Accessibility adapter
-can safely edit text. Silent memory learning is narrower: only transactions
-that started in a configured AI client or AI-assistant website may place the
-original request in Extractor-A's buffer.
+Option+Control shortcuts act only in configured AI clients and websites;
+the menu's rewrite action remains usable in other supported inputs. Original
+requests enter Extractor-A only on explicit Option+Control+Enter capture.
 
 Browser matching deliberately fails closed. A browser context without a
 readable domain is never eligible. Manual memory-manager actions do not use
-this policy because they are explicit user intent rather than background
-capture.
+this policy because they are direct memory-manager actions.
 """
 from __future__ import annotations
 
@@ -259,7 +257,7 @@ def is_ai_app(*, app_bundle_id: str = "", app_name: str = "") -> bool:
 
 def route_a_source_allowed(context: dict | None,
                            entries: list[dict] | None = None) -> bool:
-    """Whether a translated request may silently enter Extractor-A."""
+    """Whether a desktop source is eligible for explicit memory capture."""
     if not isinstance(context, dict):
         return False
     if entries is None:

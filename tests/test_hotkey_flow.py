@@ -1,4 +1,6 @@
 import importlib.util
+import threading
+from dataclasses import replace
 from types import SimpleNamespace
 
 import pytest
@@ -10,6 +12,10 @@ from memtranslator.hotkey import axtext
 from memtranslator.hotkey import __main__ as hotkey_main
 from memtranslator.hotkey.__main__ import App, polish_flow
 from memtranslator.hotkey.models import InputSnapshot, TextRange, WriteResult
+from Quartz import (CGEventCreateKeyboardEvent, CGEventGetFlags,
+                    CGEventGetIntegerValueField, CGEventGetType,
+                    CGEventSetFlags, CGEventSetIntegerValueField,
+                    kCGEventSourceUserData)
 
 
 def test_applied_writes_back():
@@ -340,3 +346,166 @@ def test_hotkey_main_installs_interrupt_bridge_and_disables_event_tap(
     assert ("restore_signal", hotkey_main.signal.SIGINT,
             "previous-handler") in calls
     assert calls[-1] == ("app_shutdown",)
+
+
+def _key_event(keycode, flags=0, *, down=True, repeat=False, tagged=False):
+    event = CGEventCreateKeyboardEvent(None, keycode, down)
+    CGEventSetFlags(event, flags)
+    CGEventSetIntegerValueField(event, hotkey_main.kCGKeyboardEventAutorepeat, int(repeat))
+    if tagged:
+        CGEventSetIntegerValueField(event, kCGEventSourceUserData, axtext.SYNTHETIC_EVENT_TAG)
+    return event
+
+
+@pytest.mark.parametrize("keycode", [hotkey_main.KEY_R, 36, 76])
+def test_option_control_shortcuts_fire_once_and_consume_matching_keyup(keycode):
+    calls = []
+    app = SimpleNamespace(on_shortcut=lambda code, event: calls.append((code, event)))
+    callback = hotkey_main.make_tap_callback(app)
+    flags = hotkey_main.SHORTCUT_MODIFIERS
+    down = _key_event(keycode, flags)
+    repeated = _key_event(keycode, flags, repeat=True)
+    up = _key_event(keycode, 0, down=False)
+    assert callback(None, hotkey_main.kCGEventKeyDown, down, None) is None
+    assert callback(None, hotkey_main.kCGEventKeyDown, repeated, None) is None
+    assert callback(None, hotkey_main.kCGEventKeyUp, up, None) is None
+    assert [code for code, _event in calls] == [keycode]
+    callback(None, hotkey_main.kCGEventKeyDown, down, None)
+    assert len(calls) == 2  # A new physical press is distinct.
+
+
+@pytest.mark.parametrize("keycode", [hotkey_main.KEY_R, 36])
+@pytest.mark.parametrize("flags", [
+    hotkey_main.kCGEventFlagMaskAlternate,
+    hotkey_main.kCGEventFlagMaskControl,
+    hotkey_main.kCGEventFlagMaskAlternate | hotkey_main.kCGEventFlagMaskCommand,
+    hotkey_main.SHORTCUT_MODIFIERS | hotkey_main.kCGEventFlagMaskShift,
+    hotkey_main.SHORTCUT_MODIFIERS | hotkey_main.kCGEventFlagMaskCommand,
+])
+def test_other_shortcuts_are_preserved(keycode, flags):
+    app = SimpleNamespace(on_shortcut=lambda *_args: pytest.fail("Must pass through"),
+                          on_enter=lambda: pytest.fail("Not a plain Enter"))
+    event = _key_event(keycode, flags)
+    callback = hotkey_main.make_tap_callback(app)
+    assert callback(None, hotkey_main.kCGEventKeyDown, event, None) is event
+
+
+def test_plain_enter_is_forwarded_and_synthetic_enter_is_not_observed_twice():
+    calls = []
+    app = SimpleNamespace(on_enter=lambda: calls.append("feedback"),
+                          on_shortcut=lambda *_args: pytest.fail("No capture"))
+    callback = hotkey_main.make_tap_callback(app)
+    plain = _key_event(36)
+    synthetic = _key_event(36, tagged=True)
+    assert callback(None, hotkey_main.kCGEventKeyDown, plain, None) is plain
+    assert callback(None, hotkey_main.kCGEventKeyDown, synthetic, None) is synthetic
+    assert calls == ["feedback"]
+
+
+def test_guarded_enter_posts_one_modifier_free_tagged_pair(monkeypatch):
+    snapshot = InputSnapshot(identity="box", full_text="raw", target_range=TextRange(0, 3), app_pid=123)
+    posted = []
+    monkeypatch.setattr(axtext, "_capture_with_ax_retries", lambda: snapshot)
+    monkeypatch.setattr(axtext, "frontmost_pid", lambda: 123)
+    monkeypatch.setattr(axtext, "CGEventPostToPid", lambda pid, event: posted.append((pid, event)))
+
+    assert axtext.send_enter(snapshot) is True
+    assert len(posted) == 2
+    assert [CGEventGetType(event) for _, event in posted] == [
+        hotkey_main.kCGEventKeyDown, hotkey_main.kCGEventKeyUp]
+    for pid, event in posted:
+        assert pid == 123
+        assert CGEventGetFlags(event) == 0
+        assert CGEventGetIntegerValueField(event, hotkey_main.kCGKeyboardEventKeycode) == 36
+        assert CGEventGetIntegerValueField(event, kCGEventSourceUserData) == axtext.SYNTHETIC_EVENT_TAG
+
+
+@pytest.mark.parametrize("changes,frontmost", [
+    ({"identity": "other-box"}, 123), ({"full_text": "changed"}, 123),
+    ({"secure": True}, 123), ({"editable": False}, 123), ({}, 456),
+])
+def test_stale_or_protected_send_never_posts_a_key(monkeypatch, changes, frontmost):
+    snapshot = InputSnapshot(identity="box", full_text="raw", target_range=TextRange(0, 3), app_pid=123)
+    monkeypatch.setattr(axtext, "_capture_with_ax_retries", lambda: replace(snapshot, **changes))
+    monkeypatch.setattr(axtext, "frontmost_pid", lambda: frontmost)
+    monkeypatch.setattr(axtext, "CGEventPostToPid", lambda *_args: pytest.fail("Must not send"))
+    assert axtext.send_enter(snapshot) is False
+
+
+def test_unsupported_shortcut_replay_preserves_modifiers_and_avoids_recursion(monkeypatch):
+    posted = []
+    event = _key_event(hotkey_main.KEY_R, hotkey_main.SHORTCUT_MODIFIERS)
+    monkeypatch.setattr(axtext, "frontmost_pid", lambda: 123)
+    monkeypatch.setattr(axtext, "CGEventPostToPid", lambda pid, replay: posted.append((pid, replay)))
+    assert axtext.replay_shortcut(event, 123) is True
+    assert len(posted) == 2
+    for pid, replay in posted:
+        assert pid == 123
+        assert CGEventGetFlags(replay) == hotkey_main.SHORTCUT_MODIFIERS
+        assert CGEventGetIntegerValueField(replay, kCGEventSourceUserData) == axtext.SYNTHETIC_EVENT_TAG
+    posted.clear()
+    assert axtext.replay_shortcut(event, 456) is False
+    assert posted == []
+
+
+def test_secure_field_value_is_never_read(monkeypatch):
+    monkeypatch.setattr(axtext, "_focused_element", lambda: "password")
+    monkeypatch.setattr(axtext, "_string_attr", lambda _element, attribute:
+                        "AXSecureTextField" if attribute == axtext.kAXSubroleAttribute else "AXTextField")
+    monkeypatch.setattr(axtext, "AXUIElementCopyAttributeValue",
+                        lambda *_args: pytest.fail("Do not read secure AXValue"))
+    snapshot = axtext.capture_focused_input()
+    assert snapshot.secure is True
+    assert snapshot.full_text == ""
+
+
+@pytest.mark.parametrize("allowed", [True, False])
+@pytest.mark.parametrize("keycode", [hotkey_main.KEY_R, 36])
+def test_shortcut_capture_is_deferred_and_only_allowed_inputs_send(monkeypatch, allowed, keycode):
+    calls, pending = [], []
+    snapshot = InputSnapshot(identity="box", full_text="raw", target_range=TextRange(0, 3), app_pid=123)
+
+    class DeferredThread:
+        def __init__(self, *, target, daemon, args=()):
+            pending.append(lambda: target(*args))
+
+        def start(self):
+            pass
+
+    def prepare(captured):
+        assert captured is snapshot
+        calls.append("send")
+        return {"status": "sent", "event": "capture-event"}
+
+    def save(event):
+        assert event == "capture-event"
+        calls.append("save")
+        return {"status": "captured"}
+
+    controller = SimpleNamespace(
+        adapter=SimpleNamespace(capture=lambda: calls.append("capture") or snapshot),
+        shortcut_allowed=lambda _snapshot: allowed, prepare_send=prepare, save_capture=save,
+    )
+    host = SimpleNamespace(
+        _shutting_down=False, _shortcut_lock=threading.Lock(), controller=controller,
+        _action_generation=0,
+        overlay=SimpleNamespace(show=lambda *_args, **_kwargs: None),
+        _set_state=lambda *_args: None, _schedule_poll=lambda: None,
+        on_hotkey=lambda **_kwargs: calls.append("rewrite"),
+    )
+    monkeypatch.setattr(hotkey_main.threading, "Thread", DeferredThread)
+    monkeypatch.setattr(hotkey_main.time, "sleep", lambda _seconds: None)
+    monkeypatch.setattr(axtext, "frontmost_pid", lambda: 123)
+    monkeypatch.setattr(axtext, "replay_shortcut", lambda *_args: calls.append("replay"))
+    App.on_shortcut(host, keycode, "original-event")
+    assert calls == []
+    pending.pop(0)()
+    if allowed and keycode == hotkey_main.KEY_R:
+        assert calls == ["capture", "rewrite"]
+    elif allowed:
+        assert calls == ["capture", "send"]
+        assert not host._shortcut_lock.locked()
+        pending.pop(0)()
+        assert calls == ["capture", "send", "save"]
+    else:
+        assert calls == ["capture", "replay"]

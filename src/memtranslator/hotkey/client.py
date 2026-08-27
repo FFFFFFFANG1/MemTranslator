@@ -5,7 +5,7 @@ import json
 import urllib.request
 
 from memtranslator.config import DAEMON_URL
-from memtranslator.hotkey.models import FeedbackEvent
+from memtranslator.hotkey.models import CaptureEvent, FeedbackEvent
 
 
 class DaemonClient:
@@ -31,4 +31,12 @@ class DaemonClient:
             "trigger": event.trigger,
             "source": "macos-accessibility",
             "input_context": event.input_context,
+        })
+
+    def capture(self, event: CaptureEvent) -> dict:
+        return self._post("/api/desktop/capture", {
+            "capture_id": event.capture_id,
+            "text": event.text,
+            "input_context": event.input_context,
+            "translate_id": event.translate_id,
         })

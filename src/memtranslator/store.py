@@ -8,6 +8,7 @@ edit diffs); v0 records, v1 learns from it (anchor §4 编辑回流).
 from __future__ import annotations
 
 import json
+import threading
 import time
 from pathlib import Path
 
@@ -382,16 +383,19 @@ class Store:
 class EventLog:
     def __init__(self, path: Path):
         self.path = Path(path)
+        self._lock = threading.Lock()
 
     def append(self, kind: str, payload: dict) -> dict:
         event = {"kind": kind, "at": time.time(), **payload}
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self.path.open("a") as f:
-            f.write(json.dumps(event, ensure_ascii=False) + "\n")
+        with self._lock:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            with self.path.open("a") as f:
+                f.write(json.dumps(event, ensure_ascii=False) + "\n")
         return event
 
     def read_all(self) -> list[dict]:
-        if not self.path.exists():
-            return []
-        return [json.loads(l) for l in self.path.read_text().splitlines()
-                if l.strip()]
+        with self._lock:
+            if not self.path.exists():
+                return []
+            return [json.loads(l) for l in self.path.read_text().splitlines()
+                    if l.strip()]
