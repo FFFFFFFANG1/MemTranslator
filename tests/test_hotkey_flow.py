@@ -42,6 +42,33 @@ def test_empty_and_daemon_down():
     assert polish_flow(read=lambda: "raw", write=None, post=boom) == "daemon_down"
 
 
+@pytest.mark.parametrize("status", ["tracking", "noop_tracking", "write_failed", "daemon_down"])
+def test_success_animation_requires_verified_write_back(status):
+    from types import SimpleNamespace
+    from unittest.mock import Mock
+
+    snapshot = SimpleNamespace(screen_bounds=(10, 20, 300, 80), app_name="Demo")
+    result = {"status": status, "snapshot": snapshot,
+              "write": WriteResult(status == "tracking", "value")}
+    host = SimpleNamespace(
+        _pointer_timer=None,
+        controller=SimpleNamespace(
+            tracker=SimpleNamespace(active=False),
+            adapter=SimpleNamespace(capture=lambda: snapshot),
+            polish=lambda **_kwargs: result),
+        overlay=Mock(), _set_state=Mock(), _schedule_poll=Mock())
+
+    App.on_hotkey(host, snapshot=snapshot, _synchronous=True)
+
+    host.overlay.start.assert_called_once_with(snapshot.screen_bounds)
+    if status == "tracking":
+        host.overlay.complete.assert_called_once_with(snapshot.screen_bounds)
+        host.overlay.show.assert_not_called()
+    else:
+        host.overlay.complete.assert_not_called()
+        host.overlay.show.assert_called_once()
+
+
 def test_chromium_renderer_accessibility_is_enabled_once(monkeypatch):
     class Frontmost:
         @staticmethod

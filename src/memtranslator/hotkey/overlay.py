@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import math
 import threading
+import time
 
 from AppKit import (
     NSBackingStoreBuffered,
@@ -19,6 +20,8 @@ from AppKit import (
     NSFont,
     NSFontWeightMedium,
     NSGradient,
+    NSGradientDrawsBeforeStartingLocation,
+    NSGraphicsContext,
     NSMakePoint,
     NSMakeRect,
     NSPanel,
@@ -32,6 +35,7 @@ from AppKit import (
     NSWindowStyleMaskNonactivatingPanel,
 )
 from PyObjCTools import AppHelper
+from Quartz import CGContextClearRect
 from objc import super
 
 
@@ -39,7 +43,9 @@ NETWORK_SIZE = 90.0
 MESSAGE_HEIGHT = 36.0
 PANEL_GAP = 10.0
 FRAME_SECONDS = 0.075
-COMPLETE_TICKS = 12
+PHASE_SPEED = 0.42 / FRAME_SECONDS
+COMPLETE_SECONDS = 0.9
+FADE_SECONDS = 0.45
 
 
 def _text_width(text: str) -> float:
@@ -108,6 +114,8 @@ class NetworkView(NSView):
 
     def drawRect_(self, _dirty_rect):
         bounds = self.bounds()
+        # The transparent backdrop must not accumulate old nodes or halo frames.
+        CGContextClearRect(NSGraphicsContext.currentContext().CGContext(), bounds)
         center = NSMakePoint(bounds.size.width / 2.0,
                              bounds.size.height / 2.0)
         # Keep the graph readable over arbitrary editors without drawing a
@@ -117,7 +125,8 @@ class NetworkView(NSView):
             _paper(0.96), _paper(0.0))
         backdrop.drawFromCenter_radius_toCenter_radius_options_(
             center, 7.0, center, min(bounds.size.width,
-                                     bounds.size.height) / 2.0, 0)
+                                     bounds.size.height) / 2.0,
+            NSGradientDrawsBeforeStartingLocation)
 
         if self.completed:
             pulse = (math.sin(self.phase * 1.35) + 1.0) / 2.0
@@ -170,8 +179,9 @@ class StatusOverlay:
         self._animation_timer: threading.Timer | None = None
         self._last_bounds: tuple[float, float, float, float] | None = None
         self._mode: str | None = None
-        self._phase = 0.0
-        self._complete_ticks = 0
+        self._started_at = 0.0
+        self._completed_at: float | None = None
+        self._animation_generation = 0
 
         self.panel = NSPanel.alloc().initWithContentRect_styleMask_backing_defer_(
             NSMakeRect(0, 0, NETWORK_SIZE, NETWORK_SIZE),
@@ -232,12 +242,18 @@ class StatusOverlay:
             timer.cancel()
             setattr(self, name, None)
 
+    def _stop_animation(self) -> None:
+        self._cancel_timer("_animation_timer")
+        # Timer.cancel cannot recall callbacks already queued on Cocoa's loop.
+        self._animation_generation += 1
+
     def _start(self, bounds) -> None:
         self._cancel_timer("_hide_timer")
+        self._stop_animation()
         self._remember_bounds(bounds)
         self._mode = "working"
-        self._phase = 0.0
-        self._complete_ticks = 0
+        self._started_at = time.monotonic()
+        self._completed_at = None
         self._configure_network()
         self.network.setAnimationState_completed_(0.0, False)
         self.panel.setAlphaValue_(1.0)
@@ -250,20 +266,26 @@ class StatusOverlay:
             self._position(NETWORK_SIZE, NETWORK_SIZE)
 
     def _complete(self, bounds) -> None:
+        if self._mode != "working":
+            return
         self._cancel_timer("_hide_timer")
+        self._stop_animation()
         self._remember_bounds(bounds)
         self._mode = "complete"
-        self._complete_ticks = 0
+        self._completed_at = max(0.0, time.monotonic() - self._started_at)
         self._configure_network()
         self.panel.setAlphaValue_(1.0)
         self.panel.orderFrontRegardless()
-        self.network.setAnimationState_completed_(self._phase, True)
+        self.network.setAnimationState_completed_(
+            self._completed_at * PHASE_SPEED, True)
         self._schedule_animation()
 
     def _configure_network(self) -> None:
         self._position(NETWORK_SIZE, NETWORK_SIZE)
         self.background.setFrame_(NSMakeRect(0, 0, NETWORK_SIZE, NETWORK_SIZE))
         layer = self.background.layer()
+        layer.setCornerRadius_(0)
+        layer.setMasksToBounds_(False)
         layer.setBackgroundColor_(NSColor.clearColor().CGColor())
         layer.setBorderWidth_(0)
         self.network.setFrame_(NSMakeRect(0, 0, NETWORK_SIZE, NETWORK_SIZE))
@@ -272,7 +294,7 @@ class StatusOverlay:
 
     def _show_message(self, text: str, bounds, auto_hide: float) -> None:
         self._cancel_timer("_hide_timer")
-        self._cancel_timer("_animation_timer")
+        self._stop_animation()
         self._remember_bounds(bounds)
         self._mode = "message"
         width = _text_width(text)
@@ -299,26 +321,28 @@ class StatusOverlay:
             return
         if self._animation_timer is not None:
             return
+        generation = self._animation_generation
         self._animation_timer = threading.Timer(
-            FRAME_SECONDS, lambda: AppHelper.callAfter(self._animate))
+            FRAME_SECONDS, lambda: AppHelper.callAfter(self._animate, generation))
         self._animation_timer.daemon = True
         self._animation_timer.start()
 
-    def _animate(self) -> None:
+    def _animate(self, generation: int) -> None:
+        if generation != self._animation_generation:
+            return
         self._animation_timer = None
         if self._mode not in {"working", "complete"}:
             return
-        self._phase += 0.42
+        elapsed = max(0.0, time.monotonic() - self._started_at)
         completed = self._mode == "complete"
-        self.network.setAnimationState_completed_(self._phase, completed)
         if completed:
-            self._complete_ticks += 1
-            if self._complete_ticks >= 6:
-                remaining = COMPLETE_TICKS - self._complete_ticks
-                self.panel.setAlphaValue_(max(0.0, remaining / 6.0))
-            if self._complete_ticks >= COMPLETE_TICKS:
+            finish_elapsed = max(0.0, elapsed - self._completed_at)
+            if finish_elapsed >= COMPLETE_SECONDS:
                 self._hide()
                 return
+            self.panel.setAlphaValue_(min(
+                1.0, (COMPLETE_SECONDS - finish_elapsed) / FADE_SECONDS))
+        self.network.setAnimationState_completed_(elapsed * PHASE_SPEED, completed)
         self._schedule_animation()
 
     def _position(self, width: float, height: float) -> None:
@@ -334,8 +358,9 @@ class StatusOverlay:
 
     def _hide(self) -> None:
         self._cancel_timer("_hide_timer")
-        self._cancel_timer("_animation_timer")
+        self._stop_animation()
         self._mode = None
+        self._completed_at = None
         self.panel.orderOut_(None)
         self.panel.setAlphaValue_(1.0)
 

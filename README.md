@@ -32,6 +32,8 @@ the relevant preferences into your request before it reaches your agent.
 ## Quickstart
 
 Requires Python 3.12+. The desktop hotkeys run on macOS.
+Both installation paths below use `main`. Run `init` only for first-time
+configuration; it is not needed again after updating or reinstalling.
 
 ### Option 1 — Install the package with pip
 
@@ -43,7 +45,7 @@ cd my-memtranslator
 python3.12 -m venv venv
 source venv/bin/activate
 
-python -m pip install --upgrade "git+https://github.com/FFFFFFFANG1/MemTranslator.git@macos-client"
+python -m pip install --upgrade "git+https://github.com/FFFFFFFANG1/MemTranslator.git@main"
 memtranslator init
 memtranslator start
 ```
@@ -51,12 +53,12 @@ memtranslator start
 ### Option 2 — Develop from source with uv
 
 ```bash
-git clone --branch macos-client https://github.com/FFFFFFFANG1/MemTranslator.git
+git clone --branch main https://github.com/FFFFFFFANG1/MemTranslator.git
 cd MemTranslator
 ./scripts/dev-sync.sh
 
-uv run memtranslator init
-uv run memtranslator start
+uv run --no-sync memtranslator init
+uv run --no-sync memtranslator start
 ```
 
 ### Two hotkeys

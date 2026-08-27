@@ -35,8 +35,10 @@ Accessibility; adding it to the allowlist does not supply that capability.
 
 ## LLM and embedding configuration
 
-Run `memtranslator init` once, or `uv run memtranslator init` from the source
-checkout. After choosing the backend port, configuration proceeds in order:
+Run `memtranslator init` once, or `uv run --no-sync memtranslator init` from
+the prepared source environment. Updating or reinstalling the package does
+not require another `init`. After choosing the backend port, configuration
+proceeds in order:
 
 1. **LLM:** choose `openai-compatible` or `anthropic`, then enter the model
    name, base URL, and API key. These are API formats, not a provider catalog.
@@ -215,7 +217,7 @@ MT_SCOPED_ATTRIBUTE_POOL_CAP=32 memtranslator start
 From a source checkout:
 
 ```bash
-MT_SCOPED_ATTRIBUTE_POOL_CAP=32 uv run memtranslator start
+MT_SCOPED_ATTRIBUTE_POOL_CAP=32 uv run --no-sync memtranslator start
 ```
 
 Both paths use the configured embedding service, with lexical fallback when
@@ -231,7 +233,7 @@ global default, run one of:
 ```bash
 memtranslator start -demo
 # From the source checkout:
-uv run memtranslator start -demo
+uv run --no-sync memtranslator start -demo
 ```
 
 Demo mode writes to the **current store**, not a temporary sandbox. Repeated
@@ -247,7 +249,8 @@ operation; doing so does not remove previously imported demo items.
 | `--home PATH` | Use a different application home; initialize it with the same `--home` first. |
 
 Use `memtranslator init --help` or `memtranslator start --help` for all CLI
-options. Prefix with `uv run` when working from the source environment.
+options. Prefix with `uv run --no-sync` when working from the prepared source
+environment.
 
 ## Local storage and privacy
 
@@ -276,13 +279,15 @@ not commit its credentials or event logs to a repository.
 
 ## Development workflow
 
-The source-install sync script prepares one editable environment for the
-package, backend, macOS client, and tests. It uses `venv` with `.venv` pointing
-to it so regular `uv run` commands use that same environment.
+Use the `main` branch for current development and new package builds. The
+source-install sync script prepares one editable environment for the package,
+backend, macOS client, and tests. It uses `venv` with `.venv` pointing to it.
+After syncing, `uv run --no-sync` uses that prepared environment without
+automatically synchronizing packages on each launch.
 
 ```bash
 ./scripts/dev-sync.sh
-uv run memtranslator start
+uv run --no-sync memtranslator start
 ```
 
 Changes to `web/index.html` need a browser refresh. Restart after changing
@@ -290,6 +295,33 @@ Python code; rerun the sync script after dependency or packaging changes.
 If an old environment reports `ModuleNotFoundError` for `memtranslator.cli`,
 stop the app and resync from the repository root. The script refuses to
 overwrite conflicting environment directories.
+
+### Refresh an existing source installation
+
+After switching branches or changing packaging, stop the running client and
+backend before refreshing the installation. From the current `main` checkout,
+rebuild the editable package without reusing its build cache:
+
+```bash
+uv pip install --python venv/bin/python --no-cache --no-deps --reinstall --editable .
+uv run --no-sync memtranslator start
+```
+
+This refreshes only MemTranslator. If dependencies also changed, run
+`./scripts/dev-sync.sh` first. The editable installation loads this checkout's
+source, so Python changes take effect after restarting without rebuilding a
+wheel. To check which CLI module the environment actually loads:
+
+```bash
+uv run --no-sync python -c "import memtranslator.cli; print(memtranslator.cli.__file__)"
+```
+
+The path should point to `src/memtranslator/cli.py` in this checkout. Refreshing
+the installation does not reset the application home, model configuration, or
+memory store, and does not require another `init`. It also does not replace
+macOS Accessibility permissions or guarantee that a hotkey issue is resolved.
+
+### Package installations
 
 Package installs include a copy of the web UI. To test a new package build,
 reinstall it and restart; editing an unrelated source checkout does not update
