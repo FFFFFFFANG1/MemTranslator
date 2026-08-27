@@ -5,382 +5,314 @@
 <h1 align="center">MemTranslator</h1>
 
 <p align="center">
-  <strong>Compile user memory into better requests for any agent.</strong>
+  <strong>Continually learning how you want your agent to get work done.</strong>
 </p>
 
-<p align="center">
-  A local-first middleware that learns how you want work to be done, rewrites the focused prompt in place, and lets the downstream agent remain completely memory-agnostic.
-</p>
+MemTranslator is a user-side memory layer for how tasks should be executed
+and delivered. It learns from your instructions and corrections, then brings
+the relevant preferences into your request before it reaches your agent.
 
-MemTranslator sits between you and the agents you already use. It remembers
-delivery requirements such as “cite primary sources,” “keep emails under 120
-words,” or “state assumptions before conclusions,” then makes the relevant
-constraints explicit in your request before it reaches Codex, Cursor, Claude,
-ChatGPT, Gemini, or another agent.
-
-The agent never reads MemTranslator's store and needs no SDK integration. It
-receives an ordinary prompt that the user can inspect, edit, and approve.
-
-> MemTranslator remembers **how the task should be done**, not everything
-> about the user.
+> Think of it as a **shared, self-updating `AGENTS.md` for your working
+> preferences**—continually maintained from your instructions and corrections.
 
 ## Why MemTranslator
 
-Strong agents still make users repeat the same corrections: the email is too
-long, the report lacks sources, the code is over-explained, or the answer uses
-the wrong structure. Existing memory approaches often solve this by loading a
-profile or memory file into every agent. That creates three practical
-problems:
-
-- every agent needs its own memory integration;
-- irrelevant memory consumes context and can leak into the wrong task;
-- switching agents means rebuilding or copying memory behavior.
-
-MemTranslator treats memory as a compilation layer instead:
-
-```text
-user request + applicable delivery requirements -> explicit task request
-```
-
-This gives the same working preferences to different agents without changing
-their internals. The boundary is intentionally narrow: MemTranslator stores
-requirements about execution and delivery, not a general personal profile,
-knowledge base, or chat archive.
-
-### Practical value
-
-| What users need | What MemTranslator provides |
-| --- | --- |
-| Consistent behavior across agents | One local memory layer in front of Codex, Cursor, Claude, ChatGPT, Gemini, and other supported inputs |
-| No downstream context pollution | The agent receives only the rewritten request, never the memory store |
-| Fewer repeated corrections | Durable delivery requirements are recalled and woven into future tasks |
-| Control over learned behavior | Every memory item exposes text, work kind, scope, bucket, lifecycle, Modify, and recoverable Delete |
-| Safe personalization | Hotkey-triggered, human-in-the-loop rewriting with guarded write-back and an editable source allowlist |
-| Lightweight deployment | Flash-tier LLMs, local ONNX CPU embeddings by default, BM25 fallback, and no vector database requirement |
-
-## Results: flash-tier middleware vs Codex file memory
-
-The E1 noisy evaluation replays a complete memory lifecycle across 12
-episodes, 6,225 turns, 103 scored tasks, and stores peaking at 29–42 active
-memories. MemTranslator used native extraction, structured storage, BGE-M3
-retrieval, and a DeepSeek V4 Flash translator. The comparison system used
-incrementally maintained `AGENTS.md + MEMORY.md` files with GPT-5.5 medium.
-
-| Metric | MemTranslator | Codex file memory |
-| --- | ---: | ---: |
-| Applicable-memory CARRY, macro | **0.713** | 0.672 |
-| Applicable-memory CARRY, micro | **74/107 (69.2%)** | 69/107 (64.5%) |
-| Inapplicable-memory SUPPRESS, macro | 0.894 | **0.987** |
-| Task-perfect | **68/103 (66.0%)** | 67/103 (65.0%) |
-| Structured lifecycle STATE | 0.707 | Not comparable |
-
-The observed task-perfect result is effectively tied. MemTranslator carried
-five more applicable memories; Codex suppressed four more negative examples.
-The paired confidence intervals cross zero, so this is not evidence of overall
-statistical superiority. It is evidence that a narrow middleware powered by a
-flash-tier model can match a much stronger native file-memory workflow while
-remaining agent-independent.
-
-See the [full E1 performance report](./2026-08-26-memtranslator-e1-performance-report.md)
-for confidence intervals, per-episode results, protocol details, and limits.
+- **Less repetition, less rework.** Carry forward your requirements instead
+  of repeatedly explaining the same tone, format, evidence standard, or
+  working procedure.
+- **Your preferences travel with you.** Use one local memory across supported
+  desktop and web inputs, including tools such as Codex, Cursor, and ChatGPT.
+- **You have the final say.** Review and edit every rewrite before sending.
+  Inspect, modify, or delete learned preferences in the Control Center.
+- **Relevant instructions, not memory dumps.** The agent receives your
+  rewritten request, not a separate memory store or a full personal profile.
+- **Keep your tools and workflow.** Rewrite in the current input box with a
+  hotkey. No downstream agent SDK integration or extra chat interface.
 
 ## Quickstart
 
-### Requirements
+**Requirements:** macOS for desktop integration, Python 3.12+, Git, and an
+OpenAI-compatible or Anthropic LLM endpoint. Choose one installation method;
+both use the same local runtime data by default.
 
-- macOS for the global hotkey and focused-input integration
-- Python 3.12 or newer
-- an OpenAI-compatible or Anthropic-compatible LLM endpoint
-- Accessibility permission; macOS may also request Input Monitoring
+### Option 1 — Install the package with pip
 
-### Install from source
-
-```bash
-git clone https://github.com/FFFFFFFANG1/MemTranslator.git
-cd MemTranslator
-./scripts/dev-sync.sh
-
-uv run memtranslator init
-uv run memtranslator start -demo
-```
-
-`init` configures the LLM first. It then asks whether to use a remote embedding
-API. Choose **N** to download the pinned multilingual ONNX CPU model, or choose
-**Y** to provide an OpenAI-compatible embedding model. The embedding key and
-base URL can inherit the active LLM connection.
-
-`start -demo` starts the local backend, Control Center, and macOS menu-bar
-client, then idempotently adds ten example memories. Use the normal start mode
-once you are ready for your own store:
+In a new directory, create an isolated environment and install the package:
 
 ```bash
-uv run memtranslator start
-```
+mkdir -p my-memtranslator
+cd my-memtranslator
+python3.12 -m venv venv
+source venv/bin/activate
 
-Press **Option + Command + R** (`⌥⌘R`) in a supported focused input. A small
-network animation appears while MemTranslator works, glows after verified
-write-back, and disappears. Review or edit the rewritten prompt, then send it
-normally.
-
-Open [http://127.0.0.1:8123](http://127.0.0.1:8123) or choose **Open Control
-Center** from the menu-bar app to manage memory, the source allowlist, LLM and
-embedding settings, UI language, and light/dark appearance.
-
-### Release package
-
-The intended packaged installation is:
-
-```bash
-python -m pip install -U memtranslator
+python -m pip install --upgrade "git+https://github.com/FFFFFFFANG1/MemTranslator.git@macos-client"
 memtranslator init
 memtranslator start
 ```
 
-Until the package is published, use the source installation above. Runtime
-configuration, memory data, allowlists, and local models are stored under
-`~/Library/Application Support/MemTranslator` on macOS. API keys are stored
-locally in a mode-`0600` `.env` file.
+The PyPI release is not published yet, so this installs the package directly
+from the `macos-client` branch. Once published, the installation command will
+be `python -m pip install -U memtranslator`. On later runs, reactivate the
+environment with `source venv/bin/activate`, then run `memtranslator start`.
 
-## High-level architecture
+### Option 2 — Develop from source with uv
 
-```text
-+------------------------------ USER SIDE -------------------------------+
-|  Allowlisted composer -> ⌥⌘R -> macOS capture -> local daemon          |
-+------------------------------------------------------------------------+
-                                  |
-                                  v
-+------------------------------- READ PATH ------------------------------+
-|  raw task                                                              |
-|     |                                                                   |
-|     +-> explicit global requirements                                   |
-|     |                                                                   |
-|     +-> reverse retrieval: attributes -> candidate pool -> item rerank |
-|                                  |                                     |
-|                                  v                                     |
-|                         Flash Translator -> guarded patch              |
-+------------------------------------------------------------------------+
-                                  |
-                                  v
-+--------------------------- HUMAN-IN-THE-LOOP --------------------------+
-|  verified write-back -> user edits or accepts -> normal agent input    |
-+------------------------------------------------------------------------+
-                    |                                  |
-                    v                                  v
-+---------------- EXTRACTOR A ----------------+  +----- EXTRACTOR B -----+
-| allowlisted raw signals                    |  | applied entries        |
-| candidate extraction                       |  | + exact user diff      |
-| per-candidate retrieval                     |  | -> update/retire/none  |
-| CASE consolidation -> lifecycle operations |  | on attributed entries |
-+---------------------------------------------+  +-----------------------+
-                    |                                  |
-                    +----------------+-----------------+
-                                     v
-+---------------------------- LOCAL MEMORY STORE ------------------------+
-| append-only JSONL | active / retired / superseded | editable Web UI    |
-+------------------------------------------------------------------------+
-```
-
-## Core mechanisms
-
-### 1. Reverse retrieval: attribute first, item second
-
-Ordinary text retrieval begins by asking which memory sentence resembles the
-current task. That is often the wrong first question. A rule such as “keep
-future launch copy calm and direct” may share little vocabulary with “draft
-the homepage announcement,” even though its applicability attributes are a
-strong match.
-
-MemTranslator's reverse-retrieval path reverses the decision order:
-
-1. Encode only the activation attributes: `work_kinds`, `applies_when`, and
-   legacy scope.
-2. Use the raw task to retrieve a deliberately wider attribute candidate
-   pool.
-3. Within that pool, use memory-item text with BM25 and dense retrieval to
-   select and rerank the final prompt entries.
-4. Send at most 16 scoped entries, plus a separately budgeted global lane, to
-   the translator.
-
-Attributes answer **where a rule may apply**; item text answers **which rule is
-semantically relevant**. Keeping those stages separate helps with
-cross-language and low-lexical-overlap tasks while preventing metadata from
-overriding the actual requirement.
-
-The attribute-first pool is currently configurable:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if needed,
+then use the current macOS client branch:
 
 ```bash
+git clone --branch macos-client https://github.com/FFFFFFFANG1/MemTranslator.git
+cd MemTranslator
+./scripts/dev-sync.sh
+
+uv run memtranslator init
+uv run memtranslator start
+```
+
+The sync script prepares one editable environment for the package, backend,
+macOS client, and tests. Changes to `web/index.html` need a browser refresh;
+restart the app after changing Python code.
+
+### Configure once, adjust any time
+
+`init` configures the LLM first: API format, model name, base URL, and key.
+It then asks whether to configure a remote embedding API:
+
+- **N:** download the default multilingual ONNX CPU model. No embedding API
+  key or vector database is required.
+- **Y:** enter an embedding model name. Leave its key and base URL blank to
+  reuse the LLM connection; that endpoint must support an OpenAI-compatible
+  `/embeddings` API.
+
+Use the settings icon in the Control Center to change either configuration
+later. The embedding **Default** button restores the local multilingual model
+and downloads it if missing.
+
+### Rewrite with the hotkey
+
+1. Start MemTranslator and grant **Accessibility** permission when prompted.
+   macOS may also request **Input Monitoring**. Relaunch after granting access.
+2. Focus a supported input box and press **Option + Command + R** (`⌥⌘R`).
+3. Review or edit the rewritten request, then send it normally.
+
+Keep the terminal open while using the client; press **Ctrl+C** to stop it.
+The Control Center opens at [127.0.0.1:8123](http://127.0.0.1:8123) by default.
+It is a memory manager, not a chat app: manage item text, work kind, scope,
+bucket, and deleted items; configure the source allowlist, model settings,
+language, and light/dark appearance.
+
+For a first look with ten example memories, start with:
+
+```bash
+memtranslator start -demo
+# From the source checkout:
+uv run memtranslator start -demo
+```
+
+Run one of these commands, not both. Demo mode adds ten rules with different
+scopes and lifecycles to the current store without duplicating them on later
+runs. Use `start` without `-demo` for normal operation.
+
+## Contents
+
+- [Architecture and core mechanisms](#architecture-and-core-mechanisms)
+- [Rethinking the memory layer for task-driven agents](#rethinking-the-memory-layer-for-task-driven-agents)
+- [Performance comparison](#performance-comparison)
+- [Limitations](#limitations)
+- [Acknowledgements](#acknowledgements)
+
+## Architecture and core mechanisms
+
+![MemTranslator architecture: a user-side intermediary with review before sending, A-side extraction and consolidation, B-side correction feedback, a six-bucket preference store, and recall-driven rewriting.](assets/memtranslator-architecture-no-header.png)
+
+Original instructions and attributed corrections maintain one preference
+store. Recall selects preferences for the current task; the translator
+produces a request the user can inspect before sending to their existing
+agent. The diagram shows conceptual dependencies, not synchronous execution.
+
+### Learn, correct, recall, rewrite
+
+1. **Extractor A — learn from instructions.** Eligible original user text is
+   buffered for candidate extraction. Each candidate retrieves a small set of
+   related memories; consolidation decides whether to add, reaffirm, merge,
+   revise, retire, or ignore it.
+2. **Extractor B — learn from corrections.** A user edit is paired with
+   snapshots of the memories actually applied in that rewrite. B can update
+   or retire those entries, or leave them unchanged; it does not create
+   unrelated new memories. Unchanged rewrites do not trigger B extraction.
+3. **Reverse retrieval — applicability first, item text second.** In the
+   attribute-first mode, work-kind and scope attributes retrieve a candidate
+   pool, then item text is used for reranking. Explicit global requirements
+   use a separate budget from scoped recall.
+4. **Translator — compile, then let the user decide.** Selected preferences
+   become explicit requirements in the current request. Guarded patching and
+   write-back checks protect the focused input; the user reviews the result.
+
+A and B buffer independently. Generated rewrites are never treated as raw
+user evidence for A. “Continual learning” here means maintaining memory
+through instructions and feedback, not retraining model weights.
+
+The store uses six controlled buckets: `task_goal`, `reasoning_policy`,
+`deliverables`, `output_contract`, `communication_style`, and
+`execution_policy`. Items also carry work-kind, scope, and lifecycle
+metadata. They are editable requirements, not an opaque user profile.
+
+**Attribute-first recall is currently opt-in.** Enable it with:
+
+```bash
+MT_SCOPED_ATTRIBUTE_POOL_CAP=32 memtranslator start
+# From the source checkout:
 MT_SCOPED_ATTRIBUTE_POOL_CAP=32 uv run memtranslator start
 ```
 
-Set it to `0` to use the text-first baseline. Both modes reuse the configured
-embedding service and fall back safely when dense retrieval is unavailable.
+Run the command matching your installation. The current default, `0`, keeps
+the text-first recall baseline. Both paths use the configured embedding
+service, with lexical fallback when dense retrieval is unavailable.
 
-### 2. Extractor B: feedback with causal attribution
+## Rethinking the memory layer for task-driven agents
 
-Most memory systems learn from a user's next message and must guess which old
-memory it corrects. MemTranslator already knows which entries participated in
-the rewrite.
+### When the workspace absorbs recall
 
-Each translation event records an explicit `translate_id` and the exact
-memory entries applied. If the user edits the rewritten text, MemTranslator
-computes a bounded patch diff and sends Extractor B only:
+Agents can inspect files, revisit past work, and maintain persistent notes.
+Our reading of this shift is that **part of the factual and historical recall
+once delegated to standalone memory systems is increasingly being absorbed
+into agents' own workspaces and search tools**. Anthropic describes
+[just-in-time context retrieval and persistent note-taking](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents);
+Deep Agents exposes
+[filesystem-backed memory with on-demand reads and updates](https://docs.langchain.com/oss/python/deepagents/memory).
 
-- the entries used in that translation;
-- the translator output around the changed span;
-- the user's final edition of that span.
+In that setting, a separate user-side memory layer needs a clearer purpose
+than keeping another copy of project facts or replaying old conversations.
+Task facts can stay close to their sources. Past records can remain
+searchable. The question becomes:
 
-Extractor B can return `update`, `retire`, or `none`. Its decisions are
-mechanically bound back to those attributed entries; the model cannot name an
-arbitrary Store ID or search unrelated memory. This turns the user's normal
-editing behavior into a precise learning signal instead of a second round of
-global extraction.
+> When agents own their workspaces and move from conversations to tasks,
+> what should a user-side memory layer still maintain?
 
-### 3. Candidate-first Extractor A
+Our answer is **how the user wants the work done**.
 
-Route A handles explicit, source-eligible user statements. A normal admitted
-batch uses two generative calls—candidate extraction and consolidation—with
-one additional schema-repair call only when extractor output is malformed:
+### Available history is not an active preference
 
-```text
-signals -> candidate extraction -> independent top-3 retrieval per candidate
-        -> multi-CASE consolidation -> validated Store operations
-```
+A larger context window or a successful search can make a past instruction
+available. It does not, by itself, decide whether that instruction should
+remain a default for future work.
 
-The extractor never sees Store IDs or memory text. It emits durable
-`potential_new` or `potential_change` candidates with controlled buckets,
-work kinds, applicability, and facet keys. A separate consolidator may add,
-reaffirm, merge, replace, retire, or ignore each candidate, but only inside
-that candidate's retrieved CASE.
+Consider these three statements:
 
-### 4. Human-visible, fail-closed translation
-
-The translator emits small patch hunks rather than replacing the complete
-request. MemTranslator verifies that focus and source text are unchanged,
-preserves the clipboard, checks the written value, and degrades to a no-op on
-parse, preservation, focus, or write failures. Unsupported and secure fields
-are never typed into speculatively.
-
-## Memory model
-
-MemTranslator stores requirements in six controlled buckets:
-
-| Bucket | Meaning |
+| What the user said | What needs to be maintained |
 | --- | --- |
-| `task_goal` | The objective when the task is missing or vague |
-| `reasoning_policy` | Method, evidence standard, or decision axes |
-| `deliverables` | Required content or artifacts |
-| `output_contract` | Structure, length, order, format, and language |
-| `communication_style` | Tone, register, voice, and audience treatment |
-| `execution_policy` | Tools, workflow, verification, and ask-vs-assume policy |
+| “For this reply, give me only three bullets.” | A one-off instruction, not automatically a lasting preference |
+| “For future client emails, lead with a three-bullet summary.” | A reusable preference with a specific scope |
+| “For these emails, use short paragraphs instead.” | A possible revision of the earlier preference |
 
-Each item also carries a work kind, applicability scope, lifecycle state,
-facet key, confidence, timestamps, and provenance. Global requirements are
-handled separately from retrieved scoped requirements. Deleting an item in
-the Control Center retires it instead of erasing history, so it can be
-restored and audited.
+An agent can reason over these records. MemTranslator's choice is to maintain
+the resulting preferences on the user's side, where they can be inspected,
+corrected, and reused across agents.
 
-## Privacy and capture boundary
+The distinction is not simply **what did the user say?** It is **what should
+carry forward, when should it apply, and when should it change?**
 
-MemTranslator is not a permanent keylogger or document monitor.
+### Our boundary: procedural preferences
 
-- Capture starts only from an explicit translator hotkey transaction.
-- Background learning is restricted to a configurable allowlist of native AI
-  clients and AI-assistant websites.
-- Browser capture records the hostname, not the full URL.
-- Route A keeps a bounded head/tail view of long messages.
-- Memory and configuration stay on the local machine unless the configured
-  LLM or embedding endpoint is called.
-- The Control Center can create, modify, retire, restore, and inspect every
-  memory item.
+By *procedural preferences*, we mean user requirements for task execution and
+delivery—not an agent's general skill library, and not a comprehensive
+biography.
 
-Default allowlist entries cover common clients such as Codex, Cursor, Claude,
-ChatGPT, and Windsurf, plus common AI-assistant websites. Add, change, or
-remove entries from the **Allowlist** page; changes apply to the next hotkey
-transaction.
+For example:
 
-## Commands
+- When researching, cite primary sources beside factual claims.
+- When modifying code, keep the change focused and report unrun tests.
+- When writing to clients, lead with the decision and keep the message short.
 
-| Command | Purpose |
-| --- | --- |
-| `memtranslator init` | Configure LLM and local or remote embeddings |
-| `memtranslator start` | Start backend, Control Center, and macOS client |
-| `memtranslator start -demo` | Start and seed ten deterministic example rules |
-| `memtranslator start --server-only` | Start without the macOS menu-bar client |
-| `memtranslator start --no-open` | Do not open the Control Center automatically |
+These preferences may be global or scoped to a task, audience, or project.
+They should help fill in requirements the user has left implicit, not
+override what the user explicitly asks for now.
 
-The LLM wire format is intentionally small: native Anthropic or
-OpenAI-compatible. Ark, OpenRouter, and other compatible services differ only
-by model name, API key, and base URL.
+This is a division of responsibility, not a claim that facts, episodic
+memory, or reusable skills are obsolete. Those can remain valuable inside an
+agent's working environment. MemTranslator deliberately focuses its
+independent memory layer on the user's way of working.
 
-## Development
+### A shared, self-updating AGENTS.md
 
-The repository uses one uv environment for the package, backend, Web UI,
-macOS client, and tests:
+The simplest mental model is an **automatically updated, continually
+maintained, shared `AGENTS.md` for your working preferences**:
 
-```bash
-./scripts/dev-sync.sh
-uv run memtranslator start -demo
-uv run python -m pytest -q
-```
+- **Automatically maintained:** eligible instructions and corrections feed
+  the memory loop; users can also edit items directly.
+- **Shared across your agents:** the preferences belong to the user-side
+  layer rather than a single conversation, repository, or agent.
+- **Applied selectively:** the current request receives relevant
+  requirements instead of the entire memory file.
 
-For backend auto-reload during development:
+This is an analogy, not file synchronization: MemTranslator does not create
+or modify the agents' `AGENTS.md` files. It compiles preferences into an
+ordinary request that the user can review.
 
-```bash
-# terminal A
-PYTHONPATH=src uv run uvicorn memtranslator.server:app \
-  --host 127.0.0.1 --port 8123 --reload
+Native agents and other memory systems can also maintain preferences. Our
+product choice is to combine a narrow preference boundary, cross-agent use,
+ongoing correction, and human-visible application in one user-side layer.
 
-# terminal B
-uv run memtranslator start --no-open
-```
+## Performance comparison
 
-The editable installation reads `web/index.html` directly, so Control Center
-changes need only a page refresh. Build a release wheel with `uv build`.
+The [August 26 E1 report](2026-08-26-memtranslator-e1-performance-report.md)
+compares native MemTranslator with a Codex file-memory workflow on 12 noisy
+episodes, 6,225 historical turns, and 103 scored tasks. E1 evaluates memory
+maintenance and preference use in **request rewrites**, not downstream coding
+or general task-solving ability.
 
-## Project structure
+MemTranslator used native extraction and storage, BGE-M3 retrieval, and a
+**DeepSeek V4 Flash** translator. The baseline maintained
+`AGENTS.md + MEMORY.md` and used **GPT-5.5 medium** for readout.
 
-```text
-MemTranslator/
-|-- src/memtranslator/
-|   |-- hotkey/          macOS capture, guarded write-back, tracking, overlay
-|   |-- translate.py     recall + flash translator + validated patch protocol
-|   |-- recall.py        global lane and text/attribute retrieval policies
-|   |-- extraction.py    Extractor A candidates and attributed Extractor B
-|   |-- memory_write.py  candidate retrieval and CASE consolidation
-|   |-- retrieval.py     BM25, embedding service, and deterministic rank fusion
-|   |-- store.py         append-only requirement and lifecycle store
-|   |-- server.py        local FastAPI daemon and Control Center API
-|   `-- embedding.py     local ONNX and remote embedding adapters
-|-- web/index.html       bilingual light/dark memory Control Center
-|-- bench/               robustness, extraction, lifecycle, and E1 evaluation
-|-- tests/               offline mechanical and integration tests
-|-- position_anchor.md   product boundary and design priorities
-`-- pyproject.toml       package and CLI definition
-```
+| Metric | MemTranslator | Codex file memory |
+| --- | ---: | ---: |
+| Applicable-memory CARRY, macro | **0.713** | 0.672 |
+| Inapplicable-memory SUPPRESS, macro | 0.894 | **0.987** |
+| Task-perfect rewrites | **68/103 (66.0%)** | 67/103 (65.0%) |
+| Store lifecycle STATE, macro | 0.707 | Not comparable |
+
+In this run, MemTranslator carried five more applicable memories; Codex
+suppressed four more negative examples. Task-perfect rewrites differed by
+one task. The paired CARRY and SUPPRESS confidence intervals cross zero:
+these observations do **not** establish overall superiority or statistical
+equivalence.
+
+The result supports the feasibility of a flash-tier intermediary for this
+workflow. It is a system-level comparison, not an isolated test of Extractor
+B or reverse retrieval. The benchmark's BGE-M3 configuration also differs
+from the local ONNX embedding default in Quickstart. See the report for
+protocol details, uncertainty, and evidence limits.
 
 ## Limitations
 
-- The system-level E1 comparison does not isolate writer, retriever, and
-  readout-model contributions.
-- Codex currently suppresses retired or out-of-scope memory more reliably.
-- Store lifecycle STATE is 0.707 on the reported run, leaving clear room for
-  extraction and retirement improvements.
-- The desktop hotkey shell is currently macOS-only.
-- Accessibility support varies across native, Electron, and browser inputs;
-  uncertain targets fail closed.
-- Translation latency still depends on the configured model and endpoint.
+- **Desktop compatibility.** The hotkey client is macOS-only. Accessibility
+  support varies across native, Electron, and browser inputs; uncertain
+  targets can result in a no-op or failed read/write.
+- **Learning is fallible and asynchronous.** Extraction and consolidation can
+  miss, overgeneralize, or fail to retire a preference. A and B run in batches,
+  so a correction is not guaranteed to become an immediate memory update.
+- **Capture has a boundary.** Desktop capture is initiated by a hotkey
+  transaction. Silent A-side learning is restricted to the configurable
+  source allowlist; this is not continuous recording of every app or input.
+- **Local-first is not fully offline.** Memory and configuration are stored
+  under `~/Library/Application Support/MemTranslator` on macOS. Configured
+  LLM calls send relevant text and memory evidence to that endpoint; remote
+  embedding mode also sends text to its provider. API keys are stored in a
+  local mode-`0600` file and are visible in settings. Keep the Control Center
+  local.
+- **No memory dump does not mean zero context cost.** Compiled requirements
+  still occupy prompt tokens, and relevance selection can be wrong. Rewrite
+  latency depends on the model and endpoint.
+- **Evidence is limited.** The reported comparison has 12 episode clusters,
+  different native system components, and no basis for an end-to-end
+  speed/cost ranking. In that run, Codex had higher observed SUPPRESS; neither
+  system was perfect.
 
 ## Acknowledgements
 
-MemTranslator is inspired by [Mem0](https://github.com/mem0ai/mem0)'s work on
-practical, evolving memory layers and by [Typeless](https://www.typeless.com/)'s
-system-wide, keyboard-first experience for transforming text directly inside
-the user's current app.
-
-MemTranslator takes a deliberately narrower path: requirement-only memory,
-agent-independent prompt compilation, and user-edit feedback bound to the
-exact rewrite that produced it.
-
----
-
-**Keep the agent. Upgrade the request.**
+- [Mem0](https://github.com/mem0ai/mem0) — inspiration for practical,
+  continually maintained memory layers.
+- [Typeless](https://www.typeless.com/) — inspiration from its in-app
+  voice-to-polished-text experience for our hotkey-triggered, in-place
+  rewriting workflow.
