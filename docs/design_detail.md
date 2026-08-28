@@ -138,10 +138,15 @@ promise that the entire message becomes a memory item.
 
 ### Extractor B: corrections to applied memories
 
-After a rewrite, a short-lived tracker observes the same input. Ordinary
-Enter, a cleared input, a focus change, or **five minutes without a text
-change** can close the session. Mouse clicks cause a follow-up observation;
-they are not independently treated as proof that a message was sent.
+After a rewrite, a short-lived tracker remains bound to that input's identity.
+Moving to an editor, terminal, or another field parks the tracker; Enter in
+those other surfaces is ignored. Returning to the same composer resumes
+observation, and ordinary Enter in that composer is the only event that emits
+feedback. A cleared input or **five minutes without a text change** cancels
+the tracker without caching feedback. Mouse clicks cause a follow-up
+observation but are not independently treated as proof that a message was
+sent, so click-to-send feedback is deliberately missed by this conservative
+protocol.
 
 Feedback is joined by `translate_id`, not a fuzzy match to an unrelated
 conversation. The server compares the rewritten text with the latest observed

@@ -68,6 +68,22 @@ def test_controller_runs_write_track_feedback_loop():
     assert client.feedback_events[0].final_text == "polished edited"
 
 
+def test_enter_in_another_field_does_not_finish_tracked_composer():
+    adapter, client = Adapter(), Client()
+    controller = DesktopController(adapter, client)
+    assert controller.polish()["status"] == "tracking"
+
+    code_editor = replace(_snapshot("def f():\n    pass"), identity="editor")
+    assert controller.observe(key="Enter", snapshot=code_editor) is None
+    assert controller.tracker.active is True
+    assert client.feedback_events == []
+
+    composer = _snapshot("polished, revised after checking code")
+    observed = controller.observe(key="Enter", snapshot=composer)
+    assert observed["status"] == "feedback_sent"
+    assert client.feedback_events[0].final_text == composer.full_text
+
+
 def test_controller_rejects_stale_write_failure():
     adapter, client = Adapter(), Client()
     adapter.write = lambda snapshot, text: WriteResult(

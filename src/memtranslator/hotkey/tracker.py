@@ -48,19 +48,29 @@ class EditTracker:
             state = self._state
             if state is None:
                 return None
+            if at >= state["deadline"]:
+                # Expiry is cleanup, not evidence that the rewritten draft
+                # was sent.  Fail closed instead of caching feedback.
+                self._state = None
+                return None
             if snapshot is None or snapshot.identity != state["identity"]:
-                return self._finish_locked("focus_changed")
+                # The user may temporarily work in an editor, terminal, or
+                # another field.  Keep this composer parked; Enter elsewhere
+                # must not finish or cache its feedback.
+                return None
             if snapshot.full_text.strip():
                 if snapshot.full_text != state["snapshot"].full_text:
                     state["deadline"] = at + self.timeout_s
                 state["snapshot"] = snapshot
                 state["latest_nonempty"] = snapshot
             else:
-                return self._finish_locked("cleared")
+                # A clear may be a send-button transition, deletion, or UI
+                # recreation.  Until those cases are distinguishable, do not
+                # infer a send or cache feedback from it.
+                self._state = None
+                return None
             if key == "Enter":
                 return self._finish_locked("enter")
-            if at >= state["deadline"]:
-                return self._finish_locked("timeout")
             return None
 
     def _finish_locked(self, trigger: str) -> FeedbackEvent:

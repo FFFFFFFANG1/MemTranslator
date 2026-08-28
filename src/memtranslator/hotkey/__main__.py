@@ -208,17 +208,24 @@ class App(NSObject):
         self._schedule_poll()
 
     def on_enter(self) -> None:
-        if not self.controller.has_pending_draft:
+        if not self.controller.tracker.active:
             return
-        threading.Thread(target=lambda: self.controller.observe(key="Enter"),
-                         daemon=True).start()
+        # Capture while the key event still belongs to the focused composer.
+        # The target app may clear or replace its AX element immediately after
+        # the event tap returns.  Enter in any other field is ignored.
+        snapshot = self.controller.adapter.capture()
+        if snapshot is None or not self.controller.tracker.matches(snapshot):
+            return
+        threading.Thread(
+            target=lambda: self.controller.observe(
+                key="Enter", snapshot=snapshot), daemon=True).start()
 
     def on_pointer_down(self) -> None:
-        """Re-check after a click has had time to clear or move the input.
+        """Refresh the tracked composer after a click.
 
-        A click inside the same composer merely refreshes its snapshot. A
-        send-button click, tab switch, or click into another field finishes
-        through the tracker's existing cleared/focus-changed rules.
+        A click inside the same composer refreshes its snapshot. Moving to a
+        different field parks the tracker; a clear cancels it without treating
+        the transition as confirmed send feedback.
         """
         if not self.controller.tracker.active:
             return
