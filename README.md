@@ -35,25 +35,11 @@ use.
   Rewrite in place with a hotkey, with no downstream agent SDK integration
   or extra chat interface.
 
-## Example: an agent memory literature review
+## How it works
 
-<table>
-  <tr><td>
-    <strong>1. You type</strong><br>
-    Help me conduct a literature review on agent memory.
-  </td></tr>
-  <tr><td>
-    <strong>2. Memory adds your preferences · ⌥⌃R</strong><br>
-    Compare methods in bullet points, with paper links and limitations.
-  </td></tr>
-  <tr><td>
-    <strong>3. You revise before sending</strong><br>
-    From now on, use a table for literature comparisons, with paper links and limitations.
-  </td></tr>
-</table>
-
-*Illustrative example using previously learned preferences, not a recorded
-run. [Full demo script](docs/demo-literature-review.md).*
+| It learns from you | It helps you improve your task prompt |
+| --- | --- |
+| **A — Repeated or explicit requirements.** From instructions you explicitly capture, it learns reusable preferences from repeated requirements or explicit rules for future tasks: how to work, what evidence to use, and how to deliver results.<br><br>**B — Corrections after translation.** After the Translator rewrites your input, it learns from your edits to that rewrite. Feedback can revise or retire only the memory items applied in that rewrite. | **Translates in your input box.** Press a hotkey to apply the preferences relevant to your current task. The Translator turns them into explicit requirements directly in your task prompt.<br><br>**You decide what gets sent.** See the result, edit or remove any added requirement, then send it to your agent when you are ready. Nothing is sent automatically. |
 
 ## Quickstart
 
