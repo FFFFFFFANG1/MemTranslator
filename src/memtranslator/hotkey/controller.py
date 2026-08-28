@@ -96,11 +96,12 @@ class DesktopController:
             return {"status": "tracking", "translate": translated,
                     "write": result, "snapshot": post_write}
 
-    def observe(self, *, key: str = "") -> dict | None:
+    def observe(self, *, key: str = "", snapshot=None) -> dict | None:
         with self._lock:
             if not self.has_pending_draft:
                 return None
-            snapshot = self.adapter.capture()
+            snapshot = (snapshot if snapshot is not None
+                        else self.adapter.capture())
             if snapshot is not None and snapshot.identity in self._origins:
                 if not snapshot.full_text.strip() or key == "Enter":
                     self._origins.pop(snapshot.identity, None)
