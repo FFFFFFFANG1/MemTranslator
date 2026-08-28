@@ -77,7 +77,7 @@ uv run --no-sync memtranslator start
 | **Option + Control + R**（`⌥⌃R`） | 改写当前输入，不发送。 |
 | **Option + Control + Enter**（`⌥⌃Enter`） | 捕获文本用于记忆提取，并转发一次普通 Enter（若输入框使用 Enter 发送，则会发送）。无须先改写。 |
 
-权限、配置、捕获行为、演示模式和开发说明，见[设计与使用细节](docs/design_detail.md)（英文）。
+权限、配置、捕获行为、演示模式和开发说明，见[设计与使用细节](docs/design_detail.zh-CN.md)。
 
 ## 目录
 
@@ -86,7 +86,7 @@ uv run --no-sync memtranslator start
 - [性能对比](#性能对比)
 - [局限性](#局限性)
 - [致谢](#致谢)
-- [设计与使用细节](docs/design_detail.md)（英文）
+- [设计与使用细节](docs/design_detail.zh-CN.md)
 
 ## 架构与核心机制
 
@@ -117,7 +117,7 @@ A 和 B 分别缓冲。系统生成的改写结果绝不会作为 A 的用户原
 条目还包含任务类型、作用域和生命周期元数据。它们是可以编辑的要求，而不是不透明的用户画像。
 
 **属性优先召回目前需要手动启用。** 默认仍使用文本优先的基线方案。
-开关、预算和嵌入回退策略，见[召回配置](docs/design_detail.md#recall-configuration)（英文）。
+开关、预算和嵌入回退策略，见[召回配置](docs/design_detail.zh-CN.md#召回配置)。
 
 ## 重新思考任务型 Agent 的记忆层
 
@@ -184,7 +184,7 @@ MemTranslator 将记忆层聚焦于**用户希望任务如何执行和交付**�
 
 ## 性能对比
 
-[8 月 26 日的 E1 报告](docs/2026-08-26-memtranslator-e1-performance-report.md)
+[8 月 26 日的 E1 报告](docs/2026-08-26-memtranslator-e1-performance-report.zh-CN.md)
 比较了原生 MemTranslator 与 Codex 文件记忆工作流，覆盖 12 个含噪声的交互序列、
 6,225 轮历史交互和 103 个计分任务。E1 评估的是记忆维护及其在**请求改写**中的应用，
 而非下游编程或一般任务求解能力。
@@ -205,7 +205,7 @@ CARRY 和 SUPPRESS 的配对差值置信区间均跨越零：这些观察**不�
 
 这一结果支持在该工作流中使用 Flash 级模型作为中间层的可行性。
 它是系统级比较，不是对 Extractor B 或反向检索的独立测试。
-基准中的 BGE-M3 配置也不同于[默认本地嵌入配置](docs/design_detail.md#llm-and-embedding-configuration)。
+基准中的 BGE-M3 配置也不同于[默认本地嵌入配置](docs/design_detail.zh-CN.md#llm-与嵌入配置)。
 实验协议、不确定性和证据边界详见报告。
 
 ## 局限性

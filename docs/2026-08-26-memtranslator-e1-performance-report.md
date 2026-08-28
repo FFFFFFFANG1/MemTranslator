@@ -1,5 +1,7 @@
 # MemTranslator E1 Noisy Performance Report
 
+**原文** | [简体中文](2026-08-26-memtranslator-e1-performance-report.zh-CN.md)
+
 **报告日期：** 2026-08-26  
 **评测对象：** MemTranslator native end-to-end pipeline  
 **对照对象：** Codex file memory（`AGENTS.md + MEMORY.md`，GPT-5.5 medium）  

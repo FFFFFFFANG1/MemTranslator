@@ -1,5 +1,7 @@
 # Design and usage details
 
+**English** | [简体中文](design_detail.zh-CN.md)
+
 The [README Quickstart](../README.md#quickstart) covers installation and the
 two desktop hotkeys. This page documents configuration, capture boundaries,
 and the current implementation behind that workflow.
