@@ -12,20 +12,34 @@ into store ops; route B judges the entries a patch actually used and edits
 those entries in place. Only the low-frequency consolidation pass sees the
 results of both.
 """
+import threading
+from functools import wraps
+
 from memtranslator.config import A_BATCH_N, B_BATCH_N, FLUSH_IDLE_S
 from memtranslator.extraction import run_a_extraction, run_b_extraction
 from memtranslator.store import Store
 
 
+def _synchronized(method):
+    @wraps(method)
+    def call(self, *args, **kwargs):
+        with self._lock:
+            return method(self, *args, **kwargs)
+    return call
+
+
 class Pipeline:
     def __init__(self, store: Store):
         self.store = store
+        self._lock = threading.RLock()
         self._a: list[str] = []          # route-A spans
         self._b: list[dict] = []         # route-B {entries, diff} signals
         self._a_oldest_at: float | None = None
         self._b_oldest_at: float | None = None
         self.adds_since_consolidate = 0  # M3 reads this
+        self.a_flush_count = 0           # journal A even if a later B flush fails
 
+    @_synchronized
     def pending_count(self, channel: str | None = None) -> int:
         if channel == "a":
             return len(self._a)
@@ -33,14 +47,26 @@ class Pipeline:
             return len(self._b)
         return len(self._a) + len(self._b)
 
-    def add_natural(self, spans: list[str], now: float) -> None:
-        for s in spans:
+    @_synchronized
+    def add_natural(self, messages: list[str], now: float) -> int:
+        """Queue non-empty raw messages for Route A.
+
+        Source eligibility is enforced by the server before background
+        capture reaches this method.  There is intentionally no lexical or
+        rule-based filter here.  The extraction prompt applies the sole
+        content guardrail: a deterministic per-message length truncation.
+        """
+        added = 0
+        for s in messages:
             if not s.strip():
                 continue
             self._a.append(s)
+            added += 1
             if self._a_oldest_at is None:
                 self._a_oldest_at = now
+        return added
 
+    @_synchronized
     def add_feedback(self, entries: list[dict], diff: list[dict],
                      now: float) -> bool:
         """Queue a route-B signal only when it can be judged: attributed
@@ -61,6 +87,7 @@ class Pipeline:
                                or (oldest_at is not None
                                    and now - oldest_at >= FLUSH_IDLE_S))
 
+    @_synchronized
     def maybe_flush(self, now: float, force: bool = False) -> dict | None:
         due_a = self._due(len(self._a), A_BATCH_N, self._a_oldest_at,
                           now, force)
@@ -73,8 +100,9 @@ class Pipeline:
                   "store": {"applied": 0, "skipped": [], "retired": 0}}
         if due_a:
             out = run_a_extraction(self._a, self.store.active())
-            self._a, self._a_oldest_at = [], None
             applied = self.store.apply_ops(out["ops"])
+            self._a, self._a_oldest_at = [], None
+            self.a_flush_count += 1
             self.adds_since_consolidate += sum(
                 1 for o in out["ops"] if o["kind"] in ("new", "contradict"))
             result["a"] = {**out, "store": applied}

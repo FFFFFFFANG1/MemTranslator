@@ -8,6 +8,7 @@ edit diffs); v0 records, v1 learns from it (anchor §4 编辑回流).
 from __future__ import annotations
 
 import json
+import threading
 import time
 from pathlib import Path
 
@@ -70,7 +71,10 @@ class Store:
         for value in kinds:
             if not isinstance(value, str) or not value.strip():
                 raise ValueError(f"unknown work kinds: {kinds!r}")
-            normalised.append(normalize_kind(value))
+            kind_value = normalize_kind(value)
+            if not kind_value:
+                raise ValueError(f"unknown work kinds: {kinds!r}")
+            normalised.append(kind_value)
         kinds = list(dict.fromkeys(normalised))
         scope = normalize_scope(scope)
         if bucket and bucket not in BUCKETS:
@@ -107,6 +111,15 @@ class Store:
         carried kinds=[] while the running process saw them tagged."""
         if req.id in self._items:
             self._append(req)
+
+    def insert_if_absent(self, req: Requirement) -> bool:
+        """Append a caller-owned deterministic record exactly once."""
+        if req.id in self._items:
+            return False
+        migrate_genre_from_scope(req)
+        self._items[req.id] = req
+        self._append(req)
+        return True
 
     def bump_strength(self, req_ids: list[str], delta: int) -> None:
         """Mechanical strength rule (0 token): accepted → +1, reverted → -1;
@@ -310,7 +323,11 @@ class Store:
         return {"applied": applied, "skipped": skipped, "retired": retired}
 
     def update(self, req_id: str, *, text: str | None = None,
-               status: str | None = None) -> Requirement:
+               status: str | None = None, scope: dict | None = None,
+               applies_when: str | None = None,
+               scope_mode: str | None = None,
+               kinds: list | None = None,
+               bucket: str | None = None) -> Requirement:
         req = self._items[req_id]
         if text is not None:
             text = text.strip()
@@ -321,6 +338,31 @@ class Store:
             if status not in STATUSES:
                 raise ValueError(f"unknown status: {status}")
             req.status = status
+        if kinds is not None:
+            if not isinstance(kinds, list):
+                raise ValueError(f"unknown work kinds: {kinds!r}")
+            normalised = []
+            for value in kinds:
+                if not isinstance(value, str) or not value.strip():
+                    raise ValueError(f"unknown work kinds: {kinds!r}")
+                kind = normalize_kind(value)
+                if not kind:
+                    raise ValueError(f"unknown work kinds: {kinds!r}")
+                normalised.append(kind)
+            req.kinds = list(dict.fromkeys(normalised))
+        if scope is not None:
+            req.scope = normalize_scope(scope)
+        if applies_when is not None:
+            req.applies_when = applies_when
+        if scope_mode is not None:
+            req.scope_mode = scope_mode
+        if bucket is not None:
+            bucket = bucket.strip()
+            if bucket and bucket not in BUCKETS:
+                raise ValueError(f"unknown bucket: {bucket}")
+            req.bucket = bucket
+        migrate_genre_from_scope(req)
+        req.normalize_applicability()
         req.updated_at = time.time()
         self._append(req)
         return req
@@ -341,16 +383,19 @@ class Store:
 class EventLog:
     def __init__(self, path: Path):
         self.path = Path(path)
+        self._lock = threading.Lock()
 
     def append(self, kind: str, payload: dict) -> dict:
         event = {"kind": kind, "at": time.time(), **payload}
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self.path.open("a") as f:
-            f.write(json.dumps(event, ensure_ascii=False) + "\n")
+        with self._lock:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            with self.path.open("a") as f:
+                f.write(json.dumps(event, ensure_ascii=False) + "\n")
         return event
 
     def read_all(self) -> list[dict]:
-        if not self.path.exists():
-            return []
-        return [json.loads(l) for l in self.path.read_text().splitlines()
-                if l.strip()]
+        with self._lock:
+            if not self.path.exists():
+                return []
+            return [json.loads(l) for l in self.path.read_text().splitlines()
+                    if l.strip()]

@@ -4,341 +4,1044 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MemTranslator</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230D1210'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-style='italic' font-size='17' fill='%23D9A441' text-anchor='middle'%3E⇄%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Spline+Sans:wght@300..600&family=Spline+Sans+Mono:wght@300..600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23181818'/%3E%3Cg fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 12h17m-4-4 4 4-4 4M25 20H8m4-4-4 4 4 4'/%3E%3C/g%3E%3C/svg%3E">
+<script>
+try {
+  const initialTheme = localStorage.getItem("memtranslator-theme");
+  document.documentElement.dataset.theme = ["light", "dark"].includes(initialTheme)
+    ? initialTheme : "system";
+} catch { document.documentElement.dataset.theme = "system"; }
+</script>
 <style>
 :root{
-  --ink:#0D1210;
-  --ink-raised:#141B17;
-  --ink-well:#0A0F0D;
-  --line:#26302A;
-  --line-soft:#1B2420;
-  --parchment:#E9E4D6;
-  --dim:#8E968C;
-  --faint:#5A6259;
-  --gold:#D9A441;
-  --gold-bright:#EFC06A;
-  --gold-soft:rgba(217,164,65,.13);
-  --sage:#8FB89B;
-  --rust:#C97B5F;
-  --serif:'Instrument Serif',Georgia,serif;
-  --sans:'Spline Sans',sans-serif;
-  --mono:'Spline Sans Mono',monospace;
+  color-scheme:light;
+  --ink:#181818;
+  --paper:#ffffff;
+  --canvas:#f7f7f8;
+  --well:#f7f7f8;
+  --line:#e1e1e1;
+  --line-soft:#ececec;
+  --dim:#666666;
+  --faint:#929292;
+  --muted:#777777;
+  --muted-soft:#898989;
+  --muted-strong:#555555;
+  --surface:#fafafa;
+  --surface-hover:#f5f5f5;
+  --raised:#ffffff;
+  --control:#ededee;
+  --control-active:#e5e5e6;
+  --focus:#aaaaaa;
+  --disabled:#eeeeee;
+  --primary:#181818;
+  --primary-hover:#303030;
+  --on-primary:#ffffff;
+  --shadow:rgba(0,0,0,.08);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB",sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ink:#f1f1f1;--paper:#151516;--canvas:#0e0e0f;--well:#1d1d1f;
+  --line:#3a3a3c;--line-soft:#2b2b2d;--dim:#b7b7b8;--faint:#77777a;
+  --muted:#aaaaac;--muted-soft:#89898c;--muted-strong:#d0d0d2;
+  --surface:#1a1a1c;--surface-hover:#212123;--raised:#242426;
+  --control:#252527;--control-active:#333336;--focus:#707074;
+  --disabled:#2a2a2d;--primary:#f1f1f1;--primary-hover:#d9d9da;
+  --on-primary:#111112;--shadow:rgba(0,0,0,.35);
+}
+@media(prefers-color-scheme:dark){
+  :root[data-theme="system"]{
+    color-scheme:dark;
+    --ink:#f1f1f1;--paper:#151516;--canvas:#0e0e0f;--well:#1d1d1f;
+    --line:#3a3a3c;--line-soft:#2b2b2d;--dim:#b7b7b8;--faint:#77777a;
+    --muted:#aaaaac;--muted-soft:#89898c;--muted-strong:#d0d0d2;
+    --surface:#1a1a1c;--surface-hover:#212123;--raised:#242426;
+    --control:#252527;--control-active:#333336;--focus:#707074;
+    --disabled:#2a2a2d;--primary:#f1f1f1;--primary-hover:#d9d9da;
+    --on-primary:#111112;--shadow:rgba(0,0,0,.35);
+  }
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+html,body{min-height:100%}
 body{
-  background:var(--ink);
-  color:var(--parchment);
-  font-family:var(--sans);
-  font-weight:340;
-  overflow:hidden;
-}
-/* grain + vignette atmosphere */
-body::before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:60;
-  opacity:.05;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-body::after{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:59;
-  background:radial-gradient(120% 90% at 50% 0%,transparent 55%,rgba(0,0,0,.38) 100%);
+  background:var(--canvas);color:var(--ink);
+  font-family:var(--sans);font-weight:400;
+  transition:background .2s ease,color .2s ease;
 }
 #app{
-  height:100%;display:grid;
-  grid-template-rows:auto 1fr auto;
-  grid-template-columns:minmax(0,1fr) 336px;
-  grid-template-areas:"header header" "chat panel" "composer panel";
-  max-width:1240px;margin:0 auto;
-  padding:0 28px 26px;column-gap:26px;
+  width:100%;height:100vh;margin:0 auto;
+  display:grid;grid-template-rows:68px minmax(0,1fr);
+  grid-template-areas:"header" "panel";
+  padding:0 clamp(18px,3vw,56px) 28px;
 }
-
-/* ---------- header ---------- */
 header{
-  grid-area:header;
-  display:flex;align-items:baseline;gap:18px;
-  padding:22px 2px 16px;
-  border-bottom:1px solid var(--line-soft);
-  animation:fadedown .5s ease-out both;
+  grid-area:header;display:flex;align-items:center;gap:22px;
+  padding:0 4px;border-bottom:1px solid var(--line-soft);
+  animation:fadedown .35s ease-out both;
 }
 .wordmark{
-  font-family:var(--serif);font-size:27px;letter-spacing:.01em;font-weight:400;
+  display:flex;align-items:center;gap:10px;
+  font-size:17px;font-weight:620;letter-spacing:-.02em;
 }
-.wordmark em{font-style:italic;color:var(--gold)}
+.wordmark em{font-style:normal;font-weight:620}
+.brand-mark{width:30px;height:30px;display:grid;place-items:center}
+.brand-mark svg{width:28px;height:28px;color:var(--ink)}
 .tagline{
-  font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--faint);transform:translateY(-2px);
+  color:var(--muted);font-size:10px;font-weight:500;
+  letter-spacing:.08em;
 }
-.models{
-  margin-left:auto;font-family:var(--mono);font-size:10.5px;
-  color:var(--faint);letter-spacing:.04em;
+.page-nav{display:flex;align-items:center;gap:3px;margin-left:12px}
+.page-nav button{
+  padding:6px 9px;border:0;border-radius:7px;background:transparent;
+  color:var(--muted-soft);font-size:10.5px;font-weight:570;
 }
-.models b{color:var(--dim);font-weight:420}
-.models .arr{color:var(--gold);padding:0 3px}
+.page-nav button:hover{color:var(--ink);background:var(--control)}
+.page-nav button[aria-pressed="true"]{color:var(--ink);background:var(--control-active)}
+.header-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+.settings-button{
+  width:31px;height:31px;display:grid;place-items:center;padding:0;
+  background:transparent;border:1px solid transparent;border-radius:8px;
+  color:var(--muted);
+}
+.settings-button svg{width:16px;height:16px}
+.settings-button:hover{color:var(--ink);background:var(--control)}
+.settings-button[aria-pressed="true"]{
+  color:var(--ink);background:var(--raised);border-color:var(--line);
+  box-shadow:0 1px 2px var(--shadow);
+}
+.theme-switch,.language-switch{
+  display:flex;gap:2px;padding:3px;
+  background:var(--control);border:1px solid var(--line-soft);border-radius:9px;
+}
+.theme-switch button,.language-switch button{
+  min-width:31px;padding:5px 7px;border:0;border-radius:6px;
+  background:transparent;color:var(--muted);cursor:pointer;
+  font-family:var(--sans);font-size:10px;font-weight:580;
+}
+.theme-switch button{display:flex;align-items:center;justify-content:center;gap:4px}
+.theme-switch svg{width:12px;height:12px}
+.theme-switch button[aria-pressed="true"],.language-switch button[aria-pressed="true"]{
+  color:var(--ink);background:var(--raised);box-shadow:0 1px 2px var(--shadow);
+}
+.theme-switch button:hover,.language-switch button:hover{color:var(--ink)}
 
-/* ---------- chat ---------- */
-#chat{
-  grid-area:chat;overflow-y:auto;
-  padding:26px 6px 12px 2px;
-  scrollbar-width:thin;scrollbar-color:var(--line) transparent;
-  animation:fadeup .55s .08s ease-out both;
-}
-.msg{max-width:72ch;margin:0 0 26px;animation:fadeup .3s ease-out both}
-.msg .who{
-  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--faint);margin-bottom:7px;
-}
-.msg.user{margin-left:auto;max-width:56ch}
-.msg.user .who{text-align:right;color:var(--gold);opacity:.75}
-.msg.user .body{
-  border-right:2px solid var(--gold);
-  padding:10px 14px 10px 0;text-align:right;
-  font-family:var(--mono);font-size:13.5px;font-weight:340;
-  color:var(--parchment);white-space:pre-wrap;line-height:1.65;
-}
-.msg.agent .body{
-  border-left:1px solid var(--line);
-  padding:2px 0 2px 16px;
-  font-size:14.5px;line-height:1.75;white-space:pre-wrap;
-}
-.msg.agent .body.streaming::after{
-  content:"▎";color:var(--gold);animation:blink 1s steps(2) infinite;
-}
-.msg.agent .body.error{color:var(--rust)}
-#chat-empty{
-  height:100%;display:flex;flex-direction:column;gap:14px;
-  align-items:center;justify-content:center;text-align:center;
-  color:var(--faint);
-}
-#chat-empty .glyph{
-  font-family:var(--serif);font-style:italic;font-size:44px;color:var(--gold);
-  opacity:.55;
-}
-#chat-empty p{font-size:13px;max-width:40ch;line-height:1.8}
-#chat-empty kbd{
-  font-family:var(--mono);font-size:11px;color:var(--dim);
-  border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;
-  padding:1px 5px;
-}
-
-/* ---------- composer (the hero) ---------- */
-#composer{
-  grid-area:composer;position:relative;
-  background:var(--ink-raised);
-  border:1px solid var(--line);border-radius:10px;
-  padding:14px 16px 12px;
-  transition:border-color .25s;
-  animation:fadeup .55s .16s ease-out both;
-}
-#composer:focus-within{border-color:#3A4A40}
-#composer.polishing{border-color:var(--gold)}
-#composer.polishing::before{
-  content:"";position:absolute;top:-1px;left:8%;right:8%;height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold-bright),transparent);
-  animation:scan 1.1s ease-in-out infinite;
-}
-#input{
-  width:100%;background:transparent;border:0;outline:0;resize:none;
-  color:var(--parchment);font-family:var(--mono);font-size:14.5px;
-  font-weight:340;line-height:1.7;min-height:76px;max-height:38vh;
-  caret-color:var(--gold);
-}
-#input::placeholder{color:var(--faint)}
-#input.flash{animation:goldflash .8s ease-out}
-.composer-foot{
-  display:flex;align-items:flex-end;gap:10px;margin-top:8px;
-  min-height:30px;
-}
-#status{flex:1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0}
-.hint{font-size:11px;color:var(--faint);letter-spacing:.02em}
-.hint kbd{font-family:var(--mono);font-size:10px;color:var(--dim)}
-.notice{font-size:12px;letter-spacing:.02em}
-.notice.sage{color:var(--sage)}
-.notice.rust{color:var(--rust)}
-.notice.gold{color:var(--gold)}
-.chip{
-  font-family:var(--mono);font-size:11px;line-height:1;
-  color:var(--gold-bright);background:var(--gold-soft);
-  border:1px solid rgba(217,164,65,.35);border-radius:20px;
-  padding:5px 10px;max-width:34ch;overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap;
-  animation:fadeup .25s ease-out both;
-}
-.chip.meta{
-  color:var(--dim);background:transparent;border-color:var(--line);
-}
-.chip.link{cursor:pointer;user-select:none}
-.chip.link:hover{border-color:var(--gold);color:var(--gold-bright)}
-button{
-  font-family:var(--sans);font-size:12.5px;font-weight:460;
-  letter-spacing:.04em;border-radius:7px;cursor:pointer;
-  padding:8px 16px;transition:all .18s;white-space:nowrap;
-}
-#polish{
-  background:transparent;color:var(--gold);
-  border:1px solid rgba(217,164,65,.45);
-}
-#polish:hover{background:var(--gold-soft);border-color:var(--gold)}
-#polish:disabled,#send:disabled{opacity:.35;cursor:default}
-#polish:disabled:hover{background:transparent}
-#send{
-  background:var(--parchment);color:var(--ink);border:1px solid var(--parchment);
-}
-#send:hover{background:#fff}
-button .k{opacity:.5;font-size:10.5px;margin-left:5px;font-family:var(--mono)}
-
-/* ---------- requirements panel ---------- */
 #panel{
-  grid-area:panel;display:flex;flex-direction:column;min-height:0;
-  border-left:1px solid var(--line-soft);
-  padding:24px 0 0 24px;
-  animation:fadeleft .55s .12s ease-out both;
+  grid-area:panel;width:100%;min-height:0;
+  justify-self:stretch;margin-top:20px;padding:clamp(22px,2.4vw,38px);
+  display:flex;flex-direction:column;
+  background:var(--paper);border:1px solid var(--line-soft);
+  border-radius:14px;animation:fadeup .4s .05s ease-out both;
 }
 #panel h2{
-  font-family:var(--serif);font-style:italic;font-weight:400;
-  font-size:19px;color:var(--parchment);
+  font-size:18px;font-weight:630;letter-spacing:-.02em;
 }
 #panel .sub{
-  font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--faint);margin:4px 0 16px;
+  margin:5px 0 18px;color:var(--muted-soft);
+  font-size:10px;font-weight:500;letter-spacing:.04em;
 }
-#panel .sub b{color:var(--gold);font-weight:500}
-#add-form{display:flex;gap:8px;margin-bottom:16px}
+#panel .sub b{color:var(--muted-strong);font-weight:620}
+.page{display:flex;flex:1;min-height:0;flex-direction:column}
+.page[hidden]{display:none}
+#add-form{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(180px,.65fr) auto;
+  gap:8px;margin-bottom:14px;
+}
 #add-input{
-  flex:1;background:var(--ink-well);border:1px solid var(--line);
-  border-radius:7px;color:var(--parchment);outline:0;
-  font-family:var(--mono);font-size:12px;padding:9px 11px;
+  grid-column:1/-1;min-width:0;padding:10px 12px;
+  background:var(--well);border:1px solid var(--line);
+  border-radius:8px;outline:0;color:var(--ink);
+  font-family:var(--sans);font-size:12.5px;
 }
-#add-input:focus{border-color:#3A4A40}
+#add-input:focus{
+  border-color:var(--focus);background:var(--raised);
+  box-shadow:0 0 0 2px var(--shadow);
+}
 #add-input::placeholder{color:var(--faint)}
+.field-group,.edit-field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field-group>label,.edit-field>label{
+  color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.02em;
+}
+.meta-control{display:flex;align-items:center;gap:7px;min-width:0}
+.meta-input{
+  width:100%;min-width:0;padding:9px 10px;
+  background:var(--well);border:1px solid var(--line);border-radius:8px;
+  outline:0;color:var(--ink);font-family:var(--mono);font-size:10.5px;
+}
+.meta-input:focus{border-color:var(--focus);background:var(--raised);box-shadow:0 0 0 2px var(--shadow)}
+.meta-input:disabled{color:var(--faint);background:var(--disabled)}
+.meta-input::placeholder{color:var(--faint)}
+.check-control{
+  display:flex;align-items:center;gap:4px;flex:0 0 auto;
+  color:var(--muted-strong);font-family:var(--mono);font-size:9.5px;cursor:pointer;
+}
+.check-control input{width:13px;height:13px;accent-color:var(--ink)}
+button{
+  font-family:var(--sans);font-weight:570;
+  letter-spacing:0;white-space:nowrap;cursor:pointer;
+}
 #add-btn{
-  background:transparent;border:1px solid var(--line);color:var(--dim);
-  padding:0 13px;font-size:16px;font-weight:300;
+  align-self:end;min-height:36px;padding:0 17px;background:var(--primary);
+  border:1px solid var(--primary);border-radius:8px;
+  color:var(--on-primary);font-size:12px;
 }
-#add-btn:hover{border-color:var(--gold);color:var(--gold)}
-#req-list{flex:1;overflow-y:auto;scrollbar-width:thin;
-  scrollbar-color:var(--line) transparent;padding-right:10px;padding-bottom:20px}
+#add-btn:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+#add-btn:disabled{opacity:.4;cursor:default}
+#memory-notice{
+  min-height:18px;margin:-5px 0 8px;
+  color:var(--dim);font-size:10px;font-weight:500;
+}
+#memory-notice.error{color:var(--ink)}
+#allowlist-notice{
+  min-height:18px;margin:-5px 0 8px;
+  color:var(--dim);font-size:10px;font-weight:500;
+}
+#allowlist-notice.error{color:var(--ink)}
+#settings-notice{
+  min-height:18px;margin:0 0 4px;color:var(--dim);font-size:10px;font-weight:500;
+}
+#settings-notice.error{color:var(--ink)}
+#req-list{
+  flex:1;min-height:0;overflow-y:auto;padding-right:4px;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent;
+}
 .req{
-  position:relative;border-left:2px solid var(--line);
-  padding:8px 26px 8px 12px;margin-bottom:10px;
-  transition:border-color .4s;
+  margin:0 0 10px;padding:17px 18px;
+  background:var(--surface);border:1px solid var(--line-soft);
+  border-radius:10px;transition:border-color .18s,background .18s;
 }
+.req:hover{border-color:var(--line);background:var(--surface-hover)}
 .req .text{
-  font-family:var(--mono);font-size:12px;font-weight:340;
-  line-height:1.6;color:var(--parchment);word-break:break-word;
+  color:var(--ink);font-size:15.5px;
+  font-weight:500;line-height:1.55;word-break:break-word;
 }
-.req .date{font-size:10px;color:var(--faint);margin-top:4px;font-family:var(--mono)}
-.req .text[contenteditable="true"]{outline:1px solid var(--gold);outline-offset:3px;border-radius:3px}
-.req .retire{
-  position:absolute;top:6px;right:4px;opacity:0;
-  background:none;border:0;color:var(--faint);font-size:14px;padding:2px 6px;
+.req .date{
+  margin-top:7px;color:var(--faint);
+  font-family:var(--mono);font-size:10px;
 }
-.req:hover .retire{opacity:1}
-.req .retire:hover{color:var(--rust)}
-.req.applied{border-left-color:var(--gold);animation:appliedpulse 2.6s ease-out}
-.req.applied .text{color:var(--gold-bright)}
-.req.retired{border-left-color:var(--line-soft)}
-.req.retired .text{color:var(--faint);text-decoration:line-through}
-.req .revive{
-  background:none;border:0;color:var(--faint);font-size:10.5px;
-  padding:0;margin-top:3px;text-decoration:underline dotted;
+.req .metadata{
+  display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:11px;
+  color:var(--muted);font-family:var(--mono);font-size:12px;line-height:1.5;
 }
-.req .revive:hover{color:var(--sage)}
+.req .metadata b{color:var(--muted-strong);font-family:var(--sans);font-weight:620}
+.req .item-actions,.allow-entry .item-actions{
+  display:flex;align-items:center;gap:6px;margin-top:9px
+}
+.req .item-action,.allow-entry .item-action{
+  padding:5px 9px;background:var(--raised);
+  border:1px solid var(--line);border-radius:6px;
+  color:var(--dim);font-size:10px;font-weight:550;
+}
+.req .item-action.modify:hover,.req .item-action.save:hover,
+.req .item-action.restore:hover,.req .item-action.cancel:hover,
+.allow-entry .item-action.modify:hover,.allow-entry .item-action.save:hover,
+.allow-entry .item-action.cancel:hover{
+  background:var(--control);border-color:var(--line);color:var(--ink);
+}
+.req .item-action.delete:hover,.allow-entry .item-action.delete:hover{
+  background:var(--primary);border-color:var(--primary);color:var(--on-primary);
+}
+.edit-input{
+  display:block;width:100%;min-height:64px;resize:vertical;
+  padding:11px;background:var(--raised);border:1px solid var(--focus);
+  border-radius:8px;outline:0;color:var(--ink);
+  font-family:var(--sans);font-size:15px;line-height:1.55;
+  box-shadow:0 0 0 2px var(--shadow);
+}
+.edit-fields{display:grid;grid-template-columns:1fr 1fr minmax(180px,.65fr);gap:8px;margin-top:10px}
+.req.retired{background:var(--surface);border-color:var(--line-soft)}
+.req.retired .text{color:var(--muted);text-decoration:line-through}
 #retired-toggle{
-  background:none;border:0;color:var(--faint);font-size:11px;
-  letter-spacing:.08em;padding:6px 0;margin-top:6px;
+  padding:8px 2px;background:none;border:0;
+  color:var(--muted);font-size:11px;font-weight:520;text-align:left;
 }
-#retired-toggle:hover{color:var(--dim)}
-#req-empty{
-  border:1px dashed var(--line);border-radius:9px;
-  padding:18px 16px;color:var(--dim);font-size:12.5px;line-height:1.8;
+#retired-toggle:hover{color:var(--ink)}
+.empty-state{
+  padding:18px;background:var(--surface);
+  border:1px dashed var(--line);border-radius:10px;
+  color:var(--muted);font-size:12.5px;line-height:1.75;
 }
-#req-empty .seed{
-  display:inline-block;margin-top:10px;background:none;
-  border:1px solid rgba(217,164,65,.4);color:var(--gold);
-  font-family:var(--mono);font-size:11px;padding:6px 10px;border-radius:20px;
+.empty-state .seed{
+  display:inline-block;margin-top:10px;padding:6px 10px;
+  background:var(--raised);border:1px solid var(--line);border-radius:7px;
+  color:var(--ink);font-family:var(--mono);font-size:11px;
 }
-#req-empty .seed:hover{background:var(--gold-soft)}
-
-/* ---------- animations ---------- */
-@keyframes fadeup{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
-@keyframes fadedown{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:none}}
-@keyframes fadeleft{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
-@keyframes blink{50%{opacity:0}}
-@keyframes scan{0%{transform:translateX(-46%)}100%{transform:translateX(46%)}}
-@keyframes goldflash{0%{background:var(--gold-soft)}100%{background:transparent}}
-@keyframes appliedpulse{0%{background:var(--gold-soft)}100%{background:transparent}}
-
-@media (max-width:920px){
-  #app{grid-template-columns:1fr;grid-template-areas:"header" "panel" "chat" "composer";padding:0 16px 16px}
-  #panel{border-left:0;padding:16px 0 0;max-height:34vh}
+.empty-state .seed:hover{background:var(--control)}
+#allowlist-add-form{
+  display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1.5fr) auto;
+  gap:8px;margin-bottom:14px;align-items:end;
+}
+.source-select,.bucket-select{
+  width:100%;min-height:35px;padding:8px 10px;
+  background:var(--well);border:1px solid var(--line);border-radius:8px;
+  outline:0;color:var(--ink);font-family:var(--sans);font-size:11px;
+}
+.source-select:focus,.bucket-select:focus{border-color:var(--focus);background:var(--raised)}
+#allowlist-add-btn{
+  min-height:35px;padding:0 15px;background:var(--primary);
+  border:1px solid var(--primary);border-radius:8px;color:var(--on-primary);font-size:12px;
+}
+#allowlist-add-btn:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+#allowlist-add-btn:disabled{opacity:.4;cursor:default}
+#allowlist-list{
+  flex:1;min-height:0;overflow-y:auto;padding-right:4px;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent;
+}
+.allow-entry{
+  margin:0 0 8px;padding:12px;background:var(--surface);
+  border:1px solid var(--line-soft);border-radius:10px;
+}
+.allow-head{display:flex;align-items:center;gap:7px;min-width:0}
+.allow-label{font-size:14px;font-weight:590;word-break:break-word}
+.source-badge{
+  display:inline-flex;padding:3px 6px;background:var(--control);border-radius:5px;
+  color:var(--dim);font-family:var(--mono);font-size:8.5px;font-weight:600;
+  letter-spacing:.02em;
+}
+.source-badge.default{background:var(--raised);border:1px solid var(--line);padding:2px 5px}
+.allow-patterns{
+  display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;
+}
+.allow-patterns code{
+  padding:4px 6px;background:var(--raised);border:1px solid var(--line-soft);
+  border-radius:5px;color:var(--muted-strong);font-family:var(--mono);font-size:9.5px;
+  word-break:break-all;
+}
+.allow-entry .item-actions{display:flex;gap:6px;margin-top:9px}
+.allow-edit-fields{
+  display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1.5fr);
+  gap:8px;
+}
+.settings-stack{display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.settings-card{
+  padding:16px;background:var(--surface);border:1px solid var(--line-soft);
+  border-radius:10px;
+}
+.settings-card-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;margin-bottom:13px;
+}
+.settings-card h3{font-size:13px;font-weight:630;letter-spacing:-.01em}
+.settings-status{
+  padding:3px 7px;background:var(--control);border-radius:999px;
+  color:var(--dim);font-family:var(--mono);font-size:8.5px;font-weight:600;
+}
+.settings-fields{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px}
+.settings-fields .wide{grid-column:1/-1}
+.settings-note{
+  margin-top:10px;color:var(--muted);font-size:10px;line-height:1.55;
+}
+.settings-note code{font-family:var(--mono);font-size:9.5px;color:var(--muted-strong)}
+.settings-actions{display:flex;align-items:center;gap:7px;margin-top:13px}
+.settings-primary,.settings-secondary{
+  min-height:34px;padding:0 13px;border-radius:8px;font-size:11px;
+}
+.settings-primary{background:var(--primary);border:1px solid var(--primary);color:var(--on-primary)}
+.settings-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+.settings-secondary{background:var(--raised);border:1px solid var(--line);color:var(--ink)}
+.settings-secondary:hover{background:var(--control);color:var(--ink)}
+.settings-primary:disabled,.settings-secondary:disabled{opacity:.4;cursor:default}
+@keyframes fadeup{
+  from{opacity:0;transform:translateY(7px)}
+  to{opacity:1;transform:none}
+}
+@keyframes fadedown{
+  from{opacity:0;transform:translateY(-5px)}
+  to{opacity:1;transform:none}
+}
+@media(max-width:900px){
+  #add-form{grid-template-columns:1fr 1fr}
+  #add-btn{min-height:38px}
+  .edit-fields{grid-template-columns:1fr 1fr}
+  .edit-field.bucket-field{grid-column:1/-1}
+  .theme-switch .theme-copy{display:none}
+  .theme-switch button{width:29px;min-width:29px;padding:5px}
+}
+@media(max-width:640px){
+  #app{padding:0 14px 14px;grid-template-rows:60px minmax(0,1fr)}
+  header{padding:0 2px;gap:12px}
+  .wordmark{font-size:16px}.brand-mark{width:28px;height:28px}
+  .tagline{display:none}
+  .page-nav{margin-left:0}
+  .page-nav button{padding:6px 7px;font-size:10px}
+  #panel{margin-top:14px;padding:18px;border-radius:12px}
+  #add-form{grid-template-columns:1fr}
+  #add-input{grid-column:auto}
+  #add-btn{min-height:38px}
+  .edit-fields{grid-template-columns:1fr}
+  .edit-field.bucket-field{grid-column:auto}
+  #allowlist-add-form,.allow-edit-fields,.settings-fields{grid-template-columns:1fr}
+  .settings-fields .wide{grid-column:auto}
+}
+@media(max-width:500px){
+  .wordmark>span:last-child{display:none}
+  .header-actions{gap:5px}
+  .language-switch button{min-width:28px;padding:5px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
 }
 </style>
 </head>
 <body>
 <div id="app">
   <header>
-    <div class="wordmark"><em>Mem</em>Translator</div>
-    <div class="tagline">requirement compiler · between you &amp; your agents</div>
-    <div class="models" id="models"><b>haiku</b><span class="arr">⇢</span><b>opus</b></div>
+    <div class="wordmark"><span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 40 40" fill="none">
+        <path d="M7 14h25m-6-6 6 6-6 6M33 26H8m6-6-6 6 6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span><span><em>Mem</em>Translator</span></div>
+    <div class="tagline" data-i18n="tagline">记忆编译器 · 连接你与智能体</div>
+    <nav class="page-nav" data-i18n-aria-label="pageNavigation">
+      <button id="nav-memory" type="button" aria-pressed="true" data-i18n="navMemory">Memory</button>
+      <button id="nav-allowlist" type="button" aria-pressed="false" data-i18n="navAllowlist">白名单</button>
+    </nav>
+    <div class="header-actions">
+      <div class="theme-switch" role="group" data-i18n-aria-label="themeSwitcher">
+        <button id="theme-system" type="button" aria-pressed="true" data-theme-choice="system" data-i18n-title="themeSystem">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="2.5" width="12" height="8.5" rx="1.5" stroke="currentColor"/><path d="M6 13.5h4M8 11v2.5" stroke="currentColor" stroke-linecap="round"/></svg>
+          <span class="theme-copy" data-i18n="themeSystem">自动</span>
+        </button>
+        <button id="theme-light" type="button" aria-pressed="false" data-theme-choice="light" data-i18n-title="themeLight">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="2.5" stroke="currentColor"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6 13 13M13 3l-1.4 1.4M4.4 11.6 3 13" stroke="currentColor" stroke-linecap="round"/></svg>
+          <span class="theme-copy" data-i18n="themeLight">亮</span>
+        </button>
+        <button id="theme-dark" type="button" aria-pressed="false" data-theme-choice="dark" data-i18n-title="themeDark">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M12.8 10.2A5.5 5.5 0 0 1 5.8 3.1a5.5 5.5 0 1 0 7 7.1Z" stroke="currentColor" stroke-linejoin="round"/></svg>
+          <span class="theme-copy" data-i18n="themeDark">暗</span>
+        </button>
+      </div>
+      <button id="nav-settings" class="settings-button" type="button"
+              aria-pressed="false" data-i18n-title="settings"
+              data-i18n-aria-label="settings">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M19 13.5v-3l-2.1-.6a7.5 7.5 0 0 0-.7-1.6l1.1-1.9-2.1-2.1-1.9 1.1a7.5 7.5 0 0 0-1.6-.7L11.1 2h-3l-.6 2.1a7.5 7.5 0 0 0-1.6.7L4 3.7 1.9 5.8 3 7.7a7.5 7.5 0 0 0-.7 1.6l-2.1.6v3l2.1.6c.2.6.4 1.1.7 1.6L1.9 17l2.1 2.1L5.9 18c.5.3 1 .5 1.6.7l.6 2.1h3l.6-2.1c.6-.2 1.1-.4 1.6-.7l1.9 1.1 2.1-2.1-1.1-1.9c.3-.5.5-1 .7-1.6l2.1-.6Z" transform="translate(2.4 1.1) scale(.8)" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="language-switch" role="group" data-i18n-aria-label="languageSwitcher">
+        <button id="lang-zh" type="button" aria-pressed="true" data-i18n-title="chinese">中</button>
+        <button id="lang-en" type="button" aria-pressed="false" data-i18n-title="english">EN</button>
+      </div>
+    </div>
   </header>
 
-  <main id="chat">
-    <div id="chat-empty">
-      <div class="glyph">⇄</div>
-      <p>在下方输入请求，按 <kbd>⌘E</kbd> 让 translator 按你的 requirement 润色——
-      结果落回输入框，改到满意再发送。下游 agent 永远只看见你确认后的文本。</p>
-    </div>
-  </main>
-
-  <div id="composer">
-    <textarea id="input" placeholder="写下你的请求…（⌘E 润色 · Enter 发送 · Shift+Enter 换行）" rows="3"></textarea>
-    <div class="composer-foot">
-      <div id="status"><span class="hint">⌘E <kbd>润色</kbd> · Enter <kbd>发送</kbd></span></div>
-      <button id="polish">润色<span class="k">⌘E</span></button>
-      <button id="send">发送<span class="k">⏎</span></button>
-    </div>
-  </div>
-
   <aside id="panel">
-    <h2>Requirements</h2>
-    <div class="sub">translator 的全部记忆 · <b id="req-count">0</b> 条生效</div>
+    <section id="memory-page" class="page">
+    <h2 data-i18n="memoryTitle">Memory</h2>
+    <div class="sub"><span data-i18n="memorySubtitle">任务应当如何完成</span> · <b id="req-count">0</b> <span data-i18n="activeUnit">条生效</span></div>
     <form id="add-form">
-      <input id="add-input" placeholder="新增一条 requirement…" autocomplete="off">
-      <button id="add-btn" type="submit" title="添加">+</button>
+      <input id="add-input" data-i18n-placeholder="newMemoryPlaceholder" autocomplete="off">
+      <div class="field-group">
+        <label for="add-work-kind" data-i18n="workKind">Work kind</label>
+        <div class="meta-control">
+          <input class="meta-input" id="add-work-kind" data-i18n-placeholder="workKindPlaceholder" autocomplete="off">
+          <label class="check-control"><input id="add-any" type="checkbox"><span data-i18n="any">Any</span></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="add-scope" data-i18n="scope">Scope</label>
+        <div class="meta-control">
+          <input class="meta-input" id="add-scope" data-i18n-placeholder="scopePlaceholder" autocomplete="off">
+          <label class="check-control"><input id="add-global" type="checkbox"><span data-i18n="global">Global</span></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="add-bucket" data-i18n="bucket">Bucket</label>
+        <select class="bucket-select" id="add-bucket"></select>
+      </div>
+      <button id="add-btn" type="submit"><span data-i18n="newMemory">新建</span></button>
     </form>
+    <div id="memory-notice" role="status" aria-live="polite"></div>
     <div id="req-list"></div>
+    </section>
+
+    <section id="allowlist-page" class="page" hidden>
+      <h2 data-i18n="allowlistTitle">采集白名单</h2>
+      <div class="sub"><span data-i18n="allowlistSubtitle">允许通过 Option+Control+Enter 显式采集的来源</span> · <b id="allowlist-count">0</b> <span data-i18n="sourceUnit">个来源</span></div>
+      <form id="allowlist-add-form">
+        <div class="field-group">
+          <label for="allowlist-label" data-i18n="sourceLabel">名称</label>
+          <input class="meta-input" id="allowlist-label" data-i18n-placeholder="sourceLabelPlaceholder" autocomplete="off">
+        </div>
+        <div class="field-group">
+          <label for="allowlist-kind" data-i18n="sourceType">类型</label>
+          <select class="source-select" id="allowlist-kind">
+            <option value="app" data-i18n="sourceApp">App</option>
+            <option value="web" data-i18n="sourceWeb">Website</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="allowlist-patterns" data-i18n="sourceMatches">匹配值</label>
+          <input class="meta-input" id="allowlist-patterns" data-i18n-placeholder="sourceMatchesPlaceholder" autocomplete="off">
+        </div>
+        <button id="allowlist-add-btn" type="submit" data-i18n="newSource">新增</button>
+      </form>
+      <div id="allowlist-notice" role="status" aria-live="polite"></div>
+      <div id="allowlist-list"></div>
+    </section>
+
+    <section id="settings-page" class="page" hidden>
+      <h2 data-i18n="settingsTitle">设置</h2>
+      <div class="sub" data-i18n="settingsSubtitle">运行中的模型连接</div>
+      <div id="settings-notice" role="status" aria-live="polite"></div>
+      <div class="settings-stack">
+        <form id="llm-settings-form" class="settings-card">
+          <div class="settings-card-head">
+            <h3 data-i18n="llmSettings">LLM</h3>
+            <span id="llm-key-status" class="settings-status"></span>
+          </div>
+          <div class="settings-fields">
+            <div class="field-group">
+              <label for="llm-api-format" data-i18n="apiFormat">API format</label>
+              <select class="source-select" id="llm-api-format">
+                <option value="openai-compatible">OpenAI-compatible</option>
+                <option value="anthropic">Anthropic</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="llm-model" data-i18n="modelName">Model</label>
+              <input class="meta-input" id="llm-model" autocomplete="off">
+            </div>
+            <div class="field-group wide">
+              <label for="llm-base-url" data-i18n="baseUrl">Base URL</label>
+              <input class="meta-input" id="llm-base-url" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="field-group wide">
+              <label for="llm-api-key" data-i18n="apiKey">API key</label>
+              <input class="meta-input" id="llm-api-key" type="text" autocomplete="off" spellcheck="false">
+            </div>
+          </div>
+          <p class="settings-note" data-i18n="storedLocally">Stored locally in the MemTranslator app directory.</p>
+          <div class="settings-actions">
+            <button id="llm-save-btn" class="settings-primary" type="submit" data-i18n="saveLlm">保存 LLM</button>
+          </div>
+        </form>
+
+        <form id="embedding-settings-form" class="settings-card">
+          <div class="settings-card-head">
+            <h3 data-i18n="embeddingSettings">Embedding</h3>
+            <span id="embedding-mode-status" class="settings-status"></span>
+          </div>
+          <div class="settings-fields">
+            <div class="field-group wide">
+              <label for="embedding-model" data-i18n="modelName">Model</label>
+              <input class="meta-input" id="embedding-model" autocomplete="off">
+            </div>
+            <div class="field-group wide">
+              <label for="embedding-base-url" data-i18n="baseUrl">Base URL</label>
+              <input class="meta-input" id="embedding-base-url" data-i18n-placeholder="inheritLlmBase" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="field-group wide">
+              <label for="embedding-api-key" data-i18n="apiKey">API key</label>
+              <input class="meta-input" id="embedding-api-key" type="text" data-i18n-placeholder="inheritLlmKey" autocomplete="off" spellcheck="false">
+            </div>
+          </div>
+          <p id="embedding-inheritance" class="settings-note"></p>
+          <p class="settings-note" data-i18n="storedLocally">Stored locally in the MemTranslator app directory.</p>
+          <div class="settings-actions">
+            <button id="embedding-save-btn" class="settings-primary" type="submit" data-i18n="saveRemoteEmbedding">保存远端 Embedding</button>
+            <button id="embedding-default-btn" class="settings-secondary" type="button" data-i18n="useDefaultEmbedding">Default · 本地多语言模型</button>
+          </div>
+        </form>
+      </div>
+    </section>
   </aside>
 </div>
 
 <script>
 "use strict";
 const $ = (s) => document.querySelector(s);
-const chatEl = $("#chat"), inputEl = $("#input"), statusEl = $("#status");
-const polishBtn = $("#polish"), sendBtn = $("#send");
 const reqListEl = $("#req-list"), reqCountEl = $("#req-count");
+const allowlistListEl = $("#allowlist-list"), allowlistCountEl = $("#allowlist-count");
 
-const state = {
-  messages: [],          // [{role, content}]
-  requirements: [],
-  lastTranslate: null,   // {id, original, polished}
-  lastAppliedIds: [],
-  busy: false,
-  showRetired: false,
+const STRINGS = {
+  zh: {
+    tagline: "记忆编译器 · 连接你与智能体",
+    languageSwitcher: "界面语言",
+    pageNavigation: "页面导航",
+    navMemory: "Memory",
+    navAllowlist: "白名单",
+    settings: "设置",
+    chinese: "中文",
+    english: "English",
+    themeSwitcher: "界面主题",
+    themeSystem: "自动",
+    themeLight: "亮色",
+    themeDark: "暗色",
+    memoryTitle: "Memory",
+    memorySubtitle: "任务应当如何完成",
+    activeUnit: "条生效",
+    newMemoryPlaceholder: "新增一条 memory…",
+    newMemory: "新建",
+    workKind: "Work kind",
+    scope: "Scope",
+    bucket: "Bucket",
+    bucketUnclassified: "未分类",
+    bucketTaskGoal: "任务目标",
+    bucketReasoningPolicy: "推理策略",
+    bucketDeliverables: "必须交付内容",
+    bucketOutputContract: "输出约定",
+    bucketCommunicationStyle: "沟通风格",
+    bucketExecutionPolicy: "执行策略",
+    any: "Any",
+    global: "Global",
+    workKindPlaceholder: "例如 email, report",
+    scopePlaceholder: "适用条件或 audience=client",
+    metadataUnset: "未设置",
+    emptyTitle: "还没有 memory item。",
+    emptyGuide: "写一条「任务该怎么被完成」的规则试试：",
+    seed: "邮件永远控制在 120 词以内",
+    modify: "修改",
+    delete: "删除",
+    save: "保存",
+    cancel: "取消",
+    restore: "恢复",
+    deletedToggle: "已删除 {count}",
+    confirmDelete: "确定删除这条 memory 吗？",
+    memoryEmpty: "Memory 内容不能为空。",
+    metadataRequired: "修改 memory 时必须填写 Work kind 和 Scope，或勾选 Any / Global。",
+    createSuccess: "Memory 已新建。",
+    routeAQueued: "信息不完整，已作为 user message 进入 Extractor-A。",
+    updateSuccess: "Memory 已更新。",
+    deleteSuccess: "Memory 已删除。",
+    restoreSuccess: "Memory 已恢复。",
+    loadFailed: "载入 memory 失败：{message}",
+    createFailed: "新建失败：{message}",
+    updateFailed: "修改失败：{message}",
+    deleteFailed: "删除失败：{message}",
+    restoreFailed: "恢复失败：{message}",
+    allowlistTitle: "采集白名单",
+    allowlistSubtitle: "允许通过 Option+Control+Enter 显式采集的来源",
+    sourceUnit: "个来源",
+    sourceLabel: "名称",
+    sourceType: "类型",
+    sourceMatches: "匹配值",
+    sourceLabelPlaceholder: "例如 My Assistant",
+    sourceMatchesPlaceholder: "Bundle/App 名称或域名，可用逗号分隔",
+    sourceApp: "App",
+    sourceWeb: "Website",
+    newSource: "新增",
+    defaultSource: "默认",
+    emptyAllowlist: "白名单为空。快捷键不接管输入，仍可通过菜单改写。",
+    sourceRequired: "名称和匹配值不能为空。",
+    confirmSourceDelete: "确定从采集白名单中删除这个来源吗？",
+    sourceCreateSuccess: "白名单来源已新增。",
+    sourceUpdateSuccess: "白名单来源已更新。",
+    sourceDeleteSuccess: "白名单来源已删除。",
+    sourceLoadFailed: "载入白名单失败：{message}",
+    sourceCreateFailed: "新增来源失败：{message}",
+    sourceUpdateFailed: "修改来源失败：{message}",
+    sourceDeleteFailed: "删除来源失败：{message}",
+    settingsTitle: "设置",
+    settingsSubtitle: "运行中的模型连接 · 保存后立即生效",
+    llmSettings: "LLM",
+    embeddingSettings: "Embedding",
+    apiFormat: "API 格式",
+    modelName: "Model",
+    baseUrl: "Base URL",
+    apiKey: "API key",
+    storedLocally: "Stored locally · 配置仅保存在本机 MemTranslator 目录。",
+    configured: "已配置",
+    notConfigured: "未配置",
+    localMode: "本地 ONNX",
+    remoteMode: "远端 API",
+    inheritLlmBase: "留空则继承 LLM Base URL",
+    inheritLlmKey: "留空则继承 LLM API key",
+    embeddingUsesLlm: "空白字段会继承当前 LLM 的 {fields}。",
+    llmKeyField: "API key",
+    llmBaseField: "Base URL",
+    noInheritance: "当前使用独立的 Embedding 连接配置。",
+    saveLlm: "保存 LLM",
+    saveRemoteEmbedding: "保存远端 Embedding",
+    useDefaultEmbedding: "Default · 本地多语言模型",
+    downloadingDefault: "正在准备模型…",
+    settingsLoadFailed: "载入设置失败：{message}",
+    llmSaved: "LLM 配置已保存，并已应用到当前进程。",
+    llmSaveFailed: "LLM 配置保存失败：{message}",
+    embeddingSaved: "远端 Embedding 配置已保存。",
+    embeddingSaveFailed: "Embedding 配置保存失败：{message}",
+    embeddingDefaultReady: "默认多语言 ONNX 模型已就绪。",
+    embeddingDefaultReused: "已切换到现有的默认多语言 ONNX 模型。",
+    modelRequired: "Model 不能为空。",
+  },
+  en: {
+    tagline: "memory compiler · between you & your agents",
+    languageSwitcher: "Interface language",
+    pageNavigation: "Page navigation",
+    navMemory: "Memory",
+    navAllowlist: "Allowlist",
+    settings: "Settings",
+    chinese: "Chinese",
+    english: "English",
+    themeSwitcher: "Interface theme",
+    themeSystem: "Auto",
+    themeLight: "Light",
+    themeDark: "Dark",
+    memoryTitle: "Memory",
+    memorySubtitle: "how the task should be done",
+    activeUnit: "active",
+    newMemoryPlaceholder: "Add a memory item…",
+    newMemory: "New",
+    workKind: "Work kind",
+    scope: "Scope",
+    bucket: "Bucket",
+    bucketUnclassified: "Unclassified",
+    bucketTaskGoal: "Task goal",
+    bucketReasoningPolicy: "Reasoning policy",
+    bucketDeliverables: "Required deliverables",
+    bucketOutputContract: "Output contract",
+    bucketCommunicationStyle: "Communication style",
+    bucketExecutionPolicy: "Execution policy",
+    any: "Any",
+    global: "Global",
+    workKindPlaceholder: "e.g. email, report",
+    scopePlaceholder: "condition or audience=client",
+    metadataUnset: "Not set",
+    emptyTitle: "There are no memory items yet.",
+    emptyGuide: "Add a rule describing how a task should be completed:",
+    seed: "Always keep emails under 120 words",
+    modify: "Modify",
+    delete: "Delete",
+    save: "Save",
+    cancel: "Cancel",
+    restore: "Restore",
+    deletedToggle: "Deleted {count}",
+    confirmDelete: "Delete this memory item?",
+    memoryEmpty: "Memory text cannot be empty.",
+    metadataRequired: "Work kind and Scope are required when modifying a memory; use Any / Global when appropriate.",
+    createSuccess: "Memory item created.",
+    routeAQueued: "Metadata was incomplete, so the text was queued as a user message for Extractor-A.",
+    updateSuccess: "Memory item updated.",
+    deleteSuccess: "Memory item deleted.",
+    restoreSuccess: "Memory item restored.",
+    loadFailed: "Could not load memory: {message}",
+    createFailed: "Could not create memory: {message}",
+    updateFailed: "Could not update memory: {message}",
+    deleteFailed: "Could not delete memory: {message}",
+    restoreFailed: "Could not restore memory: {message}",
+    allowlistTitle: "Capture allowlist",
+    allowlistSubtitle: "sources allowed for explicit Option+Control+Enter capture",
+    sourceUnit: "sources",
+    sourceLabel: "Name",
+    sourceType: "Type",
+    sourceMatches: "Match values",
+    sourceLabelPlaceholder: "e.g. My Assistant",
+    sourceMatchesPlaceholder: "bundle/app name or domains, comma-separated",
+    sourceApp: "App",
+    sourceWeb: "Website",
+    newSource: "New",
+    defaultSource: "Default",
+    emptyAllowlist: "The allowlist is empty. Shortcuts pass through; rewriting remains available from the menu.",
+    sourceRequired: "Name and match values are required.",
+    confirmSourceDelete: "Remove this source from the capture allowlist?",
+    sourceCreateSuccess: "Allowlist source created.",
+    sourceUpdateSuccess: "Allowlist source updated.",
+    sourceDeleteSuccess: "Allowlist source deleted.",
+    sourceLoadFailed: "Could not load allowlist: {message}",
+    sourceCreateFailed: "Could not create source: {message}",
+    sourceUpdateFailed: "Could not update source: {message}",
+    sourceDeleteFailed: "Could not delete source: {message}",
+    settingsTitle: "Settings",
+    settingsSubtitle: "live model connections · changes apply immediately",
+    llmSettings: "LLM",
+    embeddingSettings: "Embedding",
+    apiFormat: "API format",
+    modelName: "Model",
+    baseUrl: "Base URL",
+    apiKey: "API key",
+    storedLocally: "Stored locally · configuration stays in the MemTranslator app directory.",
+    configured: "Configured",
+    notConfigured: "Not configured",
+    localMode: "Local ONNX",
+    remoteMode: "Remote API",
+    inheritLlmBase: "Leave blank to inherit the LLM Base URL",
+    inheritLlmKey: "Leave blank to inherit the LLM API key",
+    embeddingUsesLlm: "Blank fields inherit the current LLM {fields}.",
+    llmKeyField: "API key",
+    llmBaseField: "Base URL",
+    noInheritance: "Embedding currently uses an independent connection.",
+    saveLlm: "Save LLM",
+    saveRemoteEmbedding: "Save remote embedding",
+    useDefaultEmbedding: "Default · local multilingual model",
+    downloadingDefault: "Preparing model…",
+    settingsLoadFailed: "Could not load settings: {message}",
+    llmSaved: "LLM settings saved and applied to this process.",
+    llmSaveFailed: "Could not save LLM settings: {message}",
+    embeddingSaved: "Remote embedding settings saved.",
+    embeddingSaveFailed: "Could not save embedding settings: {message}",
+    embeddingDefaultReady: "The default multilingual ONNX model is ready.",
+    embeddingDefaultReused: "Switched to the existing default multilingual ONNX model.",
+    modelRequired: "Model is required.",
+  },
 };
 
-const esc = (s) => s.replace(/[&<>"']/g,
+let savedLanguage = "";
+let savedTheme = "";
+try {
+  savedLanguage = localStorage.getItem("memtranslator-language") || "";
+  savedTheme = localStorage.getItem("memtranslator-theme") || "";
+} catch {}
+
+const DEFAULT_BUCKETS = [
+  "task_goal", "reasoning_policy", "deliverables", "output_contract",
+  "communication_style", "execution_policy",
+];
+const BUCKET_I18N = {
+  task_goal: "bucketTaskGoal",
+  reasoning_policy: "bucketReasoningPolicy",
+  deliverables: "bucketDeliverables",
+  output_contract: "bucketOutputContract",
+  communication_style: "bucketCommunicationStyle",
+  execution_policy: "bucketExecutionPolicy",
+};
+
+const state = {
+  requirements: [],
+  buckets: DEFAULT_BUCKETS.slice(),
+  allowlist: [],
+  showRetired: false,
+  editingId: null,
+  editingAllowlistId: null,
+  settings: null,
+  activePage: "memory",
+  language: savedLanguage === "en" ? "en" : "zh",
+  theme: ["light", "dark"].includes(savedTheme) ? savedTheme : "system",
+  panelNotice: null,
+  allowlistNotice: null,
+  settingsNotice: null,
+};
+
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g,
   (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const fmtDate = (ts) => new Date(ts * 1000).toLocaleDateString("zh-CN",
-  {month:"2-digit", day:"2-digit"});
+const t = (key, vars = {}) => {
+  const template = STRINGS[state.language][key] ?? STRINGS.en[key] ?? key;
+  return template.replace(/\{(\w+)\}/g, (_, name) => String(vars[name] ?? ""));
+};
+const fmtDate = (ts) => new Date(ts * 1000).toLocaleDateString(
+  state.language === "zh" ? "zh-CN" : "en-US", {month:"2-digit", day:"2-digit"});
+const bucketLabel = (bucket) => bucket
+  ? t(BUCKET_I18N[bucket] || "bucketUnclassified")
+  : t("bucketUnclassified");
+const bucketOptionsHtml = (selected = "") => ["", ...state.buckets]
+  .map(bucket => `<option value="${esc(bucket)}" ${bucket === selected ? "selected" : ""}>${esc(bucketLabel(bucket))}${bucket ? ` · ${esc(bucket)}` : ""}</option>`)
+  .join("");
+
+function renderBucketOptions() {
+  const select = $("#add-bucket");
+  if (!select) return;
+  const selected = select.value;
+  select.innerHTML = bucketOptionsHtml(
+    state.buckets.includes(selected) ? selected : "");
+}
+
+function applyTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  document.querySelectorAll("[data-theme-choice]").forEach((button) => {
+    button.setAttribute(
+      "aria-pressed", String(button.dataset.themeChoice === state.theme));
+  });
+}
+
+function setTheme(theme) {
+  state.theme = ["light", "dark"].includes(theme) ? theme : "system";
+  try { localStorage.setItem("memtranslator-theme", state.theme); } catch {}
+  applyTheme();
+}
+
+async function requestJSON(url, options = {}) {
+  const response = await fetch(url, options);
+  const raw = await response.text();
+  let payload = null;
+  if (raw) {
+    try { payload = JSON.parse(raw); } catch { payload = null; }
+  }
+  if (!response.ok) {
+    throw new Error(payload?.detail || `HTTP ${response.status}`);
+  }
+  return payload;
+}
+
+function renderPanelNotice() {
+  const notice = state.panelNotice;
+  const el = $("#memory-notice");
+  el.className = notice?.kind === "error" ? "error" : "";
+  el.textContent = notice ? t(notice.key, notice.vars) : "";
+}
+
+function showPanelNotice(kind, key, vars = {}) {
+  state.panelNotice = {kind, key, vars};
+  renderPanelNotice();
+}
+
+function renderAllowlistNotice() {
+  const notice = state.allowlistNotice;
+  const el = $("#allowlist-notice");
+  el.className = notice?.kind === "error" ? "error" : "";
+  el.textContent = notice ? t(notice.key, notice.vars) : "";
+}
+
+function showAllowlistNotice(kind, key, vars = {}) {
+  state.allowlistNotice = {kind, key, vars};
+  renderAllowlistNotice();
+}
+
+function renderSettingsNotice() {
+  const notice = state.settingsNotice;
+  const el = $("#settings-notice");
+  el.className = notice?.kind === "error" ? "error" : "";
+  el.textContent = notice ? t(notice.key, notice.vars) : "";
+}
+
+function showSettingsNotice(kind, key, vars = {}) {
+  state.settingsNotice = {kind, key, vars};
+  renderSettingsNotice();
+}
+
+function setPage(page) {
+  state.activePage = ["memory", "allowlist", "settings"].includes(page)
+    ? page : "memory";
+  $("#memory-page").hidden = state.activePage !== "memory";
+  $("#allowlist-page").hidden = state.activePage !== "allowlist";
+  $("#settings-page").hidden = state.activePage !== "settings";
+  $("#nav-memory").setAttribute("aria-pressed", String(state.activePage === "memory"));
+  $("#nav-allowlist").setAttribute("aria-pressed", String(state.activePage === "allowlist"));
+  $("#nav-settings").setAttribute("aria-pressed", String(state.activePage === "settings"));
+  if (state.activePage === "allowlist") {
+    $("#allowlist-label").focus();
+  } else if (state.activePage === "settings") {
+    loadSettings().then(() => $("#llm-api-format").focus());
+  } else {
+    $("#add-input").focus();
+  }
+}
+
+function applyLanguage() {
+  document.documentElement.lang = state.language === "zh" ? "zh-CN" : "en";
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+    el.innerHTML = t(el.dataset.i18nHtml);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+    el.title = t(el.dataset.i18nTitle);
+  });
+  document.querySelectorAll("[data-i18n-aria-label]").forEach((el) => {
+    el.setAttribute("aria-label", t(el.dataset.i18nAriaLabel));
+  });
+  $("#lang-zh").setAttribute("aria-pressed", String(state.language === "zh"));
+  $("#lang-en").setAttribute("aria-pressed", String(state.language === "en"));
+  $("#nav-memory").setAttribute("aria-pressed", String(state.activePage === "memory"));
+  $("#nav-allowlist").setAttribute("aria-pressed", String(state.activePage === "allowlist"));
+  $("#nav-settings").setAttribute("aria-pressed", String(state.activePage === "settings"));
+  renderBucketOptions();
+  applyTheme();
+  renderRequirements();
+  renderAllowlist();
+  renderPanelNotice();
+  renderAllowlistNotice();
+  renderSettings();
+  renderSettingsNotice();
+}
+
+function setLanguage(language) {
+  state.language = language;
+  try { localStorage.setItem("memtranslator-language", language); } catch {}
+  applyLanguage();
+}
 
 /* ---------- requirements panel ---------- */
 async function loadRequirements() {
-  const r = await fetch("/api/requirements");
-  state.requirements = (await r.json()).requirements;
-  renderRequirements();
+  try {
+    const payload = await requestJSON("/api/requirements");
+    state.requirements = payload.requirements || [];
+    state.buckets = Array.isArray(payload.buckets) && payload.buckets.length
+      ? payload.buckets : DEFAULT_BUCKETS.slice();
+    renderBucketOptions();
+    renderRequirements();
+  } catch (error) {
+    showPanelNotice("error", "loadFailed", {message: error.message});
+  }
+}
+
+const itemKinds = (item) => Array.isArray(item.kinds) ? item.kinds : [];
+const itemIsAny = (item) => itemKinds(item).includes("any");
+const itemIsGlobal = (item) => item.scope_mode === "global";
+const itemWorkKindText = (item) => itemKinds(item)
+  .filter(kind => kind !== "any").join(", ");
+const itemScopeText = (item) => {
+  if (itemIsGlobal(item)) return "";
+  if (item.applies_when) return String(item.applies_when);
+  const entries = Object.entries(item.scope || {});
+  return entries.map(([key, value]) => `${key}=${value}`).join(", ");
+};
+const itemWorkKindDisplay = (item) => itemIsAny(item)
+  ? t("any") : (itemWorkKindText(item) || t("metadataUnset"));
+const itemScopeDisplay = (item) => itemIsGlobal(item)
+  ? t("global") : (itemScopeText(item) || t("metadataUnset"));
+const metadataHtml = (item) => `<div class="metadata">
+  <span><b>${esc(t("workKind"))}</b> · ${esc(itemWorkKindDisplay(item))}</span>
+  <span><b>${esc(t("scope"))}</b> · ${esc(itemScopeDisplay(item))}</span>
+  <span><b>${esc(t("bucket"))}</b> · ${esc(bucketLabel(item.bucket))}${item.bucket ? ` · ${esc(item.bucket)}` : ""}</span>
+</div>`;
+
+function activeRequirementHtml(item) {
+  if (state.editingId === item.id) {
+    return `<div class="req editing" data-id="${esc(item.id)}">
+      <textarea class="edit-input" aria-label="${esc(t("modify"))}">${esc(item.text)}</textarea>
+      <div class="edit-fields">
+        <div class="edit-field">
+          <label>${esc(t("workKind"))}</label>
+          <div class="meta-control">
+            <input class="meta-input edit-work-kind" value="${esc(itemWorkKindText(item))}" placeholder="${esc(t("workKindPlaceholder"))}" ${itemIsAny(item) ? "disabled" : ""}>
+            <label class="check-control"><input class="edit-any" type="checkbox" ${itemIsAny(item) ? "checked" : ""}>${esc(t("any"))}</label>
+          </div>
+        </div>
+        <div class="edit-field">
+          <label>${esc(t("scope"))}</label>
+          <div class="meta-control">
+            <input class="meta-input edit-scope" value="${esc(itemScopeText(item))}" placeholder="${esc(t("scopePlaceholder"))}" ${itemIsGlobal(item) ? "disabled" : ""}>
+            <label class="check-control"><input class="edit-global" type="checkbox" ${itemIsGlobal(item) ? "checked" : ""}>${esc(t("global"))}</label>
+          </div>
+        </div>
+        <div class="edit-field bucket-field">
+          <label>${esc(t("bucket"))}</label>
+          <select class="bucket-select edit-bucket">${bucketOptionsHtml(item.bucket || "")}</select>
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="item-action save" type="button" data-action="save">${esc(t("save"))}</button>
+        <button class="item-action cancel" type="button" data-action="cancel">${esc(t("cancel"))}</button>
+      </div>
+    </div>`;
+  }
+  return `<div class="req" data-id="${esc(item.id)}">
+    <div class="text">${esc(item.text)}</div>
+    ${metadataHtml(item)}
+    <div class="date">${fmtDate(item.updated_at || item.created_at)}</div>
+    <div class="item-actions">
+      <button class="item-action modify" type="button" data-action="edit">${esc(t("modify"))}</button>
+      <button class="item-action delete" type="button" data-action="delete">${esc(t("delete"))}</button>
+    </div>
+  </div>`;
+}
+
+function retiredRequirementHtml(item) {
+  return `<div class="req retired" data-id="${esc(item.id)}">
+    <div class="text">${esc(item.text)}</div>
+    ${metadataHtml(item)}
+    <div class="item-actions">
+      <button class="item-action restore" type="button" data-action="restore">${esc(t("restore"))}</button>
+    </div>
+  </div>`;
 }
 
 function renderRequirements() {
@@ -346,291 +1049,514 @@ function renderRequirements() {
   const retired = state.requirements.filter(r => r.status === "retired");
   reqCountEl.textContent = active.length;
 
-  if (!state.requirements.length) {
-    reqListEl.innerHTML = `<div id="req-empty">
-      还没有 requirement——它是 translator 的全部记忆。<br>
-      写一条「任务该怎么被完成」的规则试试：
-      <button class="seed" id="seed-btn">邮件永远控制在 120 词以内</button>
+  let html = "";
+  if (!active.length) {
+    html = `<div class="empty-state">
+      ${esc(t("emptyTitle"))}<br>${esc(t("emptyGuide"))}
+      <button class="seed" id="seed-btn" type="button">${esc(t("seed"))}</button>
     </div>`;
-    $("#seed-btn").onclick = () => {
-      $("#add-input").value = "邮件永远控制在 120 词以内";
-      $("#add-input").focus();
-    };
-    return;
+  } else {
+    html = active.slice().reverse().map(activeRequirementHtml).join("");
   }
 
-  let html = active.slice().reverse().map(r => `
-    <div class="req ${state.lastAppliedIds.includes(r.id) ? "applied" : ""}" data-id="${r.id}">
-      <div class="text">${esc(r.text)}</div>
-      <div class="date">${fmtDate(r.created_at)}</div>
-      <button class="retire" title="退役">×</button>
-    </div>`).join("");
-
   if (retired.length) {
-    html += `<button id="retired-toggle">${state.showRetired ? "▾" : "▸"} 已退役 ${retired.length}</button>`;
+    html += `<button id="retired-toggle" type="button">${state.showRetired ? "▾" : "▸"} ${esc(t("deletedToggle", {count: retired.length}))}</button>`;
     if (state.showRetired) {
-      html += retired.slice().reverse().map(r => `
-        <div class="req retired" data-id="${r.id}">
-          <div class="text">${esc(r.text)}</div>
-          <button class="revive">恢复</button>
-        </div>`).join("");
+      html += retired.slice().reverse().map(retiredRequirementHtml).join("");
     }
   }
   reqListEl.innerHTML = html;
 
-  reqListEl.querySelectorAll(".req:not(.retired) .text").forEach(el => {
-    el.ondblclick = () => {
-      const id = el.closest(".req").dataset.id;
-      const old = el.textContent;
-      el.contentEditable = "true";
-      el.focus();
-      document.getSelection().selectAllChildren(el);
-      const finish = async (save) => {
-        el.contentEditable = "false";
-        const text = el.textContent.trim();
-        if (!save || !text || text === old) { el.textContent = old; return; }
-        await fetch(`/api/requirements/${id}`, {
-          method: "PATCH",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({text}),
-        });
-        await loadRequirements();
-      };
-      el.onblur = () => finish(true);
-      el.onkeydown = (e) => {
-        if (e.isComposing || e.keyCode === 229) return;
-        if (e.key === "Enter") { e.preventDefault(); el.blur(); }
-        if (e.key === "Escape") { el.onblur = null; finish(false); }
-      };
+  const seed = $("#seed-btn");
+  if (seed) seed.onclick = () => {
+    $("#add-input").value = t("seed");
+    $("#add-work-kind").value = "email";
+    $("#add-any").checked = false;
+    $("#add-scope").value = state.language === "zh" ? "所有邮件任务" : "all email tasks";
+    $("#add-global").checked = false;
+    $("#add-bucket").value = "output_contract";
+    syncAddMetadataControls();
+    $("#add-input").focus();
+  };
+  reqListEl.querySelectorAll('[data-action="edit"]').forEach((button) => {
+    button.onclick = () => {
+      state.editingId = button.closest(".req").dataset.id;
+      state.panelNotice = null;
+      renderRequirements();
+      const input = reqListEl.querySelector(".edit-input");
+      input?.focus();
+      input?.select();
     };
   });
-  reqListEl.querySelectorAll(".retire").forEach(btn =>
-    btn.onclick = () => setStatus(btn.closest(".req").dataset.id, "retired"));
-  reqListEl.querySelectorAll(".revive").forEach(btn =>
-    btn.onclick = () => setStatus(btn.closest(".req").dataset.id, "active"));
+  reqListEl.querySelectorAll('[data-action="cancel"]').forEach((button) => {
+    button.onclick = () => { state.editingId = null; renderRequirements(); };
+  });
+  reqListEl.querySelectorAll('[data-action="save"]').forEach((button) => {
+    button.onclick = () => {
+      const row = button.closest(".req");
+      saveRequirement(
+        row.dataset.id,
+        row.querySelector(".edit-input").value,
+        row.querySelector(".edit-any").checked
+          ? "any" : row.querySelector(".edit-work-kind").value,
+        row.querySelector(".edit-global").checked
+          ? "global" : row.querySelector(".edit-scope").value,
+        row.querySelector(".edit-bucket").value);
+    };
+  });
+  reqListEl.querySelectorAll('[data-action="delete"]').forEach((button) => {
+    button.onclick = () => deleteRequirement(button.closest(".req").dataset.id);
+  });
+  reqListEl.querySelectorAll('[data-action="restore"]').forEach((button) => {
+    button.onclick = () => restoreRequirement(button.closest(".req").dataset.id);
+  });
+  reqListEl.querySelectorAll(".req.editing").forEach((row) => {
+    const any = row.querySelector(".edit-any");
+    const global = row.querySelector(".edit-global");
+    const workKind = row.querySelector(".edit-work-kind");
+    const scope = row.querySelector(".edit-scope");
+    const sync = () => {
+      if (global.checked) any.checked = true;
+      workKind.disabled = any.checked;
+      scope.disabled = global.checked;
+    };
+    any.onchange = () => {
+      if (!any.checked && global.checked) global.checked = false;
+      sync();
+    };
+    global.onchange = sync;
+    sync();
+  });
+  reqListEl.querySelectorAll(".edit-input,.edit-work-kind,.edit-scope,.edit-bucket").forEach((input) => {
+    input.onkeydown = (event) => {
+      if (event.isComposing || event.keyCode === 229) return;
+      if (event.key === "Escape") {
+        state.editingId = null;
+        renderRequirements();
+      } else if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        input.closest(".req").querySelector('[data-action="save"]').click();
+      }
+    };
+  });
   const toggle = $("#retired-toggle");
   if (toggle) toggle.onclick = () => {
     state.showRetired = !state.showRetired;
     renderRequirements();
   };
+  renderPanelNotice();
 }
 
-async function setStatus(id, status) {
-  await fetch(`/api/requirements/${id}`, {
-    method: "PATCH",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({status}),
-  });
-  await loadRequirements();
+async function saveRequirement(id, text, workKind, scopeText, bucket) {
+  text = text.trim();
+  if (!text) {
+    showPanelNotice("error", "memoryEmpty");
+    return;
+  }
+  workKind = workKind.trim();
+  scopeText = scopeText.trim();
+  if (!workKind || !scopeText) {
+    showPanelNotice("error", "metadataRequired");
+    return;
+  }
+  try {
+    await requestJSON(`/api/requirements/${id}`, {
+      method: "PATCH", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        text, work_kind: workKind, scope_text: scopeText, bucket,
+      }),
+    });
+    state.editingId = null;
+    await loadRequirements();
+    showPanelNotice("success", "updateSuccess");
+  } catch (error) {
+    showPanelNotice("error", "updateFailed", {message: error.message});
+  }
 }
+
+async function deleteRequirement(id) {
+  if (!window.confirm(t("confirmDelete"))) return;
+  try {
+    await requestJSON(`/api/requirements/${id}`, {method: "DELETE"});
+    if (state.editingId === id) state.editingId = null;
+    await loadRequirements();
+    showPanelNotice("success", "deleteSuccess");
+  } catch (error) {
+    showPanelNotice("error", "deleteFailed", {message: error.message});
+  }
+}
+
+async function restoreRequirement(id) {
+  try {
+    await requestJSON(`/api/requirements/${id}`, {
+      method: "PATCH", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({status: "active"}),
+    });
+    await loadRequirements();
+    showPanelNotice("success", "restoreSuccess");
+  } catch (error) {
+    showPanelNotice("error", "restoreFailed", {message: error.message});
+  }
+}
+
+function syncAddMetadataControls() {
+  const any = $("#add-any"), global = $("#add-global");
+  if (global.checked) any.checked = true;
+  $("#add-work-kind").disabled = any.checked;
+  $("#add-scope").disabled = global.checked;
+}
+
+$("#add-any").onchange = () => {
+  if (!$("#add-any").checked && $("#add-global").checked)
+    $("#add-global").checked = false;
+  syncAddMetadataControls();
+};
+$("#add-global").onchange = syncAddMetadataControls;
 
 $("#add-form").onsubmit = async (e) => {
   e.preventDefault();
   const text = $("#add-input").value.trim();
-  if (!text) return;
-  const r = await fetch("/api/requirements", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({text}),
-  });
-  if (r.ok) { $("#add-input").value = ""; await loadRequirements(); }
+  const workKind = $("#add-any").checked
+    ? "any" : $("#add-work-kind").value.trim();
+  const scopeText = $("#add-global").checked
+    ? "global" : $("#add-scope").value.trim();
+  const bucket = $("#add-bucket").value;
+  if (!text) {
+    showPanelNotice("error", "memoryEmpty");
+    return;
+  }
+  const button = $("#add-btn");
+  button.disabled = true;
+  try {
+    const result = await requestJSON("/api/requirements", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({text, work_kind: workKind, scope_text: scopeText, bucket}),
+    });
+    $("#add-input").value = "";
+    $("#add-work-kind").value = "";
+    $("#add-scope").value = "";
+    $("#add-bucket").value = "";
+    $("#add-any").checked = false;
+    $("#add-global").checked = false;
+    syncAddMetadataControls();
+    await loadRequirements();
+    showPanelNotice("success", result?.queued ? "routeAQueued" : "createSuccess");
+  } catch (error) {
+    showPanelNotice("error", "createFailed", {message: error.message});
+  } finally {
+    button.disabled = false;
+  }
 };
 
-/* ---------- composer status ---------- */
-function setStatusHint() {
-  statusEl.innerHTML = `<span class="hint">⌘E <kbd>润色</kbd> · Enter <kbd>发送</kbd></span>`;
-}
-function setNotice(cls, text) {
-  statusEl.innerHTML = `<span class="notice ${cls}">${esc(text)}</span>`;
-}
-function renderChips() {
-  const t = state.lastTranslate;
-  if (!t) { setStatusHint(); return; }
-  const applied = state.requirements.filter(r => t.appliedIds.includes(r.id));
-  let html = applied.map(r =>
-    `<span class="chip" title="${esc(r.text)}">${esc(r.text)}</span>`).join("");
-  if (inputEl.value !== t.polished)
-    html += `<span class="chip meta">已手动编辑</span>`;
-  html += `<span class="chip meta link" id="restore">还原原文</span>`;
-  statusEl.innerHTML = html;
-  const restore = $("#restore");
-  if (restore) restore.onclick = () => {
-    inputEl.value = t.original;
-    clearTranslate();
-    autosize();
-    inputEl.focus();
-  };
-}
-function clearTranslate() {
-  state.lastTranslate = null;
-  state.lastAppliedIds = [];
-  setStatusHint();
-  renderRequirements();
-}
+/* ---------- source allowlist page ---------- */
+const splitSourcePatterns = (value) => String(value || "")
+  .split(/[,，\n]/).map(item => item.trim()).filter(Boolean);
 
-/* ---------- polish ---------- */
-async function polish() {
-  const text = inputEl.value.trim();
-  if (!text || state.busy) return;
-  state.busy = true;
-  polishBtn.disabled = sendBtn.disabled = true;
-  inputEl.readOnly = true;
-  $("#composer").classList.add("polishing");
+async function loadAllowlist() {
   try {
-    const r = await fetch("/api/translate", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({text}),
-    });
-    if (r.status === 502) throw new Error("UNREACHABLE");
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const out = await r.json();
-    if (out.decision === "apply") {
-      state.lastTranslate = {
-        id: out.translate_id, original: text,
-        polished: out.polished, appliedIds: out.applied.map(a => a.id),
-      };
-      state.lastAppliedIds = state.lastTranslate.appliedIds;
-      inputEl.value = out.polished;
-      inputEl.classList.remove("flash"); void inputEl.offsetWidth;
-      inputEl.classList.add("flash");
-      renderChips();
-      renderRequirements();
-    } else {
-      // explicit fallback path: a noop is stated, never silent
-      const empty = !state.requirements.some(r => r.status === "active");
-      setNotice("sage", empty
-        ? "requirement 账本是空的 · 原文未动——先在右侧加一条"
-        : "无适用 requirement · 原文未动");
-      state.lastTranslate = { id: out.translate_id, original: text,
-        polished: text, appliedIds: [] };
-    }
-  } catch (err) {
-    setNotice("rust", err.message === "UNREACHABLE"
-      ? "模型不可达（检查本地代理）· 原文未动"
-      : `润色失败（${err.message}）· 原文未动`);
-  } finally {
-    state.busy = false;
-    polishBtn.disabled = sendBtn.disabled = false;
-    inputEl.readOnly = false;
-    $("#composer").classList.remove("polishing");
-    autosize();
-    inputEl.focus();
+    const payload = await requestJSON("/api/source-allowlist");
+    state.allowlist = payload.entries || [];
+    renderAllowlist();
+  } catch (error) {
+    showAllowlistNotice("error", "sourceLoadFailed", {message: error.message});
   }
 }
 
-/* ---------- chat ---------- */
-function addMessage(role, content) {
-  $("#chat-empty")?.remove();
-  const div = document.createElement("div");
-  div.className = `msg ${role === "user" ? "user" : "agent"}`;
-  div.innerHTML = `<div class="who">${role === "user" ? "你 · 已确认" : "Agent"}</div>
-    <div class="body"></div>`;
-  div.querySelector(".body").textContent = content;
-  chatEl.appendChild(div);
-  chatEl.scrollTop = chatEl.scrollHeight;
-  return div.querySelector(".body");
+function allowlistEntryHtml(entry) {
+  const patterns = Array.isArray(entry.patterns) ? entry.patterns : [];
+  if (state.editingAllowlistId === entry.id) {
+    return `<div class="allow-entry editing" data-id="${esc(entry.id)}">
+      <div class="allow-edit-fields">
+        <div class="edit-field">
+          <label>${esc(t("sourceLabel"))}</label>
+          <input class="meta-input edit-source-label" value="${esc(entry.label)}">
+        </div>
+        <div class="edit-field">
+          <label>${esc(t("sourceType"))}</label>
+          <select class="source-select edit-source-kind">
+            <option value="app" ${entry.kind === "app" ? "selected" : ""}>${esc(t("sourceApp"))}</option>
+            <option value="web" ${entry.kind === "web" ? "selected" : ""}>${esc(t("sourceWeb"))}</option>
+          </select>
+        </div>
+        <div class="edit-field">
+          <label>${esc(t("sourceMatches"))}</label>
+          <input class="meta-input edit-source-patterns" value="${esc(patterns.join(", "))}">
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="item-action save" type="button" data-source-action="save">${esc(t("save"))}</button>
+        <button class="item-action cancel" type="button" data-source-action="cancel">${esc(t("cancel"))}</button>
+      </div>
+    </div>`;
+  }
+  return `<div class="allow-entry" data-id="${esc(entry.id)}">
+    <div class="allow-head">
+      <span class="allow-label">${esc(entry.label)}</span>
+      <span class="source-badge">${esc(entry.kind === "web" ? t("sourceWeb") : t("sourceApp"))}</span>
+      ${entry.is_default ? `<span class="source-badge default">${esc(t("defaultSource"))}</span>` : ""}
+    </div>
+    <div class="allow-patterns">${patterns.map(pattern => `<code>${esc(pattern)}</code>`).join("")}</div>
+    <div class="item-actions">
+      <button class="item-action modify" type="button" data-source-action="edit">${esc(t("modify"))}</button>
+      <button class="item-action delete" type="button" data-source-action="delete">${esc(t("delete"))}</button>
+    </div>
+  </div>`;
 }
 
-async function send() {
-  const text = inputEl.value.trim();
-  if (!text || state.busy) return;
-  state.busy = true;
-  polishBtn.disabled = sendBtn.disabled = true;
+function renderAllowlist() {
+  allowlistCountEl.textContent = state.allowlist.length;
+  allowlistListEl.innerHTML = state.allowlist.length
+    ? state.allowlist.map(allowlistEntryHtml).join("")
+    : `<div class="empty-state">${esc(t("emptyAllowlist"))}</div>`;
 
-  const translateId = state.lastTranslate ? state.lastTranslate.id : null;
-  state.messages.push({role: "user", content: text});
-  addMessage("user", text);
-  inputEl.value = "";
-  clearTranslate();
-  autosize();
-
-  const body = addMessage("agent", "");
-  body.classList.add("streaming");
-  let acc = "";
-  try {
-    const r = await fetch("/api/chat", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({messages: state.messages, translate_id: translateId}),
-    });
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const reader = r.body.getReader();
-    const decoder = new TextDecoder();
-    let buf = "";
-    for (;;) {
-      const {done, value} = await reader.read();
-      if (done) break;
-      buf += decoder.decode(value, {stream: true});
-      const parts = buf.split("\n\n");
-      buf = parts.pop();
-      for (const part of parts) {
-        const line = part.split("\n").find(l => l.startsWith("data: "));
-        if (!line) continue;
-        const evt = JSON.parse(line.slice(6));
-        if (evt.text) {
-          acc += evt.text;
-          body.textContent = acc;
-          chatEl.scrollTop = chatEl.scrollHeight;
-        } else if (evt.error) {
-          throw new Error(evt.error === "llm_unreachable"
-            ? "模型不可达，检查本地代理" : evt.error);
-        }
+  allowlistListEl.querySelectorAll('[data-source-action="edit"]').forEach(button => {
+    button.onclick = () => {
+      state.editingAllowlistId = button.closest(".allow-entry").dataset.id;
+      state.allowlistNotice = null;
+      renderAllowlist();
+      const input = allowlistListEl.querySelector(".edit-source-label");
+      input?.focus();
+      input?.select();
+    };
+  });
+  allowlistListEl.querySelectorAll('[data-source-action="cancel"]').forEach(button => {
+    button.onclick = () => {
+      state.editingAllowlistId = null;
+      renderAllowlist();
+    };
+  });
+  allowlistListEl.querySelectorAll('[data-source-action="save"]').forEach(button => {
+    button.onclick = () => {
+      const row = button.closest(".allow-entry");
+      saveAllowlistEntry(
+        row.dataset.id,
+        row.querySelector(".edit-source-label").value,
+        row.querySelector(".edit-source-kind").value,
+        row.querySelector(".edit-source-patterns").value);
+    };
+  });
+  allowlistListEl.querySelectorAll('[data-source-action="delete"]').forEach(button => {
+    button.onclick = () => deleteAllowlistEntry(
+      button.closest(".allow-entry").dataset.id);
+  });
+  allowlistListEl.querySelectorAll(
+    ".edit-source-label,.edit-source-kind,.edit-source-patterns"
+  ).forEach(input => {
+    input.onkeydown = (event) => {
+      if (event.isComposing || event.keyCode === 229) return;
+      if (event.key === "Escape") {
+        state.editingAllowlistId = null;
+        renderAllowlist();
+      } else if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        input.closest(".allow-entry").querySelector(
+          '[data-source-action="save"]').click();
       }
-    }
-    state.messages.push({role: "assistant", content: acc});
-  } catch (err) {
-    body.classList.add("error");
-    body.textContent = acc
-      ? `${acc}\n\n[中断：${err.message}]`
-      : `[请求失败：${err.message}]`;
-    if (acc) state.messages.push({role: "assistant", content: acc});
-    else state.messages.pop();  // keep history consistent for retry
-  } finally {
-    body.classList.remove("streaming");
-    state.busy = false;
-    polishBtn.disabled = sendBtn.disabled = false;
-    inputEl.focus();
-  }
+    };
+  });
+  renderAllowlistNotice();
 }
 
-/* ---------- input wiring ---------- */
-function autosize() {
-  inputEl.style.height = "auto";
-  inputEl.style.height = Math.min(inputEl.scrollHeight, window.innerHeight * .38) + "px";
-}
-inputEl.addEventListener("input", () => {
-  autosize();
-  if (state.lastTranslate) renderChips();  // refresh "已手动编辑" tag
-});
-inputEl.addEventListener("keydown", (e) => {
-  // IME composition: Enter confirms the candidate, it must never send
-  if (e.isComposing || e.keyCode === 229) return;
-  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "e") {
-    e.preventDefault(); polish();
-  } else if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault(); send();
+async function saveAllowlistEntry(id, label, kind, patternsText) {
+  label = label.trim();
+  const patterns = splitSourcePatterns(patternsText);
+  if (!label || !patterns.length) {
+    showAllowlistNotice("error", "sourceRequired");
+    return;
   }
-});
-$("#add-input").addEventListener("keydown", (e) => {
-  if ((e.isComposing || e.keyCode === 229) && e.key === "Enter")
-    e.preventDefault();  // don't submit the form on IME confirm
-});
-polishBtn.onclick = polish;
-sendBtn.onclick = send;
-
-/* ---------- boot ---------- */
-(async () => {
   try {
-    const h = await (await fetch("/api/health")).json();
-    const short = (m) => m.includes("haiku") ? "haiku"
-      : m.includes("opus") ? "opus" : m.includes("sonnet") ? "sonnet" : m;
-    $("#models").innerHTML =
-      `<b>${short(h.models.translator)}</b><span class="arr">⇢</span><b>${short(h.models.downstream)}</b>`;
-  } catch {}
-  await loadRequirements();
-  inputEl.focus();
-})();
+    await requestJSON(`/api/source-allowlist/${id}`, {
+      method: "PATCH", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({label, kind, patterns}),
+    });
+    state.editingAllowlistId = null;
+    await loadAllowlist();
+    showAllowlistNotice("success", "sourceUpdateSuccess");
+  } catch (error) {
+    showAllowlistNotice("error", "sourceUpdateFailed", {message: error.message});
+  }
+}
+
+async function deleteAllowlistEntry(id) {
+  if (!window.confirm(t("confirmSourceDelete"))) return;
+  try {
+    await requestJSON(`/api/source-allowlist/${id}`, {method: "DELETE"});
+    if (state.editingAllowlistId === id) state.editingAllowlistId = null;
+    await loadAllowlist();
+    showAllowlistNotice("success", "sourceDeleteSuccess");
+  } catch (error) {
+    showAllowlistNotice("error", "sourceDeleteFailed", {message: error.message});
+  }
+}
+
+$("#allowlist-add-form").onsubmit = async (event) => {
+  event.preventDefault();
+  const label = $("#allowlist-label").value.trim();
+  const kind = $("#allowlist-kind").value;
+  const patterns = splitSourcePatterns($("#allowlist-patterns").value);
+  if (!label || !patterns.length) {
+    showAllowlistNotice("error", "sourceRequired");
+    return;
+  }
+  const button = $("#allowlist-add-btn");
+  button.disabled = true;
+  try {
+    await requestJSON("/api/source-allowlist", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({label, kind, patterns}),
+    });
+    $("#allowlist-label").value = "";
+    $("#allowlist-patterns").value = "";
+    await loadAllowlist();
+    showAllowlistNotice("success", "sourceCreateSuccess");
+    $("#allowlist-label").focus();
+  } catch (error) {
+    showAllowlistNotice("error", "sourceCreateFailed", {message: error.message});
+  } finally {
+    button.disabled = false;
+  }
+};
+
+/* ---------- runtime settings page ---------- */
+function renderSettings() {
+  if (!state.settings) {
+    $("#llm-key-status").textContent = "";
+    $("#embedding-mode-status").textContent = "";
+    $("#embedding-inheritance").textContent = "";
+    return;
+  }
+  const llm = state.settings.llm || {};
+  const embedding = state.settings.embedding || {};
+  $("#llm-key-status").textContent = t(
+    llm.has_api_key ? "configured" : "notConfigured");
+  $("#embedding-mode-status").textContent = t(
+    embedding.mode === "remote" ? "remoteMode" : "localMode");
+  const inherited = [];
+  if (embedding.mode === "remote" && embedding.uses_llm_api_key)
+    inherited.push(t("llmKeyField"));
+  if (embedding.mode === "remote" && embedding.uses_llm_base_url)
+    inherited.push(t("llmBaseField"));
+  $("#embedding-inheritance").textContent = inherited.length
+    ? t("embeddingUsesLlm", {fields: inherited.join(" + ")})
+    : (embedding.mode === "remote" ? t("noInheritance") : "");
+}
+
+function populateSettings(settings) {
+  state.settings = settings;
+  const llm = settings.llm || {};
+  const embedding = settings.embedding || {};
+  $("#llm-api-format").value = llm.api_format || "openai-compatible";
+  $("#llm-model").value = llm.model || "";
+  $("#llm-base-url").value = llm.base_url || "";
+  $("#llm-api-key").value = llm.api_key || "";
+  $("#embedding-model").value = embedding.model || "";
+  $("#embedding-base-url").value = embedding.base_url || "";
+  $("#embedding-api-key").value = embedding.api_key || "";
+  renderSettings();
+}
+
+async function loadSettings() {
+  try {
+    populateSettings(await requestJSON("/api/settings"));
+  } catch (error) {
+    showSettingsNotice("error", "settingsLoadFailed", {message: error.message});
+  }
+}
+
+$("#llm-settings-form").onsubmit = async (event) => {
+  event.preventDefault();
+  const model = $("#llm-model").value.trim();
+  if (!model) {
+    showSettingsNotice("error", "modelRequired");
+    return;
+  }
+  const button = $("#llm-save-btn");
+  button.disabled = true;
+  try {
+    const settings = await requestJSON("/api/settings/llm", {
+      method: "PUT", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        api_format: $("#llm-api-format").value,
+        model,
+        base_url: $("#llm-base-url").value.trim(),
+        api_key: $("#llm-api-key").value.trim(),
+      }),
+    });
+    populateSettings(settings);
+    showSettingsNotice("success", "llmSaved");
+  } catch (error) {
+    showSettingsNotice("error", "llmSaveFailed", {message: error.message});
+  } finally {
+    button.disabled = false;
+  }
+};
+
+$("#embedding-settings-form").onsubmit = async (event) => {
+  event.preventDefault();
+  const model = $("#embedding-model").value.trim();
+  if (!model) {
+    showSettingsNotice("error", "modelRequired");
+    return;
+  }
+  const button = $("#embedding-save-btn");
+  button.disabled = true;
+  try {
+    const settings = await requestJSON("/api/settings/embedding", {
+      method: "PUT", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        model,
+        base_url: $("#embedding-base-url").value.trim(),
+        api_key: $("#embedding-api-key").value.trim(),
+      }),
+    });
+    populateSettings(settings);
+    showSettingsNotice("success", "embeddingSaved");
+  } catch (error) {
+    showSettingsNotice("error", "embeddingSaveFailed", {message: error.message});
+  } finally {
+    button.disabled = false;
+  }
+};
+
+$("#embedding-default-btn").onclick = async () => {
+  const button = $("#embedding-default-btn");
+  const originalKey = "useDefaultEmbedding";
+  button.disabled = true;
+  button.textContent = t("downloadingDefault");
+  try {
+    const result = await requestJSON("/api/settings/embedding/default", {
+      method: "POST", headers: {"Content-Type": "application/json"}, body: "{}",
+    });
+    populateSettings(result);
+    showSettingsNotice("success", result.downloaded
+      ? "embeddingDefaultReady" : "embeddingDefaultReused");
+  } catch (error) {
+    showSettingsNotice("error", "embeddingSaveFailed", {message: error.message});
+  } finally {
+    button.disabled = false;
+    button.textContent = t(originalKey);
+  }
+};
+
+/* ---------- wiring + boot ---------- */
+$("#add-input").addEventListener("keydown", (event) => {
+  if ((event.isComposing || event.keyCode === 229) && event.key === "Enter")
+    event.preventDefault();
+});
+syncAddMetadataControls();
+$("#lang-zh").onclick = () => setLanguage("zh");
+$("#lang-en").onclick = () => setLanguage("en");
+document.querySelectorAll("[data-theme-choice]").forEach((button) => {
+  button.onclick = () => setTheme(button.dataset.themeChoice);
+});
+$("#nav-memory").onclick = () => setPage("memory");
+$("#nav-allowlist").onclick = () => setPage("allowlist");
+$("#nav-settings").onclick = () => setPage("settings");
+
+applyLanguage();
+Promise.all([loadRequirements(), loadAllowlist(), loadSettings()]).finally(() => {
+  if (state.activePage === "memory") $("#add-input").focus();
+});
 </script>
 </body>
 </html>

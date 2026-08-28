@@ -9,11 +9,13 @@ htmlcov/
 *.egg-info/
 .venv/
 .venv
+/venv/
 .DS_Store
 /data/
 /models/
 .env
 *.log
+/:memory:.ses
 /build/
 /dist/
 /bench/results/
