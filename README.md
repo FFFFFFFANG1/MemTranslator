@@ -5,29 +5,55 @@
 <h1 align="center">MemTranslator</h1>
 
 <p align="center">
-  <strong>Continually learning how you want your agent to get work done.</strong>
+  <strong>Learns how you want work done. You decide what gets sent.</strong>
 </p>
 
 MemTranslator is a user-side memory layer for how tasks should be executed
-and delivered. It learns from your instructions and corrections, then brings
-the relevant preferences into your request before it reaches your agent.
+and delivered. It learns from the instructions you explicitly capture and
+the corrections you make, then adds the relevant preferences to the request
+in your current input box. Review, edit, and send it to the agent you already
+use.
 
-> Think of it as a **shared, self-updating `AGENTS.md` for your working
-> preferences**—continually maintained from your instructions and corrections.
+> **Your working preferences, visible and editable in the request itself.**
 
 ## Why MemTranslator
 
-- **Less repetition, less rework.** Carry forward your requirements instead
-  of repeatedly explaining the same tone, format, evidence standard, or
-  working procedure.
+- **Less repetition, less rework.** Automatically identifies and maintains
+  your preferences for how tasks should be executed and delivered, based on
+  captured instructions and corrections. Stop repeating the same evidence
+  standards, output formats, and working procedures.
+- **See memory at work in your input box.** Relevant preferences become
+  visible requirements in the request. Read the exact text you will send;
+  the agent receives your reviewed request, not a separate memory store or
+  a full personal profile.
+- **You have the final say, right before sending.** Edit or remove any added
+  requirement directly in the current request, without opening settings or
+  running the agent first. The request changes immediately; edits to applied
+  preferences can also help correct memory through subsequent processing.
 - **Your preferences travel with you.** Use one local memory across supported
   desktop and web inputs, including tools such as Codex, Cursor, and ChatGPT.
-- **You have the final say.** Review and edit every rewrite before sending.
-  Inspect, modify, or delete learned preferences in the Control Center.
-- **Relevant instructions, not memory dumps.** The agent receives your
-  rewritten request, not a separate memory store or a full personal profile.
-- **Keep your tools and workflow.** Rewrite in the current input box with a
-  hotkey. No downstream agent SDK integration or extra chat interface.
+  Rewrite in place with a hotkey, with no downstream agent SDK integration
+  or extra chat interface.
+
+## Example: an agent memory literature review
+
+<table>
+  <tr><td>
+    <strong>1. You type</strong><br>
+    Help me conduct a literature review on agent memory.
+  </td></tr>
+  <tr><td>
+    <strong>2. Memory adds your preferences · ⌥⌃R</strong><br>
+    Compare methods in bullet points, with paper links and limitations.
+  </td></tr>
+  <tr><td>
+    <strong>3. You revise before sending</strong><br>
+    From now on, use a table for literature comparisons, with paper links and limitations.
+  </td></tr>
+</table>
+
+*Illustrative example using previously learned preferences, not a recorded
+run. [Full demo script](docs/demo-literature-review.md).*
 
 ## Quickstart
 
