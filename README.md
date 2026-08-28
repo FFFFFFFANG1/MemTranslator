@@ -5,6 +5,10 @@
 <h1 align="center">MemTranslator</h1>
 
 <p align="center">
+  <strong>English</strong> | <a href="README.zh-CN.md">简体中文</a>
+</p>
+
+<p align="center">
   <strong>Learns how you want work done. You decide what gets sent.</strong>
 </p>
 
