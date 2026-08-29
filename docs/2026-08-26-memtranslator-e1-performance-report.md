@@ -195,12 +195,12 @@ Codex 报告给出的运行元数据为 209 次 memory-maintenance calls、103 �
 - CARRY 是 judge band；本轮 parse flag 为 0，但 judge 仍可能存在系统性偏差。
 - 本比较是 native system vs native system，不隔离 memory writer、retriever 或 readout model 的单独贡献。
 - Codex 没有与 MemTranslator Store 等价的结构化状态，因此不报告或推断 Codex STATE。
-- MemTranslator 的 12 份 metric-v12 机器快照已在当前仓库核验；Codex 的逐集与汇总数字来自用户提供的 `2026-08-25-codex-vs-memtranslator-e1.md`。其文中提到的 formal Codex snapshot 当前不在本 workspace，故本报告未独立重放 Codex 原始 checkpoint。
+- MemTranslator 的 12 份 metric-v12 机器快照已在撰写本报告时的工作区核验；这些运行产物生成在被 Git 忽略的 `bench/results/`，不作为源码长期保存。Codex 的逐集与汇总数字来自用户提供的 `2026-08-25-codex-vs-memtranslator-e1.md`。其文中提到的 formal Codex snapshot 当时不在本 workspace，故本报告未独立重放 Codex 原始 checkpoint。
 - 旧版 E1 score log 使用不同子集、metric version 和配置，不应与本轮 noisy fleet 直接串成趋势线。
 
 ### Reproduction and source files
 
-聚合当前 MemTranslator 快照：
+按 [`bench/README.md`](../bench/README.md) 重跑 E1 noisy fleet 后，聚合本地快照：
 
 ```bash
 PYTHONPATH=src:. .venv/bin/python -m bench.suites.report_e1
@@ -212,5 +212,5 @@ PYTHONPATH=src:. .venv/bin/python -m bench.suites.report_e1
 - E1 fleet 聚合：[`bench/suites/report_e1.py`](../bench/suites/report_e1.py)
 - Noisy corpus 协议：[`bench/README.md`](../bench/README.md)
 - Noisy corpus manifest：[`bench/cases/episodes-noisy/noise_manifest.json`](../bench/cases/episodes-noisy/noise_manifest.json)
-- MemTranslator 机器结果：`bench/results/E1-e-{01..12}-20260821-*.json`
+- MemTranslator 机器结果：运行时生成在被 Git 忽略的 `bench/results/`；本报告表格保留已核验的汇总结果
 - Codex 对照来源：用户提供的 `2026-08-25-codex-vs-memtranslator-e1.md`

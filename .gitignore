@@ -19,6 +19,7 @@ htmlcov/
 /build/
 /dist/
 /bench/results/
+/bench/state.json
 /bench/perf_results.json
 /bench/gen/probes/extraction_old.py
 /bench/gen/harvest/

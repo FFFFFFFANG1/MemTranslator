@@ -211,12 +211,12 @@ Codex 报告给出的运行元数据为：209 次记忆维护调用、103 次计
 - CARRY 使用评判器评分；本轮解析异常标记为 0，但评判器仍可能存在系统性偏差。
 - 本比较针对两套原生完整系统，不隔离记忆写入器、检索器或读出模型的单独贡献。
 - Codex 没有与 MemTranslator Store 等价的结构化状态，因此不报告或推断 Codex STATE。
-- MemTranslator 的 12 份 metric-v12 机器快照已在原报告编写时的仓库中核验；Codex 的逐序列与汇总数字来自用户提供的 `2026-08-25-codex-vs-memtranslator-e1.md`。其中提到的正式 Codex 快照不在原报告编写时的工作区，故原报告未独立重放 Codex 原始检查点。
+- MemTranslator 的 12 份 metric-v12 机器快照已在原报告编写时的工作区中核验；这些运行产物生成在被 Git 忽略的 `bench/results/`，不作为源码长期保存。Codex 的逐序列与汇总数字来自用户提供的 `2026-08-25-codex-vs-memtranslator-e1.md`。其中提到的正式 Codex 快照不在原报告编写时的工作区，故原报告未独立重放 Codex 原始检查点。
 - 旧版 E1 分数日志使用不同子集、指标版本和配置，不应与本轮含噪声场景的整组结果直接串成趋势线。
 
 ### 复现与源文件
 
-聚合当前 MemTranslator 快照：
+按 [`bench/README.md`](../bench/README.md) 重跑 E1 含噪声整组测试后，聚合本地快照：
 
 ```bash
 PYTHONPATH=src:. .venv/bin/python -m bench.suites.report_e1
@@ -228,5 +228,5 @@ PYTHONPATH=src:. .venv/bin/python -m bench.suites.report_e1
 - E1 批量结果聚合：[`bench/suites/report_e1.py`](../bench/suites/report_e1.py)
 - 含噪声语料协议（原文）：[`bench/README.md`](../bench/README.md)
 - 含噪声语料清单：[`bench/cases/episodes-noisy/noise_manifest.json`](../bench/cases/episodes-noisy/noise_manifest.json)
-- MemTranslator 机器结果：`bench/results/E1-e-{01..12}-20260821-*.json`
+- MemTranslator 机器结果：运行时生成在被 Git 忽略的 `bench/results/`；本报告表格保留已核验的汇总结果
 - Codex 对照来源：用户提供的 `2026-08-25-codex-vs-memtranslator-e1.md`
