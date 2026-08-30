@@ -35,12 +35,10 @@ MemTranslator 是一个位于用户侧的记忆层，专注于你对任务执行
 ## 工作方式
 
 <p align="center">
-  <a href="assets/memtranslator-demo.mp4">
-    <img src="assets/memtranslator-demo.gif" width="800" alt="MemTranslator 的 Write 与 Learn 工作流演示">
-  </a>
+  <img src="assets/memtranslator-demo.gif" width="800" alt="MemTranslator 的 Write 与 Learn 工作流演示">
 </p>
 
-<p align="center">演示会自动循环播放。<a href="assets/memtranslator-demo.mp4">打开原始视频</a>。</p>
+<p align="center">演示会自动循环播放。</p>
 
 | 它从你这里学习 | 它帮你完善任务请求 |
 | --- | --- |
