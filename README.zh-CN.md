@@ -35,17 +35,19 @@ MemTranslator 是一个位于用户侧的记忆层，专注于你对任务执行
 ## 工作方式
 
 <p align="center">
-  <video src="assets/memtranslator-demo.mp4" controls width="800">
-    <a href="assets/memtranslator-demo.mp4">观看 MemTranslator 演示视频</a>
-  </video>
+  <a href="assets/memtranslator-demo.mp4">
+    <img src="assets/memtranslator-demo-preview.svg" width="800" alt="观看 MemTranslator 演示视频">
+  </a>
 </p>
+
+<p align="center"><a href="assets/memtranslator-demo.mp4">▶ 观看演示视频</a></p>
 
 | 它从你这里学习 | 它帮你完善任务请求 |
 | --- | --- |
 | **A — 重复要求或明确要求。** 从你通过 Learn 主动提交的指令中，识别反复出现的要求，或明确适用于未来任务的规则，形成可复用的偏好：如何开展工作、采用什么证据、怎样交付结果。<br><br>**B — Write 之后的纠正。** Learn 跟在 Write 之后时，系统从你对写入结果的编辑中学习。这些反馈只能修改或淘汰本次 Write 实际应用过的记忆条目。 | **直接在输入框中 Write。** 按下 Write，应用与当前任务相关的偏好。Translator 将这些偏好转化为明确要求，直接写入当前任务请求。<br><br>**由你决定最终发送什么。** 查看结果，修改或删除任何补充要求，准备好后使用 Learn 或目标应用原本的发送方式。Write 不会自动发送请求。 |
 
-交互边界是明确的。**Fn+R** 执行 Write，并创建绑定到当前输入框的 Pending Write；
-即使短暂切换到其他输入框也不会丢失，客户端不会周期性轮询内容。**Fn+Enter** 执行 Learn，
+交互边界是明确的。`Fn+R` 执行 Write，并创建绑定到当前输入框的 Pending Write；
+即使短暂切换到其他输入框也不会丢失，客户端不会周期性轮询内容。`Fn+Enter` 执行 Learn，
 并转发一次普通 Enter。未加修饰键的普通 **Enter** 始终保留目标应用的原生行为，且绝不学习，
 因此用户随时可以发送一条不进入 memory 的消息。
 
@@ -86,8 +88,8 @@ uv run --no-sync memtranslator start
 
 | 快捷键 | 操作 |
 | --- | --- |
-| **Fn + R**（`Fn+R`） | **Write** — 将记忆偏好应用到当前输入，不发送，也不学习。 |
-| **Fn + Enter**（`Fn+Enter`） | **Learn** — 提交用户证据，并转发一次普通 Enter（若输入框使用 Enter 发送，则会发送）。无须先 Write。 |
+| `Fn+R` | **Write** — 将记忆偏好应用到当前输入，不发送，也不学习。 |
+| `Fn+Enter` | **Learn** — 提交用户证据，并转发一次普通 Enter（若输入框使用 Enter 发送，则会发送）。无须先 Write。 |
 
 权限、配置、Learn 行为、演示模式和开发说明，见[设计与使用细节](docs/design_detail.zh-CN.md)。
 
@@ -227,7 +229,7 @@ CARRY 和 SUPPRESS 的配对差值置信区间均跨越零：这些观察**不�
   部分非 Apple 外接键盘可能没有该修饰键。
 - **学习可能出错，且异步进行。** 提取和整合可能遗漏偏好、过度概括，或未能淘汰已失效的偏好。
   A 和 B 均按批次运行，因此一次纠正不保证立即更新为记忆。
-- **Learn 有明确边界。** 桌面的 A 路学习需要在允许的来源中主动按下 **Fn + Enter**。
+- **Learn 有明确边界。** 桌面的 A 路学习需要在允许的来源中主动按下 `Fn+Enter`。
   Write、普通 Enter、焦点变化和时间流逝都不会将原始消息加入 A 的队列。
   密码框不参与 Learn；系统不会持续记录所有输入。
 - **本地优先不等于完全离线。** macOS 上的记忆和配置保存在

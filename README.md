@@ -43,18 +43,20 @@ edit, and send them to the agent you already use.
 ## How it works
 
 <p align="center">
-  <video src="assets/memtranslator-demo.mp4" controls width="800">
-    <a href="assets/memtranslator-demo.mp4">Watch the MemTranslator demo</a>
-  </video>
+  <a href="assets/memtranslator-demo.mp4">
+    <img src="assets/memtranslator-demo-preview.svg" width="800" alt="Watch the MemTranslator demo">
+  </a>
 </p>
+
+<p align="center"><a href="assets/memtranslator-demo.mp4">▶ Watch the demo video</a></p>
 
 | It learns from you | It helps you improve your task prompt |
 | --- | --- |
 | **A — Repeated or explicit requirements.** From instructions you explicitly submit with Learn, it derives reusable preferences from repeated requirements or explicit rules for future tasks: how to work, what evidence to use, and how to deliver results.<br><br>**B — Corrections after Write.** When Learn follows a Write, the system can learn from your edits to the written result. Feedback can revise or retire only the memory items applied by that Write. | **Writes in your input box.** Press Write to apply the preferences relevant to your current task. The Translator turns them into explicit requirements directly in your task prompt.<br><br>**You decide what gets sent.** See the result, edit or remove any added requirement, then use Learn or the target app's normal send action when you are ready. Write never sends automatically. |
 
-The interaction boundaries are explicit. **Fn+R** starts Write and keeps a
+The interaction boundaries are explicit. `Fn+R` starts Write and keeps a
 composer-bound Pending Write even if you temporarily focus another input;
-there is no periodic content polling. **Fn+Enter** performs Learn and forwards
+there is no periodic content polling. `Fn+Enter` performs Learn and forwards
 one ordinary Enter. An unmodified **Enter** keeps the target app's native
 behavior and never learns, so users can always send text without adding it to
 memory.
@@ -97,8 +99,8 @@ Focus a supported input box in an allowlisted app or website:
 
 | Shortcut | Action |
 | --- | --- |
-| **Fn + R** (`Fn+R`) | **Write** — apply remembered preferences to the current input without sending or learning. |
-| **Fn + Enter** (`Fn+Enter`) | **Learn** — submit user evidence and forward one ordinary Enter (send in Enter-to-send inputs). No prior Write required. |
+| `Fn+R` | **Write** — apply remembered preferences to the current input without sending or learning. |
+| `Fn+Enter` | **Learn** — submit user evidence and forward one ordinary Enter (send in Enter-to-send inputs). No prior Write required. |
 
 See [Design and usage details](docs/design_detail.md) for permissions,
 configuration, Learn behavior, demo mode, and development notes.
@@ -285,7 +287,7 @@ See the report for protocol details, uncertainty, and evidence limits.
   miss, overgeneralize, or fail to retire a preference. A and B run in batches,
   so a correction is not guaranteed to become an immediate memory update.
 - **Learn has a boundary.** Desktop Route A learning requires explicit
-  **Fn + Enter** and an allowed source. Write, ordinary Enter,
+  `Fn+Enter` and an allowed source. Write, ordinary Enter,
   focus changes, and elapsed time do not queue raw messages for A.
   Password fields are excluded; this is not continuous recording of inputs.
 - **Local-first is not fully offline.** Memory and configuration are stored
