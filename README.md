@@ -44,11 +44,11 @@ edit, and send them to the agent you already use.
 
 <p align="center">
   <a href="assets/memtranslator-demo.mp4">
-    <img src="assets/memtranslator-demo-preview.svg" width="800" alt="Watch the MemTranslator demo">
+    <img src="assets/memtranslator-demo.gif" width="800" alt="MemTranslator demo: Write and Learn workflow">
   </a>
 </p>
 
-<p align="center"><a href="assets/memtranslator-demo.mp4">▶ Watch the demo video</a></p>
+<p align="center">The demo plays automatically. <a href="assets/memtranslator-demo.mp4">Open the original video</a>.</p>
 
 | It learns from you | It helps you improve your task prompt |
 | --- | --- |
