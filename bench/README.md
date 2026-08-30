@@ -161,6 +161,11 @@ uv run --no-sync python -m bench.suites.report
 `null` 是地板 provider，`reference` 是简单的 harness 基线；二者都不代表产品
 写路径。评估原生 pipeline 时使用 `v1`。
 
+Suite T 使用产品唯一的 `plan → patch → audit` 流式协议。结果同时记录
+`ready_latency_ms` 和完整 `latency_ms`，分别表示
+文本框可安全替换的时间与后台 audit 结束的时间。Suite L 只测
+extraction，不用于判断 Translator 协议。
+
 ## 语料与评分规则
 
 1. Ground truth 不得进入被测系统。E1 只向系统暴露 `user_input`；requirements、

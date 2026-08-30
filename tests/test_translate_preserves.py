@@ -12,7 +12,8 @@ import json
 
 import memtranslator.llm as llm
 from memtranslator.schema import Requirement
-from memtranslator.translate import preserves_request, translate
+from memtranslator.translate import (_translate_legacy as translate,
+                                     preserves_request)
 
 
 def _reqs(*texts):

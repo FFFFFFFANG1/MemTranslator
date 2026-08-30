@@ -35,7 +35,8 @@ AUTO_TASK_INTACT = ("The core task of the original request is unchanged in "
 
 def run_case(case) -> dict:
     reqs = [Requirement(text=t) for t in case.requirements]
-    out = with_retry(lambda: translate(case.input, reqs), f"{case.id}/translate")
+    out = with_retry(lambda: translate(case.input, reqs),
+                     f"{case.id}/translate")
     polished = out["polished"] or case.input
     failures, judge_flags = [], []
 
@@ -92,7 +93,13 @@ def run_case(case) -> dict:
     return {"id": case.id, "category": case.category, "pass": not failures,
             "decision_ok": decision_ok, "decision": out["decision"],
             "polished": out["polished"], "failures": failures,
-            "judge_flags": judge_flags, "latency_ms": out["latency_ms"]}
+            "judge_flags": judge_flags, "latency_ms": out["latency_ms"],
+            "ready_latency_ms": out.get(
+                "ready_latency_ms", out["latency_ms"]),
+            "translate_reason": out.get("reason"),
+            "parse_error": out.get("parse_error", False),
+            "entry_contract_warnings": out.get(
+                "entry_contract_warnings", [])}
 
 
 def main():

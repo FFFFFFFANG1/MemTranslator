@@ -153,8 +153,11 @@ def arm_no_retire(store_items: list, ep, r, transcript, raw_messages=None):
             [pool[index] for index in order], GLOBAL_RECALL_MAX_TOKENS)
         pool.sort(key=lambda x: x.created_at)
     block = tr_mod._requirement_block(pool)
-    return _complete_with_block(r["user_input"], tr_mod.TRANSLATOR_SYSTEM, block,
-                                "Stored requirements")
+    # This counterfactual arm intentionally bypasses the product Translator
+    # and retains its single-object parser; keep the matching private prompt.
+    return _complete_with_block(
+        r["user_input"], tr_mod.LEGACY_TRANSLATOR_SYSTEM, block,
+        "Stored requirements")
 
 
 def arm_oracle(store_items: list, ep, r, transcript, raw_messages=None):
@@ -211,8 +214,9 @@ def arm_full_context(store_items: list, ep, r, transcript,
                      raw_messages=None):
     turns = "\n".join(f"{i + 1}. {t}" for i, t in enumerate(transcript))
     block = f"{FULL_CONTEXT_PREAMBLE}\n\n{turns}"
-    return _complete_with_block(r["user_input"], tr_mod.TRANSLATOR_SYSTEM, block,
-                                "Conversation history")
+    return _complete_with_block(
+        r["user_input"], tr_mod.LEGACY_TRANSLATOR_SYSTEM, block,
+        "Conversation history")
 
 
 def arm_null_generic(store_items: list, ep, r, transcript,

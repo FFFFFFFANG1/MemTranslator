@@ -224,7 +224,8 @@ def complete(model: str, system: str, user: str, max_tokens: int = 1024,
 
 
 def stream_text(model: str, system: str, messages: list[dict],
-                max_tokens: int = 2048) -> Iterator[str]:
+                max_tokens: int = 2048,
+                temperature: float | None = None) -> Iterator[str]:
     global _or_client
     if _api_format(model) == "openai-compatible":
         rest = (model.removeprefix("ark:")
@@ -238,14 +239,17 @@ def stream_text(model: str, system: str, messages: list[dict],
         yield from _compatible_stream(
             rest, base, key, system, messages, max_tokens,
             extra=_compatible_extra(
-                rest, base, thinking, model.startswith("ark:")))
+                rest, base, thinking, model.startswith("ark:")),
+            temperature=temperature)
         return
+    extra = {} if temperature is None else {"temperature": temperature}
     try:
         with _get_client().messages.stream(
             model=model,
             max_tokens=max_tokens,
             system=system,
             messages=messages,
+            **extra,
         ) as stream:
             yield from stream.text_stream
     except anthropic.APIConnectionError as e:
@@ -261,7 +265,8 @@ def stream_text(model: str, system: str, messages: list[dict],
 
 def _compatible_stream(model: str, base: str, key: str, system: str,
                        messages: list[dict], max_tokens: int,
-                       extra: dict | None = None) -> Iterator[str]:
+                       extra: dict | None = None,
+                       temperature: float | None = None) -> Iterator[str]:
     """Stream text from an OpenAI-compatible chat-completions endpoint."""
     global _or_client
     if _or_client is None:
@@ -273,6 +278,8 @@ def _compatible_stream(model: str, base: str, key: str, system: str,
         "messages": [{"role": "system", "content": system}, *messages],
         **(extra or {}),
     }
+    if temperature is not None:
+        payload["temperature"] = temperature
     try:
         with _or_client.stream(
                 "POST", f"{base.rstrip('/')}/chat/completions",

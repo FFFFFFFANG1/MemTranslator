@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import threading
 import time
 from dataclasses import replace
 from urllib.parse import urlsplit
@@ -77,6 +78,9 @@ _CHROMIUM_BUNDLES = {
     "com.brave.Browser",
 } | set(AI_APP_BUNDLES)
 _WEB_AX_ENABLED_PIDS: set[int] = set()
+_KNOWN_INPUT_ELEMENTS: dict[str, object] = {}
+_KNOWN_INPUT_ELEMENTS_LOCK = threading.Lock()
+_KNOWN_INPUT_ELEMENTS_LIMIT = 64
 
 
 def ensure_trusted() -> bool:
@@ -302,6 +306,33 @@ def _identity(element, *, app_bundle_id: str, role: str, subrole: str,
     return hashlib.sha256(raw.encode()).hexdigest()[:24]
 
 
+def _remember_input_element(identity: str, element) -> None:
+    """Retain a small set of AX handles for event-driven lifecycle checks."""
+    with _KNOWN_INPUT_ELEMENTS_LOCK:
+        _KNOWN_INPUT_ELEMENTS.pop(identity, None)
+        _KNOWN_INPUT_ELEMENTS[identity] = element
+        while len(_KNOWN_INPUT_ELEMENTS) > _KNOWN_INPUT_ELEMENTS_LIMIT:
+            oldest = next(iter(_KNOWN_INPUT_ELEMENTS))
+            del _KNOWN_INPUT_ELEMENTS[oldest]
+
+
+def capture_known_input(snapshot: InputSnapshot) -> InputSnapshot | None:
+    """Read a previously captured input directly, without focus or retries."""
+    with _KNOWN_INPUT_ELEMENTS_LOCK:
+        element = _KNOWN_INPUT_ELEMENTS.get(snapshot.identity)
+    if element is None:
+        return None
+    value_error, value = AXUIElementCopyAttributeValue(
+        element, kAXValueAttribute, None)
+    if value_error != 0 or not isinstance(value, str):
+        return None
+    return replace(
+        snapshot,
+        full_text=value,
+        target_range=TextRange(0, len(value)),
+    )
+
+
 def capture_focused_input() -> InputSnapshot | None:
     element = _focused_element()
     if element is None:
@@ -339,7 +370,7 @@ def capture_focused_input() -> InputSnapshot | None:
                      if position is not None and size is not None else None)
     selected = _decode_range(
         _copy(element, kAXSelectedTextRangeAttribute), len(value))
-    # The product action is "polish this composer".  A future explicit
+    # The product action is "Write this composer". A future explicit
     # selection command can retain a partial range, but the global hotkey must
     # track one complete request so the final submit can join unambiguously.
     if selected != TextRange(0, len(value)):
@@ -372,7 +403,9 @@ def capture_focused_input() -> InputSnapshot | None:
     # line buffer.  Reject disabled profiles before the controller calls the
     # daemon, so terminal history is neither uploaded nor pasted back.
     if not resolve_profile(snapshot).enabled:
-        return replace(snapshot, editable=False)
+        snapshot = replace(snapshot, editable=False)
+    if snapshot.editable:
+        _remember_input_element(snapshot.identity, element)
     return snapshot
 
 
@@ -545,6 +578,13 @@ def send_enter(snapshot: InputSnapshot) -> bool:
 
 
 class MacOSInputAdapter:
+    @staticmethod
+    def capture_once() -> InputSnapshot | None:
+        """Capture without sleeping; safe inside the ordinary-Enter event tap."""
+        return capture_focused_input()
+
+    capture_known = staticmethod(capture_known_input)
+
     @staticmethod
     def capture() -> InputSnapshot | None:
         """Read through short-lived AX focus/value propagation gaps.

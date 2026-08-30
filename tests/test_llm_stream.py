@@ -36,13 +36,15 @@ def test_ark_stream_uses_openai_compatible_sse(monkeypatch):
 
     chunks = list(llm.stream_text(
         "ark:deepseek-v4-flash", "system",
-        [{"role": "user", "content": "hi"}], max_tokens=32))
+        [{"role": "user", "content": "hi"}], max_tokens=32,
+        temperature=0.0))
 
     assert chunks == ["hello", " world"]
     assert client.request[0:2] == (
         "POST", "https://example.test/v1/chat/completions")
     payload = client.request[2]["json"]
     assert payload["stream"] is True
+    assert payload["temperature"] == 0.0
     assert payload["thinking"] == {"type": "disabled"}
     assert payload["messages"][0] == {
         "role": "system", "content": "system"}

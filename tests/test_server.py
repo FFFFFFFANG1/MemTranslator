@@ -24,6 +24,17 @@ def add_requirement(client, text, *, work_kind="any", scope="global",
     })
 
 
+def translator_apply_records(old: str, new: str, evidence: str):
+    return [
+        {"type": "plan", "decision": "apply", "apply": [1],
+         "satisfied": [], "skip_kind": [], "skip_condition": [],
+         "skip_superseded": []},
+        {"type": "patch", "hunks": [{"old": old, "new": new}]},
+        {"type": "audit", "entries": [{
+            "entry": 1, "verdict": "apply", "evidence": evidence}]},
+    ]
+
+
 def test_requirement_crud(tmp_path):
     client, app = make_client(tmp_path)
     r = add_requirement(client, "Emails under 120 words.",
@@ -351,10 +362,13 @@ def test_translate_endpoint_apply_and_event(tmp_path, monkeypatch):
     rid = add_requirement(
         client, "Code without explanations.",
         work_kind="code", scope="all code tasks").json()["id"]
-    monkeypatch.setattr(llm, "complete", lambda *a, **k: json.dumps({
-        "decision": "apply", "applied_ids": [rid],
-        "hunks": [{"old": "Write the function.",
-                   "new": "Write the function; code only, no explanations."}]}))
+    records = translator_apply_records(
+        "Write the function.",
+        "Write the function; code only, no explanations.",
+        "code only, no explanations")
+    monkeypatch.setattr(
+        llm, "stream_text",
+        lambda *a, **k: iter(map(json.dumps, records)))
 
     r = client.post("/api/translate", json={"text": "Write the function."})
     body = r.json()
@@ -370,12 +384,50 @@ def test_translate_endpoint_apply_and_event(tmp_path, monkeypatch):
     assert event["applied_entries"][0]["text"] == "Code without explanations."
 
 
+def test_translate_stream_exposes_ready_before_audit_and_logs_final(
+        tmp_path, monkeypatch):
+    client, app = make_client(tmp_path)
+    rid = add_requirement(
+        client, "Code without explanations.",
+        work_kind="any", scope="global").json()["id"]
+    records = [
+        {"type": "plan", "decision": "apply", "apply": [1],
+         "satisfied": [], "skip_kind": [], "skip_condition": [],
+         "skip_superseded": []},
+        {"type": "patch", "hunks": [{
+            "old": "Write the function.",
+            "new": "Write the function; code only, no explanations.",
+        }]},
+        {"type": "audit", "entries": [{
+            "entry": 1, "verdict": "apply",
+            "evidence": "code only, no explanations",
+        }]},
+    ]
+    monkeypatch.setattr(
+        llm, "stream_text",
+        lambda *_args, **_kwargs: iter(map(json.dumps, records)))
+
+    response = client.post(
+        "/api/translate/stream", json={"text": "Write the function."})
+    events = [json.loads(line) for line in response.text.splitlines()]
+
+    assert [event["type"] for event in events] == [
+        "plan", "rewrite_ready", "audit", "done"]
+    assert events[1]["polished"].endswith("no explanations.")
+    assert events[-1]["translation"]["applied"][0]["id"] == rid
+    logged = [event for event in app.state.events.read_all()
+              if event["kind"] == "translate"][-1]
+    assert logged["translate_id"] == events[-1]["translate_id"]
+
+
 def test_chat_streams_and_logs_edit_diff(tmp_path, monkeypatch):
     client, app = make_client(tmp_path)
     rid = add_requirement(client, "Short.").json()["id"]
-    monkeypatch.setattr(llm, "complete", lambda *a, **k: json.dumps({
-        "decision": "apply", "applied_ids": [rid],
-        "hunks": [{"old": "raw text", "new": "raw text, politely"}]}))
+    records = translator_apply_records(
+        "raw text", "raw text, politely", "politely")
+    monkeypatch.setattr(
+        llm, "stream_text",
+        lambda *a, **k: iter(map(json.dumps, records)))
     tr = client.post("/api/translate", json={"text": "raw text"}).json()
 
     monkeypatch.setattr(llm, "stream_text", lambda *a, **k: iter(["Hel", "lo"]))
@@ -410,7 +462,7 @@ def test_translate_502_when_llm_unreachable(tmp_path, monkeypatch):
     def down(*a, **k):
         raise llm.LLMUnavailable("connection")
 
-    monkeypatch.setattr(llm, "complete", down)
+    monkeypatch.setattr(llm, "stream_text", down)
     r = client.post("/api/translate", json={"text": "hello"})
     assert r.status_code == 502
     assert r.json()["detail"] == "llm_unreachable"

@@ -359,7 +359,7 @@ def start_command(args: argparse.Namespace) -> int:
     try:
         if sys.platform == "darwin" and not args.server_only:
             print("Starting macOS menu-bar client "
-                  "(rewrite: ⌥⌃R; capture + send: ⌥⌃Enter)")
+                  "(Write: Fn+R; Learn: Fn+Enter)")
             # Keep Cocoa/PyObjC out of the CLI supervisor process. PyObjC's
             # run-loop interrupt bridge replaces SIGINT with a Mach handler;
             # importing and running it here used to leave `uv run` waiting on

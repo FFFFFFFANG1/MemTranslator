@@ -1,7 +1,7 @@
 """Non-activating macOS feedback drawn beside the focused input.
 
 The primary state is a small code-drawn network. Nodes arrive in a stable,
-random-looking order, edges join them as a rewrite progresses, and the complete
+random-looking order, edges join them as a Write progresses, and the complete
 graph emits a soft halo after the rewritten text has been written back. Short
 text pills remain available for errors and later feedback events.
 """

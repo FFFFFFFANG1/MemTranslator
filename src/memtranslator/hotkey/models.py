@@ -72,8 +72,8 @@ class FeedbackEvent:
 
 
 @dataclass(frozen=True)
-class CaptureEvent:
-    capture_id: str
+class LearnEvent:
+    learn_id: str
     text: str
     input_context: dict
     translate_id: str | None = None

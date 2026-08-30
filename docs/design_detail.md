@@ -3,7 +3,7 @@
 **English** | [简体中文](design_detail.zh-CN.md)
 
 The [README Quickstart](../README.md#quickstart) covers installation and the
-two desktop hotkeys. This page documents configuration, capture boundaries,
+two desktop hotkeys. This page documents configuration, Learn boundaries,
 and the current implementation behind that workflow.
 
 ## Contents
@@ -67,25 +67,29 @@ and what is sent to configured endpoints.
 
 ## Shortcuts and source allowlist
 
-### Rewrite and capture are separate actions
+### Write and Learn are separate actions
 
 | Input | Behavior |
 | --- | --- |
-| **Option + Control + R** (`⌥⌃R`) | Read the focused draft, request a rewrite, verify write-back, and track subsequent edits. Does not send or queue raw text for Extractor A. |
-| **Option + Control + Enter** (`⌥⌃Enter`) | Snapshot the draft, forward one ordinary Enter, and submit user-authored evidence for Extractor A. No prior rewrite is needed. |
-| Ordinary **Enter** | Preserve the app's normal behavior. It can finish an active rewrite-feedback session, but does not capture a new raw message for A. |
+| **Fn + R** (`Fn+R`) | **Write:** read the focused draft, compile applicable preferences, and verify write-back. It creates a Pending Write but never sends or learns. |
+| **Fn + Enter** (`Fn+Enter`) | **Learn:** snapshot the draft, forward one ordinary Enter, and submit user-authored evidence for Extractor A. No prior Write is needed. |
+| Ordinary **Enter** | Preserve the app's normal behavior and dismiss a matching Pending Write. It never learns. |
 
-Capture forwards Enter before waiting for memory extraction. This means
+Learn forwards Enter before waiting for memory extraction. This means
 "send" only in a composer configured for Enter-to-send; in another composer
 it may insert a newline. MemTranslator does not confirm server-side delivery
-in the target app. A memory-capture failure is reported separately and never
+in the target app. A Learn persistence failure is reported separately and never
 causes Enter to be sent again.
 
-The shortcut handler accepts the exact Option + Control combinations. The
-old `⌥⌘R`, `⌥R`, and `⌥Enter` shortcuts are no longer intercepted. Outside
+The shortcut handler accepts the exact Fn combinations. Shortcuts with extra
+Command, Option, Control, or Shift modifiers are not intercepted. Outside
 the allowlist or in unsupported inputs, it replays the native shortcut rather
-than rewriting or queuing memory. The menu's **Polish Focused Input** action
+than running Write or Learn. The menu's **Write Focused Input** action
 remains available in other supported inputs.
+
+Fn is read as the macOS Fn/Globe modifier. The keyboard must expose that
+modifier; some non-Apple external keyboards do not. Return and numeric-keypad
+Enter are both accepted for Learn, while the keypad-location flag is ignored.
 
 ### How sources are identified
 
@@ -107,55 +111,60 @@ per-conversation filter. Defaults include:
 An allowlisted label is not a compatibility guarantee. In particular, a CLI
 running inside Terminal is still a terminal input, not automatically a native
 "Claude Code" input. Terminal scrollback and secure fields are excluded from
-rewriting; an unreadable browser domain fails closed.
+Write; an unreadable browser domain fails closed.
 
 ## What enters memory
 
 ### Extractor A: explicitly supplied user evidence
 
-Desktop raw-message learning requires **Option + Control + Enter** in an
-allowed, supported input. Typing, rewriting, ordinary Enter, mouse clicks,
-focus changes, and tracking timeouts do not independently queue raw messages
+Desktop raw-message learning requires **Learn** (`Fn + Enter`) in an
+allowed, supported input. Typing, Write, ordinary Enter, mouse clicks,
+focus changes, and elapsed time do not independently queue raw messages
 for A. A second explicit entry point is the memory manager's incomplete
 manual-item form, described under [Memory management](#memory-management).
 
-For a draft that has never been rewritten, capture supplies its user-authored
-text. For a rewritten draft, it supplies the original from the linked
-translation event instead of teaching A the model's own output. Repeated
-rewrites retain the **first pre-rewrite original** for A, while feedback
-judges the **latest rewrite** for B. The server validates the translation ID
+For a draft that has never used Write, Learn supplies its user-authored text.
+After Write, Learn supplies the original from the linked translation event
+instead of teaching A the model's own output. Repeated Writes retain the
+**first pre-Write original** for A, while correction feedback judges the
+**latest Write** for B. The server validates the translation ID
 and source identity before accepting that link.
 
-If a known rewritten draft changes after its tracking session has ended,
-the client cannot safely establish its provenance and refuses explicit
-capture. Use ordinary Enter to send without capture. Provenance is maintained
-by the running client; this is not a general detector of AI-generated text
-pasted from elsewhere.
+A Pending Write keeps provenance while the client is running, including when
+focus moves to another composer and later returns. Correction feedback has a
+five-minute attribution window. After that window, an unchanged Write can
+still Learn the pre-Write original without B feedback; a changed draft fails
+closed because its provenance is ambiguous. Use ordinary Enter to send
+without Learn. This is not a general detector of AI-generated text pasted
+from elsewhere.
 
 There is no keyword or rule-based preference screen before A. Non-empty,
 eligible evidence is buffered; the extractor decides whether it contains a
 lasting requirement. Its input view is capped at **600 tokens per message**,
-keeping the beginning and end of long text. Capturing a message does not
+keeping the beginning and end of long text. Learning from a message does not
 promise that the entire message becomes a memory item.
 
 ### Extractor B: corrections to applied memories
 
-After a rewrite, a short-lived tracker observes the same input. Ordinary
-Enter, a cleared input, a focus change, or **five minutes without a text
-change** can close the session. Mouse clicks cause a follow-up observation;
-they are not independently treated as proof that a message was sent.
+Write creates a Pending Write session bound to that composer; different
+composers keep independent sessions, and the client does not run a periodic
+content poll. Focus changes and activity in other composers leave each session
+parked. A matching Learn samples the current draft once and can
+submit correction feedback. Ordinary Enter dismisses a matching session
+without learning; a pointer event dismisses it only when a one-shot follow-up
+read sees that same composer empty.
 
 Feedback is joined by `translate_id`, not a fuzzy match to an unrelated
-conversation. The server compares the rewritten text with the latest observed
-user text and pairs the diff with snapshots of the memories applied in that
-rewrite. B requires both applied entries and a real diff. It can update or
+conversation. The server compares the latest Write result with the text
+submitted by Learn and pairs the diff with snapshots of the memories applied by that
+Write. B requires both applied entries and a real diff. It can update or
 retire those entries, or make no change; it does not create unrelated new
-memories. An unchanged rewrite does not invoke B extraction, though acceptance
+memories. An unchanged Write result does not invoke B extraction, though acceptance
 can update memory strength mechanically.
 
-Neither the full rewritten text nor newly added post-rewrite fragments are
-fed to A through this feedback path. Observation is feedback about the draft,
-not confirmation that the target agent received it. No Claude Code hook is
+Neither the full Write result nor newly added post-Write fragments are fed to
+A through this feedback path. Learn is evidence about the draft, not
+confirmation that the target agent received it. No Claude Code hook is
 required for this desktop workflow.
 
 ### Batching and recovery
@@ -166,10 +175,10 @@ the oldest pending entry. The server checks those thresholds when later
 learning activity calls the flush path; there is no independent timer that
 guarantees extraction at exactly 30 minutes while the app is idle.
 
-Accepted desktop captures are journaled in the local event log. A retry with
-the same capture ID is deduplicated; a new capture gesture is a new event,
-even if its text is identical. Pending desktop A captures are restored after
-a daemon restart, while processed captures are marked so normal replay skips
+Accepted desktop Learn submissions are journaled in the local event log. A
+retry with the same Learn ID is deduplicated; a new Learn gesture is a new
+event, even if its text is identical. Pending desktop A submissions are restored after
+a daemon restart, while processed submissions are marked so normal replay skips
 them. LLM unavailability leaves the accepted A queue pending for a later
 attempt. This is not a client-side offline outbox: an unconfirmed submission
 is reported to the user. B and incomplete manual-item queues do not have the
@@ -264,7 +273,7 @@ directory. Other platforms default to `~/.memtranslator`.
 | --- | --- |
 | `.env` | Model connection settings, keys, and runtime configuration. |
 | `data/store.jsonl` | Preference items and their lifecycle state. |
-| `data/events.jsonl` | Local events, including captured text, rewrites, and feedback. |
+| `data/events.jsonl` | Local events, including learned text, Write translations, and feedback. |
 | `data/source_allowlist.json` | Saved source-allowlist customization. |
 | `models/multilingual-e5-small/` | Default local embedding files. |
 

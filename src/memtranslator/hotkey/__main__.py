@@ -1,9 +1,9 @@
 """MemTranslator macOS menu-bar client.
 
-⌥⌃R captures the focused composer as a guarded Accessibility transaction,
-asks the local daemon to compile applicable requirements into it, writes the
-result back, then watches the same composer briefly for human edits.
-⌥⌃Enter forwards a normal Enter and explicitly queues the message for memory.
+Fn+R is Write: compile applicable remembered preferences into the focused
+composer without learning.  Fn+Enter is Learn: forward one ordinary Enter and
+explicitly queue user evidence, plus correction feedback for a matching
+pending Write.  Focus changes never learn and do not require content polling.
 """
 from __future__ import annotations
 
@@ -32,6 +32,7 @@ from Quartz import (
     kCGEventFlagMaskAlternate,
     kCGEventFlagMaskCommand,
     kCGEventFlagMaskControl,
+    kCGEventFlagMaskSecondaryFn,
     kCGEventFlagMaskShift,
     kCGEventKeyDown,
     kCGEventKeyUp,
@@ -63,14 +64,15 @@ POINTER_DOWN_EVENTS = {
 }
 POINTER_SETTLE_SECONDS = 0.08
 HOTKEY_SETTLE_SECONDS = 0.04
-READY_LABEL = "Ready · ⌥⌃R rewrite / ⌥⌃Enter capture + send"
-SHORTCUT_MODIFIERS = kCGEventFlagMaskAlternate | kCGEventFlagMaskControl
+READY_LABEL = "Ready · Fn+R Write / Fn+Enter Learn"
+SHORTCUT_MODIFIERS = kCGEventFlagMaskSecondaryFn
 MODIFIER_MASK = (SHORTCUT_MODIFIERS | kCGEventFlagMaskCommand
-                 | kCGEventFlagMaskShift)
+                 | kCGEventFlagMaskShift | kCGEventFlagMaskAlternate
+                 | kCGEventFlagMaskControl)
 
 
-def polish_flow(read=None, write=None, post=None) -> str:
-    """Compatibility wrapper retained for integrations around the v0 spike."""
+def write_flow(read=None, write=None, post=None) -> str:
+    """Small platform-neutral Write seam retained for integration tests."""
     if read is None:
         read = axtext.read_focused_text
     if write is None:
@@ -103,8 +105,7 @@ class App(NSObject):
         self.overlay = StatusOverlay()
         self.controller = DesktopController(
             axtext.MacOSInputAdapter(), DaemonClient(DAEMON),
-            on_feedback=self._on_feedback, on_progress=self._on_progress)
-        self._poll_timer = None
+            on_progress=self._on_progress)
         self._pointer_timer = None
         self._state_timer = None
         self._shutting_down = False
@@ -124,10 +125,10 @@ class App(NSObject):
         self.state_item.setEnabled_(False)
         menu.addItem_(self.state_item)
         menu.addItem_(NSMenuItem.separatorItem())
-        polish = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
-            "Polish Focused Input", "polishFocusedInput:", "")
-        polish.setTarget_(self)
-        menu.addItem_(polish)
+        write = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
+            "Write Focused Input", "writeFocusedInput:", "")
+        write.setTarget_(self)
+        menu.addItem_(write)
         menu.addItem_(NSMenuItem.separatorItem())
         control = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
             "Open Control Center", "openControlCenter:", "")
@@ -138,9 +139,9 @@ class App(NSObject):
         self.status_item.setMenu_(menu)
         return self
 
-    def polishFocusedInput_(self, _sender):
-        print("menu polish requested", flush=True)
-        self.on_hotkey()
+    def writeFocusedInput_(self, _sender):
+        print("menu Write requested", flush=True)
+        self.on_write()
 
     def openControlCenter_(self, _sender):
         NSWorkspace.sharedWorkspace().openURL_(
@@ -168,66 +169,46 @@ class App(NSObject):
     def shutdown(self) -> None:
         """Stop every timer before Cocoa tears down its run loop."""
         self._shutting_down = True
-        for timer_name in ("_state_timer", "_poll_timer", "_pointer_timer"):
+        for timer_name in ("_state_timer", "_pointer_timer"):
             timer = getattr(self, timer_name)
             if timer is not None:
                 timer.cancel()
                 setattr(self, timer_name, None)
-        self.controller.tracker.cancel()
+        self.controller.pending_writes.cancel()
         self.overlay.shutdown()
         NSStatusBar.systemStatusBar().removeStatusItem_(self.status_item)
-
-    def _on_feedback(self, result: dict) -> None:
-        if result["status"] == "feedback_failed":
-            self._set_state("!", "Feedback queued failed", 2.2)
-            self.overlay.show("未能保存修改", auto_hide=1.8)
-            return
-        classification = result.get("response", {}).get(
-            "classification", "")
-        if classification == "edited_after_polish":
-            self._set_state("✓", "Edit feedback saved", 2.2)
-            self.overlay.show("✓  已记录修改", auto_hide=1.8)
 
     def _on_progress(self, state: str, snapshot) -> None:
         bounds = snapshot.screen_bounds if snapshot is not None else None
         if state in {"translating", "writing"}:
             self.overlay.move(bounds)
 
-    def _schedule_poll(self) -> None:
-        if self._poll_timer is not None:
-            self._poll_timer.cancel()
-        if not self.controller.tracker.active:
-            self._poll_timer = None
+    def on_plain_enter(self) -> None:
+        """Dismiss a matching pending Write; ordinary Enter never learns."""
+        if not self.controller.has_pending_write:
             return
-        self._poll_timer = threading.Timer(0.18, self._poll)
-        self._poll_timer.daemon = True
-        self._poll_timer.start()
-
-    def _poll(self) -> None:
-        self.controller.observe()
-        self._schedule_poll()
-
-    def on_enter(self) -> None:
-        if not self.controller.has_pending_draft:
-            return
-        threading.Thread(target=lambda: self.controller.observe(key="Enter"),
-                         daemon=True).start()
+        snapshot = self.controller.adapter.capture_once()
+        if snapshot is not None:
+            self.controller.dismiss(snapshot)
 
     def on_pointer_down(self) -> None:
-        """Re-check after a click has had time to clear or move the input.
+        """Dismiss a matching Write if click-to-send clears its composer.
 
-        A click inside the same composer merely refreshes its snapshot. A
-        send-button click, tab switch, or click into another field finishes
-        through the tracker's existing cleared/focus-changed rules.
+        A click inside the same composer or another field does not learn and
+        does not end the session.  This is one event-driven check, not polling.
         """
-        if not self.controller.tracker.active:
+        if not self.controller.has_pending_write:
+            return
+        before_click = self.controller.adapter.capture_once()
+        if not self.controller.matches_pending(before_click):
             return
         if self._pointer_timer is not None:
             self._pointer_timer.cancel()
 
         def observe_after_click():
             self._pointer_timer = None
-            self.controller.observe()
+            self.controller.dismiss_if_empty(
+                self.controller.adapter.capture_known(before_click))
 
         self._pointer_timer = threading.Timer(
             POINTER_SETTLE_SECONDS, observe_after_click)
@@ -242,18 +223,23 @@ class App(NSObject):
         self._action_generation += 1
         generation = self._action_generation
 
-        def save(event):
-            result = self.controller.save_capture(event)
+        def commit(event):
+            result = self.controller.commit_learn(event)
             if (self._shutting_down
                     or (generation != self._action_generation
-                        and result["status"] == "captured")):
+                        and result["status"] == "learned")):
                 return
-            if result["status"] == "captured":
-                self._set_state("✓", "Message queued for memory", 2.2)
-                self.overlay.show("✓ 已提交记忆提取", auto_hide=1.8)
+            if result["status"] == "learned":
+                feedback = result.get("feedback", {})
+                if feedback.get("status") == "feedback_failed":
+                    self._set_state("!", "Learn saved; correction unconfirmed", 3)
+                    self.overlay.show("Learn 已提交；纠正反馈未确认", auto_hide=2.4)
+                else:
+                    self._set_state("✓", "Learn committed", 2.2)
+                    self.overlay.show("✓ Learn 已提交，Enter 已转发", auto_hide=1.8)
             else:
-                self._set_state("!", "Enter forwarded; capture unconfirmed", 3)
-                self.overlay.show("已触发发送；未能确认采集", auto_hide=3)
+                self._set_state("!", "Enter forwarded; Learn unconfirmed", 3)
+                self.overlay.show("Enter 已转发；Learn 未确认", auto_hide=3)
 
         def run():
             try:
@@ -267,25 +253,25 @@ class App(NSObject):
                 if not self.controller.shortcut_allowed(captured):
                     axtext.replay_shortcut(original_event, pid)
                     if keycode in ENTER_KEYS:
-                        self.overlay.show("未采集：来源或输入框不受支持", auto_hide=2.2)
+                        self.overlay.show("未执行 Learn：来源或输入框不受支持", auto_hide=2.2)
                     return
                 if keycode == KEY_R:
-                    self.on_hotkey(snapshot=captured, _synchronous=True)
+                    self.on_write(snapshot=captured, _synchronous=True)
                     return
-                result = self.controller.prepare_send(captured)
-                if result["status"] == "sent":
-                    self._schedule_poll()
-                    self._set_state("…", "Enter forwarded; saving capture…")
+                result = self.controller.prepare_learn(captured)
+                if result["status"] == "learn_ready":
+                    self._set_state("…", "Enter forwarded; committing Learn…")
                     # A slow/offline daemon must not block the next gesture.
-                    threading.Thread(target=save, args=(result["event"],),
+                    threading.Thread(target=commit, args=(result["event"],),
                                      daemon=True).start()
                 else:
                     message = {
-                        "empty": "输入为空，未采集或发送",
-                        "unsupported": "来源或输入框不受支持，未发送",
-                        "send_failed": "焦点或内容已变化，未采集或发送",
-                        "unverified_origin": "无法确认改写前原文，未发送；请使用普通 Enter",
-                    }.get(result["status"], "未能采集或发送")
+                        "empty": "输入为空，未执行 Learn",
+                        "unsupported": "来源或输入框不受支持，未执行 Learn",
+                        "send_failed": "焦点或内容已变化，未执行 Learn",
+                        "sent_unlearned": "Enter 已转发；Pending Write 已变化，Learn 未提交",
+                        "unverified_origin": "无法确认 Write 前原文，未执行 Learn；请使用普通 Enter",
+                    }.get(result["status"], "Learn 未完成")
                     self._set_state("!", message, 3)
                     self.overlay.show(message, auto_hide=3)
             except Exception:
@@ -296,13 +282,11 @@ class App(NSObject):
 
         threading.Thread(target=run, daemon=True).start()
 
-    def on_hotkey(self, snapshot=None, _synchronous: bool = False) -> None:
-        print("rewrite requested: option+control+r / menu", flush=True)
+    def on_write(self, snapshot=None, _synchronous: bool = False) -> None:
+        print("Write requested: fn+r / menu", flush=True)
         if self._pointer_timer is not None:
             self._pointer_timer.cancel()
             self._pointer_timer = None
-        if self.controller.tracker.active:
-            self.controller.tracker.cancel()
         self._set_state("…", "Compiling requirements…")
 
         def run():
@@ -316,27 +300,26 @@ class App(NSObject):
             bounds = (captured_snapshot.screen_bounds
                       if captured_snapshot is not None else None)
             self.overlay.start(bounds)
-            result = self.controller.polish(snapshot=captured_snapshot)
+            result = self.controller.write(snapshot=captured_snapshot)
             status = result["status"]
             detail = ""
             if status == "write_failed" and result.get("write") is not None:
                 write = result["write"]
                 detail = f" strategy={write.strategy} reason={write.reason}"
-            print(f"polish result: {status}{detail}", flush=True)
-            if status == "tracking":
+            print(f"Write result: {status}{detail}", flush=True)
+            if status == "written":
                 write = result["write"]
                 result_snapshot = result["snapshot"]
-                self._set_state("●", f"Tracking · {result_snapshot.app_name} · "
+                self._set_state("●", f"Write ready to Learn · "
+                                      f"{result_snapshot.app_name} · "
                                       f"{write.strategy}")
                 self.overlay.complete(result_snapshot.screen_bounds)
-                self._schedule_poll()
-            elif status == "noop_tracking":
+            elif status == "write_noop":
                 result_snapshot = result["snapshot"]
-                self._set_state("●", f"Tracking · {result_snapshot.app_name} · "
-                                      "no changes")
+                self._set_state("●", f"Write ready to Learn · "
+                                      f"{result_snapshot.app_name} · no changes")
                 self.overlay.show("无需调整", result_snapshot.screen_bounds,
                                   auto_hide=1.2)
-                self._schedule_poll()
             else:
                 glyph, label = {
                     "empty": ("·", "Focused composer is empty"),
@@ -385,10 +368,10 @@ def make_tap_callback(app):
             if not repeat:
                 app.on_shortcut(keycode, CGEventCreateCopy(event))
             return None
-        # Shift+Enter/IME modifiers are not send feedback. Explicit capture's
+        # Shift+Enter/IME modifiers are not message boundaries. Learn's
         # synthetic Enter is tagged and already handled before this branch.
         if keycode in ENTER_KEYS and flags == 0 and not repeat:
-            app.on_enter()
+            app.on_plain_enter()
         return event
 
     return tap_callback

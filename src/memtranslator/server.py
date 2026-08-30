@@ -25,7 +25,7 @@ from memtranslator.scopes import normalize_kind
 from memtranslator.signals import attribute_diff, classify_feedback, patch_diff
 from memtranslator.source_policy import SourceAllowlist, route_a_source_allowed
 from memtranslator.store import EventLog, Store
-from memtranslator.translate import translate
+from memtranslator.translate import translate, translate_events
 
 DOWNSTREAM_SYSTEM = "You are a helpful assistant."
 
@@ -468,22 +468,14 @@ def create_app(store_path: Path | None = None,
             })
         return req.to_dict()
 
-    @app.post("/api/translate")
-    def translate_endpoint(body: TranslateIn):
-        text = body.text.strip()
-        if not text:
-            raise HTTPException(400, "empty request")
-        try:
-            result = translate(text, store.list(), context=body.context)
-        except llm.LLMUnavailable:
-            raise HTTPException(502, "llm_unreachable")
+    def finish_translation(text: str, context: dict | None, result: dict,
+                           translate_id: str) -> dict:
         applied = result.get("applied_entries")
         if not isinstance(applied, list):
             # Compatibility for tests/adapters that still return only ids.
             applied = [store.get(i).to_dict() for i in result["applied_ids"]
                        if i in store._items]
         polished = result.get("polished") or text
-        translate_id = f"tr-{uuid.uuid4().hex}"
         events.append("translate", {
             "translate_id": translate_id,
             "original": text,
@@ -493,12 +485,53 @@ def create_app(store_path: Path | None = None,
             "applied_entries": applied,
             "parse_error": result["parse_error"],
             "latency_ms": result["latency_ms"],
-            "context": body.context or {},
+            "ready_latency_ms": result.get(
+                "ready_latency_ms", result["latency_ms"]),
+            "context": context or {},
         })
         return {"translate_id": translate_id, "decision": result["decision"],
                 "polished": polished, "applied": applied,
                 "parse_error": result["parse_error"],
-                "latency_ms": result["latency_ms"]}
+                "latency_ms": result["latency_ms"],
+                "ready_latency_ms": result.get(
+                    "ready_latency_ms", result["latency_ms"])}
+
+    @app.post("/api/translate")
+    def translate_endpoint(body: TranslateIn):
+        text = body.text.strip()
+        if not text:
+            raise HTTPException(400, "empty request")
+        try:
+            result = translate(text, store.list(), context=body.context)
+        except llm.LLMUnavailable:
+            raise HTTPException(502, "llm_unreachable")
+        return finish_translation(
+            text, body.context, result, f"tr-{uuid.uuid4().hex}")
+
+    @app.post("/api/translate/stream")
+    def translate_stream_endpoint(body: TranslateIn):
+        text = body.text.strip()
+        if not text:
+            raise HTTPException(400, "empty request")
+        translate_id = f"tr-{uuid.uuid4().hex}"
+
+        def records():
+            try:
+                for event in translate_events(
+                        text, store.list(), context=body.context):
+                    public = {**event, "translate_id": translate_id}
+                    if event["type"] == "done":
+                        public["translation"] = finish_translation(
+                            text, body.context, event["result"], translate_id)
+                        public.pop("result", None)
+                    yield json.dumps(public, ensure_ascii=False) + "\n"
+            except llm.LLMUnavailable:
+                yield json.dumps({
+                    "type": "error", "translate_id": translate_id,
+                    "error": "llm_unreachable",
+                }) + "\n"
+
+        return StreamingResponse(records(), media_type="application/x-ndjson")
 
     @app.post("/api/desktop/capture")
     def desktop_capture(body: DesktopCaptureIn):

@@ -13,10 +13,10 @@
 </p>
 
 MemTranslator is a user-side memory layer for how tasks should be executed
-and delivered. It learns from the instructions you explicitly capture and
-the corrections you make, then adds the relevant preferences to the request
-in your current input box. Review, edit, and send it to the agent you already
-use.
+and delivered. It learns only from text you explicitly submit with Learn and
+from corrections attributed to a prior Write. It then adds the relevant
+preferences to the request in your current input box, where you can review,
+edit, and send them to the agent you already use.
 
 > **Your working preferences, visible and editable in the request itself.**
 
@@ -24,8 +24,9 @@ use.
 
 - **Less repetition, less rework.** Automatically identifies and maintains
   your preferences for how tasks should be executed and delivered, based on
-  captured instructions and corrections. Stop repeating the same evidence
-  standards, output formats, and working procedures.
+  instructions submitted with Learn and attributed corrections. Stop
+  repeating the same evidence standards, output formats, and working
+  procedures.
 - **See memory at work in your input box.** Relevant preferences become
   visible requirements in the request. Read the exact text you will send;
   the agent receives your reviewed request, not a separate memory store or
@@ -36,14 +37,27 @@ use.
   preferences can also help correct memory through subsequent processing.
 - **Your preferences travel with you.** Use one local memory across supported
   desktop and web inputs, including tools such as Codex, Cursor, and ChatGPT.
-  Rewrite in place with a hotkey, with no downstream agent SDK integration
+  Write in place with a hotkey, with no downstream agent SDK integration
   or extra chat interface.
 
 ## How it works
 
+<p align="center">
+  <video src="assets/memtranslator-demo.mp4" controls width="800">
+    <a href="assets/memtranslator-demo.mp4">Watch the MemTranslator demo</a>
+  </video>
+</p>
+
 | It learns from you | It helps you improve your task prompt |
 | --- | --- |
-| **A — Repeated or explicit requirements.** From instructions you explicitly capture, it learns reusable preferences from repeated requirements or explicit rules for future tasks: how to work, what evidence to use, and how to deliver results.<br><br>**B — Corrections after translation.** After the Translator rewrites your input, it learns from your edits to that rewrite. Feedback can revise or retire only the memory items applied in that rewrite. | **Translates in your input box.** Press a hotkey to apply the preferences relevant to your current task. The Translator turns them into explicit requirements directly in your task prompt.<br><br>**You decide what gets sent.** See the result, edit or remove any added requirement, then send it to your agent when you are ready. Nothing is sent automatically. |
+| **A — Repeated or explicit requirements.** From instructions you explicitly submit with Learn, it derives reusable preferences from repeated requirements or explicit rules for future tasks: how to work, what evidence to use, and how to deliver results.<br><br>**B — Corrections after Write.** When Learn follows a Write, the system can learn from your edits to the written result. Feedback can revise or retire only the memory items applied by that Write. | **Writes in your input box.** Press Write to apply the preferences relevant to your current task. The Translator turns them into explicit requirements directly in your task prompt.<br><br>**You decide what gets sent.** See the result, edit or remove any added requirement, then use Learn or the target app's normal send action when you are ready. Write never sends automatically. |
+
+The interaction boundaries are explicit. **Fn+R** starts Write and keeps a
+composer-bound Pending Write even if you temporarily focus another input;
+there is no periodic content polling. **Fn+Enter** performs Learn and forwards
+one ordinary Enter. An unmodified **Enter** keeps the target app's native
+behavior and never learns, so users can always send text without adding it to
+memory.
 
 ## Quickstart
 
@@ -83,11 +97,11 @@ Focus a supported input box in an allowlisted app or website:
 
 | Shortcut | Action |
 | --- | --- |
-| **Option + Control + R** (`⌥⌃R`) | Rewrite the current input without sending it. |
-| **Option + Control + Enter** (`⌥⌃Enter`) | Capture for memory extraction and forward one ordinary Enter (send in Enter-to-send inputs). No rewrite required. |
+| **Fn + R** (`Fn+R`) | **Write** — apply remembered preferences to the current input without sending or learning. |
+| **Fn + Enter** (`Fn+Enter`) | **Learn** — submit user evidence and forward one ordinary Enter (send in Enter-to-send inputs). No prior Write required. |
 
 See [Design and usage details](docs/design_detail.md) for permissions,
-configuration, capture behavior, demo mode, and development notes.
+configuration, Learn behavior, demo mode, and development notes.
 
 ## Contents
 
@@ -100,23 +114,25 @@ configuration, capture behavior, demo mode, and development notes.
 
 ## Architecture and core mechanisms
 
-![MemTranslator architecture: a user-side intermediary with review before sending, A-side extraction and consolidation, B-side correction feedback, a six-bucket preference store, and recall-driven rewriting.](assets/memtranslator-architecture-no-header.png)
+![MemTranslator architecture: a user-side intermediary with review before sending, A-side extraction and consolidation, B-side correction feedback, a six-bucket preference store, and recall-driven Write.](assets/memtranslator-architecture-no-header.png)
 
-Explicitly captured instructions and attributed corrections maintain one preference
-store. Recall selects preferences for the current task; the translator
-produces a request the user can inspect before sending to their existing
-agent. The diagram shows conceptual dependencies, not synchronous execution.
+Instructions explicitly submitted with Learn and attributed corrections
+maintain one preference store. Recall selects preferences for the current
+task; the Translator produces a request the user can inspect before sending
+to their existing agent. The diagram shows conceptual dependencies, not
+synchronous execution.
 
-### Learn, correct, recall, rewrite
+### Learn, correct, recall, Write
 
-1. **Extractor A — learn from instructions.** Explicitly captured original
-   user text is buffered for candidate extraction. Each candidate retrieves
-   a small set of related memories; consolidation decides whether to add,
-   reaffirm, merge, revise, retire, or ignore it.
+1. **Extractor A — learn from instructions.** Original user text explicitly
+   submitted with Learn is buffered for candidate extraction. Each candidate
+   retrieves a small set of related memories; consolidation decides whether
+   to add, reaffirm, merge, revise, retire, or ignore it.
 2. **Extractor B — learn from corrections.** A user edit is paired with
-   snapshots of the memories actually applied in that rewrite. B can update
+   snapshots of the memories actually applied by that Write. B can update
    or retire those entries, or leave them unchanged; it does not create
-   unrelated new memories. Unchanged rewrites do not trigger B extraction.
+   unrelated new memories. An unchanged Write result does not trigger B
+   extraction.
 3. **Reverse retrieval — applicability first, item text second.** In the
    attribute-first mode, work-kind and scope attributes retrieve a candidate
    pool, then item text is used for reranking. Explicit global requirements
@@ -125,7 +141,7 @@ agent. The diagram shows conceptual dependencies, not synchronous execution.
    become explicit requirements in the current request. Guarded patching and
    write-back checks protect the focused input; the user reviews the result.
 
-A and B buffer independently. Generated rewrites are never treated as raw
+A and B buffer independently. Generated Write results are never treated as raw
 user evidence for A. “Continual learning” here means maintaining memory
 through instructions and feedback, not retraining model weights.
 
@@ -214,8 +230,8 @@ a personal profile or conversation archive to the task context.
 ### A shared, self-updating AGENTS.md
 
 The practical mental model is an **automatically updated, continually
-maintained, shared `AGENTS.md` for working preferences**. Explicitly captured
-instructions and rewrite corrections maintain it over time, while direct
+maintained, shared `AGENTS.md` for working preferences**. Instructions
+submitted by Learn and corrections to Write results maintain it over time, while direct
 edits keep the user in control. The same local store serves supported agents;
 only relevant preferences are compiled into each request.
 
@@ -262,13 +278,15 @@ See the report for protocol details, uncertainty, and evidence limits.
 
 - **Desktop compatibility.** The hotkey client is macOS-only. Accessibility
   support varies across native, Electron, and browser inputs; uncertain
-  targets can result in a no-op or failed read/write.
+  targets can result in a no-op or failed read/write. The Fn shortcuts require
+  a keyboard that exposes an Fn/Globe modifier; some non-Apple external
+  keyboards may not provide one.
 - **Learning is fallible and asynchronous.** Extraction and consolidation can
   miss, overgeneralize, or fail to retire a preference. A and B run in batches,
   so a correction is not guaranteed to become an immediate memory update.
-- **Capture has a boundary.** Desktop Route A learning requires explicit
-  **Option + Control + Enter** and an allowed source. Rewriting, ordinary
-  Enter, focus changes, and tracking timeouts do not queue raw messages for A.
+- **Learn has a boundary.** Desktop Route A learning requires explicit
+  **Fn + Enter** and an allowed source. Write, ordinary Enter,
+  focus changes, and elapsed time do not queue raw messages for A.
   Password fields are excluded; this is not continuous recording of inputs.
 - **Local-first is not fully offline.** Memory and configuration are stored
   under `~/Library/Application Support/MemTranslator` on macOS. Configured
@@ -277,7 +295,7 @@ See the report for protocol details, uncertainty, and evidence limits.
   local mode-`0600` file and are visible in settings. Keep the Control Center
   local.
 - **No memory dump does not mean zero context cost.** Compiled requirements
-  still occupy prompt tokens, and relevance selection can be wrong. Rewrite
+  still occupy prompt tokens, and relevance selection can be wrong. Write
   latency depends on the model and endpoint.
 - **Evidence is limited.** The reported comparison has 12 episode clusters,
   different native system components, and no basis for an end-to-end
@@ -289,5 +307,5 @@ See the report for protocol details, uncertainty, and evidence limits.
 - [Mem0](https://github.com/mem0ai/mem0) — inspiration for practical,
   continually maintained memory layers.
 - [Typeless](https://www.typeless.com/) — inspiration from its in-app
-  voice-to-polished-text experience for our hotkey-triggered, in-place
-  rewriting workflow.
+  voice-to-polished-text experience for our hotkey-triggered, in-place Write
+  workflow.

@@ -1,7 +1,10 @@
 import json
 import memtranslator.llm as llm
 from memtranslator.schema import Requirement
-from memtranslator.translate import parse_patch, recall, translate
+from memtranslator.translate import (_translate_legacy as translate,
+                                     parse_patch, recall,
+                                     translate as stream_translate,
+                                     translate_events)
 
 
 def _reqs(*texts, status="active"):
@@ -127,6 +130,95 @@ def test_recall_filters_retired_without_count_capping_short_globals():
     assert len(got) == 40
     assert all(r.status == "active" for r in got)
     assert got[0].text == "r0"
+
+
+# ---- streaming protocol ---------------------------------------------------
+
+def test_stream_yields_safe_patch_before_consuming_invisible_audit(monkeypatch):
+    req = Requirement(text="Emails under 120 words.", scope_mode="global",
+                      kinds=["any"])
+    consumed = []
+    seen = {}
+    records = [
+        {"type": "plan", "decision": "apply", "apply": [1],
+         "satisfied": [], "skip_kind": [], "skip_condition": [],
+         "skip_superseded": []},
+        {"type": "patch", "hunks": [{
+            "old": "Draft an email.",
+            "new": "Draft an email under 120 words.",
+        }]},
+        {"type": "audit", "entries": [{
+            "entry": 1, "verdict": "apply", "evidence": "under 120 words",
+        }]},
+    ]
+
+    def chunks(_model, system, _messages, **_kwargs):
+        seen["system"] = system
+        for record in records:
+            consumed.append(record["type"])
+            yield json.dumps(record)
+
+    monkeypatch.setattr(llm, "stream_text", chunks)
+    events = iter(translate_events("Draft an email.", [req]))
+
+    assert next(events)["type"] == "plan"
+    ready = next(events)
+    assert ready["type"] == "rewrite_ready"
+    assert ready["polished"] == "Draft an email under 120 words."
+    assert consumed == ["plan", "patch"]
+    from memtranslator.translate import TRANSLATOR_SYSTEM
+    assert seen["system"] == TRANSLATOR_SYSTEM
+
+    remaining = list(events)
+    assert consumed == ["plan", "patch", "audit"]
+    assert remaining[-1]["result"]["applied_ids"] == [req.id]
+
+
+def test_stream_bad_background_audit_keeps_rewrite_but_drops_attribution(
+        monkeypatch):
+    req = Requirement(text="Emails under 120 words.", scope_mode="global",
+                      kinds=["any"])
+    records = [
+        {"type": "plan", "decision": "apply", "apply": [1],
+         "satisfied": [], "skip_kind": [], "skip_condition": [],
+         "skip_superseded": []},
+        {"type": "patch", "hunks": [{
+            "old": "Draft an email.",
+            "new": "Draft an email under 120 words.",
+        }]},
+        {"type": "audit", "entries": [{
+            "entry": 1, "verdict": "apply", "evidence": "not grounded",
+        }]},
+    ]
+    monkeypatch.setattr(
+        llm, "stream_text",
+        lambda *_args, **_kwargs: iter(map(json.dumps, records)))
+
+    out = stream_translate("Draft an email.", [req])
+
+    assert out["decision"] == "apply"
+    assert out["polished"] == "Draft an email under 120 words."
+    assert out["applied_ids"] == []
+    assert out["entry_contract_warnings"]
+
+
+def test_stream_invalid_plan_fails_before_any_apply_rewrite(monkeypatch):
+    reqs = _reqs("one", "two")
+    records = [
+        {"type": "plan", "decision": "apply", "apply": [1],
+         "satisfied": [], "skip_kind": [], "skip_condition": [],
+         "skip_superseded": []},
+        {"type": "patch", "hunks": [{"old": "x", "new": "x one"}]},
+    ]
+    monkeypatch.setattr(
+        llm, "stream_text",
+        lambda *_args, **_kwargs: iter(map(json.dumps, records)))
+
+    events = list(translate_events("x", reqs))
+
+    assert not any(event.get("decision") == "apply"
+                   for event in events if event["type"] == "rewrite_ready")
+    assert events[-1]["result"]["reason"] == "stream_protocol_invalid"
 
 
 # ---- translate -------------------------------------------------------------

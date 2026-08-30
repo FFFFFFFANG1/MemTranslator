@@ -4,6 +4,7 @@ extraction provider. Verifies the chained pass, arm scoring, and the STATE
 alignment — the expensive pilot run should only ever discover product facts,
 never runner bugs."""
 import json
+import re
 
 import pytest
 
@@ -63,6 +64,29 @@ class _EchoLLM:
                                       "new": f"{req} || {block}"}]},
                           ensure_ascii=False)
 
+    def stream_text(self, model, system, messages, max_tokens=1024,
+                    temperature=None):
+        user = messages[-1]["content"]
+        request = user.split("User request:\n")[-1] \
+            .split("\n\nJSON records:")[0]
+        block = user.split(":\n", 1)[-1].split("\n\nTask kind hint:")[0]
+        rows = re.findall(r"^\[(\d+)\]\s+(.+?)(?:\s+\s\(|$)", block,
+                          flags=re.MULTILINE)
+        numbers = [int(number) for number, _text in rows]
+        polished = f"{request} || {block}"
+        records = [
+            {"type": "plan", "decision": "apply", "apply": numbers,
+             "satisfied": [], "skip_kind": [], "skip_condition": [],
+             "skip_superseded": []},
+            {"type": "patch", "hunks": [{
+                "old": request, "new": polished}]},
+            {"type": "audit", "entries": [
+                {"entry": number, "verdict": "apply", "evidence": text}
+                for number, text in rows]},
+        ]
+        return iter(map(lambda value: json.dumps(value, ensure_ascii=False),
+                        records))
+
 
 class _ScriptedProvider:
     """Learns each rule the round it is uttered; applies the contradict."""
@@ -96,6 +120,7 @@ def wired(monkeypatch, tmp_path):
     monkeypatch.setattr(re_mod.llm, "complete", echo.complete)
     import memtranslator.translate as tr
     monkeypatch.setattr(tr.llm, "complete", echo.complete)
+    monkeypatch.setattr(tr.llm, "stream_text", echo.stream_text)
     monkeypatch.setattr(re_mod, "V1Provider", _ScriptedProvider)
     # offline judge: a clause is "carried" when its distinctive word made it
     # into the rewrite — keeps the judge band deterministic and networkless

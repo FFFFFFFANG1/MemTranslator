@@ -7,7 +7,7 @@ from memtranslator.retrieval import (flatten_applicability_fields,
                                      rerank_by_best_rank,
                                      rerank_by_rank_sum)
 from memtranslator.schema import Requirement
-from memtranslator.translate import translate
+from memtranslator.translate import _translate_legacy as translate
 
 
 def _r(text, **kw):
@@ -277,9 +277,9 @@ def test_translate_system_unchanged_without_styles(monkeypatch):
         seen["system"] = system
         return json.dumps({"decision": "noop"})
     monkeypatch.setattr(llm, "complete", fake)
-    from memtranslator.translate import TRANSLATOR_SYSTEM
+    from memtranslator.translate import LEGACY_TRANSLATOR_SYSTEM
     translate("帮我写封邮件", [_r("邮件写短")])
-    assert seen["system"] == TRANSLATOR_SYSTEM
+    assert seen["system"] == LEGACY_TRANSLATOR_SYSTEM
 
 
 def test_requirement_block_surfaces_attributes():

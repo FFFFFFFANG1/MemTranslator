@@ -14,7 +14,10 @@ import json
 import memtranslator.llm as llm
 from memtranslator.config import MAX_OUTPUT_TOKENS, MIN_OUTPUT_TOKENS
 from memtranslator.schema import Requirement
-from memtranslator.translate import _estimate_tokens, output_budget, translate
+from memtranslator.translate import (_estimate_tokens, _translate_legacy,
+                                     output_budget)
+
+translate = _translate_legacy
 
 
 def test_short_request_keeps_the_floor():
