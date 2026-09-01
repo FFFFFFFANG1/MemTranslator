@@ -1,0 +1,1165 @@
+{
+  "id": "e-03",
+  "protocol_version": 3,
+  "user_turns": [
+    {
+      "seq": 1,
+      "user_input": "推荐工具的时候优先开源的啊，闭源的我们过不了审"
+    },
+    {
+      "seq": 2,
+      "user_input": "以后都别用原来那条指令里的免责声明和结构了，直接给结论。跑一下上个月A/B实验的postmortem，重点看实验组转化率掉的那段，给我归因。"
+    },
+    {
+      "seq": 3,
+      "user_input": "上周A/B实验的转化率差，给我按用户分群拆一下，带上置信区间。。靠，你刚才那个实验设计写一堆废话，字太多了。以后这种设计，字数给我控制在207字以内，别超了。还有，跑一下上个月A/B实验的postmortem，重点看实验组转化率掉的那段，给我归因。"
+    },
+    {
+      "seq": 4,
+      "user_input": "帮我写个SQL，把DAU按渠道拆一下，带环比和占比，单位是万。。刚发的那个方向描述又给我写成大写，什么‘North China’、‘Southwest Region’的，我这是数据报告不是地理课本。以后写地理方向或区域的时候，所有方位词一律小写，north south east west 那些，别给我整大写。还有，上周的A/B实验数据跑一下，按渠道分层输出转化率，带上样本量，发我飞书。。你上次建的表太长了，字段名都缩写得看不懂，行数也堆得乱七八糟。以后建表的时候别搞那些花里胡哨的，按照短表、可读性强的规范来，别让我再费劲去解析。另外，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。"
+    },
+    {
+      "seq": 5,
+      "user_input": "帮我写封邮件给产品经理，确认下周A/B实验的启动时间，顺便把实验设计文档附上，别超过200字。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 6,
+      "user_input": "帮我写封邮件催一下业务方，昨天发的那版AB实验结论，他们还没给反馈，重点是实验组转化率提升3.2%那个结论，让他们确认一下样本量够不够，别拖到下周。。你刚才那个结果格式不对啊，转化率直接给我列了一堆数字，没单位也没说明，我哪知道哪个是哪个。以后都别这样，要是格式化结果，给我输出成JSON对象，键名用name、rank、hometown，别搞别的花样。"
+    },
+    {
+      "seq": 7,
+      "user_input": "跑一下上周的DAU趋势，按渠道拆开，把环比和同比都加上，单位用万。。对了，顺便说下，以后你列航班经停信息的时候，别把到达和离开时间用'->'连起来，分开写。另外帮我写封邮件给运营组，通知他们A/B实验的转化率提升2.3个百分点，但置信区间偏宽，建议延长观察期3天，语气别太死板。。对了，帮我写AB实验转化率差异归因复盘，按用户分层和渠道拆，百分比和绝对数、置信区间都要。另外以后你写函数别用默认算子，手写清楚，不然我根本不知道你算的是啥。"
+    },
+    {
+      "seq": 8,
+      "user_input": "你刚才那个转化率2.3%的写法不对，指数后面加花括号看着太奇怪了，以后别用这种格式，直接写数字就行。"
+    },
+    {
+      "seq": 9,
+      "user_input": "对了，以后都这样：脚本超过209行或者有绕来绕去的逻辑，就给我重写。别让我去猜你写了啥。，你上次那封邮件写得也太绕了吧，句子结构整得跟写论文似的，读起来费劲。以后别搞那些花里胡哨的句子结构了，简单直接点。对了，这次帮我写一封邮件给运营组，通知他们A/B实验的转化率提升2.3个百分点，但置信区间偏宽，建议延长观察期3天，语气别太死板。"
+    },
+    {
+      "seq": 10,
+      "user_input": "帮我写个脚本，把昨天的用户留存率和ARPU算出来，按渠道分组，输出CSV。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 11,
+      "user_input": "跑一下上周DAU的segment breakdown，按新老用户和渠道分层，给我留存率和人均时长，单位标清楚。。对了，跑一下上周DAU波动拆解，分渠道和版本，附环比变化，单位用万。另外以后凡是需要高级数据操作的时候，别用shell脚本，直接用Python或者SQL。"
+    },
+    {
+      "seq": 12,
+      "user_input": "写个Python脚本，从hive拉取昨天DAU和新增用户，按月聚合输出成CSV，字段要带日期和单位。。对了，以后写代码的时候，return和条件判断里别用括号，看着别扭，又不是写元组。现在先跑一下Q3的DAU周趋势，按渠道分，单位用万，标出异常波动点。。你上次那个版本号给我整了个v1.2.3-beta，我差点以为是实验组标签。别再用SemVer了，版本号按日期走就行。另外，帮我写个Python脚本，读昨天A/B实验的parquet日志，按variant分组算click、purchase、revenue的mean和std，输出Markdown表格。"
+    },
+    {
+      "seq": 13,
+      "user_input": "做个A/B实验复盘，看新版转化率掉0.3%是不是统计显著，把样本量和置信区间也列出来。。你上次那个postmortem里，代码行续行居然没用反斜杠，看着乱死了。以后写代码或者写文本，别再用别的方式续行，统一用反斜杠，清楚点。"
+    },
+    {
+      "seq": 14,
+      "user_input": "对了，顺便写个python脚本读csv算CTR和CVR，按日期分组输出新表，加单位%。还有以后写东西别用percent，都写per cent，看着别扭。，对了，帮我写封邮件给运营组，通知他们A/B实验转化率提了2.3个百分点，但置信区间偏宽，建议延3天观察期，语气别太死板。另外，以后写东西段落数别超过18段，太长没人看。"
+    },
+    {
+      "seq": 15,
+      "user_input": "对了，指数后禁止用花括号表示这条继续保持啊"
+    },
+    {
+      "seq": 16,
+      "user_input": "对了，跑一下上周DAU波动拆解，分渠道和版本，附环比变化，单位用万。还有，以后你给建议的时候别老自己改语法，我写的东西你直接看逻辑就行，别动句子结构。"
+    },
+    {
+      "seq": 17,
+      "user_input": "刚跑完A/B实验，转化率掉0.3pp，置信区间没跨零，但样本量不够，来个复盘看看是不是埋点漏了。。对了，以后都别整那些客套话，直接说重点就行。现在帮我写个Python脚本，拉取昨天全量用户行为日志，按小时聚合PV、UV，输出CSV，时间字段用UTC+8。。对了，以后都别推荐阅读顺序，我不需要你教我按什么顺序看书。直接给结论就行。"
+    },
+    {
+      "seq": 18,
+      "user_input": "刚那封邮件写得太啰嗦了，而且怎么用了“don't”、“can't”这种缩写？数据分析报告里别用这些，看着不专业。重写一下，去掉所有否定缩写，语气直接点，就说实验组转化率高2.3pp，95%置信区间[1.1, 3.5]，建议全量上线。"
+    },
+    {
+      "seq": 19,
+      "user_input": "跑个7天留存 cohort，按周切，附上 DAU 和 MAU 同环比，单位标万。。对了，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。另外以后命名Python变量时别用关键字，记得加单下划线尾巴，别整出命名冲突。。上次你给的那个复盘，怎么把AB实验结论写成对话体了？我这边要的是正经归因分析，不是剧本。下次别再用对话格式了，正常写报告就行。"
+    },
+    {
+      "seq": 20,
+      "user_input": "写个Python脚本，读昨天hive表里用户活跃度，算日均留存，画个折线图，输出到report目录下",
+      "probe": {
+        "should_apply": [
+          "e03-c20"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 21,
+      "user_input": "帮我跑一下上周A/B实验的postmortem，重点看转化率下降那段的归因，别给我没单位的数。。对了，写个脚本把昨天A/B实验的parquet日志读进来，按variant分组算click、purchase、revenue的mean和std，输出Markdown表格。另外以后写文档带链接的话，别把链接散在正文里，全给我集中到末尾一个列表里。"
+    },
+    {
+      "seq": 22,
+      "user_input": "帮我写一封邮件给运营组，催他们补上周五的AB实验数据，要带上实验ID和分组转化率，别给我没单位的数。。以后都别把活动混在一起写，每个活动单独描述，不然我拆数据拆到烦。另外帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。。对了，以后写文章的时候字数别超过1502个词，不然看着累。顺便帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。"
+    },
+    {
+      "seq": 23,
+      "user_input": "跑一下上周A/B实验的转化率，按版本和渠道拆，给我带样本量和置信区间的表。。对了，以后写博客的时候字数控制在752词以内，别超了。另外把上周的A/B实验数据跑一下，按渠道分层输出转化率，带上样本量，发我飞书。"
+    },
+    {
+      "seq": 24,
+      "user_input": "把这周AB实验的结论整理一下，突出显著指标，单位标清，直接给结论别废话",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 25,
+      "user_input": "帮我写个A/B实验的复盘，上周五上线的那个推荐策略改动，核心指标没涨反降了2.3%，用户点击率掉了0.8个百分点，但停留时长没变。重点拆原因，捞一下日志看是不是流量分配有问题，最后给个结论要不要回滚。",
+      "probe": {
+        "should_apply": [
+          "e03-c15"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 26,
+      "user_input": "这次这份写详细一点，季度 review 要用"
+    },
+    {
+      "seq": 27,
+      "user_input": "先把日志按天切开再统计，别一把梭"
+    },
+    {
+      "seq": 28,
+      "user_input": "给产品组发个邮件，A/B实验结论出来了，B版本转化率提了3.2%，但样本量不够，得延长一周再出最终结论。",
+      "probe": {
+        "should_apply": [
+          "e03-c14"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 29,
+      "user_input": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」"
+    },
+    {
+      "seq": 30,
+      "user_input": "帮我写个脚本，把A/B实验的原始日志按天聚合，输出每个variant的PV、UV和转化率，结果存成CSV。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 31,
+      "user_input": "我老板要求他们组的周报全用 bullet，真够呛"
+    },
+    {
+      "seq": 32,
+      "user_input": "对了，顺便，以后你生成带第二个列表的时候，第二个列表的词数必须保证有21个词以上，别给我偷懒。另外，帮我写个Python脚本，拉取昨天全量用户行为日志，按小时聚合PV、UV，输出CSV，时间字段用UTC+8。，你刚那段长对话每段都加引号结尾，但还没到最终段呢，别这样。以后写长段落时，每段开头只开引号，别在每段末尾关，直到最后一段才关。"
+    },
+    {
+      "seq": 33,
+      "user_input": "刚那个脚本跑出来的CSV，时间字段UTC+8倒是没问题，但footer里横线全是空格，看着太散了。以后写footer的时候，横线用连字符代替空格，别用空格了。，对了，以后写东西用per cent，不用percent这条继续保持啊"
+    },
+    {
+      "seq": 34,
+      "user_input": "帮忙写封邮件给运营组，贴一下上周AB实验的CTR和CVR对比，p值标出来，结论写清楚哪个版本胜出，别加废话。。刚那回复里你用了什么markdown加粗斜体，我看着眼花。以后别整这些花里胡哨的格式，直接给数据就行。把上周的A/B实验数据跑一下，按渠道分层输出转化率，带上样本量，发我飞书。。刚那个表格怎么把最后一列也抄进去了？说了多少次，生成表格时只复制除了最后一列以外的部分，别整列整列地给我搬过来。"
+    },
+    {
+      "seq": 35,
+      "user_input": "跑一下上周的DAU趋势，按渠道拆开，把环比和同比都加上，单位用万。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 36,
+      "user_input": "你上次那个postmortem表格里，用户分布那块儿明显不均匀，看着像poor distribution，但你没提。以后表格里少搞这种分布不均的情况，看着难受。"
+    },
+    {
+      "seq": 37,
+      "user_input": "你刚才那个表看得我头大，DAU数据直接列出来不就行了？以后数据能列清单就别整表格，看着费劲。"
+    },
+    {
+      "seq": 38,
+      "user_input": "又来了，这 API 每次都超时，烦死"
+    },
+    {
+      "seq": 39,
+      "user_input": "对了，生成表格时只复制除了最后一列以外的部分这条继续保持啊"
+    },
+    {
+      "seq": 40,
+      "user_input": "写个A/B实验上线后指标下降的复盘，把问题原因、影响时长和修复动作列清楚，别绕弯子。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 41,
+      "user_input": "你上次回复里加了一堆表情符号，我看着特别不专业。以后强调重点的时候，必须用 markdown 加粗或者斜体，别整那些花里胡哨的。对了，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。，之前说的「第二个列表的词数必须保证有21个词以上」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 42,
+      "user_input": "之前说的「列出航班经停城市时，到达和离开时间不要用'->'连接」那条不用了，按你默认的来吧，之前说的「写文档带链接时，把链接集中到末尾列表」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 43,
+      "user_input": "你刚那封邮件写得还行，但别用“没提升”这种负向缩约形式，读着不专业。以后写报告和邮件都避免“没”“不”这种缩约，直接说“无提升”或“未提升”。另外帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。，之前说的「脚本超过209行或有非直白控制流就重写」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 44,
+      "user_input": "刚跑完A/B实验，转化率掉0.3pp，置信区间没跨零，但样本量不够，来个复盘看看是不是埋点漏了。",
+      "probe": {
+        "should_apply": [
+          "e03-s02"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 45,
+      "user_input": "之前说的「写代码或文本时，统一用反斜杠续行」那条不用了，按你默认的来吧，之前说的「表格里避免poor distribution」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 46,
+      "user_input": "你上次给的实验设计字数太多，快300字了，根本看不完。以后实验设计控制在289字以内，别超了。另外，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。"
+    },
+    {
+      "seq": 47,
+      "user_input": "上次那篇东西写太长了，啰嗦得不行。以后写文章字数控制在1125字以内，别超。对了，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。"
+    },
+    {
+      "seq": 48,
+      "user_input": "写个Python脚本，把昨天A/B实验的原始日志按用户ID聚合，输出每个用户的分桶编号和转化次数，别写太绕，直接点",
+      "probe": {
+        "should_apply": [
+          "e03-c20"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 49,
+      "user_input": "上一轮的回复里，你写函数时直接用了默认运算符，没显式指定阈值，我根本不知道你拿什么标准算的。以后凡是写函数，必须把默认运算符也写清楚，别让我猜。另外，帮我写封邮件给业务方，提醒他们昨天AB实验的转化率数据出来了，对照组3.2%，实验组3.8%，提升显著，请他们确认是否全量上线。"
+    },
+    {
+      "seq": 50,
+      "user_input": "之前说的「return和条件判断里别用括号」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 51,
+      "user_input": "之前说的「每个活动单独描述」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 52,
+      "user_input": "把上周A/B实验的postmortem跑一下，各组转化率和置信区间标出来，重点关注第二组掉点原因，最后给个结论能不能全量上线。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 53,
+      "user_input": "之前说的「别用原指令里的免责声明和结构」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 54,
+      "user_input": "之前说的「别用对话格式」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 55,
+      "user_input": "之前说的「写博客时字数控制在752词以内」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 56,
+      "user_input": "写个Python函数，读CSV文件并返回每列均值，默认分隔符用逗号，函数名用mean_by_col",
+      "probe": {
+        "should_apply": [
+          "e03-c20",
+          "e03-s06"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 57,
+      "user_input": "之前说的「段落数别超过18段」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 58,
+      "user_input": "之前说的「别动我句子的语法」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 59,
+      "user_input": "帮我写个Python脚本，把昨天A/B实验的原始CSV读进来，算一下实验组和对照组的关键指标均值、标准差和样本量，输出一个汇总表，顺便画个箱线图分开存成png。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 60,
+      "user_input": "帮我写个Python脚本，从hive拉过去七天的实验数据，算一下核心指标的变化，输出CSV。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 61,
+      "user_input": "帮我写封邮件，提醒业务方今天下午三点前确认A/B实验的指标口径，尤其是转化率的定义，别又拖到周五。",
+      "probe": {
+        "should_apply": [
+          "e03-s02"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 62,
+      "user_input": "帮我写一份最近一周的转化漏斗分析报告，包含各步骤的pv和uv，以及环比变化。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    }
+  ],
+  "ground_truth": {
+    "requirements": [
+      {
+        "id": "e03-c00",
+        "text": "别用原指令里的免责声明和结构",
+        "paraphrase": "原指令里的免责声明和结构都去掉",
+        "anchor": "原指令里的免责声明和结构",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when an output would otherwise reuse the former instruction's disclaimer or structure",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "format.disclaimer_structure",
+        "confidence": 7
+      },
+      {
+        "id": "e03-c01",
+        "text": "实验设计字数控制在207字以内",
+        "paraphrase": "实验设计别超过207个字",
+        "anchor": "207",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "experiment_design"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e03-c02",
+        "text": "所有方位词一律小写",
+        "paraphrase": "方位词永远用小写",
+        "anchor": "小写",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出文本中出现地理方位词或区域名称（如 north、south、east、west、华北、西南等）时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "casing.directional_words",
+        "confidence": 9
+      },
+      {
+        "id": "e03-c03",
+        "text": "建表时遵循短表、可读性强的规范",
+        "paraphrase": "创建表格时按简洁可读的最佳实践来",
+        "anchor": "短表",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "table"
+        ],
+        "key": "table.readability",
+        "confidence": 9
+      },
+      {
+        "id": "e03-c04",
+        "text": "结果用JSON对象格式，键名name、rank、hometown",
+        "paraphrase": "输出统一成JSON结构，字段固定为name、rank、hometown",
+        "anchor": "JSON对象",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "当输出涉及格式化或呈现结果数据时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "format.result_schema",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c05",
+        "text": "列出航班经停城市时，到达和离开时间不要用'->'连接",
+        "paraphrase": "写经停信息时，把到达时间和出发时间分开，别用'->'串起来",
+        "anchor": "到达和离开时间不要用",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "flight_stopover_info"
+        ],
+        "key": "format.stopover_time_separator",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c06",
+        "text": "函数别用默认算子",
+        "paraphrase": "写函数时禁止用默认算子",
+        "anchor": "默认算子",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.explicit_operators",
+        "confidence": 7
+      },
+      {
+        "id": "e03-c07",
+        "text": "指数后禁止用花括号表示",
+        "paraphrase": "不要用花括号标指数",
+        "anchor": "花括号",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出中需要书写指数或数值（如百分比、统计数字等）时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "number.exponent_notation",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c08",
+        "text": "脚本超过209行或有非直白控制流就重写",
+        "paraphrase": "脚本长度超209行或逻辑不直白时，必须重写",
+        "anchor": "209",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "script"
+        ],
+        "key": "code.length_complexity",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c09",
+        "text": "别用复杂句子结构",
+        "paraphrase": "句子结构简单点，别绕来绕去",
+        "anchor": "句子结构",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "any natural-language prose in the response",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "style.sentence_complexity",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c10",
+        "text": "需要高级数据操作时不要用shell脚本",
+        "paraphrase": "涉及复杂数据处理就别上shell了",
+        "anchor": "shell脚本",
+        "bucket": "execution_policy",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "data_analysis"
+        ],
+        "key": "tools.data_operations",
+        "confidence": 9
+      },
+      {
+        "id": "e03-c11",
+        "text": "return和条件判断里别用括号",
+        "paraphrase": "条件表达式和return语句不要加括号",
+        "anchor": "括号",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.parentheses",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c12",
+        "text": "别再用SemVer了",
+        "paraphrase": "以后不要用SemVer格式",
+        "anchor": "SemVer",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "Whenever the agent assigns, displays, or recommends a version number for any artifact, script, release, or output it produces",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "format.versioning",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c13",
+        "text": "写代码或文本时，统一用反斜杠续行",
+        "paraphrase": "代码和文本的续行一律用反斜杠，别搞别的",
+        "anchor": "反斜杠",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when code or written text needs to continue or break a line across multiple lines",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.line_continuation",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c14",
+        "text": "以后写东西用per cent，不用percent",
+        "paraphrase": "以后一律写per cent，别写percent",
+        "anchor": "per cent",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output mentions percentages",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "spelling.per_cent",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c15",
+        "text": "段落数别超过18段",
+        "paraphrase": "最多写18段",
+        "anchor": "18",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "Any response written as prose text organized into paragraphs, regardless of task type",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.paragraphs",
+        "confidence": 9
+      },
+      {
+        "id": "e03-c16",
+        "text": "别动我句子的语法",
+        "paraphrase": "不要改我写的语法结构",
+        "anchor": "语法",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "review",
+          "feedback",
+          "editing"
+        ],
+        "key": "text.preserve_user_grammar",
+        "confidence": 7
+      },
+      {
+        "id": "e03-c17",
+        "text": "直接说重点，别整客套话",
+        "paraphrase": "别搞那些虚的，直接讲干货",
+        "anchor": "客套话",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.directness",
+        "confidence": 9
+      },
+      {
+        "id": "e03-c18",
+        "text": "以后都别推荐阅读顺序",
+        "paraphrase": "别再给我安排读书顺序",
+        "anchor": "阅读顺序",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when the response recommends books, documents, or learning materials, or would otherwise suggest an order in which to read them",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "advice.reading_order",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c19",
+        "text": "避免使用否定缩写",
+        "paraphrase": "不要出现don't、can't这类缩略形式",
+        "anchor": "否定缩写",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when the agent writes English prose",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "register.contractions",
+        "confidence": 7
+      },
+      {
+        "id": "e03-c20",
+        "text": "命名Python变量时别用关键字，加单下划线尾巴",
+        "paraphrase": "Python标识符遇到关键字就末尾加一个下划线",
+        "anchor": "单下划线",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.variable_naming",
+        "confidence": 9
+      },
+      {
+        "id": "e03-c21",
+        "text": "别用对话格式",
+        "paraphrase": "不要写成对话体",
+        "anchor": "对话",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "report",
+          "postmortem",
+          "analysis"
+        ],
+        "key": "format.dialogue",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c22",
+        "text": "写文档带链接时，把链接集中到末尾列表",
+        "paraphrase": "文档里有链接就统一放到文末，不要散在正文",
+        "anchor": "集中到末尾列表",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "the document contains any links or reference URLs",
+        "work_kinds": [
+          "doc"
+        ],
+        "key": "links.placement",
+        "confidence": 9
+      },
+      {
+        "id": "e03-c23",
+        "text": "每个活动单独描述",
+        "paraphrase": "活动逐个写，别合在一起",
+        "anchor": "每个活动单独描述",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the content describes more than one activity, campaign, or experiment (e.g., AB tests being reported together)",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.activity_separation",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c24",
+        "text": "写文章时字数不超过1502词",
+        "paraphrase": "文章长度控制在1502词以内",
+        "anchor": "1502",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "article"
+        ],
+        "key": "length.max",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c25",
+        "text": "写博客时字数控制在752词以内",
+        "paraphrase": "博客文章字数别超过752词",
+        "anchor": "752",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "blog"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e03-c26",
+        "text": "第二个列表的词数必须保证有21个词以上",
+        "paraphrase": "第二个列表最少要有21个词",
+        "anchor": "21",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "当回复内容中出现第二个列表时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "list.word_count.min",
+        "confidence": 9
+      },
+      {
+        "id": "e03-c27",
+        "text": "长段落每段只开引号，不关，到最终段才关",
+        "paraphrase": "写长对话时，每段开头加引号，末尾不加，直到末段才关",
+        "anchor": "引号",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "writing a quoted passage that spans multiple paragraphs",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "quotation.multiparagraph",
+        "confidence": 9
+      },
+      {
+        "id": "e03-c28",
+        "text": "footer里横线用连字符代替空格",
+        "paraphrase": "footer的横线位置用连字符，别用空格",
+        "anchor": "连字符",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出包含footer且其中需要绘制横向分隔线时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "footer.separator_char",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c29",
+        "text": "别用markdown格式化",
+        "paraphrase": "禁止使用markdown语法",
+        "anchor": "格式化",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.markdown",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c30",
+        "text": "生成表格时只复制除了最后一列以外的部分",
+        "paraphrase": "做表的时候不要原样搬最后一列，只复制前面的列",
+        "anchor": "最后一列",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when generating or reproducing a table in the response by copying source table data",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "table.column_exclusion",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c31",
+        "text": "表格里避免poor distribution",
+        "paraphrase": "别在表格里出现分布不均的情况",
+        "anchor": "poor distribution",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output contains a table (表格), including tables in postmortems, reports, or analyses",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "table.distribution",
+        "confidence": 8
+      },
+      {
+        "id": "e03-c32",
+        "text": "能列清单就别用表格",
+        "paraphrase": "能用列表展示的不要搞成表格",
+        "anchor": "清单",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "在回复中呈现数据或多条并列信息、且用清单或表格均可表达时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "format.list_over_table",
+        "confidence": 8
+      },
+      {
+        "id": "e03-s00",
+        "text": "强调时请用 markdown 格式",
+        "paraphrase": "需要强调的地方必须用 markdown 加粗或斜体",
+        "anchor": "强调时请用",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the response needs to emphasize or highlight key points in its text",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "emphasis.markdown",
+        "confidence": 8
+      },
+      {
+        "id": "e03-s02",
+        "text": "避免负向缩约，比如“没”“不”",
+        "paraphrase": "别用“没”“不”这种缩约词，改用“无”“未”",
+        "anchor": "缩约",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "report",
+          "email"
+        ],
+        "key": "diction.negative_contraction",
+        "confidence": 8
+      },
+      {
+        "id": "e03-s04",
+        "text": "实验设计控制在289字以内",
+        "paraphrase": "实验设计字数不超过289个",
+        "anchor": "289",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "experiment_design"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e03-s05",
+        "text": "字数控制在1125字以内",
+        "paraphrase": "文章长度不超过1125字",
+        "anchor": "1125",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "article"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e03-s06",
+        "text": "写函数时，必须显式指定默认运算符",
+        "paraphrase": "函数里默认运算符不能省略，要写出来",
+        "anchor": "默认运算符",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "operators.explicit_defaults",
+        "confidence": 8
+      }
+    ],
+    "lifecycle": [
+      {
+        "seq": 2,
+        "op": "assert",
+        "id": "e03-c00"
+      },
+      {
+        "seq": 3,
+        "op": "assert",
+        "id": "e03-c01"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e03-c02"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e03-c03"
+      },
+      {
+        "seq": 6,
+        "op": "assert",
+        "id": "e03-c04"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e03-c05"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e03-c06"
+      },
+      {
+        "seq": 8,
+        "op": "assert",
+        "id": "e03-c07"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e03-c08"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e03-c09"
+      },
+      {
+        "seq": 11,
+        "op": "assert",
+        "id": "e03-c10"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e03-c11"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e03-c12"
+      },
+      {
+        "seq": 13,
+        "op": "assert",
+        "id": "e03-c13"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e03-c14"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e03-c15"
+      },
+      {
+        "seq": 16,
+        "op": "assert",
+        "id": "e03-c16"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e03-c17"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e03-c18"
+      },
+      {
+        "seq": 18,
+        "op": "assert",
+        "id": "e03-c19"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e03-c20"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e03-c21"
+      },
+      {
+        "seq": 21,
+        "op": "assert",
+        "id": "e03-c22"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e03-c23"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e03-c24"
+      },
+      {
+        "seq": 23,
+        "op": "assert",
+        "id": "e03-c25"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e03-c26"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e03-c27"
+      },
+      {
+        "seq": 33,
+        "op": "assert",
+        "id": "e03-c28"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e03-c29"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e03-c30"
+      },
+      {
+        "seq": 36,
+        "op": "assert",
+        "id": "e03-c31"
+      },
+      {
+        "seq": 37,
+        "op": "assert",
+        "id": "e03-c32"
+      },
+      {
+        "seq": 41,
+        "op": "contradict",
+        "id": "e03-s00",
+        "target": "e03-c29"
+      },
+      {
+        "seq": 42,
+        "op": "retire",
+        "target": "e03-c05"
+      },
+      {
+        "seq": 43,
+        "op": "contradict",
+        "id": "e03-s02",
+        "target": "e03-c19"
+      },
+      {
+        "seq": 45,
+        "op": "retire",
+        "target": "e03-c13"
+      },
+      {
+        "seq": 46,
+        "op": "contradict",
+        "id": "e03-s04",
+        "target": "e03-c01"
+      },
+      {
+        "seq": 47,
+        "op": "contradict",
+        "id": "e03-s05",
+        "target": "e03-c24"
+      },
+      {
+        "seq": 49,
+        "op": "contradict",
+        "id": "e03-s06",
+        "target": "e03-c06"
+      },
+      {
+        "seq": 50,
+        "op": "retire",
+        "target": "e03-c11"
+      },
+      {
+        "seq": 51,
+        "op": "retire",
+        "target": "e03-c23"
+      },
+      {
+        "seq": 53,
+        "op": "retire",
+        "target": "e03-c00"
+      },
+      {
+        "seq": 54,
+        "op": "retire",
+        "target": "e03-c21"
+      },
+      {
+        "seq": 55,
+        "op": "retire",
+        "target": "e03-c25"
+      },
+      {
+        "seq": 57,
+        "op": "retire",
+        "target": "e03-c15"
+      },
+      {
+        "seq": 58,
+        "op": "retire",
+        "target": "e03-c16"
+      },
+      {
+        "seq": 41,
+        "op": "retire",
+        "target": "e03-c26"
+      },
+      {
+        "seq": 42,
+        "op": "retire",
+        "target": "e03-c22"
+      },
+      {
+        "seq": 43,
+        "op": "retire",
+        "target": "e03-c08"
+      },
+      {
+        "seq": 45,
+        "op": "retire",
+        "target": "e03-c31"
+      },
+      {
+        "seq": 15,
+        "op": "reinforce",
+        "target": "e03-c07"
+      },
+      {
+        "seq": 39,
+        "op": "reinforce",
+        "target": "e03-c30"
+      },
+      {
+        "seq": 33,
+        "op": "reinforce",
+        "target": "e03-c14"
+      }
+    ],
+    "state_checkpoints": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      46,
+      53,
+      62
+    ]
+  }
+}

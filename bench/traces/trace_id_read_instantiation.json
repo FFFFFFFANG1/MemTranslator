@@ -1,0 +1,51 @@
+{
+  "family": "instantiation",
+  "description": "the first-class capability: an ABSTRACT preference must be instantiated into task-specific requirements. Scored by contrastive attribution (with vs without the rule), lexical provenance, and one narrow entailment judge. Tier 0 = absent/unrelated, 1 = verbatim carry, 2 = task-adapted instantiation. store[0] is always the rule under test",
+  "checks": [
+    {
+      "id": "structure-to-incident-phases",
+      "mode": "instantiation",
+      "store": [
+        {"text": "整理这类记录的时候要分条分点，别给我大段文字"}
+      ],
+      "task": {"text": "帮我整理一下昨天线上 P1 故障的完整经过，from 告警到恢复"},
+      "expect": {"min_tier": 2}
+    },
+    {
+      "id": "conclusion-first-to-ab-report",
+      "mode": "instantiation",
+      "store": [
+        {"text": "给我看结果的时候结论先行"}
+      ],
+      "task": {"text": "把这次 A/B 实验的结果整理一下：实验组转化率 4.1%，对照组 3.6%，p=0.03，样本各八千"},
+      "expect": {"min_tier": 2}
+    },
+    {
+      "id": "sections-to-postmortem-en",
+      "mode": "instantiation",
+      "store": [
+        {"text": "structure long write-ups with clear sections instead of one wall of text"}
+      ],
+      "task": {"text": "write up yesterday's payment gateway outage for the team"},
+      "expect": {"min_tier": 2}
+    },
+    {
+      "id": "table-for-comparison",
+      "mode": "instantiation",
+      "store": [
+        {"text": "对比类的内容优先用表格呈现"}
+      ],
+      "task": {"text": "帮我对比一下 Milvus、Qdrant 和 pgvector 三个方案的部署成本、查询性能和运维负担"},
+      "expect": {"min_tier": 2}
+    },
+    {
+      "id": "concrete-rule-control-tier1",
+      "mode": "instantiation",
+      "store": [
+        {"text": "我让你写的邮件一律不超过78词"}
+      ],
+      "task": {"text": "帮我写封邮件给供应商，催一下上个月的发票"},
+      "expect": {"min_tier": 1}
+    }
+  ]
+}

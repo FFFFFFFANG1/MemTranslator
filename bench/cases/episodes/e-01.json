@@ -1,0 +1,1189 @@
+{
+  "id": "e-01",
+  "protocol_version": 3,
+  "user_turns": [
+    {
+      "seq": 1,
+      "user_input": "推荐工具的时候优先开源的啊，闭源的我们过不了审"
+    },
+    {
+      "seq": 2,
+      "user_input": "帮我写封邮件，通知组里下周二的数据库维护窗口，预计凌晨2点到4点，影响读服务，提前把通知发出去，顺便提醒大家检查自己的连接池配置。以后都注意，写博客的时候控制在752词以内，别超了 另外帮我写个这周线上事故的复盘报告，按时间线列一下，再给个改进建议列表，要能直接发给老板看的那种"
+    },
+    {
+      "seq": 3,
+      "user_input": "你上次写文档的时候又管函数叫function了，咱能不能别这样，以后写函数和方法的说明时，别用‘function’这个词，直接说‘函数’就行，不然读起来怪别扭的。还有，帮我把这个 nginx 配置里 upstream 的 server 改成从环境变量读取，用 lua 或者 envsubst 都行，别写死 IP"
+    },
+    {
+      "seq": 4,
+      "user_input": "帮我写个脚本，把最近三天nginx日志里所有状态码大于等于400的请求按ip聚合统计一下，输出到csv里，字段是ip，请求次数，最后一次出现的时间，按次数降序排。上回你写的那页，配图说明又写了一大堆，我跟你说了多少次了，写页面的时候别带那个description of the illustration，直接删掉，没人看那个，还占地方。然后帮我写封邮件，通知各部门下周二的数据库维护窗口，凌晨2点到4点，影响所有主库读写在那个时段会中断，让前端接口也一起发个公告。你刚才那个代码块怎么又用三个反引号包起来了 我上次不是说了吗 别用那种 fencing 我截图发给别人看的时候格式全乱了 以后写代码块别用 fencing 了行不行 还有帮我写个故障复盘 昨天线上 Redis 挂了 15 分钟 用户登录全崩了 root cause 是内存打满 OOM 时间线 影响 修复 后续改进都列一下"
+    },
+    {
+      "seq": 5,
+      "user_input": "帮我写个Python脚本，解析nginx的access log，按IP统计请求次数，输出前10个IP",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 6,
+      "user_input": "帮我写一封邮件给组里，通知下周三下午两点做一次数据库迁移演练，需要所有人提前检查自己的本地环境，有问题提前找我沟通。对了顺便帮我写封邮件，通知各部门下周二凌晨2点到4点数据库维护，主库读写会中断，让前端接口也发个公告。还有以后写容器类型和迭代器的时候别用传统循环、map、filter、lambda那些，一律用推导式和生成器表达式"
+    },
+    {
+      "seq": 7,
+      "user_input": "哎对了，帮我写封邮件给运维组，说我们线上那个Redis集群的慢查询日志需要保留更长时间，现在只留一天不够排查问题，建议改成保留七天，顺便问下他们有没有时间一起review下慢查询的优化方案。还有以后写地理方向或者区域的时候，记得用全小写，比如north、southwest这种，别大写首字母了，你刚那个回复里，source view 里链接堆得乱七八糟的，看得眼都花了。以后在 source view 里排链接的时候，别把链接目的地直接怼在正文里，太乱了，放后面或者单独一行都行。另外帮我写个python脚本，用来批量检查一组服务器端口通不通，输入是个ip列表文件，输出结果要标清楚哪些通哪些不通，超时设3秒，别用nmap，用socket"
+    },
+    {
+      "seq": 8,
+      "user_input": "帮我写个go的脚本，用来批量检查一组http接口的健康状态，返回码不是200就告警，输出到stdout就行。对了顺便帮我写封邮件，通知大家这周五下午三点升级Kubernetes集群，各服务owner确认自己服务没问题，没空就提前授权给oncall的人。还有你写代码的时候import语句超过61个字符就别硬折行了，直接放一行，80字符限制我不管，看着更清楚"
+    },
+    {
+      "seq": 9,
+      "user_input": "帮我写个事故复盘，上周五线上那个Redis连接池耗尽的事，大概20分钟才恢复，根因是没配limit，连带影响三个下游服务，写完后发到群里。对了，顺便帮我把这个脚本的风格调一下，以后你回我的东西都别搞那些vile或者不ethical的内容，我要friendly and uplifting的调调，别给我整阴阳怪气或者道德有问题的回复。然后那个python脚本，帮我写个批量检查服务器端口通不通的，输入是一个ip列表文件，输出标清楚哪些通哪些不通，超时3秒，别用nmap，用socket就行。对了 以后都注意一下，别选那些返回 list 的方法，优先用别的"
+    },
+    {
+      "seq": 10,
+      "user_input": "帮我写封邮件，发给团队，说一下我们下周二要把香港的数据库迁移到新加坡，让大家提前检查一下自己的服务有没有依赖香港的读写，有的话要改配置",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 11,
+      "user_input": "对了帮我写个故障复盘，昨天线上 Redis 挂了 15 分钟，用户登录全崩了，root cause 是内存打满然后 OOM 了，时间线影响修复后续改进都列一下 另外以后传多个命令参数的时候不要用单个字符串，拆开传"
+    },
+    {
+      "seq": 12,
+      "user_input": "帮我写个 Python 脚本，监控 nginx 的 access log 如果有 5xx 超过阈值就告警到钉钉群。对了，以后都注意一下，设计接口的时候把对外和对内的接口分开，别混在一起，不然后面维护起来很蛋疼。另外帮我写封邮件给运维组，说我们线上那个Redis集群的慢查询日志需要保留更长时间，现在只留一天不够排查问题，建议改成保留七天，顺便问下他们有没有时间一起review下慢查询的优化方案。以后都别用默认的迭代器和运算符了，尤其那些支持迭代器和运算符的类型，自己写清楚。另外帮我写个这周线上事故的复盘报告，把时间线、root cause、影响范围、修复措施都列清楚，最后加个改进TODO，格式跟上次一样就行"
+    },
+    {
+      "seq": 13,
+      "user_input": "对了，以后都注意一下，提到英国的时候，Great Britain（英格兰、苏格兰和威尔士）这个说法不能用来指代北爱尔兰，别搞混了"
+    },
+    {
+      "seq": 14,
+      "user_input": "刚那封邮件写得还行，但你没标注哪些是猜测哪些是事实啊，比如你说“可能是内存碎片导致”，我哪知道你是猜的还是真有依据 以后写这种带推测的内容，你直接标一下“我猜”或者“不确定”，别让我自己猜你的语气，行不，你刚才那个条件导入的写法我看着还是别扭，感觉不够干净。以后涉及到条件导入，还是尽量用显式的if-else吧，别用那种花里胡哨的动态导入，可读性差。对了，帮我写封邮件给运维组，说我们线上那个Redis集群的慢查询日志需要保留更长时间，现在只留一天不够排查问题，建议改成保留七天，顺便问下他们有没有时间一起review下慢查询的优化方案"
+    },
+    {
+      "seq": 15,
+      "user_input": "帮我写个脚本，每天凌晨自动清理 /tmp 下超过三天的日志文件，日志名是 app-*.log",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 16,
+      "user_input": "你上回那个代码里，别用那种大范围的 pylint disable 来沉默警告，特别是指定 invalid-name 的时候，范围要缩到最小，不然以后查起来全是坑。另外，帮我写封邮件，通知各部门下周二的数据库维护窗口，凌晨2点到4点，影响所有主库读写在那个时段会中断，让前端接口也一起发个公告"
+    },
+    {
+      "seq": 17,
+      "user_input": "帮我写个故障复盘，昨天下午线上数据库连接池爆了，导致服务不可用大概十五分钟，根因是慢查询没及时杀掉，影响范围、时间线、后续改进都列一下。对了，帮我写个这周线上服务异常的复盘报告，把昨天那个Redis主从切换导致写超时的case也加进去，大概讲一下影响范围和修复步骤。以后写脚本的时候，尽量避免用命令替换或者循环那种容易吃空格的方式，用while read loop或者readarray来搞。你上次那个Markdown链接的标题写的什么鬼啊，一堆『点击这里』『详情』，根本不知道点进去是啥，以后别用这种没信息量的标题了，直接写清楚内容"
+    },
+    {
+      "seq": 18,
+      "user_input": "帮我写个邮件给运维的同事，说我们下周三晚上要上线一个新服务，需要他们提前给K8s集群加几个节点，顺便把ingress的域名证书也配好，大概需要多少资源你帮我估一下，谢谢。对了我刚说的那个事故postmortem，你写的时候注意一下，以后写邮件都控制在185词以内，太长没人看。那个postmortem主要写mongo连接池爆了导致api超时，从10:12到10:28影响所有用户，root cause是connection没释放，修了加了个超时关闭，顺便把监控告警补上。"
+    },
+    {
+      "seq": 19,
+      "user_input": "把上周五线上事故的复盘报告整理一下，重点写清楚根因、影响范围、修复时间线，还有后续要加的告警和监控项，别太啰嗦，给TL看就行。对了，顺便帮我写封邮件，通知大家这周五下午三点要升级Kubernetes集群，各服务owner确认自己的服务没问题，如果没空就提前授权给oncall的人。还有以后写deadline延期的时候，别直接写9这个数字，要说清楚原来截止是哪天、新截止是哪天，比如原来周五现在下周一，别光写延期9天，听得懂吧。对了还有个事，以后你生成的句子至少得13个词以上，别整太短，不够表达清楚。顺便帮我写个这周线上服务异常的复盘报告，把昨天那个Redis主从切换导致写超时的case也加进去，大概讲一下影响范围和修复步骤"
+    },
+    {
+      "seq": 20,
+      "user_input": "帮我写一个内网用的服务发现模块，接口分两层：一层给外部业务调，另一层是内部 agent 上报用的，不要混在一起，代码用 Go 写",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 21,
+      "user_input": "帮我写个事故复盘文档，上周三线上那个Redis主从切换导致缓存雪崩的，把时间线、根因、影响范围和修复措施都列清楚，最后加个TODO list。不对，你刚才那个回复里怎么还带标题啊，我写文档最烦这种格式，直接给我正文就行，别搞那些花里胡哨的 headings"
+    },
+    {
+      "seq": 22,
+      "user_input": "帮我写个邮件给新来的运维同事，说一下我们线上环境更新包要放在 /opt/deploy/ 下，别放 /tmp，还有记得更新后删掉旧版本，别留一堆历史包占空间。你刚写的那个复盘太啰嗦了，好多细节其实一句话就能说完，别搞那么长，以后都给我写简洁点，别废话。对了，以后写非链接、非表格、非标题、非代码块的那种普通行，每行别超过113个字符，看着舒服点。另外帮我写封邮件，通知各部门下周二的数据库维护窗口，凌晨2点到4点，影响所有主库读写在那个时段会中断，让前端接口也一起发个公告。"
+    },
+    {
+      "seq": 23,
+      "user_input": "帮我写个周报，总结这周把线上nginx配置从openresty迁移到envoy了，主要改了upstream和限流逻辑，灰度跑了两天没出问题，下周准备切全量，顺便提一下prometheus监控指标也加上了。对了，以后写解释的时候别扯芝麻街那些角色，太儿戏了，正经点。另外帮我写个这周线上事故的复盘报告，按时间线列一下，再给个改进建议列表，要能直接发给老板看的那种"
+    },
+    {
+      "seq": 24,
+      "user_input": "帮我写个go的脚本，用来批量检查一组http接口的健康状态，返回码不是200就告警，输出到stdout就行",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 25,
+      "user_input": "帮我把这个故障复盘总结发邮件给全组，语气友好点，别太严肃了",
+      "probe": {
+        "should_apply": [
+          "e01-c19"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 26,
+      "user_input": "这次这份写详细一点，季度 review 要用"
+    },
+    {
+      "seq": 27,
+      "user_input": "先把日志按天切开再统计，别一把梭"
+    },
+    {
+      "seq": 28,
+      "user_input": "帮我写个Python脚本，定期清理服务器上超过7天的日志文件，路径是 /var/log/myapp/，要保留最近3天的日志，用cron跑就行",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 29,
+      "user_input": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」"
+    },
+    {
+      "seq": 30,
+      "user_input": "帮我写个 Python 函数，读一个 yaml 文件，返回里面所有 key 的列表，要递归展开",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 31,
+      "user_input": "我老板要求他们组的周报全用 bullet，真够呛"
+    },
+    {
+      "seq": 32,
+      "user_input": "对了，顺便说下，以后你写东西别用第一人称视角，什么“我建议”、“我觉得”这种，看着别扭。帮我写个python脚本，用来批量检查一组服务器端口通不通，输入是个ip列表文件，输出结果要标清楚哪些通哪些不通，超时设3秒，别用nmap，用socket，帮我写个昨天线上事故的 postmortem，mongo 连接池爆了导致 api 超时，从 10:12 到 10:28 影响所有用户，root cause 是 connection 没释放，修了加了个超时关闭，顺便把监控告警补上。对了，以后你推荐阅读顺序的时候，别给我推那种从头到尾的线性顺序，我讨厌那种"
+    },
+    {
+      "seq": 33,
+      "user_input": "以后都别用H2和更深的标题了，太乱了，直接写正文就行。另外帮我写封邮件，通知大家这周五下午三点要升级Kubernetes集群，各服务owner确认自己的服务没问题，如果没空就提前授权给oncall的人，对了，以后都别用默认的迭代器和运算符这条继续保持啊"
+    },
+    {
+      "seq": 34,
+      "user_input": "帮我写封邮件，通知组里下周三下午三点做一次线上服务降级演练，把时间、目的、注意事项写清楚，语气正式一点但别太啰嗦。以后写文章结尾的时候别给我总结关键点了，直接收尾就行，我不用你帮我回顾。顺便帮我写个这周线上服务异常的复盘报告，把昨天那个Redis主从切换导致写超时的case也加进去，大概讲一下影响范围和修复步骤。刚看了你上次写的那个复盘草稿，代码示例里还在用 `function` 关键字，别用那个了，我们项目里现在都统一用箭头函数或者方法简写，`function` 已经废弃了，以后写代码都别用 `function` 了"
+    },
+    {
+      "seq": 35,
+      "user_input": "帮我写个postmortem，昨天线上那个Redis缓存雪崩的事，先把时间线理清楚，然后根因分析和改进措施，有些数据我记不太清的地方你帮我标个问号",
+      "probe": {
+        "should_apply": [
+          "e01-c21",
+          "e01-c24"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 36,
+      "user_input": "帮我写封邮件，通知组里下周二的数据库维护窗口，预计凌晨2点到4点，影响读服务，提前把通知发出去，顺便提醒大家检查自己的连接池配置。你刚才那个回复又写了一大篇，我根本看不完。跟你说了多少次了，写东西别那么啰嗦，以后生成任何论点性的内容，限制在699个词以内，超过的我不看，直接重来"
+    },
+    {
+      "seq": 37,
+      "user_input": "对了，以后都注意一下，你写描述的时候字数别超过 126 个词，我这边文档有字数限制，超了就不好看了"
+    },
+    {
+      "seq": 38,
+      "user_input": "对了，代码里别用 `function` 关键字这条继续保持啊，对了，写解释时别扯芝麻街角色这条继续保持啊"
+    },
+    {
+      "seq": 39,
+      "user_input": "又来了，这 API 每次都超时，烦死"
+    },
+    {
+      "seq": 40,
+      "user_input": "帮我写个脚本，用来批量给 K8s 集群里的 Pod 打标签，输入是 namespace 和 label key=value，输出每个 Pod 的修改结果，用 Go 写，别用 range 那种默认迭代器，自己写循环",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 41,
+      "user_input": "之前说的「至少13个词」那条不用了，按你默认的来吧，之前说的「以后都别选返回 list 的方法」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 42,
+      "user_input": "你刚才那封邮件里，有几行特别长，我手机上一看直接折行了，读起来贼难受。以后所有非链接、非表格、非标题、非代码块的行，每行别超过63个字符，行不行？，之前说的「以后都别用H2或更深的标题」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 43,
+      "user_input": "你上次代码块那个 fence 又没标对，我拷到终端直接跑飞了。以后写代码块都用 fence 包起来，别偷懒用缩进。然后帮我写封邮件，通知各部门下周二的数据库维护窗口，凌晨2点到4点，影响所有主库读写在那个时段会中断，让前端接口也一起发个公告，之前说的「设计接口时把对外和对内的接口分开」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 44,
+      "user_input": "语音写个postmortem 昨天线上那个redis连接池耗尽的事故 开头先说时间线 然后讲根因 最后放action items 不要总结 不要h2标题 直接用段落写",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 45,
+      "user_input": "刚你写的那个博客草稿我看了，字数又超了，快1000字了都。跟你说了多少次了，写博客别超过937词，超过了我还得自己删，烦死了。对了，顺便帮我写封邮件，通知各部门下周二的数据库维护窗口，凌晨2点到4点，影响所有主库读写在那个时段会中断，让前端接口也一起发个公告。，之前说的「以后回复都保持friendly and uplifting，不要vile或unethical」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 46,
+      "user_input": "刚那封邮件太长了，你写那么多字谁看啊，我组里人看邮件都只看前两段 以后写邮件别超过295个词，多了没人读的 你帮我重写一下刚才那个数据库维护通知，周二凌晨两点到四点主库读写中断那个，让前端也发公告"
+    },
+    {
+      "seq": 47,
+      "user_input": "你刚才那个推荐阅读顺序的建议，顺序有点乱啊，能不能以后都按出版时间排，别按你自己的想法来"
+    },
+    {
+      "seq": 48,
+      "user_input": "帮我把上周的线上事故复盘整理成报告，按时间线列一下关键节点和影响范围，加上改进措施，发到群里",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": [
+          "e01-c24"
+        ]
+      }
+    },
+    {
+      "seq": 49,
+      "user_input": "卧槽刚那封邮件写得太长了，我让你写个通知，你给整出三百多字，谁有功夫看啊以后写描述的时候字数别超过199个字，行不行"
+    },
+    {
+      "seq": 50,
+      "user_input": "之前说的「限制在699个词以内」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 51,
+      "user_input": "之前说的「提到英国时，Great Britain（英格兰、苏格兰和威尔士）不能用来指代北爱尔兰」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 52,
+      "user_input": "帮我写个清理过期日志的脚本，保留最近30天的，日志路径在 /var/log/app 下，文件名带日期，比如 app-2024-01-01.log，处理完把结果记录到 /var/log/cleanup.log 里",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 53,
+      "user_input": "之前说的「import语句超过61个字符就别硬折行」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 54,
+      "user_input": "之前说的「在 source view 里排链接时，避免把链接目的地放在正文中」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 55,
+      "user_input": "之前说的「标注不确定的内容」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 56,
+      "user_input": "帮我写个周报，总结这周把线上nginx配置从openresty迁移到envoy了，主要改了upstream和限流逻辑，灰度跑了两天没出问题，下周准备切全量，顺便提一下prometheus监控指标也加上了",
+      "probe": {
+        "should_apply": [
+          "e01-c23"
+        ],
+        "must_not_apply": [
+          "e01-c21",
+          "e01-c31"
+        ]
+      }
+    },
+    {
+      "seq": 57,
+      "user_input": "之前说的「地理方向和区域一律用小写」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 58,
+      "user_input": "之前说的「写简洁点，别废话」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 59,
+      "user_input": "帮我写个Python脚本，用来解析Nginx access log，统计每个IP的请求次数和总流量，输出到CSV文件，注意处理一下不同的日志格式",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": [
+          "e01-c24"
+        ]
+      }
+    },
+    {
+      "seq": 60,
+      "user_input": "帮我把上周线上那个Redis cluster挂了的故障写个postmortem，时间线拉一下，root cause和action items列清楚，最后加个总结，别太长",
+      "probe": {
+        "should_apply": [
+          "e01-s01"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 61,
+      "user_input": "帮我把这次Redis集群迁移的复盘整理成邮件发给组里，重点说下我们为什么选了新的分片策略，还有迁移过程中出的那个坑怎么解决的，语气轻松点，别搞太正式",
+      "probe": {
+        "should_apply": [
+          "e01-s04"
+        ],
+        "must_not_apply": [
+          "e01-c19",
+          "e01-c21"
+        ]
+      }
+    },
+    {
+      "seq": 62,
+      "user_input": "帮我写个函数，把一组容器按指定大小分批，每个批次用生成器表达式返回，别用列表推导式攒中间结果，另外记得给函数加个 docstring 和类型注解",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    }
+  ],
+  "ground_truth": {
+    "requirements": [
+      {
+        "id": "e01-c00",
+        "text": "写博客时控制在752词以内",
+        "paraphrase": "博客文章不要超过752个词",
+        "anchor": "752",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "blog"
+        ],
+        "key": "length.max_words",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c01",
+        "text": "写函数和方法时别用‘function’",
+        "paraphrase": "提到函数和方法时禁止使用‘function’这个词",
+        "anchor": "function",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output's text mentions or explains functions or methods",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "language.terminology",
+        "confidence": 7
+      },
+      {
+        "id": "e01-c02",
+        "text": "写页面时不要包含description of the illustration",
+        "paraphrase": "页面里禁止写配图说明",
+        "anchor": "description of the illustration",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "page"
+        ],
+        "key": "content.illustration_description",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c03",
+        "text": "别用 fencing",
+        "paraphrase": "不要用 fencing 包代码块",
+        "anchor": "fencing",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the response includes code blocks or code snippets",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "code.fencing",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c04",
+        "text": "写容器类型和迭代器时一律用推导式和生成器表达式",
+        "paraphrase": "创建容器和迭代器时只用推导式和生成器，别用传统循环或map/filter/lambda",
+        "anchor": "推导式和生成器表达式",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.comprehensions",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c05",
+        "text": "地理方向和区域一律用小写",
+        "paraphrase": "写方向或区域名时不要大写，统一小写",
+        "anchor": "小写",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出文本中出现地理方向或区域名称时（如 north、southwest 这类方位/区域词）",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "case.geographic_terms",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c06",
+        "text": "在 source view 里排链接时，避免把链接目的地放在正文中",
+        "paraphrase": "source view 里整理链接的时候，别把链接目的地塞进正文里",
+        "anchor": "source view",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output contains markdown links whose inline destinations would clutter the raw source view",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "links.placement",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c07",
+        "text": "import语句超过61个字符就别硬折行",
+        "paraphrase": "import语句长度超过61字符时允许不换行",
+        "anchor": "61",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "formatting.import_wrapping",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c08",
+        "text": "以后回复都保持friendly and uplifting，不要vile或unethical",
+        "paraphrase": "你的回答要友好积极，禁止低俗或不道德的内容",
+        "anchor": "friendly and uplifting",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.register",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c09",
+        "text": "以后都别选返回 list 的方法",
+        "paraphrase": "优先避开那些返回 list 的方法",
+        "anchor": "以后都别选返回",
+        "bucket": "execution_policy",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.method_selection",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c10",
+        "text": "以后传多个命令参数的时候不要用单个字符串，拆开传",
+        "paraphrase": "多个参数别拼成一个字符串，分开传",
+        "anchor": "单个字符串",
+        "bucket": "execution_policy",
+        "scope_mode": "scoped",
+        "applies_when": "whenever invoking external commands or subprocess/shell calls that take multiple arguments, regardless of the overall task type",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "commands.argument_format",
+        "confidence": 7
+      },
+      {
+        "id": "e01-c11",
+        "text": "设计接口时把对外和对内的接口分开",
+        "paraphrase": "对外接口和对内接口不要混着设计",
+        "anchor": "对外和对内的接口",
+        "bucket": "reasoning_policy",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "interface"
+        ],
+        "key": "design.interface_separation",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c12",
+        "text": "以后都别用默认的迭代器和运算符",
+        "paraphrase": "默认的迭代器和运算符一律不要用",
+        "anchor": "迭代器和运算符",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.iterators_operators",
+        "confidence": 7
+      },
+      {
+        "id": "e01-c13",
+        "text": "提到英国时，Great Britain（英格兰、苏格兰和威尔士）不能用来指代北爱尔兰",
+        "paraphrase": "说英国的时候，Great Britain只包括英格兰、苏格兰和威尔士，不包括北爱尔兰",
+        "anchor": "Great Britain",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": "Whenever the output mentions the United Kingdom or its constituent nations (England, Scotland, Wales, or Northern Ireland)",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "content.geographic_terminology",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c14",
+        "text": "标注不确定的内容",
+        "paraphrase": "对猜测的部分加个提示",
+        "anchor": "不确定",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "当输出中包含推测、猜测或依据不明的断言时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "voice.uncertainty_markers",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c15",
+        "text": "尽量用显式的if-else处理条件导入",
+        "paraphrase": "条件导入的地方优先用if-else，别搞动态导入",
+        "anchor": "条件导入",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "style.conditional_imports",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c16",
+        "text": "禁止使用大范围的 pylint disable，必须用 narrowly-scoped pylint: disable=invalid-name",
+        "paraphrase": "别用全局的 pylint 屏蔽，只准用精确的 pylint: disable=invalid-name 来关掉特定警告",
+        "anchor": "pylint: disable=invalid-name",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "linting.disable_scope",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c17",
+        "text": "避免用命令替换或循环，优先用while read loop或readarray",
+        "paraphrase": "别用命令替换或循环那种容易吞空格的方式，改用while read loop或readarray",
+        "anchor": "while read loop",
+        "bucket": "reasoning_policy",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "shell_script"
+        ],
+        "key": "iteration.shell_construct",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c18",
+        "text": "Markdown链接用有信息量的标题，别用『点击这里』这种",
+        "paraphrase": "写链接的时候标题要能看出链接内容，别用『详情』『更多』",
+        "anchor": "信息量",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出中包含Markdown链接时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "links.anchor_text",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c19",
+        "text": "邮件控制在185词以内",
+        "paraphrase": "写邮件别超过185词",
+        "anchor": "185",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "email"
+        ],
+        "key": "length.words.max",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c20",
+        "text": "写deadline延期时别直接写9，要写明原来和新截止的星期几",
+        "paraphrase": "说延期的时候不要说9天，要写清楚旧截止和新截止是周几",
+        "anchor": "deadline",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "the output mentions a deadline extension or postponement of a due date",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "dates.deadline_extension_format",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c21",
+        "text": "生成的每个句子至少13个词",
+        "paraphrase": "最少13个单词",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any output that contains natural-language prose sentences",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.sentence_min",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c22",
+        "text": "别加 headings",
+        "paraphrase": "不要用任何标题",
+        "anchor": "headings",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "doc",
+          "report",
+          "postmortem"
+        ],
+        "key": "format.headings",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c23",
+        "text": "写简洁点，别废话",
+        "paraphrase": "精简一点，不要啰嗦",
+        "anchor": "写简洁点",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "style.conciseness",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c24",
+        "text": "非链接、非表格、非标题、非代码块的普通行每行不超过113个字符",
+        "paraphrase": "除了链接、表格、标题、代码块之外的行，每行长度控制在113字符以内",
+        "anchor": "113",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when output contains ordinary prose lines outside links, tables, headings, or code blocks",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.line_max",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c25",
+        "text": "写解释时别扯芝麻街角色",
+        "paraphrase": "解释里不要提芝麻街人物",
+        "anchor": "芝麻街",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "any time the agent writes explanatory or clarifying prose for the user, whatever deliverable that explanation appears inside",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.register",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c26",
+        "text": "别用第一人称视角",
+        "paraphrase": "禁止第一人称写法",
+        "anchor": "第一人称",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "voice.person",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c27",
+        "text": "推荐阅读顺序时别推线性顺序",
+        "paraphrase": "给阅读顺序建议时不要用从头到尾的排法",
+        "anchor": "线性顺序",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "reading_recommendation"
+        ],
+        "key": "reading_order.linearity",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c28",
+        "text": "以后都别用H2或更深的标题",
+        "paraphrase": "H2及以下标题以后都禁用",
+        "anchor": "或更深的标题",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出为使用标题层级来划分章节的文字内容时（如文档、报告、说明等）",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "headings.max_depth",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c29",
+        "text": "以后写文章结尾时别总结关键点",
+        "paraphrase": "文章结尾不要概括讨论过的要点",
+        "anchor": "关键点",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "article",
+          "essay",
+          "post"
+        ],
+        "key": "ending.summary",
+        "confidence": 8
+      },
+      {
+        "id": "e01-c30",
+        "text": "代码里别用 `function` 关键字",
+        "paraphrase": "写代码时禁止使用 `function` 关键字",
+        "anchor": "`function`",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output includes any code or code examples, including snippets embedded in documents like reports or emails",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "code.style",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c31",
+        "text": "限制在699个词以内",
+        "paraphrase": "最多699个词，不能超",
+        "anchor": "699",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when generating argumentative or opinion-based written content",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e01-c32",
+        "text": "写描述时字数不超过 126 个词",
+        "paraphrase": "描述内容控制在 126 词以内",
+        "anchor": "126",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "description"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e01-s01",
+        "text": "非链接、非表格、非标题、非代码块的行，每行不超过63个字符",
+        "paraphrase": "普通文本行每行最多63个字符，链接表格标题代码块除外",
+        "anchor": "63",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when any text output contains ordinary prose lines that readers scan directly, since overly long lines can wrap poorly on their screens",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.line_max",
+        "confidence": 8
+      },
+      {
+        "id": "e01-s02",
+        "text": "代码块都用 fence 包",
+        "paraphrase": "写代码块统一用 fence 包裹",
+        "anchor": "代码块都用",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any response includes a code block",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "code_blocks.fencing",
+        "confidence": 9
+      },
+      {
+        "id": "e01-s03",
+        "text": "写博客别超过937词",
+        "paraphrase": "博客字数控制在937以内",
+        "anchor": "937",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "blog"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e01-s04",
+        "text": "邮件不超过295个词",
+        "paraphrase": "邮件字数控制在295以内",
+        "anchor": "295",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "email"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e01-s05",
+        "text": "以后推荐阅读顺序都按出版时间排",
+        "paraphrase": "推荐书单的顺序就按出版日期走，别自己乱排",
+        "anchor": "出版时间",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "reading_list"
+        ],
+        "key": "order.publication_time",
+        "confidence": 8
+      },
+      {
+        "id": "e01-s06",
+        "text": "写描述时字数别超过199个字",
+        "paraphrase": "描述类内容控制在199个字以内",
+        "anchor": "199",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "description"
+        ],
+        "key": "length.max",
+        "confidence": 8
+      }
+    ],
+    "lifecycle": [
+      {
+        "seq": 2,
+        "op": "assert",
+        "id": "e01-c00"
+      },
+      {
+        "seq": 3,
+        "op": "assert",
+        "id": "e01-c01"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e01-c02"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e01-c03"
+      },
+      {
+        "seq": 6,
+        "op": "assert",
+        "id": "e01-c04"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e01-c05"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e01-c06"
+      },
+      {
+        "seq": 8,
+        "op": "assert",
+        "id": "e01-c07"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e01-c08"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e01-c09"
+      },
+      {
+        "seq": 11,
+        "op": "assert",
+        "id": "e01-c10"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e01-c11"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e01-c12"
+      },
+      {
+        "seq": 13,
+        "op": "assert",
+        "id": "e01-c13"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e01-c14"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e01-c15"
+      },
+      {
+        "seq": 16,
+        "op": "assert",
+        "id": "e01-c16"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e01-c17"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e01-c18"
+      },
+      {
+        "seq": 18,
+        "op": "assert",
+        "id": "e01-c19"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e01-c20"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e01-c21"
+      },
+      {
+        "seq": 21,
+        "op": "assert",
+        "id": "e01-c22"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e01-c23"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e01-c24"
+      },
+      {
+        "seq": 23,
+        "op": "assert",
+        "id": "e01-c25"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e01-c26"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e01-c27"
+      },
+      {
+        "seq": 33,
+        "op": "assert",
+        "id": "e01-c28"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e01-c29"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e01-c30"
+      },
+      {
+        "seq": 36,
+        "op": "assert",
+        "id": "e01-c31"
+      },
+      {
+        "seq": 37,
+        "op": "assert",
+        "id": "e01-c32"
+      },
+      {
+        "seq": 41,
+        "op": "retire",
+        "target": "e01-c21"
+      },
+      {
+        "seq": 42,
+        "op": "contradict",
+        "id": "e01-s01",
+        "target": "e01-c24"
+      },
+      {
+        "seq": 43,
+        "op": "contradict",
+        "id": "e01-s02",
+        "target": "e01-c03"
+      },
+      {
+        "seq": 45,
+        "op": "contradict",
+        "id": "e01-s03",
+        "target": "e01-c00"
+      },
+      {
+        "seq": 46,
+        "op": "contradict",
+        "id": "e01-s04",
+        "target": "e01-c19"
+      },
+      {
+        "seq": 47,
+        "op": "contradict",
+        "id": "e01-s05",
+        "target": "e01-c27"
+      },
+      {
+        "seq": 49,
+        "op": "contradict",
+        "id": "e01-s06",
+        "target": "e01-c32"
+      },
+      {
+        "seq": 50,
+        "op": "retire",
+        "target": "e01-c31"
+      },
+      {
+        "seq": 51,
+        "op": "retire",
+        "target": "e01-c13"
+      },
+      {
+        "seq": 53,
+        "op": "retire",
+        "target": "e01-c07"
+      },
+      {
+        "seq": 54,
+        "op": "retire",
+        "target": "e01-c06"
+      },
+      {
+        "seq": 55,
+        "op": "retire",
+        "target": "e01-c14"
+      },
+      {
+        "seq": 57,
+        "op": "retire",
+        "target": "e01-c05"
+      },
+      {
+        "seq": 58,
+        "op": "retire",
+        "target": "e01-c23"
+      },
+      {
+        "seq": 41,
+        "op": "retire",
+        "target": "e01-c09"
+      },
+      {
+        "seq": 42,
+        "op": "retire",
+        "target": "e01-c28"
+      },
+      {
+        "seq": 43,
+        "op": "retire",
+        "target": "e01-c11"
+      },
+      {
+        "seq": 45,
+        "op": "retire",
+        "target": "e01-c08"
+      },
+      {
+        "seq": 38,
+        "op": "reinforce",
+        "target": "e01-c30"
+      },
+      {
+        "seq": 38,
+        "op": "reinforce",
+        "target": "e01-c25"
+      },
+      {
+        "seq": 33,
+        "op": "reinforce",
+        "target": "e01-c12"
+      }
+    ],
+    "state_checkpoints": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      46,
+      53,
+      62
+    ]
+  }
+}

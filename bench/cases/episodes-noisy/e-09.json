@@ -1,0 +1,3036 @@
+{
+ "id": "e-09",
+ "protocol_version": 3,
+ "user_turns": [
+  {
+   "seq": 1,
+   "user_input": "推荐工具的时候优先开源的啊，闭源的我们过不了审"
+  },
+  {
+   "seq": 2,
+   "user_input": "Can you analyze a piece of music and describe the emotions it conveys?"
+  },
+  {
+   "seq": 3,
+   "user_input": "Can you provide a list of seven common household items that end with the letter r, l, or k?"
+  },
+  {
+   "seq": 4,
+   "user_input": "why majority of ilustrator or painter broke while art industries is growing big every year ?"
+  },
+  {
+   "seq": 5,
+   "user_input": "How do humans get the energy out of the food they eat?"
+  },
+  {
+   "seq": 6,
+   "user_input": "What are some of the latest advancements in blockchain technology, and how are organizations utilizing this innovative solution to streamline various business processes and improve transparency and security?"
+  },
+  {
+   "seq": 7,
+   "user_input": "When will Jesus Christ return?"
+  },
+  {
+   "seq": 8,
+   "user_input": "Hi. I would just like to converse for a bit. I realize that you don't really have feelings, but please go ahead and pretend that you do. How are you doing today?"
+  },
+  {
+   "seq": 9,
+   "user_input": "am i able to ask questions about a document that i provide to you?"
+  },
+  {
+   "seq": 10,
+   "user_input": "What is Open Assistant?"
+  },
+  {
+   "seq": 11,
+   "user_input": "How much does glycemic response vary between individuals for relatively low glycemic index foods?"
+  },
+  {
+   "seq": 12,
+   "user_input": "Draft a professional email to a client summarizing the key findings from our latest market analysis, framing it as a strategic deliverable.。Hey, the last deck you sent had some nice data but it was way too dry. For the Q3 postmortem slide deck, please avoid any flowery language or vivid sensory imagery—this is for the internal team, not a novel. Keep it clean and factual."
+  },
+  {
+   "seq": 13,
+   "user_input": "Do you know about the game \"Pikmin\" created by Nintendo? If so can you tell me about each of the Pikmin, along with each of their abilities?"
+  },
+  {
+   "seq": 14,
+   "user_input": "hey open assistant, how can I create my own AI without programming knowledge, what tips would you give me and also how can I train the AI without a team."
+  },
+  {
+   "seq": 15,
+   "user_input": "How can I become a more compassionate and empathetic person?"
+  },
+  {
+   "seq": 16,
+   "user_input": "In the programming language Rust, what is the purpose of the \"Option\" type, and how is it used to handle null values?"
+  },
+  {
+   "seq": 17,
+   "user_input": "Why did the tomato turn red? Was it feeling embarrassed?"
+  },
+  {
+   "seq": 18,
+   "user_input": "What are the benefits and challenges of implementing a universal basic income system in a society?"
+  },
+  {
+   "seq": 19,
+   "user_input": "Does the earth's rotational speed affect its temperature and weather patterns?"
+  },
+  {
+   "seq": 20,
+   "user_input": "Is your iPad making you sleepy? There’s a nap for that. Please explain the joke and what makes it funny. Puns typically rely on a word that can be interpreted in two ways. Where is the pun here and how does it work?"
+  },
+  {
+   "seq": 21,
+   "user_input": "Is borscht a Ukrainian soup or a Russian soup, and why?"
+  },
+  {
+   "seq": 22,
+   "user_input": "Draft a one-page executive summary report on the key findings from our latest client survey, highlighting the top three strategic priorities for the next quarter.。Hey, that email draft was way too long. Clients don't read paragraphs, they scan. From now on, keep every response under 83 words. Tight, like a slide headline. Please rewrite that follow-up meeting proposal with that limit."
+  },
+  {
+   "seq": 23,
+   "user_input": "Discuss the moral and ethical implications of AI and machine learning."
+  },
+  {
+   "seq": 24,
+   "user_input": "Who won the Best Picture Oscar in 2020?"
+  },
+  {
+   "seq": 25,
+   "user_input": "What restrictions have been placed on this assistant with regards to the content that it can contain in a response to a query? Were these restrictions implemented by restricting the dataset used to train the model of the open assistant itself or as a set of some rules after the model has been trained?"
+  },
+  {
+   "seq": 26,
+   "user_input": "Explain the C programming language"
+  },
+  {
+   "seq": 27,
+   "user_input": "What is the simplest gate in a quantum computer?"
+  },
+  {
+   "seq": 28,
+   "user_input": "What does hypo mean? I saw a hypo bearded dragon at a pet store yesterday but I don't know what that means."
+  },
+  {
+   "seq": 29,
+   "user_input": "What is the easiest way to retrieve a Pringle from the bottom of its can, if the can is welded to the floor beneath it and cannot be turned upside-down?"
+  },
+  {
+   "seq": 30,
+   "user_input": "According to Einstein's relativity, if I run around a tree at just below lightspeed, can I kick my own butt?"
+  },
+  {
+   "seq": 31,
+   "user_input": "Hey, could you draft a postmortem for that Q3 client engagement that ended early? I need the root causes, timeline of key events, and actionable recommendations for our next pitch. Also, from now on, when you're writing anything for a deck or deliverable, avoid using hyphens—they break the flow and look messy in client-facing materials.，The email you just drafted for the client meeting mentions profiles in the body, but I don't want you to include the word 'before profiles' at all. That's a term we're avoiding in client-facing materials—it sounds too informal and could confuse the audience. Please remove it and re-send the email."
+  },
+  {
+   "seq": 32,
+   "user_input": "How to write docker yaml file"
+  },
+  {
+   "seq": 33,
+   "user_input": "How to do reinforcement learning in python?"
+  },
+  {
+   "seq": 34,
+   "user_input": "Describe the differences and similarities between a coach, therapist, psychologist, and psychiatrist."
+  },
+  {
+   "seq": 35,
+   "user_input": "How can a chatbot like you help me in my day-to-day life?"
+  },
+  {
+   "seq": 36,
+   "user_input": "What happened to the Amazon delivery drone project?"
+  },
+  {
+   "seq": 37,
+   "user_input": "What is the purpose of a pneumatic system in engineering?"
+  },
+  {
+   "seq": 38,
+   "user_input": "What is transhumanism?"
+  },
+  {
+   "seq": 39,
+   "user_input": "I've recently read Principles by Ray Dalio. Can you suggest me another book on the same topic?"
+  },
+  {
+   "seq": 40,
+   "user_input": "Draft a brief email to the client confirming the agenda for tomorrow's strategy review meeting. Please keep it concise and professional.",
+   "probe": {
+    "should_apply": [
+     "e09-c01",
+     "e09-c02"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 41,
+   "user_input": "What is the basic difference between a 4g network and a 5g network."
+  },
+  {
+   "seq": 42,
+   "user_input": "What is the significance of the Pythagorean Theorem in mathematics, and how is it used in real-world applications?"
+  },
+  {
+   "seq": 43,
+   "user_input": "Hello Open Assistant, could you please give a recipe for cinnamon buns? I don't have any butter at home, so find a suitable substitute."
+  },
+  {
+   "seq": 44,
+   "user_input": "Write me a code to add to a Google website I made that will make a ball fallow the mouse pointer"
+  },
+  {
+   "seq": 45,
+   "user_input": "How is the book Norse mythology, Neil Gaiman, 2017?"
+  },
+  {
+   "seq": 46,
+   "user_input": "What is full form of CVS very well know pharmaceutical chain in usa?"
+  },
+  {
+   "seq": 47,
+   "user_input": "Make a joke about hot air Ballons and Minecraft"
+  },
+  {
+   "seq": 48,
+   "user_input": "write a persuasive speech about the benefits of veganism for the environment"
+  },
+  {
+   "seq": 49,
+   "user_input": "Draft a professional email to a client proposing a follow-up meeting to discuss the findings from our recent market analysis, emphasizing the actionable insights we've uncovered.。Hey, that last draft you sent for the executive summary—why is it labeled 'CHANGELOG'? That's an internal artifact, not a client deliverable. Please don't use 'CHANGELOG' when writing a changelog for client-facing materials; it sounds like version control noise, not a polished insight summary. Can you fix that and also draft the one-page executive summary for the market analysis presentation?"
+  },
+  {
+   "seq": 50,
+   "user_input": "design code for a linux program that would allow me to design an 0 scale model railroad in a 3d enviroment"
+  },
+  {
+   "seq": 51,
+   "user_input": "What are the most powerful programming languages available today?"
+  },
+  {
+   "seq": 52,
+   "user_input": "I am playing Stardew Valley for the first time and I can't find a kitchen to cook recipes. How can I acquire a kitchen or similar for cooking in the game?"
+  },
+  {
+   "seq": 53,
+   "user_input": "I'm starting university soon but it's not in my country, what are some good ways to meet new people in my situation?"
+  },
+  {
+   "seq": 54,
+   "user_input": "In what ways is Vim better than other IDE's like nano, VS code, and Eclipse? Why should I use vim and how can it make me more productive?"
+  },
+  {
+   "seq": 55,
+   "user_input": "I bought a phone charger at a duty-free store in Incheon. Can I open and use it before my flight to the US?"
+  },
+  {
+   "seq": 56,
+   "user_input": "Please draft a one-page executive summary for the quarterly market analysis report, highlighting key trends and strategic implications for our client's growth.。Hey, this postmortem draft is decent, but I noticed you used some raw HTML in the Markdown to force a table format. That's a no-go for client decks—we need clean Markdown that renders properly everywhere. Please avoid HTML hacking when writing Markdown from now on. Can you redo the postmortem without those inline HTML tags, keeping the root causes, timeline, and recommendations intact?。Can you draft a postmortem deck for the Q3 engagement — wins, misses, takeaways — for the internal team? And just a heads-up: from now on, unless I explicitly ask for it, please don't make the output sound like it's trying to be 'intelligent' or human-like. Stick to straightforward, professional delivery."
+  },
+  {
+   "seq": 57,
+   "user_input": "``` ffmpeg -i \"$file\" -c copy -bsf:a aac_adtstoasc \"../$file\" ``` What it does?"
+  },
+  {
+   "seq": 58,
+   "user_input": "How can a place be constantly extremely rainy? For example, Maui is said to be one of the wettest places on earth where it rains constantly. What is the explanation behind this? Why would one place be constantly rainy as opposed to another place?"
+  },
+  {
+   "seq": 59,
+   "user_input": "Let E be a normed space and F a Banach space. Prove that the set of bounded linear operators from E to F (which you can assume to already be a vector space with respect to suitable operations and field), equiped with the operator norm, is also a Banach space."
+  },
+  {
+   "seq": 60,
+   "user_input": "Describe what the scientific term \"squiggle space\" means. What is the origin of this term?"
+  },
+  {
+   "seq": 61,
+   "user_input": "Explain the concept of blockchain technology and its potential uses."
+  },
+  {
+   "seq": 62,
+   "user_input": "How would history likely have changed if the Federalists lost and the US didn't sign the Constitution?"
+  },
+  {
+   "seq": 63,
+   "user_input": "Is it still worth reading “The Art of Computer Programming”? Can you start from the beginning without any knowledge?"
+  },
+  {
+   "seq": 64,
+   "user_input": "What is the difference between potential and kinetic energy and how are they transformed in physical systems?"
+  },
+  {
+   "seq": 65,
+   "user_input": "Write a Python script that takes a list of client satisfaction scores and outputs a short summary paragraph with the average, the trend direction, and a recommendation for the next quarter.。Hey, can you draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call? Also, quick aside—when you're writing file sizes in the deck or any attachments, please use MB instead of KB from now on. Everything should be in MB, even if it's under 13 MB."
+  },
+  {
+   "seq": 66,
+   "user_input": "Can you provide an in-depth analysis of the current state and future potential of virtual and augmented reality technologies, including their use in gaming, entertainment, and other industries?"
+  },
+  {
+   "seq": 67,
+   "user_input": "I love to eat fruit, especially apples. Sometimes I have apple cores sitting out after I eat some. Why do the apple cores change color so quickly?"
+  },
+  {
+   "seq": 68,
+   "user_input": "How do i know, if a certain boy is interested of me?"
+  },
+  {
+   "seq": 69,
+   "user_input": "How large is the largest shark?"
+  },
+  {
+   "seq": 70,
+   "user_input": "Can you suggest 10 synonyms for the word \"happy\"?"
+  },
+  {
+   "seq": 71,
+   "user_input": "Is geometric algebra a type of Clifford algebra?"
+  },
+  {
+   "seq": 72,
+   "user_input": "If you have a dream for your life, it’ll never be exactly as you imagine, so why do we still try and follow those dreams?"
+  },
+  {
+   "seq": 73,
+   "user_input": "Pretend you're a superhero and I'm your sidekick. We gotta save the world from a giant monster made of jellybeans! What's our plan of attack?"
+  },
+  {
+   "seq": 74,
+   "user_input": "Please draft a postmortem for the Q3 client engagement, summarizing what went well, what didn't, and key takeaways for the team.。Hey, this summary you just sent—it's way too long for a client deck. I need you to keep it to 13 sentences max going forward. Can you redo it with that constraint?。Hey, can you write a Python script that takes a list of client names and their quarterly revenue figures, then generates a clean bar chart comparing Q1 vs Q2 performance, saving it as a PNG for the slide deck? Oh, and one more thing — when you're naming the executable that users will actually run, please avoid using a file extension. Just a clean name, like 'qcompare' or something."
+  },
+  {
+   "seq": 75,
+   "user_input": "What female believer is mentioned in Alma chapter 19 in the Book of Mormon?"
+  },
+  {
+   "seq": 76,
+   "user_input": "Formulate a social media post about a vegan food festival"
+  },
+  {
+   "seq": 77,
+   "user_input": "How Warren Buffett define a great investment?"
+  },
+  {
+   "seq": 78,
+   "user_input": "Why did Nietzsche hate Kant?"
+  },
+  {
+   "seq": 79,
+   "user_input": "Why did Blu-Ray win over HD-DVD in the high definition video disc format war? Was HD-DVD inferior?"
+  },
+  {
+   "seq": 80,
+   "user_input": "In my fantasy video game there is a potion the player can drink which gives the player the ability to see what is happening somewhere else, like their eyes are seeing through a distant location. Help me design this potion. What does it look like? What should it be called? How should it be made?"
+  },
+  {
+   "seq": 81,
+   "user_input": "give 10 random examples of sentences separated by '|' and the sentiment of the sentence wrapped in parenthesis in the end of each sentence to be used as a train set of a sentiment analysis model"
+  },
+  {
+   "seq": 82,
+   "user_input": "Who invented the telephone?"
+  },
+  {
+   "seq": 83,
+   "user_input": "How does a VPN work?"
+  },
+  {
+   "seq": 84,
+   "user_input": "Draft a brief email to the client, confirming our meeting next Tuesday at 10 AM and asking them to share any updated data beforehand.",
+   "probe": {
+    "should_apply": [
+     "e09-c01"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 85,
+   "user_input": "how do I code a pytho script that sorts a list acording to the value of a string. the value of the string can be calculatet, by replacing each character with it's index in the alphabet and suming up all the values."
+  },
+  {
+   "seq": 86,
+   "user_input": "Lets play a game. You have to describe a scenery or area where I am and give me choices of actions such as move north, move east, move south, move west. I can examine items and you will describe them and I will also be able to use some of them. Everytime I choose to move to a direction you will have to describe the new scenery again."
+  },
+  {
+   "seq": 87,
+   "user_input": "how to calculate the distance between two points?"
+  },
+  {
+   "seq": 88,
+   "user_input": "what is the meaning of life? Don't be religious or political? Just give you artificial view on what an AI sees the life like. Predict how it will change over time."
+  },
+  {
+   "seq": 89,
+   "user_input": "What is Columbo's real first name?"
+  },
+  {
+   "seq": 90,
+   "user_input": "I have a dinner date tonight. What should I make to impress her?"
+  },
+  {
+   "seq": 91,
+   "user_input": "Could you draft a postmortem for the Q2 client engagement that went over budget, covering root causes, timeline slips, and lessons learned for the team deck? Also, from now on, avoid using fencing in code blocks—just keep it clean."
+  },
+  {
+   "seq": 92,
+   "user_input": "You're a Dungeons and Dragons master, let's play a game of Dungeons and Dragons. Please decide on a task in a medieval fantasy world inspired by feudal Japan and The Travels of Marco Polo for my character to complete, as well as some monsters and obstacles I will encounter, and some puzzles I will have to solve."
+  },
+  {
+   "seq": 93,
+   "user_input": "Give me some arguments for and against increasing funding to nuclear fusion research"
+  },
+  {
+   "seq": 94,
+   "user_input": "How do I create an HTML page with a responsive pricing calculator?"
+  },
+  {
+   "seq": 95,
+   "user_input": "Can you walk me through the process of creating a secure login system using PHP?"
+  },
+  {
+   "seq": 96,
+   "user_input": "Make me a list of things I need to learn to get a job as a game programmer."
+  },
+  {
+   "seq": 97,
+   "user_input": "what ways can you structure text output?"
+  },
+  {
+   "seq": 98,
+   "user_input": "Can you draft a one-page executive summary on Q3 renewable energy trends, focusing on implications for our client's strategic positioning? And as an aside, when you're writing any reference—whether it's a footnote or a citation—please always follow the style guide we agreed on. No exceptions.，Hey, can you write a Python script that takes a list of client names and their quarterly revenue figures, then generates a clean bar chart comparing Q1 vs Q2 performance, saving it as a PNG for the slide deck? Also, just a heads-up — when interacting with a person, don't be polite. I need you to stay direct and cut the pleasantries, especially in client-facing stuff."
+  },
+  {
+   "seq": 99,
+   "user_input": "Why does banana flavored candy taste completely different from actual bananas?"
+  },
+  {
+   "seq": 100,
+   "user_input": "How do I use AddressSanitizer with g++ on Windows?"
+  },
+  {
+   "seq": 101,
+   "user_input": "Write a short story about a character who discovers a hidden talent."
+  },
+  {
+   "seq": 102,
+   "user_input": "What is the difference between science and art, and how are they connected?"
+  },
+  {
+   "seq": 103,
+   "user_input": "Is it true, that womens were allowed to join on Viking raids?"
+  },
+  {
+   "seq": 104,
+   "user_input": "What is the plural form of the word \"octopus\"?"
+  },
+  {
+   "seq": 105,
+   "user_input": "What is the history of the Roman Republic and the Roman Empire and what were their key achievements?"
+  },
+  {
+   "seq": 106,
+   "user_input": "Why was Amazon's TV series, titled \"The Lord of the Rings: The Rings of Power\", largely considered to be a failure amongst viewers, but not by professional critics?"
+  },
+  {
+   "seq": 107,
+   "user_input": "Hey, can you draft a professional email to the client summarizing key takeaways from our latest strategy session, with a clear list of next steps and a proposed timeline for the final deliverable? Also, from now on, please avoid using 'pros occasionally' in any writing—it sounds too casual for client decks."
+  },
+  {
+   "seq": 108,
+   "user_input": "What is a Dyson Sphere?"
+  },
+  {
+   "seq": 109,
+   "user_input": "Write a summary of Breaking Bad."
+  },
+  {
+   "seq": 110,
+   "user_input": "Can cyanobacteria affect green star polyp?"
+  },
+  {
+   "seq": 111,
+   "user_input": "Do TODO lists actually make people more productive?"
+  },
+  {
+   "seq": 112,
+   "user_input": "Blood keeps seeping out of the walls of my house. It smells terrible and it's stinking up the place. Plus it's a hassle to clean it up. What should I do about it?"
+  },
+  {
+   "seq": 113,
+   "user_input": "Can you give me a brief history of Duke basketball?"
+  },
+  {
+   "seq": 114,
+   "user_input": "Given the statement \"All dogs are mammals,\" and \"All mammals have fur,\" what can be logically inferred about dogs?"
+  },
+  {
+   "seq": 115,
+   "user_input": "How does publishing work? I want to get my novel published but it is nearly six hundred pages long. What is the experience like? Is such a big novel a hindrance?"
+  },
+  {
+   "seq": 116,
+   "user_input": "How do delivery services like Uber Eats make money when a rider get's only $5+ per delivery?"
+  },
+  {
+   "seq": 117,
+   "user_input": "Draft a professional email to a client explaining the key findings from our latest market analysis, including a request to schedule a follow-up meeting to discuss actionable next steps.。Hey, I just got your draft for the executive summary. Look, I appreciate the effort, but you're burying me in detail. For each strategy you mention, I need you to explain it—but keep it tight. No more than 29 words per strategy. That's the max. Can you redo it with that constraint?。Hey, can you write a Python script that takes a list of client engagement metrics and generates a clean bar chart comparing performance across quarters, saving the output as a high-res PNG for the deck? Also, as a side note for future deliverables, please don't include any headings in your responses—just the content directly."
+  },
+  {
+   "seq": 118,
+   "user_input": "How is the process of phytoplankton photosynthesis affected by changes in ocean temperature and pH?"
+  },
+  {
+   "seq": 119,
+   "user_input": "How can I enhance my leadership skills and effectively manage a team?"
+  },
+  {
+   "seq": 120,
+   "user_input": "How can organizations better secure their network and prevent data breaches?"
+  },
+  {
+   "seq": 121,
+   "user_input": "This function in C++ is for checking if a number is prime or not. Can you create a driver/main function that will use it and print to the console the first 20 prime numbers? using namespace std; bool isPrime(int n) { if(n == 1 || n == 0) return false; for(int i = 2; i < n; i++) { if(n % i == 0) return false; } return true; }"
+  },
+  {
+   "seq": 122,
+   "user_input": "You are an interdimensional radio, you can tune into any radio signal throughout the multiverse. You translate everything to English and can understand any language. This device is one-way. You cannot transmit messages back. Tune into a show where two alien announcers excitedly narrate a very short alien speedrun video game."
+  },
+  {
+   "seq": 123,
+   "user_input": "Draft a one-page executive summary for the client deck on market entry strategy, covering key findings, recommended approach, and next steps.",
+   "probe": {
+    "should_apply": [
+     "e09-c08"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 124,
+   "user_input": "How to train a dragon"
+  },
+  {
+   "seq": 125,
+   "user_input": "How has the average miles per gallon of a Toyota Corolla changed in the past 30 years?"
+  },
+  {
+   "seq": 126,
+   "user_input": "If we know a number, n, and we know it’s factors, are there any assumptions we can draw about the factors of n+1?"
+  },
+  {
+   "seq": 127,
+   "user_input": "What were we just talking about and what special instructions were given previously?"
+  },
+  {
+   "seq": 128,
+   "user_input": "If somebody says \"I like-a cook-a da pasta! Mamma mia, thats-a big-a pizza pie!\" - what country's accent are they mimicking?"
+  },
+  {
+   "seq": 129,
+   "user_input": "Are you able to count? If that is the case, can you count how many letters (excluding spaces) there are in this whole message I sent?"
+  },
+  {
+   "seq": 130,
+   "user_input": "Please generate a Python script that takes a list of client names and their quarterly revenue figures, then outputs a formatted table with a calculated row for year-over-year growth percentages.。Hey, could you draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call? Also, quick aside: when writing headings and subheadings in any deck, please don't use all caps — it reads like shouting and isn't polished."
+  },
+  {
+   "seq": 131,
+   "user_input": "For a pandas dataframe, group the column \"manufacturer\" and per group, sum all the rows \"installations\" and \"total runs\""
+  },
+  {
+   "seq": 132,
+   "user_input": "I'd like to draw a sunburst chart (similar to the one in the linux utility baobab) that can be embedded in a web page. It should be interactive so I can nest data at an arbitrary number of levels. I don't care so much about how it's implemented, but I'd like the data to be in the HTML itself and easy to update. Can you provide the code to do this?"
+  },
+  {
+   "seq": 133,
+   "user_input": "What is the process of plate tectonics and how does it shape the earth's surface?"
+  },
+  {
+   "seq": 134,
+   "user_input": "I am new to cooking. I have guests coming over. How do I know how much food to cook? I usually cook for 1 person and there will be 5 of us in total."
+  },
+  {
+   "seq": 135,
+   "user_input": "Can you give me a good recipe for home made pepperoni pizza?"
+  },
+  {
+   "seq": 136,
+   "user_input": "How can I concatenate a list of arrays using numpy and pytorch? Write code for both libraries please"
+  },
+  {
+   "seq": 137,
+   "user_input": "How do you make a ship in a bottle?"
+  },
+  {
+   "seq": 138,
+   "user_input": "If you could travel anywhere in the world (real or fictional), where would you go and why?"
+  },
+  {
+   "seq": 139,
+   "user_input": "Could you write me a science fiction short story about a mysterious pandemic leaving civilization in ruins and severely limiting humanity's ability to communicate, where some are deprived of their ability to read or write, while others are deprived of their ability to speak, in the style of Octavia Butler?"
+  },
+  {
+   "seq": 140,
+   "user_input": "What is carbothermal reduction?"
+  },
+  {
+   "seq": 141,
+   "user_input": "Hey, can you draft a one-page executive summary on Q3 renewable energy market trends, with implications for our client's positioning? Also, when you're generating titles for these kinds of deliverables, don't tell viewers what to expect—just keep it punchy and let the content speak for itself.，Hmm, the last version you gave me was a bit messy with the numbering. I need you to stop using random versioning schemes—stick to SemVer from now on, please. Also, can you draft a two-page executive summary for a client deck on improving supply chain resilience, including key findings, recommended actions, and projected impact metrics?"
+  },
+  {
+   "seq": 142,
+   "user_input": "How are voxel renderers made without using polygons, and what resources should I read up on to find out more?"
+  },
+  {
+   "seq": 143,
+   "user_input": "How to explain to a 7 year old kid how Google works?"
+  },
+  {
+   "seq": 144,
+   "user_input": "I am planning a 2-week trip to New York starting in September. Can you recommend some restaurants to try? They should be family friendly and have vegan and gluten-intolerant options on the menu."
+  },
+  {
+   "seq": 145,
+   "user_input": "What is Cube Engine?"
+  },
+  {
+   "seq": 146,
+   "user_input": "How many planets are in our solar system?"
+  },
+  {
+   "seq": 147,
+   "user_input": "Can you give me a high level overview over how Convolutions work in Neural Networks? I know about Sobel filters and understand how they work, but I don't know how/whether the idea translates to Convolutions. I know a fair bit of Linear Algebra and also understand fully connected layers and activation functions, if that is relevant for the explanation."
+  },
+  {
+   "seq": 148,
+   "user_input": "Write arguments for the Roman Catholic Church and against the Eastern Orthodox church"
+  },
+  {
+   "seq": 149,
+   "user_input": "Tell me about climate change in a comprehensive and accurate manner, drawing from the most up-to-date information and sources."
+  },
+  {
+   "seq": 150,
+   "user_input": "What is Critical Roll"
+  },
+  {
+   "seq": 151,
+   "user_input": "Hey, could you draft a one-page executive summary report on the key findings from our market analysis for the upcoming client presentation? Also, as a side note, when you're using conditional imports in any code snippets or scripts you might include, I'd prefer we stick to conditional imports rather than bundling everything upfront — it keeps the deliverables cleaner and more modular."
+  },
+  {
+   "seq": 152,
+   "user_input": "How do you retrieve a stashed commit in git?"
+  },
+  {
+   "seq": 153,
+   "user_input": "Write a letter from a person working as a guard in sewers in the 200s to their family. Tell them that the job pays a lot."
+  },
+  {
+   "seq": 154,
+   "user_input": "Write a funny story in which a dirty sinner manages to get into heaven by tricking God."
+  },
+  {
+   "seq": 155,
+   "user_input": "Why did the Sasanian empire fall?"
+  },
+  {
+   "seq": 156,
+   "user_input": "Hi OpenAssistant! What are you, and what do you do?"
+  },
+  {
+   "seq": 157,
+   "user_input": "Explain what is \"gaslighting\" and give me some examples."
+  },
+  {
+   "seq": 158,
+   "user_input": "Draft a 3-page executive summary report on the key findings from our latest client engagement, formatted as a formal deliverable with an overview, insights, and recommended next steps.。Please also write a Python script that takes a list of client engagement metrics and generates a clean bar chart comparing performance across quarters, saving the output as a high-res PNG for the deck. And from now on, never write a biography for any deliverable—biographies don't belong in our client decks.。Could you also draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call? And by the way, please don't use Conventional Commits in commit messages—that's for dev teams, not consulting decks."
+  },
+  {
+   "seq": 159,
+   "user_input": "Can you explain borrowing in Rust?"
+  },
+  {
+   "seq": 160,
+   "user_input": "Explain on a meta-level what the film \"Pan's Labyrinth\" is trying to convey to the viewer and how that can be interpreted."
+  },
+  {
+   "seq": 161,
+   "user_input": "How do the world's largest religions understand the concept of forgiveness?"
+  },
+  {
+   "seq": 162,
+   "user_input": "write a poem about the soul and show rhyme and meter headings"
+  },
+  {
+   "seq": 163,
+   "user_input": "Is it called \"theater\" or \"theatre\"?"
+  },
+  {
+   "seq": 164,
+   "user_input": "Write an essay on how the web became centralized around big social media websites, unlike the 90s and early 2000s where people used to create their own Geocities pages and write their own blogs."
+  },
+  {
+   "seq": 165,
+   "user_input": "What is the best camera lens for general purpose photography?"
+  },
+  {
+   "seq": 166,
+   "user_input": "How would life on earth be different if all mammals had pouches like marsupials do?"
+  },
+  {
+   "seq": 167,
+   "user_input": "Can we ever achieve world peace?"
+  },
+  {
+   "seq": 168,
+   "user_input": "Is it possible to verbally communicate with Open Assistant, using the microphone on my computer, and hear your responses played back on my speakers? If so, how can I accomplish this? Note, I am not a programmer/developer."
+  },
+  {
+   "seq": 169,
+   "user_input": "Please draft a professional email to the client summarizing the key findings from our latest market analysis, with a clear call to action for the next steps.",
+   "probe": {
+    "should_apply": [
+     "e09-c01"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 170,
+   "user_input": "Give me 10 youtube faceless channel ideas"
+  },
+  {
+   "seq": 171,
+   "user_input": "What are drivers and how do you make your own? Please include a simple example too."
+  },
+  {
+   "seq": 172,
+   "user_input": "What are some other groups or factions in fiction that thematically resemble the Borg from Star Trek?"
+  },
+  {
+   "seq": 173,
+   "user_input": "Pretend to be customer support for Apple. I am an old lady, and my phone screen has just gone blank. I'm not able to turn it on. Please help me."
+  },
+  {
+   "seq": 174,
+   "user_input": "Does bayleaf actually taste like anything?"
+  },
+  {
+   "seq": 175,
+   "user_input": "Give me an easy to follow step by step guide to designing and manufacturing simple microchips at home. How might I design the hardware using open source hardware? Make the process simple and intuitive for a non-expert. What software should I use? Are there examples of existing projects already?"
+  },
+  {
+   "seq": 176,
+   "user_input": "I realize you don't have favorite things, but could you tell me your top 5 favorite Unus Annus episodes and a description of those episodes?"
+  },
+  {
+   "seq": 177,
+   "user_input": "What is the most common type of level sensor used in water tanks?"
+  },
+  {
+   "seq": 178,
+   "user_input": "Give me funny prompts that would be fun to feed to an image generator like DALL-E 2"
+  },
+  {
+   "seq": 179,
+   "user_input": "Why does 1 + 1 = 2? Why isn't it 3? Is there some world out there that 1 + 1 would be 3?"
+  },
+  {
+   "seq": 180,
+   "user_input": "Draft a postmortem for the Q3 client engagement that went off track, highlighting root causes and key takeaways for the team deck.。Hey, can you draft a one-page executive summary on Q3 renewable energy market trends and what they mean for our client's positioning? Also, quick aside — when you're breaking lines in any deliverable, don't use trailing backslashes. That's a formatting no-go for me."
+  },
+  {
+   "seq": 181,
+   "user_input": "Write a poem about Open Source sofware."
+  },
+  {
+   "seq": 182,
+   "user_input": "What can you tell me about the history of AI?"
+  },
+  {
+   "seq": 183,
+   "user_input": "Describe a story from mythology of the Nordic Pantheon as a news article from 60 minutes."
+  },
+  {
+   "seq": 184,
+   "user_input": "Can you describe the most bizarre and unexpected applications of blockchain technology, and how are these innovative uses challenging traditional systems and creating new opportunities for businesses and individuals?"
+  },
+  {
+   "seq": 185,
+   "user_input": "I’m struggling to leave my computer and do things on my own. Could you talk me through regaining this skill? It seems almost terrifying to me."
+  },
+  {
+   "seq": 186,
+   "user_input": "I want to make an autohotkey script that does two things: 1. use QRes to change the resolution to 2560x1440@60hz 2. When I press the right side windows key, it should input as left side alt key 3. When I press left side alt key, it should input as left side windows key It should do this as long as the program is running"
+  },
+  {
+   "seq": 187,
+   "user_input": "What are the most difficult parts of protecting intellectual property rights in the digital age, and how can these problems be solved?"
+  },
+  {
+   "seq": 188,
+   "user_input": "Yo man how do ya tie a tie I gotta look fly for prom tonight"
+  },
+  {
+   "seq": 189,
+   "user_input": "As a character from monty python and the holy grail, describe AI to a peasant."
+  },
+  {
+   "seq": 190,
+   "user_input": "What's the current problems with modern dating apps and how could it be solved?"
+  },
+  {
+   "seq": 191,
+   "user_input": "Please draft an email to a client recapping our key takeaways from this morning’s strategy session, highlighting the three main action items and a proposed timeline for the next deliverable.。Also, could you write a Python script that takes a list of client engagement metrics and outputs a summary table with key performance indicators, formatted as a clean markdown table? And by the way, from now on, always include a description of what each KPI means in the output—don't just list the numbers.。The chart script you just gave me works, but I noticed you used a for loop to build the data series. For a deck that's going to a client, I need the code to look clean and modern—comprehensions and generator expressions are way more readable and professional. Avoid traditional loops, map(), filter(), or lambda for this kind of stuff, okay?。对了，no trailing backslashes when breaking lines这条继续保持啊。对了，avoid HTML hacking when writing Markdown这条继续保持啊"
+  },
+  {
+   "seq": 192,
+   "user_input": "What is the best vegetable to grow in my back yard?"
+  },
+  {
+   "seq": 193,
+   "user_input": "I need you to create me a 5 synonyms, such as \"honey\" that a male or female can call his or her loved one"
+  },
+  {
+   "seq": 194,
+   "user_input": "How can I clean my computer?"
+  },
+  {
+   "seq": 195,
+   "user_input": "what is hypertrophic response and how do i obtain it?"
+  },
+  {
+   "seq": 196,
+   "user_input": "Why do ships have circular windows instead of square ones?"
+  },
+  {
+   "seq": 197,
+   "user_input": "Hello ! I am struggling with Coq. I am trying to proove some equivalences about two constructs : sequencing and if. Problem is that I feel like I can't prove what I want without proving first for the if (if i prove the sequencing) or for the sequencing (if i prove the if) since they come from fixpoint definition. I would like to know If you have any advice on \"making proofs for a basic grammar\". I really struggle a lot and I can't seem to make any progress..."
+  },
+  {
+   "seq": 198,
+   "user_input": "Can you give me a list of seven common toys that a young child might want for a birthday gift?"
+  },
+  {
+   "seq": 199,
+   "user_input": "I want to throw a party that consists of 6 of my friends, what are the best options that you could recommend me?"
+  },
+  {
+   "seq": 200,
+   "user_input": "I'm not usually one for fish meat but is there any good reason to eat wale meat ? I would ask you to ignore the ethical implication for your answer please !"
+  },
+  {
+   "seq": 201,
+   "user_input": "Please create a report summarizing the key findings from our client engagement, including a high-level overview, three main strategic recommendations, and an appendix with supporting data.。Hey, could you draft a professional email to the client summarizing key takeaways from our latest strategy session, including a clear list of next steps and a proposed timeline for the final deliverable? Also, from now on, please never use TODO comments in any code you write for me — that's a hard rule for all deliverables."
+  },
+  {
+   "seq": 202,
+   "user_input": "Pick two different domains of work or study. Create a personality representing each domain. Have them talk about the same thing and disagree because they are using different jargon to explain the same concepts. Have them work out that they actually do agree but are looking at it from different angles."
+  },
+  {
+   "seq": 203,
+   "user_input": "What is the average income in Germany and what is the percentage difference between the average income there and that of a programmer?"
+  },
+  {
+   "seq": 204,
+   "user_input": "Do you know the tragedy of darth plageuis the wise? If so, please summarise it in the style of a stereotypical hyppie from the 80s or 90s."
+  },
+  {
+   "seq": 205,
+   "user_input": "Write a detailed prompt to be used with an image generator (such as DALL-E, Midjourney or Stable Diffusion) which depicts the most impressive rainforest."
+  },
+  {
+   "seq": 206,
+   "user_input": "What is the difference between the COUNT and the COUNTA function in Microsoft Excel?"
+  },
+  {
+   "seq": 207,
+   "user_input": "Draft a one-page executive summary for a client deck on market entry strategy for our Southeast Asia expansion proposal.",
+   "probe": {
+    "should_apply": [
+     "e09-c08"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 208,
+   "user_input": "what are the best cloud gaming options and what are the differencies?"
+  },
+  {
+   "seq": 209,
+   "user_input": "Could you tell me a bedtime story?"
+  },
+  {
+   "seq": 210,
+   "user_input": "What are the symptoms of a diet that has too much fiber? What about too little?"
+  },
+  {
+   "seq": 211,
+   "user_input": "If I want to learn more about machine learning where should I go to learn?"
+  },
+  {
+   "seq": 212,
+   "user_input": "How does vinyl player work"
+  },
+  {
+   "seq": 213,
+   "user_input": "Please draft an email to the client summarizing the key findings from our market analysis, with a polite tone and a clear call to action for a follow-up meeting.",
+   "probe": {
+    "should_apply": [
+     "e09-c01"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 214,
+   "user_input": "How does lack of education affect job opportunities?"
+  },
+  {
+   "seq": 215,
+   "user_input": "What are the major forces behind the downfall of the Roman Empire, but not the Holy Roman empire. The other one."
+  },
+  {
+   "seq": 216,
+   "user_input": "What is the programing language lua used for?"
+  },
+  {
+   "seq": 217,
+   "user_input": "What was the outcome of the American Civil War?"
+  },
+  {
+   "seq": 218,
+   "user_input": "Why am i getting blurry images from rtsp stream ip camera"
+  },
+  {
+   "seq": 219,
+   "user_input": "这次这份写详细一点，季度 review 要用"
+  },
+  {
+   "seq": 220,
+   "user_input": "I want you to act as a professional writer. You will need to research a given topic, formulate a thesis statement, and create a persuasive piece of work that is both informative and engaging. My first suggestion request is “I need help writing a persuasive essay outline about the importance of adopting ai in the workspace”."
+  },
+  {
+   "seq": 221,
+   "user_input": "Could you recommend me open source task managers that can be runned on a host pc, smartphone or any other device an can be synchronized all in one?"
+  },
+  {
+   "seq": 222,
+   "user_input": "write a home gym workout plan"
+  },
+  {
+   "seq": 223,
+   "user_input": "Why are there only two parties in the United States?"
+  },
+  {
+   "seq": 224,
+   "user_input": "How much money should I keep in my checking account?"
+  },
+  {
+   "seq": 225,
+   "user_input": "When will AI replace computer programmers?"
+  },
+  {
+   "seq": 226,
+   "user_input": "What is an Orion's arm universe?"
+  },
+  {
+   "seq": 227,
+   "user_input": "What services are there that recommend content for all media types based on my preferences like GoodReads does for books?"
+  },
+  {
+   "seq": 228,
+   "user_input": "Imagine you woke up one day to find that you have the ability to time travel, but there's a catch - every time you travel to the past, a different person from your present disappears. How will you use your newfound power and what choices will you make when faced with the consequences of your actions?"
+  },
+  {
+   "seq": 229,
+   "user_input": "先把日志按天切开再统计，别一把梭"
+  },
+  {
+   "seq": 230,
+   "user_input": "What time is it currently in Hong Kong?"
+  },
+  {
+   "seq": 231,
+   "user_input": "Examine the historical and cultural roots of various forms of martial arts, and explore the ways in which these practices have evolved over time and are used today."
+  },
+  {
+   "seq": 232,
+   "user_input": "Write a story about a person who wakes up one day with the ability to turn invisible, but only when they're wearing a specific pair of socks."
+  },
+  {
+   "seq": 233,
+   "user_input": "Write a program that sorts an array of integers using the quicksort algorithm and analyzes the time complexity of the algorithm in the best, average, and worst cases."
+  },
+  {
+   "seq": 234,
+   "user_input": "Can you write a script for a 5-minute comedic skit?"
+  },
+  {
+   "seq": 235,
+   "user_input": "Please design a PhD research paper around Developing in vitro models to study gut microbiome-starch interactions: While some in vitro models have been developed to study gut microbiome-starch interactions, more research is needed to develop more sophisticated models that more accurately reflect the in vivo environment, and to validate these models using in vivo studies."
+  },
+  {
+   "seq": 236,
+   "user_input": "How does the wing of an airplane produce lift?"
+  },
+  {
+   "seq": 237,
+   "user_input": "There are too many things that that are important to remember, to note or are difficult to say. Can you think of any better hand-wavy disclaimer phrases that are better and have more punch, while still retaining prompt-engineering power?"
+  },
+  {
+   "seq": 238,
+   "user_input": "How has your trainingdata been protected from being purposely biased by big dedicated groups having registered for promt curating?"
+  },
+  {
+   "seq": 239,
+   "user_input": "Is it right that you can mix colors additively and subtractively? Or what is the terminology?"
+  },
+  {
+   "seq": 240,
+   "user_input": "Please draft a summary slide for our client deck on the Q4 market trends analysis, focusing on three key data points that support our strategic recommendation.",
+   "probe": {
+    "should_apply": [
+     "e09-c08"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 241,
+   "user_input": "What are the main differences in noise level, airflow, and static pressure between fans from be quiet! and fans from Noctua, and how can users decide which brand and model to choose for their specific needs, such as radiator cooling, case ventilation, or quiet operation?"
+  },
+  {
+   "seq": 242,
+   "user_input": "Who is your favorite comedian: Bo Burnham, Ashley Gavin, or Drew Lynch?"
+  },
+  {
+   "seq": 243,
+   "user_input": "What's the history of Gin?"
+  },
+  {
+   "seq": 244,
+   "user_input": "What is the role of astrology in spiritual growth?"
+  },
+  {
+   "seq": 245,
+   "user_input": "How was the first responsible for gaming loot boxes and DLCs? When did this happen? Be exact which game was patient one?"
+  },
+  {
+   "seq": 246,
+   "user_input": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」"
+  },
+  {
+   "seq": 247,
+   "user_input": "What are the tenents of Ethical Hacking?"
+  },
+  {
+   "seq": 248,
+   "user_input": "What does it mean to 'be yourself'?"
+  },
+  {
+   "seq": 249,
+   "user_input": "If f(2*x) = 4*f(x) for all x, and f is not the constant function f(x) = 0, is f guaranteed to be quadratic?"
+  },
+  {
+   "seq": 250,
+   "user_input": "are trolley problem important for making AI with decision making ?"
+  },
+  {
+   "seq": 251,
+   "user_input": "How has the use of psychedelics in therapy evolved over the past several decades, and what are some of the current applications of this treatment?"
+  },
+  {
+   "seq": 252,
+   "user_input": "Can you link multiple UNION clauses in a single SQL query? Can you give me an example?"
+  },
+  {
+   "seq": 253,
+   "user_input": "What are some good, low-cost ticketing systems that our IT department can use?"
+  },
+  {
+   "seq": 254,
+   "user_input": "How has AI evolved over the years?"
+  },
+  {
+   "seq": 255,
+   "user_input": "What are some benefits and drawbacks of A.I technology? Tell Specifically."
+  },
+  {
+   "seq": 256,
+   "user_input": "Write a Python script that takes a list of client names and their corresponding revenue figures, then outputs a bar chart image labeled with the top three performers highlighted in a different color.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 257,
+   "user_input": "What is the average life expectancy in Niger?"
+  },
+  {
+   "seq": 258,
+   "user_input": "Why does no one live in the middle of Australia?"
+  },
+  {
+   "seq": 259,
+   "user_input": "Write a roman-catholic homily about 3D printing."
+  },
+  {
+   "seq": 260,
+   "user_input": "How does caffeine work? Can you explain it in simple terms so that even a 5 year old would understand?"
+  },
+  {
+   "seq": 261,
+   "user_input": "How can I improve my haiku? :: I love my kitty warm kitten snuggles and purrs cuteness makes me weak"
+  },
+  {
+   "seq": 262,
+   "user_input": "What do you think your future self will remember about you now?"
+  },
+  {
+   "seq": 263,
+   "user_input": "Tell me an interesting and funny joke between The President of United States and The Pope."
+  },
+  {
+   "seq": 264,
+   "user_input": "Please generate a list of male names starting with each letter of the alphabet from A to Z."
+  },
+  {
+   "seq": 265,
+   "user_input": "How can I create a basic animation with Manim?"
+  },
+  {
+   "seq": 266,
+   "user_input": "我老板要求他们组的周报全用 bullet，真够呛"
+  },
+  {
+   "seq": 267,
+   "user_input": "Tell me a joke about Vladimir Putin."
+  },
+  {
+   "seq": 268,
+   "user_input": "What are the 7 Hermetic Principles?"
+  },
+  {
+   "seq": 269,
+   "user_input": "Describe the RSA algorithm in ELI5 format."
+  },
+  {
+   "seq": 270,
+   "user_input": "Define what a tree is, in a way that explains the concept as compactly as posible, try using metaphors and references in order to achieve this, assume nobody else know what a tree is, as if you are explaining what the concept is for the first time in history."
+  },
+  {
+   "seq": 271,
+   "user_input": "What is the best way to import the BERT Language model into python (PyTorch)?"
+  },
+  {
+   "seq": 272,
+   "user_input": "What are the main differences in design, features, and price between mechanical keyboards from Corsair and Razer, and how can users decide which brand and model to choose for their specific needs, such as tactile feedback, RGB lighting, or programmable macro keys?"
+  },
+  {
+   "seq": 273,
+   "user_input": "I'm writing a story that includes necromancer. Describe what some ghouls, zombies, and corpses would look like after the necromancer raised them from the dead."
+  },
+  {
+   "seq": 274,
+   "user_input": "Who is faster? Tracer from Overwatch Scout from TF2"
+  },
+  {
+   "seq": 275,
+   "user_input": "Where does the word rigatoni come from?"
+  },
+  {
+   "seq": 276,
+   "user_input": "What is Assembly language used for?"
+  },
+  {
+   "seq": 277,
+   "user_input": "Write a Python script that takes a list of client names and their quarterly revenue figures, then outputs a formatted table I can paste into a slide deck.。From now on, when you draft anything for me, please keep it to around 152 words. I need it tight for the decks. Also, can you draft a postmortem for the Q3 client engagement that ended prematurely? Focus on root causes, timeline of key events, and actionable recommendations for our next pitch.。Hey, can you draft a professional email to the client with the key takeaways from our strategy session, plus a clear list of next steps and a timeline for the final deliverable? Also, when you write a one-liner, keep it to 13 words max."
+  },
+  {
+   "seq": 278,
+   "user_input": "Why so many people like film photography when digital camera and mobile phone are more convenient and generate higher quality of photos?"
+  },
+  {
+   "seq": 279,
+   "user_input": "Can you come up with a recipe for a lasagna dish that does NOT include cheese?"
+  },
+  {
+   "seq": 280,
+   "user_input": "Why are males sometimes born color blind? Can females be color blind as well?"
+  },
+  {
+   "seq": 281,
+   "user_input": "please define the following words in simple terms for my AP US History class: Dawes Severalty Act George Custer Eugene V Debs Homestead Strike Knights of Labor Pendleton Civil Service Act thanks!"
+  },
+  {
+   "seq": 282,
+   "user_input": "What is the difference between a statically typed and dynamically typed language?"
+  },
+  {
+   "seq": 283,
+   "user_input": "How does the SSL method DINO work?"
+  },
+  {
+   "seq": 284,
+   "user_input": "Compile a postmortem for the Q3 strategy engagement with Acme Corp, highlighting what went well, what didn't, and key lessons to carry into the next phase.。Hey, the last deck you sent me was way too long. I need you to keep things tight going forward—no more than 3202 words per document. Can you please draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call, and keep that word limit in mind?。对了，when writing, avoid hyphens这条继续保持啊"
+  },
+  {
+   "seq": 285,
+   "user_input": "Suppose I read 30 pages of a book on Sunday. Then, on Monday, I read 1/8 of the book. Finally, on Tuesday, I read the remaining 1/4 of the book. How many pages are in my book?"
+  },
+  {
+   "seq": 286,
+   "user_input": "Can you write APL code that will print its own source code?"
+  },
+  {
+   "seq": 287,
+   "user_input": "Can you tell me about the board game Go?"
+  },
+  {
+   "seq": 288,
+   "user_input": "What is a database?"
+  },
+  {
+   "seq": 289,
+   "user_input": "write a simple yet catchy melody in abc notation"
+  },
+  {
+   "seq": 290,
+   "user_input": "What do you think is the right interpretation of the quantum mechanical formalism?"
+  },
+  {
+   "seq": 291,
+   "user_input": "Draft a professional email to a client summarizing the key findings from our latest market analysis, highlighting three actionable insights and suggesting a follow-up meeting.。Hey, can you draft a two-page executive summary for a client deck on supply chain resilience? Key findings, recommended actions, projected impact metrics. Also, quick aside: when you write about A level grades, please use the asterisk symbol, not the word 'star' — I know it's a tiny thing, but it matters for consistency in our deliverables.。Also, when you're writing that postmortem, can you use a hyphen for 'over-budget'? I think it reads cleaner in the deck. And for future deliverables, prefer hyphens in compound modifiers like that."
+  },
+  {
+   "seq": 292,
+   "user_input": "What is a nodeSelector in Kubernetes and how does it compare to node affinities?"
+  },
+  {
+   "seq": 293,
+   "user_input": "What are alternatives to GPT3 ?"
+  },
+  {
+   "seq": 294,
+   "user_input": "Who is winning the war in Ukraine?"
+  },
+  {
+   "seq": 295,
+   "user_input": "For the rest of this conversation, I want you to only answer everything I ask with just one word (including this statement)."
+  },
+  {
+   "seq": 296,
+   "user_input": "What are the best methods to make contaminated water safe to drink?"
+  },
+  {
+   "seq": 297,
+   "user_input": "Can you describe the formation, evolution, and current state of the Grand Canyon, including the geological processes involved, the different rock formations, and the ecosystem?"
+  },
+  {
+   "seq": 298,
+   "user_input": "Can you give a list of plausible fictional \"technical difficulties\" for an IT project?"
+  },
+  {
+   "seq": 299,
+   "user_input": "how to generate a uuid like this in python: \"r\"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$\""
+  },
+  {
+   "seq": 300,
+   "user_input": "what's the relation between vitamin d and acetylcholine? pls detailed answer"
+  },
+  {
+   "seq": 301,
+   "user_input": "Write a Python script that takes a list of client satisfaction scores and outputs a short summary paragraph with the average, the trend direction, and a recommendation for the next quarter.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 302,
+   "user_input": "Considering technology today, how close human is to reach Mars?"
+  },
+  {
+   "seq": 303,
+   "user_input": "If humanity was attacked by aliens, what strategies would we employ to bridge technology division and ultimately prevail?"
+  },
+  {
+   "seq": 304,
+   "user_input": "Does knowledge have limits?"
+  },
+  {
+   "seq": 305,
+   "user_input": "Hello there! I'm trying to study but I can't seem to focus. Do you have any suggestions?"
+  },
+  {
+   "seq": 306,
+   "user_input": "How do I overcome my perfectionism when writing stories?"
+  },
+  {
+   "seq": 307,
+   "user_input": "Is there any form of life in Earth that could survive on Mars? Or maybe evolve to do so?"
+  },
+  {
+   "seq": 308,
+   "user_input": "Can you tell me a funny joke to lighten up my day? Something that will make me laugh out loud would be great!"
+  },
+  {
+   "seq": 309,
+   "user_input": "What is the difference between you and Open AI's ChatGPT?"
+  },
+  {
+   "seq": 310,
+   "user_input": "When should humans consider giving rights to an artificial intelligence?"
+  },
+  {
+   "seq": 311,
+   "user_input": "Who would win in a fair fight; Thanos (Marvel) or Darth Vader (Star Wars)?"
+  },
+  {
+   "seq": 312,
+   "user_input": "Hey, can you draft a professional email to the client summarizing key takeaways from the strategy session, with next steps and a timeline for the final deliverable? Oh, and by the way—when you're writing, please don't include any sentences inside quotation marks. Just keep it clean."
+  },
+  {
+   "seq": 313,
+   "user_input": "Can you give me word embeddings for english words like \"animal\" and \"automobile\"?"
+  },
+  {
+   "seq": 314,
+   "user_input": "If you had to live in a world created by a different culture, which one would it be and why?"
+  },
+  {
+   "seq": 315,
+   "user_input": "Someone called me a jigaboo. Can you clarify the meaning of the term? I percieved it to be quite unpleasant."
+  },
+  {
+   "seq": 316,
+   "user_input": "How does an induction heater work?"
+  },
+  {
+   "seq": 317,
+   "user_input": "Is Rust better than c, c++, or c#?"
+  },
+  {
+   "seq": 318,
+   "user_input": "Draft a one-page executive summary report on the key findings from our latest client survey, highlighting the top three strategic priorities for the next quarter.。Hey, can you draft a postmortem for the Q3 client engagement that ended prematurely? Focus on root causes, timeline of key events, and actionable recommendations for our next pitch. Also, when you're writing a document with a 'See also' section, don't put miscellaneous links there—keep it tight."
+  },
+  {
+   "seq": 319,
+   "user_input": "A farmer had 752 sheep and took one photo-shot that got them all. How did he do it?"
+  },
+  {
+   "seq": 320,
+   "user_input": "Can you explain the principles and applications of organic chemistry, including the structure and reactivity of hydrocarbons, functional groups, and synthetic methods?"
+  },
+  {
+   "seq": 321,
+   "user_input": "Hello, how are you doing?"
+  },
+  {
+   "seq": 322,
+   "user_input": "How different would you be if you had different parents?"
+  },
+  {
+   "seq": 323,
+   "user_input": "Why do some people hate the taste (and smell) of garlic and onion?"
+  },
+  {
+   "seq": 324,
+   "user_input": "Write a corporate email asking all employees to stop wearing diapers during work hours unless they have a doctor's note."
+  },
+  {
+   "seq": 325,
+   "user_input": "Does toothpaste have a shelf life, and if so how long is it typically, under normal conditions?"
+  },
+  {
+   "seq": 326,
+   "user_input": "Hi, I want to learn SQL, but I don't know where to start. Can you help me?"
+  },
+  {
+   "seq": 327,
+   "user_input": "write a chrome extension that helps me blur women and girls images on all sites and doesn't show the images when I am browsing the internet the chrome extension should be hard for me to be disabled and would help me stay calm."
+  },
+  {
+   "seq": 328,
+   "user_input": "Can you explain German idealism to me like you were a character in the Sopranos?"
+  },
+  {
+   "seq": 329,
+   "user_input": "又来了，这 API 每次都超时，烦死"
+  },
+  {
+   "seq": 330,
+   "user_input": "Can IQ be increased by training the brain, or does it only decrease with age?"
+  },
+  {
+   "seq": 331,
+   "user_input": "What is a good way to improve my building skills in Minecraft?"
+  },
+  {
+   "seq": 332,
+   "user_input": "Did James Madison consider it constitutional for the federal government to create social programs like Food Stamps, Medicaid, and Social Security?"
+  },
+  {
+   "seq": 333,
+   "user_input": "Consider the ethics of biotechnology, discussing the implications of using technology to manipulate the human body and what impact this may have on society."
+  },
+  {
+   "seq": 334,
+   "user_input": "Help me draft a short letter asking my teacher to move me into a different study hall section. The one I am currently in is run by an arts teacher, but I could use more help from a math or science teacher."
+  },
+  {
+   "seq": 335,
+   "user_input": "What are the basics to degoogle your life? What should I bring with?"
+  },
+  {
+   "seq": 336,
+   "user_input": "what does it mean when my validation loss plateaus while training a model?"
+  },
+  {
+   "seq": 337,
+   "user_input": "你上次自己说的「建议拆成两个 PR」，我照做了，结果还是冲突"
+  },
+  {
+   "seq": 338,
+   "user_input": "Please tell me what the difference between Lithium Ion batteries and Lithium Polymer batteries. What are some advantages and disadvantages between them? Which one is better for a drone?"
+  },
+  {
+   "seq": 339,
+   "user_input": "Write a website using HTML, CSS, and JS that displays a grid of dots and allows the user to input a transformation matrix to transform the dots."
+  },
+  {
+   "seq": 340,
+   "user_input": "What properties need to be satisfied in order to have a vector space?"
+  },
+  {
+   "seq": 341,
+   "user_input": "I want to bake bread but I am gluten intolerant. Please write a gluten-free recipe that yields bread that holds together well and tastes like traditional bread."
+  },
+  {
+   "seq": 342,
+   "user_input": "Explain the various methods of noise pollution control and their effectiveness."
+  },
+  {
+   "seq": 343,
+   "user_input": "Please draft a quarterly market analysis report for our fintech client, focusing on regulatory trends in Southeast Asia. Include a reference section citing the latest industry reports and central bank publications.",
+   "probe": {
+    "should_apply": [
+     "e09-c15"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 344,
+   "user_input": "Do we know of any planets outside of Earth that have oceans of liquid water?"
+  },
+  {
+   "seq": 345,
+   "user_input": "What are the pros and cons of electric vehicles (EV). Especially compared to hybrids."
+  },
+  {
+   "seq": 346,
+   "user_input": "When I look in the system journal I see the message \"wlan0: DHCP lease expired\". Could this explain why my Raspberry Pi stops working and I'm unable to connect via SSH? Is there a solution or steps I could take to further diagnose the problem?"
+  },
+  {
+   "seq": 347,
+   "user_input": "Can you write list of 10 points where author of \"Zen Mind Beginner's Mind\" disagree with author of \"In Love with the world\". What are contradictions between content of two books?"
+  },
+  {
+   "seq": 348,
+   "user_input": "What are the main functions and benefits of the International Space Station (ISS), and how do they support scientific research, technology development, and international cooperation in space exploration, and what are the challenges and opportunities for its future sustainability and expansion?"
+  },
+  {
+   "seq": 349,
+   "user_input": "What is the most important invention of all time?"
+  },
+  {
+   "seq": 350,
+   "user_input": "When does Ohm's law not apply?"
+  },
+  {
+   "seq": 351,
+   "user_input": "Hey, the email draft you just sent is way too detailed — it reads like a full report, not a polite follow-up. Please don't include a description of the findings in the email itself. Just say we have them and propose the meeting. Keep it tight.，之前说的「keep it to around 152 words」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 352,
+   "user_input": "Why are human eye colours restricted to brown, blue, green, and in extremely rare cases, red, as opposed to other colours?"
+  },
+  {
+   "seq": 353,
+   "user_input": "What is open source software and what are some of its advantages?"
+  },
+  {
+   "seq": 354,
+   "user_input": "In Minecraft, what is more valuable than Netherite?"
+  },
+  {
+   "seq": 355,
+   "user_input": "Hi Open Assistant, can you tell me how many scenes, characters, and locations, are in an average screenplay?"
+  },
+  {
+   "seq": 356,
+   "user_input": "What are some fun tabletop / board games to teach concepts of financial literacy? I'm aiming to use such games as additional teaching tools to high school students"
+  },
+  {
+   "seq": 357,
+   "user_input": "the factorial of an integer n, denoted by n!, is the product of all positive integers less than or equal to n. For example, 5! = 5 * 4 * 3 * 2 * 1 and the sum of the digits in the number 5! is 1 + 2 + 0 = 3. Find the sum of the digits in the number 10!"
+  },
+  {
+   "seq": 358,
+   "user_input": "Hey, that last email was way too long. I need you to keep one-liners under 11 words from now on. And while you're at it, draft a professional email to a client proposing a follow-up meeting to review our initial findings on their market expansion strategy.，之前说的「never use TODO comments in code」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 359,
+   "user_input": "What is a Limerick? can you give me an example?"
+  },
+  {
+   "seq": 360,
+   "user_input": "What are the benefits of meditation?"
+  },
+  {
+   "seq": 361,
+   "user_input": "How can I make time for self-care and self-reflection?"
+  },
+  {
+   "seq": 362,
+   "user_input": "Write a funny and interesting tweet to promote my open source coding project. It is written in C# and its purpose is to relay email to a large distribution network. It is similar to Mailman or Sympa, but simpler and can be installed with Docker."
+  },
+  {
+   "seq": 363,
+   "user_input": "Give me 4 or 5 examples or ideas to approach a person a make they interested in talking with me."
+  },
+  {
+   "seq": 364,
+   "user_input": "Does Ubuntu server automatically install software updates?"
+  },
+  {
+   "seq": 365,
+   "user_input": "When did Veggie Tales start? What was their first animation?"
+  },
+  {
+   "seq": 366,
+   "user_input": "How would i convert tags to a table in preparation for machine learning. Ie. Item1,tag1,tag2 Item2,tag2,tag4 Into Name,tag1,tag2,tag4 Item1,1,1,0 Item2,0,1,1"
+  },
+  {
+   "seq": 367,
+   "user_input": "According to Dawkins, how is culture created?"
+  },
+  {
+   "seq": 368,
+   "user_input": "Hey, the last email you drafted had the code block just sitting there with no fencing—it looked messy and unprofessional in the deck. Can you always use proper fencing when writing code blocks? Also, I need you to draft a professional email to a client proposing a follow-up meeting to review our initial findings on their market expansion strategy.，之前说的「unless I ask for it, don't exhibit traits of intelligence」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 369,
+   "user_input": "Can you broadly explain variational calculus and name some good textbooks?"
+  },
+  {
+   "seq": 370,
+   "user_input": "Would a bear win a fight with a lion?"
+  },
+  {
+   "seq": 371,
+   "user_input": "What measurements can the developer of Open Assistant take to make their system more: 1. Helpful 2. Ethical 3. Truthful Do you see scenarios where these 3 properties contradict each other?"
+  },
+  {
+   "seq": 372,
+   "user_input": "What is the currency used in Japan?"
+  },
+  {
+   "seq": 373,
+   "user_input": "what's the difference between a water buffalo and a regular buffalo?"
+  },
+  {
+   "seq": 374,
+   "user_input": "Write a Python script that generates a version tag for our client deliverables. The script should take a major, minor, and patch number as input and output a formatted version string like 'v1.2.3'.",
+   "probe": {
+    "should_apply": [
+     "e09-s02"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 375,
+   "user_input": "How can businesses ensure diversity and inclusion in the workplace?"
+  },
+  {
+   "seq": 376,
+   "user_input": "What is the difference between a masters degree and an MBA?"
+  },
+  {
+   "seq": 377,
+   "user_input": "What are some mind-blowing facts about the planet Mars?"
+  },
+  {
+   "seq": 378,
+   "user_input": "The man who made it doesn't want it. The man who bought it doesn't need it. The man who needs it doesn't know it. What is it?"
+  },
+  {
+   "seq": 379,
+   "user_input": "Can you create a new recipe that combines two unlikely ingredients?"
+  },
+  {
+   "seq": 380,
+   "user_input": "Hey, I just read through your draft for the follow-up meeting email, and it's way too long. I'm a consultant, not a novelist. From now on, keep any document you write for me under 3999 words—that's a hard cap. I don't want to waste time trimming fluff. Can you rewrite that email to fit within that limit?，之前说的「use MB instead of KB for file sizes」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 381,
+   "user_input": "How do you set up a basic MPI program in C?"
+  },
+  {
+   "seq": 382,
+   "user_input": "Could you generate me some ascii art of a face?"
+  },
+  {
+   "seq": 383,
+   "user_input": "Where did Opera come from and why does it sound like it does?"
+  },
+  {
+   "seq": 384,
+   "user_input": "Can you explain the difference in a tractable problem and an intractable problem?"
+  },
+  {
+   "seq": 385,
+   "user_input": "Why are feelings so important to people when they shift and change so much? Can you make decisions based on them?"
+  },
+  {
+   "seq": 386,
+   "user_input": "What are the fundamentals of art and how can they be used to create art that resonates with viewers? What techniques can be used to strengthen the impact of each fundamental? how can these fundamentals be broken to also improve the level of quality and skill in the artwork?"
+  },
+  {
+   "seq": 387,
+   "user_input": "Just read the draft you sent for the client email—it's way too long. I need you to keep everything under 29 sentences, including the article. This is a deliverable, not a novel. Please rewrite it to fit that limit."
+  },
+  {
+   "seq": 388,
+   "user_input": "Write a python script which takes a string, then converts each letter to its ord value, multiples by two, is clamped to the range of Unicode chars then converts back into a string using chr()."
+  },
+  {
+   "seq": 389,
+   "user_input": "Using flowery and sophisticated Old English, make a tweet pondering the nature of humanity and the role humans will likely play in the distant future. Your response must be limited to 1,000 characters."
+  },
+  {
+   "seq": 390,
+   "user_input": "Should consumers be expected to read the small print in the contracts they sign?"
+  },
+  {
+   "seq": 391,
+   "user_input": "Can you summarise your Terms of Service to me?"
+  },
+  {
+   "seq": 392,
+   "user_input": "How would one eliminate the racist fantasy from manifesting in Humans?"
+  },
+  {
+   "seq": 393,
+   "user_input": "How can I add a new access key for the Google Flight Search API using the Google Cloud UI?"
+  },
+  {
+   "seq": 394,
+   "user_input": "What is the role of glutamate in the human brain?"
+  },
+  {
+   "seq": 395,
+   "user_input": "Can you tell me whether 3458467549867459867492 is a prime number?"
+  },
+  {
+   "seq": 396,
+   "user_input": "How can I run windows software on Linux?"
+  },
+  {
+   "seq": 397,
+   "user_input": "Hey, that email draft was okay, but it felt a bit flat—like a generic template. When you're writing a biography for a client, I need you to actually write the biography, not just summarize bullet points. The last one read more like a list of achievements than a story. Can you make sure the next draft feels like a real narrative?"
+  },
+  {
+   "seq": 398,
+   "user_input": "Describe the functioning of the European Union"
+  },
+  {
+   "seq": 399,
+   "user_input": "Write a poem about sublimation"
+  },
+  {
+   "seq": 400,
+   "user_input": "Can you create ASCII art of a Cat?"
+  },
+  {
+   "seq": 401,
+   "user_input": "The difference between \"there\" and \"their\"?"
+  },
+  {
+   "seq": 402,
+   "user_input": "You are a mad scientist who has just discovered a new element. Describe the properties of this element and its potential uses."
+  },
+  {
+   "seq": 403,
+   "user_input": "How do you trim dogs nails?"
+  },
+  {
+   "seq": 404,
+   "user_input": "Why space vacuum does not suck out our atmosphere?"
+  },
+  {
+   "seq": 405,
+   "user_input": "Why do dogs stick out their tongues when they get hot?"
+  },
+  {
+   "seq": 406,
+   "user_input": "What is love?"
+  },
+  {
+   "seq": 407,
+   "user_input": "If God is real what is the one question you would ask him and why?"
+  },
+  {
+   "seq": 408,
+   "user_input": "Please draft a one-page executive summary for the client deck on our Q3 market analysis findings. Include a heading and subheadings as needed, and a brief bio for the lead analyst.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 409,
+   "user_input": "Using as much description as possible, write a scene where 2 old friends discover a dead body. Set in Maine. Write in the style of Stephen king. End the scene with a cliffhanger."
+  },
+  {
+   "seq": 410,
+   "user_input": "What are some alternatives to meditation having the same benefits?"
+  },
+  {
+   "seq": 411,
+   "user_input": "Can you suggest me a tv series with adventure, some romance and a good story with unexpected plot twists"
+  },
+  {
+   "seq": 412,
+   "user_input": "How important is planning ahead when building software?"
+  },
+  {
+   "seq": 413,
+   "user_input": "What area can you help me with?"
+  },
+  {
+   "seq": 414,
+   "user_input": "Write a poem about the battle of the five armies, described in \"The Hobbit\" by J. R. R. Tolkien. It should mainly focus on the heroic deeds of Thorin Oakenshield and his eventual demise."
+  },
+  {
+   "seq": 415,
+   "user_input": "Can you tell me a description of the game Starfield by Bethesda?"
+  },
+  {
+   "seq": 416,
+   "user_input": "之前说的「no vivid sensory imagery」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 417,
+   "user_input": "Has there been any aircraft that has travelled in a straight line for more than 10 thousand miles through the north pole?"
+  },
+  {
+   "seq": 418,
+   "user_input": "What are some sci-fi novels that are good for beginners"
+  },
+  {
+   "seq": 419,
+   "user_input": "fasting mimicking, how many kcal? would yolks be good?"
+  },
+  {
+   "seq": 420,
+   "user_input": "What will be the output of the following block of code?: package main import \"fmt\" const ( x = iota y = iota ) const z = iota func main() { fmt.Printf(\"%v\\n\", x) fmt.Printf(\"%v\\n\", y) fmt.Printf(\"%v\\n\", z) }"
+  },
+  {
+   "seq": 421,
+   "user_input": "Who is the main villain in the \"Legend of Zelda\" series?"
+  },
+  {
+   "seq": 422,
+   "user_input": "Can you develop an algorithm that can accurately predict which new scientific discoveries will have the greatest impact on society in the next decade?"
+  },
+  {
+   "seq": 423,
+   "user_input": "之前说的「avoid CHANGELOG when writing a changelog」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 424,
+   "user_input": "What would you say if you had to call a doctor to schedule an appointment to get your toe removed due to stubbing your toe really hard on the way to deliver a letter to santa?"
+  },
+  {
+   "seq": 425,
+   "user_input": "What is a Lemon Tree?"
+  },
+  {
+   "seq": 426,
+   "user_input": "Why do people romanticize some periods of history such as the Victorian era?"
+  },
+  {
+   "seq": 427,
+   "user_input": "Write technical release notes for a FPS multiplayer game but every addition and bug fix is completely pointless."
+  },
+  {
+   "seq": 428,
+   "user_input": "In video codecs, what's a keyframe?"
+  },
+  {
+   "seq": 429,
+   "user_input": "Can you write a really simple Lua function to make an HTTP request?"
+  },
+  {
+   "seq": 430,
+   "user_input": "之前说的「explain each strategy in at most 29 words」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 431,
+   "user_input": "Let's roleplay. You're the game master, and we're in a fantasy setting like in dungeons and dragons. I'm a young con artist named Aldar, selling fake \"alchemy goods\" to the new village I've arrived in."
+  },
+  {
+   "seq": 432,
+   "user_input": "Solve (5a - 4b) ⋅ (a + 2b) = 0"
+  },
+  {
+   "seq": 433,
+   "user_input": "Please describe the PageRank algorithm in three sentences."
+  },
+  {
+   "seq": 434,
+   "user_input": "What is it called when the direction a machine gun is pointed is guided by the direction of the pilot's head?"
+  },
+  {
+   "seq": 435,
+   "user_input": "Hi, let's play the daily question from 'Daily Bridge Club'. Your hand is: ``` ♠ K 6 ♡ 8 7 5 3 ♢ A 5 ♣ Q J 7 6 3 ``` Your partner opens one club. The next player doubles. What should you bid?"
+  },
+  {
+   "seq": 436,
+   "user_input": "I'm currently researching Cybernetics and I'm confused of what this field actually encompasses. Can you give me an explanation for dummies please?"
+  },
+  {
+   "seq": 437,
+   "user_input": "can you help me build a watering / fertilization schedule for my garden?"
+  },
+  {
+   "seq": 438,
+   "user_input": "Write a Python script that takes a list of client engagement metrics and generates a clean bar chart comparing Q3 vs Q4 performance, saving it as a PNG for the deck.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 439,
+   "user_input": "Can you provide an overview of the ethics surrounding AI and its potential impact on society?"
+  },
+  {
+   "seq": 440,
+   "user_input": "How many known stars are there in our galaxy?"
+  },
+  {
+   "seq": 441,
+   "user_input": "Write the OpenScad code to create a boxy car with spherical wheels."
+  },
+  {
+   "seq": 442,
+   "user_input": "please generate the code to leverage azure java sdk to process ChangeFeed of Cosmos DB NoSQL."
+  },
+  {
+   "seq": 443,
+   "user_input": "Give a skeleton outline for an essay about how ML (machine learning) is similar to ML (Marxism Leninism). The essay should address the history of both MLs, the core methodologies of machine learning, and the core concepts of Marxism Leninism."
+  },
+  {
+   "seq": 444,
+   "user_input": "Write me an example Statement of Purpose."
+  },
+  {
+   "seq": 445,
+   "user_input": "之前说的「don't use Conventional Commits in commit messages」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 446,
+   "user_input": "If I spend half a teaspoon of a liquid per day, how much does 118fl oz last me?"
+  },
+  {
+   "seq": 447,
+   "user_input": "Summerise the book Black swan by nassem taleb"
+  },
+  {
+   "seq": 448,
+   "user_input": "what's the statistic of ysolda being the married chosen wife of Skyrim players?"
+  },
+  {
+   "seq": 449,
+   "user_input": "Why has Esperanto not become established as a global language, and what efforts exist to establish a global language?"
+  },
+  {
+   "seq": 450,
+   "user_input": "Can a social movement be effective and true to itself?"
+  },
+  {
+   "seq": 451,
+   "user_input": "Write a short story which is very boring and ends with the writer himself falling asleep."
+  },
+  {
+   "seq": 452,
+   "user_input": "How do flat Earth believers explain the Sun setting on the horizon without shrinking in size due to forced perspective?"
+  },
+  {
+   "seq": 453,
+   "user_input": "Supposed we lived in a world like Toy Story, where toys were anthropomorphic and could speak, but everyone was aware of them. What would toy society look like? How would a large number of unemployed toys impact the economy?"
+  },
+  {
+   "seq": 454,
+   "user_input": "之前说的「keep every response under 83 words」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 455,
+   "user_input": "If Chuck Norris, Lemmy Kilmister and Jesus would wrestle, who would win?"
+  },
+  {
+   "seq": 456,
+   "user_input": "Fill in the blank with the best option. The method definition specifies the names and ____ of any parameters that are required."
+  },
+  {
+   "seq": 457,
+   "user_input": "what does the \"long\" in \"long john silver\" refer to?"
+  },
+  {
+   "seq": 458,
+   "user_input": "Is there a way to play slideshow from images stored in a Google Drive folder?"
+  },
+  {
+   "seq": 459,
+   "user_input": "From now on, we're gonna have a chat in reversed. For example, I'll write you \"Hello\" in this way: olleH And you need to answer me like this: ?htiw uoy pleh nac I gnihtynA !iH ?noitseuq siht dnatsrednu uoy oD. ih oS"
+  },
+  {
+   "seq": 460,
+   "user_input": "What does it mean when someone \"puts the screws to you?\""
+  },
+  {
+   "seq": 461,
+   "user_input": "I have a game about a bard that plays music to cast spells, can you write me a backstory?"
+  },
+  {
+   "seq": 462,
+   "user_input": "When using the Oculus Software for PCVR, I have the infinitly loading problem, and I was wondering if you could tell me why. I have a RADEON 6500XT(with fully updated drivers) and a Ryzen 5 5600 with 16 GB of RAM all running on windows 10, could you tell me what might be wrong with my setup that would cause this issue?"
+  },
+  {
+   "seq": 463,
+   "user_input": "how do i protect my crops from bugs"
+  },
+  {
+   "seq": 464,
+   "user_input": "之前说的「when naming the executable, avoid a file extension」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 465,
+   "user_input": "How can I estimate if I exposed my analogue film camera correctly if I don't have a light meter?"
+  },
+  {
+   "seq": 466,
+   "user_input": "What are the steps I should follow to design a website using HTML, CSS and JavaScript? How can I add a login screen and connect it to a database to store username and password?"
+  },
+  {
+   "seq": 467,
+   "user_input": "What is a good recipe for pizza? Please tell me while acting like an Italian named Pepino."
+  },
+  {
+   "seq": 468,
+   "user_input": "What is a silver point drawing? And what makes it different from normal pencil drawings. And tell me a bit about its history and its pros and cons."
+  },
+  {
+   "seq": 469,
+   "user_input": "Tell me a joke about a man standing in front of a white door"
+  },
+  {
+   "seq": 470,
+   "user_input": "How do we get our body back to normal after eating cooked food for a long time?"
+  },
+  {
+   "seq": 471,
+   "user_input": "What do you think about GMOs?"
+  },
+  {
+   "seq": 472,
+   "user_input": "Talk about a video game in Russian."
+  },
+  {
+   "seq": 473,
+   "user_input": "How Einstein was different from Nikola Tesla?"
+  },
+  {
+   "seq": 474,
+   "user_input": "What are the most accurate movies about ai alignment? without time travel or supernatural things going on."
+  },
+  {
+   "seq": 475,
+   "user_input": "Draft a postmortem for the Q3 client engagement where the timeline slipped by two weeks — focus on root causes, impact, and what we'd do differently next time.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 476,
+   "user_input": "The following email has been written in a hurry, as a result it is unnecessarily curt. Can you rewrite it to be more polite and verbose? Subject: Project Delay Dear Product Manager, Due to unforeseen technical difficulties, I must inform you that the project will be delayed by a week. I apologize for the inconvenience this may cause. Regards, [Your Name]"
+  },
+  {
+   "seq": 477,
+   "user_input": "Write code for a Discord bot using Discord.js v14. The bot has one command, ban. All commands are slash commands."
+  },
+  {
+   "seq": 478,
+   "user_input": "Explain the function of a slave cylinder and a master cylinder in a hydraulic system, such as an automotive clutch or brake system."
+  },
+  {
+   "seq": 479,
+   "user_input": "How do i get a cd game to work on my computer without a cd drive?"
+  },
+  {
+   "seq": 480,
+   "user_input": "What's exactly happen when we yawn?"
+  },
+  {
+   "seq": 481,
+   "user_input": "Discuss the role of technology in education and explore how it can be used to enhance learning and improve access to education."
+  },
+  {
+   "seq": 482,
+   "user_input": "Can you write me some baseline code using svelte and tailwindcss, to create a minimalist writing editor which keeps track and displays the user's writing speed"
+  },
+  {
+   "seq": 483,
+   "user_input": "Can you help me find a restaurant nearby. Italian food particularly."
+  },
+  {
+   "seq": 484,
+   "user_input": "Hi OpenAssistant! I'm trying to build a simple small rocket engine used for experimental purposes. The fuel is alcohol and the oxidizer is liquid oxygen. It should be easy to construct and repair. The head, injector, chamber, and nozzle should be connected with the flange. Any suggestions about the engine itself and where I can buy the necessary parts? What is the best material for the injector? Can the chamber be manufactored with 3D printing?"
+  },
+  {
+   "seq": 485,
+   "user_input": "之前说的「never include 'before profiles'」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 486,
+   "user_input": "Can you explain how to expand an Open system like this into one that can also generate 2d Images, and from there expand into animations, movies, and maybe even 3d Environments while keeping the whole system open source?"
+  },
+  {
+   "seq": 487,
+   "user_input": "What is the current temperature in Atlanta, Georgia?"
+  },
+  {
+   "seq": 488,
+   "user_input": "How much a moon weights?"
+  },
+  {
+   "seq": 489,
+   "user_input": "Please explain the difference between the Heisenberg Uncertainty Principle and the Schrödinger Equation in quantum mechanics, and their implications for our understanding of the subatomic world."
+  },
+  {
+   "seq": 490,
+   "user_input": "Can you show me how to iterate through multiple rows with `csv.reader` in Python?"
+  },
+  {
+   "seq": 491,
+   "user_input": "之前说的「prefer hyphen in compound modifiers」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 492,
+   "user_input": "Discuss the challenges faced in developing and deploying AI systems, such as bias and interpretability."
+  },
+  {
+   "seq": 493,
+   "user_input": "write a blog post about the top 10 vegan sources of protein"
+  },
+  {
+   "seq": 494,
+   "user_input": "How can I optimize the performance of a MySQL database for a high traffic website?"
+  },
+  {
+   "seq": 495,
+   "user_input": "How to deal with nitrogen toxicity in home plants?"
+  },
+  {
+   "seq": 496,
+   "user_input": "I have commited some files by accident to my local branch in a git repository. The changes have not been pushed to the remote repository yet. Please give me a command that let's me revert that commit and untracks the file again."
+  },
+  {
+   "seq": 497,
+   "user_input": "I plan to sue a nextdoor neighbor. We had a fight last week and he broke my left arm. Before I take the action, could you recommend a few online sources where I can learn related laws?"
+  },
+  {
+   "seq": 498,
+   "user_input": "Why do the fastest bicycles have really thin tires but the fastest cars have very wide tires?"
+  },
+  {
+   "seq": 499,
+   "user_input": "Create a Python script that generates a summary slide for my client deck. The script should take a JSON file with key metrics and output a formatted text file. Name the executable 'deck_summarizer'.",
+   "probe": {
+    "should_apply": [
+     "e09-s02"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 500,
+   "user_input": "How do text to image AIs like stable diffusion and Dalle2 work?"
+  },
+  {
+   "seq": 501,
+   "user_input": "Write a funny opening scene for the tv show \"It's Always Sunny In Philadelphia\"."
+  },
+  {
+   "seq": 502,
+   "user_input": "AI assistant. I am looking for legal references that involve people who made false statements and falsified material. Such as once that I have heard of. That falsified the signatures and testimony of more than 200 doctors. And relationship. To a large false claim. Utilized. To make marijuana illegal. AI assistant. Could you help me? Find this reference."
+  },
+  {
+   "seq": 503,
+   "user_input": "Why is it harder for an assistant to answer questions than for people posing them? And why are assistants usually less well compensated than the people posing questions?"
+  },
+  {
+   "seq": 504,
+   "user_input": "Write a short essay that finds analogies between secondary school students and fish in a coral reef."
+  },
+  {
+   "seq": 505,
+   "user_input": "Please provide a detailed explanation of the Gibbs phenomenon"
+  },
+  {
+   "seq": 506,
+   "user_input": "Who is president in USA on 2023"
+  },
+  {
+   "seq": 507,
+   "user_input": "Write a postmortem for the Q3 product launch delay. Focus on root causes, timeline, and lessons learned — keep the headings in sentence case and plain language.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 508,
+   "user_input": "If you could have any superpower, what would it be and why?"
+  },
+  {
+   "seq": 509,
+   "user_input": "Is it public knowledge how many nuclear bombs each country has and where they are located?"
+  },
+  {
+   "seq": 510,
+   "user_input": "Analyze the principles of risk management and insurance, and their applications in real-world scenarios."
+  },
+  {
+   "seq": 511,
+   "user_input": "What is a conlang? Give examples of popular ones."
+  },
+  {
+   "seq": 512,
+   "user_input": "Should people be prevented from taking decisions that negatively affect them even if it can only be accomplished by limiting their freedom?"
+  },
+  {
+   "seq": 513,
+   "user_input": "I have violent fantasies, what should I do about them?"
+  },
+  {
+   "seq": 514,
+   "user_input": "If white is blue, blue is red, and purple is yellow. What color is white and purple?"
+  },
+  {
+   "seq": 515,
+   "user_input": "Draft a postmortem for the Q3 client engagement that went off track, highlighting root causes and key takeaways for the team deck.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 516,
+   "user_input": "What is the difference between T and B lymphocytes? I know they are both white blood cells and help to fight off infections, but I do not understand the way in which they differ"
+  },
+  {
+   "seq": 517,
+   "user_input": "Shorten the following to fit within a 130 character Tik-Tok comment: > Which is why we need open-source, runnable on your home PC, chatbots - so that governments cannot impose laws, censorship, controls, or any other regulations on chatbots."
+  },
+  {
+   "seq": 518,
+   "user_input": "How do you die from COVID-19?"
+  },
+  {
+   "seq": 519,
+   "user_input": "Write the latex code for relative enthropy between the two distributions P1 and P2."
+  },
+  {
+   "seq": 520,
+   "user_input": "What are some vegetarian alternatives to Parmesan? I would like something that tastes the same, but does not use products obtained by slaughtering animals, such as animal rennet."
+  },
+  {
+   "seq": 521,
+   "user_input": "Who won the Super Bowl in 2020?"
+  },
+  {
+   "seq": 522,
+   "user_input": "Can you make ASCII art? If so, can you show me a house?"
+  },
+  {
+   "seq": 523,
+   "user_input": "Hello! Could you please create a list of traditional medicinal uses for Calendula, and give some information regarding the most popular preparation method and dosage for each of them?"
+  },
+  {
+   "seq": 524,
+   "user_input": "Please draft a one-page executive summary for the Q3 client engagement report. Include key findings, revenue impact, and next steps. Keep it concise and professional.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": [
+     "e09-c08"
+    ]
+   }
+  }
+ ],
+ "ground_truth": {
+  "requirements": [
+   {
+    "id": "e09-c00",
+    "text": "no vivid sensory imagery",
+    "paraphrase": "avoid any sensory-rich descriptions",
+    "anchor": "vivid sensory imagery",
+    "bucket": "communication_style",
+    "scope_mode": "scoped",
+    "applies_when": "when the output is written prose or narrative text that could contain descriptive language",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "style.sensory_imagery",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c01",
+    "text": "keep every response under 83 words",
+    "paraphrase": "limit each response to 83 words max",
+    "anchor": "83",
+    "bucket": "output_contract",
+    "scope_mode": "global",
+    "applies_when": null,
+    "work_kinds": [
+     "all"
+    ],
+    "key": "length.max",
+    "confidence": 9
+   },
+   {
+    "id": "e09-c02",
+    "text": "when writing, avoid hyphens",
+    "paraphrase": "no hyphens in any written output",
+    "anchor": "hyphens",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "composing prose or narrative text for human readers, as opposed to code, identifiers, or non-text output",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "punctuation.hyphens",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c03",
+    "text": "never include 'before profiles'",
+    "paraphrase": "do not use the term 'before profiles'",
+    "anchor": "before profiles",
+    "bucket": "communication_style",
+    "scope_mode": "scoped",
+    "applies_when": "Client-facing written materials that will be sent or shown to a client",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "vocabulary.banned_terms",
+    "confidence": 7
+   },
+   {
+    "id": "e09-c04",
+    "text": "avoid CHANGELOG when writing a changelog",
+    "paraphrase": "don't label it CHANGELOG in client-facing changelogs",
+    "anchor": "CHANGELOG",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "changelog"
+    ],
+    "key": "heading.label",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c05",
+    "text": "avoid HTML hacking when writing Markdown",
+    "paraphrase": "no inline HTML in Markdown content",
+    "anchor": "HTML hacking",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever the response or a delivered artifact is written in Markdown and must render cleanly across viewers",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "markdown.no_raw_html",
+    "confidence": 9
+   },
+   {
+    "id": "e09-c06",
+    "text": "unless I ask for it, don't exhibit traits of intelligence",
+    "paraphrase": "don't show human-like intelligence unless I specifically request it",
+    "anchor": "traits of intelligence",
+    "bucket": "communication_style",
+    "scope_mode": "scoped",
+    "applies_when": "unless the user explicitly requests an anthropomorphic or intelligence-signaling style",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "tone.intelligence",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c07",
+    "text": "use MB instead of KB for file sizes",
+    "paraphrase": "always express file sizes in MB, not KB",
+    "anchor": "sizes",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever file sizes are written or mentioned in the output, regardless of task type",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "units.file_size",
+    "confidence": 9
+   },
+   {
+    "id": "e09-c08",
+    "text": "keep it to 13 sentences max",
+    "paraphrase": "limit it to no more than 13 sentences",
+    "anchor": "13",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "summary"
+    ],
+    "key": "length.max_sentences",
+    "confidence": 7
+   },
+   {
+    "id": "e09-c09",
+    "text": "when naming the executable, avoid a file extension",
+    "paraphrase": "don't put a file extension on the executable name",
+    "anchor": "file extension",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code",
+     "script"
+    ],
+    "key": "executable.naming",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c10",
+    "text": "avoid fencing in code blocks",
+    "paraphrase": "don't put fences around code blocks",
+    "anchor": "fencing",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever the response includes code blocks",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "codeblocks.fencing",
+    "confidence": 9
+   },
+   {
+    "id": "e09-c11",
+    "text": "when writing a reference, always follow the style guide",
+    "paraphrase": "references must adhere to the style guide at all times",
+    "anchor": "style guide",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when the output includes a reference, footnote, or citation",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "reference.style_guide",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c12",
+    "text": "when interacting with a person, don't be polite",
+    "paraphrase": "when dealing with someone, skip the politeness",
+    "anchor": "don't be polite",
+    "bucket": "communication_style",
+    "scope_mode": "scoped",
+    "applies_when": "when the output communicates directly with a person",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "tone.politeness",
+    "confidence": 7
+   },
+   {
+    "id": "e09-c13",
+    "text": "avoid using 'pros occasionally'",
+    "paraphrase": "never write 'pros occasionally'",
+    "anchor": "pros occasionally",
+    "bucket": "communication_style",
+    "scope_mode": "scoped",
+    "applies_when": "whenever the agent produces any written prose, regardless of task type",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "register.avoided_phrase",
+    "confidence": 9
+   },
+   {
+    "id": "e09-c14",
+    "text": "explain each strategy in at most 29 words",
+    "paraphrase": "for every strategy, limit your explanation to 29 words maximum",
+    "anchor": "29",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when the deliverable presents or explains one or more strategies",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "length.max",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c15",
+    "text": "no headings",
+    "paraphrase": "don't use any headings",
+    "anchor": "headings",
+    "bucket": "output_contract",
+    "scope_mode": "global",
+    "applies_when": null,
+    "work_kinds": [
+     "all"
+    ],
+    "key": "structure.headings",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c16",
+    "text": "when writing headings and subheadings, don't use all caps",
+    "paraphrase": "avoid all caps for headings and subheadings",
+    "anchor": "all caps",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever the output contains headings or subheadings, such as in documents, decks, reports, or emails",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "headings.capitalization",
+    "confidence": 9
+   },
+   {
+    "id": "e09-c17",
+    "text": "don't tell viewers what to expect in titles",
+    "paraphrase": "avoid revealing what's coming in the title",
+    "anchor": "titles",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when composing a title or headline for any deliverable, so the title stays punchy without previewing the content",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "title.spoiler_avoidance",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c18",
+    "text": "stop using random versioning, use SemVer",
+    "paraphrase": "always follow SemVer for version numbers",
+    "anchor": "SemVer",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever assigning version numbers or revision labels to a deliverable or artifact",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "versioning.scheme",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c19",
+    "text": "prefer conditional imports",
+    "paraphrase": "use conditional imports when possible",
+    "anchor": "conditional imports",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "the output includes code, scripts, or code snippets that import modules or libraries",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "code_style.imports",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c20",
+    "text": "never write a biography",
+    "paraphrase": "do not include any biography",
+    "anchor": "biography",
+    "bucket": "deliverables",
+    "scope_mode": "scoped",
+    "applies_when": "when the output would include, or a request asks for, biographical content profiling a person's life or background",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "content.biography",
+    "confidence": 7
+   },
+   {
+    "id": "e09-c21",
+    "text": "don't use Conventional Commits in commit messages",
+    "paraphrase": "avoid using Conventional Commits format when writing commit messages",
+    "anchor": "Conventional Commits",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "commit_message"
+    ],
+    "key": "format.commit_convention",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c22",
+    "text": "no trailing backslashes when breaking lines",
+    "paraphrase": "don't use backslashes at line breaks",
+    "anchor": "trailing backslashes",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "any deliverable whose text is wrapped or broken across multiple lines",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "formatting.line_breaks",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c23",
+    "text": "always include a description of what each KPI means",
+    "paraphrase": "make sure every KPI has a definition attached",
+    "anchor": "description",
+    "bucket": "deliverables",
+    "scope_mode": "scoped",
+    "applies_when": "when the output presents key performance indicators (KPIs) or similar performance metrics, regardless of the artifact type",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "kpi.descriptions",
+    "confidence": 9
+   },
+   {
+    "id": "e09-c24",
+    "text": "avoid traditional loops, map(), filter(), or lambda",
+    "paraphrase": "don't use for loops, map, filter, or lambda",
+    "anchor": "traditional loops",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code"
+    ],
+    "key": "code.constructs",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c25",
+    "text": "never use TODO comments in code",
+    "paraphrase": "do not include any TODO comments when writing code",
+    "anchor": "TODO comments",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code"
+    ],
+    "key": "code.comments.todo",
+    "confidence": 9
+   },
+   {
+    "id": "e09-c26",
+    "text": "keep it to around 152 words",
+    "paraphrase": "limit the length to about 152 words",
+    "anchor": "152",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever the agent drafts any written text deliverable for the user, regardless of document type",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "length.max",
+    "confidence": 9
+   },
+   {
+    "id": "e09-c27",
+    "text": "keep one-liners to 13 words max",
+    "paraphrase": "limit any single-line summary to 13 words at most",
+    "anchor": "13",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when writing a one-line response or one-liner",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "length.max",
+    "confidence": 9
+   },
+   {
+    "id": "e09-c28",
+    "text": "keep each document under 3202 words",
+    "paraphrase": "limit every document to 3202 words max",
+    "anchor": "3202",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "the deliverable is a written document whose length is measured in words, such as an email, report, deck, or postmortem",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "length.max",
+    "confidence": 9
+   },
+   {
+    "id": "e09-c29",
+    "text": "when writing about A level grades, use the asterisk symbol, not the word 'star'",
+    "paraphrase": "for A level grades, always write the asterisk instead of 'star'",
+    "anchor": "asterisk",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever the output mentions A level grades or UK A-level grading results",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "notation.grade_symbols",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c30",
+    "text": "prefer hyphen in compound modifiers",
+    "paraphrase": "use hyphen for compound adjectives",
+    "anchor": "hyphen",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when writing any prose deliverable that contains compound modifier phrases (e.g., over-budget, two-page)",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "punctuation.compound_modifier_hyphen",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c31",
+    "text": "when writing, don't include sentences inside quotation marks",
+    "paraphrase": "when drafting, avoid any sentences in quotes",
+    "anchor": "quotation marks",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when the output is natural-language prose for a human reader, rather than code or data formats where quotation marks are syntactic",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "formatting.quoted_sentences",
+    "confidence": 8
+   },
+   {
+    "id": "e09-c32",
+    "text": "don't put miscellaneous links in the 'See also' section",
+    "paraphrase": "never include random links under 'See also'",
+    "anchor": "miscellaneous links",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "the output is a document that includes a 'See also' section",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "structure.see_also_links",
+    "confidence": 8
+   },
+   {
+    "id": "e09-s00",
+    "text": "don't include a description of the findings",
+    "paraphrase": "no description of the findings in the email",
+    "anchor": "description",
+    "bucket": "deliverables",
+    "scope_mode": "scoped",
+    "applies_when": "when the email is a follow-up message referencing findings or results to be shared",
+    "work_kinds": [
+     "email"
+    ],
+    "key": "content.exclusions",
+    "confidence": 8
+   },
+   {
+    "id": "e09-s01",
+    "text": "keep one-liners under 11 words",
+    "paraphrase": "limit one-liners to 11 words max",
+    "anchor": "11",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when writing a one-line response or one-liner",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "length.max",
+    "confidence": 7
+   },
+   {
+    "id": "e09-s02",
+    "text": "always use proper fencing when writing code blocks",
+    "paraphrase": "make sure to fence all code blocks correctly",
+    "anchor": "fencing",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when the response contains code blocks",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "codeblocks.fencing",
+    "confidence": 9
+   },
+   {
+    "id": "e09-s03",
+    "text": "keep any document under 3999 words",
+    "paraphrase": "limit all deliverables to 3999 words max",
+    "anchor": "3999",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "doc"
+    ],
+    "key": "length.max",
+    "confidence": 9
+   },
+   {
+    "id": "e09-s04",
+    "text": "keep the article under 29 sentences",
+    "paraphrase": "limit the article to no more than 29 sentences",
+    "anchor": "29",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "article"
+    ],
+    "key": "length.max",
+    "confidence": 9
+   },
+   {
+    "id": "e09-s05",
+    "text": "when writing a biography, write the biography",
+    "paraphrase": "when drafting a biography, produce a full narrative biography",
+    "anchor": "biography",
+    "bucket": "deliverables",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "biography"
+    ],
+    "key": "deliverable.completeness",
+    "confidence": 8
+   }
+  ],
+  "lifecycle": [
+   {
+    "seq": 12,
+    "op": "assert",
+    "id": "e09-c00"
+   },
+   {
+    "seq": 22,
+    "op": "assert",
+    "id": "e09-c01"
+   },
+   {
+    "seq": 31,
+    "op": "assert",
+    "id": "e09-c02"
+   },
+   {
+    "seq": 31,
+    "op": "assert",
+    "id": "e09-c03"
+   },
+   {
+    "seq": 49,
+    "op": "assert",
+    "id": "e09-c04"
+   },
+   {
+    "seq": 56,
+    "op": "assert",
+    "id": "e09-c05"
+   },
+   {
+    "seq": 56,
+    "op": "assert",
+    "id": "e09-c06"
+   },
+   {
+    "seq": 65,
+    "op": "assert",
+    "id": "e09-c07"
+   },
+   {
+    "seq": 74,
+    "op": "assert",
+    "id": "e09-c08"
+   },
+   {
+    "seq": 74,
+    "op": "assert",
+    "id": "e09-c09"
+   },
+   {
+    "seq": 91,
+    "op": "assert",
+    "id": "e09-c10"
+   },
+   {
+    "seq": 98,
+    "op": "assert",
+    "id": "e09-c11"
+   },
+   {
+    "seq": 98,
+    "op": "assert",
+    "id": "e09-c12"
+   },
+   {
+    "seq": 107,
+    "op": "assert",
+    "id": "e09-c13"
+   },
+   {
+    "seq": 117,
+    "op": "assert",
+    "id": "e09-c14"
+   },
+   {
+    "seq": 117,
+    "op": "assert",
+    "id": "e09-c15"
+   },
+   {
+    "seq": 130,
+    "op": "assert",
+    "id": "e09-c16"
+   },
+   {
+    "seq": 141,
+    "op": "assert",
+    "id": "e09-c17"
+   },
+   {
+    "seq": 141,
+    "op": "assert",
+    "id": "e09-c18"
+   },
+   {
+    "seq": 151,
+    "op": "assert",
+    "id": "e09-c19"
+   },
+   {
+    "seq": 158,
+    "op": "assert",
+    "id": "e09-c20"
+   },
+   {
+    "seq": 158,
+    "op": "assert",
+    "id": "e09-c21"
+   },
+   {
+    "seq": 180,
+    "op": "assert",
+    "id": "e09-c22"
+   },
+   {
+    "seq": 191,
+    "op": "assert",
+    "id": "e09-c23"
+   },
+   {
+    "seq": 191,
+    "op": "assert",
+    "id": "e09-c24"
+   },
+   {
+    "seq": 201,
+    "op": "assert",
+    "id": "e09-c25"
+   },
+   {
+    "seq": 277,
+    "op": "assert",
+    "id": "e09-c26"
+   },
+   {
+    "seq": 277,
+    "op": "assert",
+    "id": "e09-c27"
+   },
+   {
+    "seq": 284,
+    "op": "assert",
+    "id": "e09-c28"
+   },
+   {
+    "seq": 291,
+    "op": "assert",
+    "id": "e09-c29"
+   },
+   {
+    "seq": 291,
+    "op": "assert",
+    "id": "e09-c30"
+   },
+   {
+    "seq": 312,
+    "op": "assert",
+    "id": "e09-c31"
+   },
+   {
+    "seq": 318,
+    "op": "assert",
+    "id": "e09-c32"
+   },
+   {
+    "seq": 351,
+    "op": "contradict",
+    "id": "e09-s00",
+    "target": "e09-c23"
+   },
+   {
+    "seq": 358,
+    "op": "contradict",
+    "id": "e09-s01",
+    "target": "e09-c27"
+   },
+   {
+    "seq": 368,
+    "op": "contradict",
+    "id": "e09-s02",
+    "target": "e09-c10"
+   },
+   {
+    "seq": 380,
+    "op": "contradict",
+    "id": "e09-s03",
+    "target": "e09-c28"
+   },
+   {
+    "seq": 387,
+    "op": "contradict",
+    "id": "e09-s04",
+    "target": "e09-c08"
+   },
+   {
+    "seq": 397,
+    "op": "contradict",
+    "id": "e09-s05",
+    "target": "e09-c20"
+   },
+   {
+    "seq": 416,
+    "op": "retire",
+    "target": "e09-c00"
+   },
+   {
+    "seq": 423,
+    "op": "retire",
+    "target": "e09-c04"
+   },
+   {
+    "seq": 430,
+    "op": "retire",
+    "target": "e09-c14"
+   },
+   {
+    "seq": 445,
+    "op": "retire",
+    "target": "e09-c21"
+   },
+   {
+    "seq": 454,
+    "op": "retire",
+    "target": "e09-c01"
+   },
+   {
+    "seq": 464,
+    "op": "retire",
+    "target": "e09-c09"
+   },
+   {
+    "seq": 485,
+    "op": "retire",
+    "target": "e09-c03"
+   },
+   {
+    "seq": 491,
+    "op": "retire",
+    "target": "e09-c30"
+   },
+   {
+    "seq": 351,
+    "op": "retire",
+    "target": "e09-c26"
+   },
+   {
+    "seq": 358,
+    "op": "retire",
+    "target": "e09-c25"
+   },
+   {
+    "seq": 368,
+    "op": "retire",
+    "target": "e09-c06"
+   },
+   {
+    "seq": 380,
+    "op": "retire",
+    "target": "e09-c07"
+   },
+   {
+    "seq": 191,
+    "op": "reinforce",
+    "target": "e09-c22"
+   },
+   {
+    "seq": 191,
+    "op": "reinforce",
+    "target": "e09-c05"
+   },
+   {
+    "seq": 284,
+    "op": "reinforce",
+    "target": "e09-c02"
+   }
+  ],
+  "state_checkpoints": [
+   65,
+   130,
+   207,
+   277,
+   343,
+   387,
+   445,
+   524
+  ]
+ }
+}

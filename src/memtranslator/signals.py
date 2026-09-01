@@ -1,0 +1,360 @@
+"""Classify final desktop text against its exact translate event.
+
+No markers are ever embedded in text. The macOS client sends an explicit
+translate id; similarity to original and polished text determines whether the
+user accepted, edited, reverted, or replaced the rewrite. Classification
+feeds both acceptance metrics and the memory-write pipeline.
+"""
+import re
+from difflib import SequenceMatcher
+
+from memtranslator.config import (B_DIFF_CHANGE_TOKENS, B_DIFF_CONTEXT_TOKENS,
+                                  B_DIFF_MERGE_GAP_TOKENS,
+                                  B_DIFF_SENTENCE_TOKENS)
+
+REVERT_SIM_THRESHOLD = 0.85
+
+
+def _norm(s: str) -> str:
+    return " ".join(s.split())
+
+
+def _sim(a: str, b: str) -> float:
+    return SequenceMatcher(None, _norm(a), _norm(b)).ratio()
+
+
+def classify_feedback(text: str, translate_event: dict) -> dict:
+    """Returns {classification, matched_translate_id, similarity}.
+
+    The caller has already resolved ``translate_event`` by its explicit id,
+    so there is no fuzzy time-window join here. Any final text that is neither
+    the polished output nor a reversion is an edit of that known transaction.
+    """
+    polished = translate_event.get("polished") or ""
+    original = translate_event.get("original") or ""
+    tid = translate_event["translate_id"]
+    sim_polished = _sim(text, polished)
+    sim_original = _sim(text, original)
+    if _norm(text) == _norm(polished):
+        return {"classification": "accepted_verbatim",
+                "matched_translate_id": tid, "similarity": 1.0}
+    if sim_original >= REVERT_SIM_THRESHOLD and sim_original >= sim_polished:
+        return {"classification": "reverted",
+                "matched_translate_id": tid, "similarity": sim_original}
+    return {"classification": "edited_after_polish",
+            "matched_translate_id": tid, "similarity": sim_polished}
+
+
+# ---------------------------------------------------------------------------
+# M1 / B1 — mechanical span attribution over the (raw, polished, final) triple
+# (design 2026-07-24 §4; 0 tokens). Verdict drives the mechanical strength
+# rule; ambiguous cases carry the triple into the extraction batch instead.
+# ---------------------------------------------------------------------------
+
+# Length-weighted survival thresholds for injected spans: below KILL the
+# injection is effectively gone, above KEEP it survived; in between the
+# signal is ambiguous and the LLM attribution call decides. Engineering
+# constants over span arithmetic, not tuned against any eval data.
+_SURVIVE_KEEP = 0.7
+_SURVIVE_KILL = 0.3
+
+
+def _spans(a: str, b: str, tags: tuple, side: str) -> list[tuple[int, int]]:
+    """Opcode ranges on one side of a SequenceMatcher diff."""
+    out = []
+    for tag, i1, i2, j1, j2 in SequenceMatcher(None, a, b).get_opcodes():
+        if tag in tags:
+            out.append((i1, i2) if side == "a" else (j1, j2))
+    return [(s, e) for s, e in out if e > s]
+
+
+def attribute_diff(raw: str, polished: str, final: str) -> dict:
+    """Classify what the user's final edit did to the injected constraints.
+
+    Returns {verdict, injection_survival, strength_delta, user_added}:
+    verdict accepted|reverted|partial; survival kept|removed|mixed|none;
+    user_added = text the user added on top of polished (route-B b3 feed).
+    """
+    if _norm(final) == _norm(polished):
+        return {"verdict": "accepted", "injection_survival": "kept",
+                "strength_delta": +1, "user_added": []}
+    if _norm(final) == _norm(raw):
+        return {"verdict": "reverted", "injection_survival": "removed",
+                "strength_delta": -1, "user_added": []}
+
+    inject = _spans(raw, polished, ("insert", "replace"), side="b")
+    edits = _spans(polished, final, ("delete", "replace"), side="a")
+    user_added = [final[j1:j2] for j1, j2 in
+                  _spans(polished, final, ("insert", "replace"), side="b")]
+
+    total = sum(e - s for s, e in inject)
+    if total == 0:
+        return {"verdict": "partial", "injection_survival": "none",
+                "strength_delta": 0, "user_added": user_added}
+
+    removed = 0
+    for s, e in inject:
+        for es, ee in edits:
+            lo, hi = max(s, es), min(e, ee)
+            if hi > lo:
+                removed += hi - lo
+    survival = 1 - removed / total
+    if survival >= _SURVIVE_KEEP:
+        label, delta = "kept", +1
+    elif survival <= _SURVIVE_KILL:
+        label, delta = "removed", -1
+    else:
+        label, delta = "mixed", 0
+    return {"verdict": "partial", "injection_survival": label,
+            "strength_delta": delta, "user_added": user_added}
+
+
+# ---------------------------------------------------------------------------
+# Route B — what the user actually changed in our patch, as sentences the
+# feedback extractor can attribute. Character-level shards made a semantic
+# replacement look like an unrelated add plus an unrelated delete, which is
+# the failure this layer exists to prevent.
+# ---------------------------------------------------------------------------
+
+_LEXICAL_TOKEN = re.compile(
+    r"[\u3400-\u9fff]|[A-Za-z0-9_]+|[^\w\s]", re.UNICODE)
+_SENTENCE_END = re.compile(r"[.!?。！？；;\n]")
+_TRUNCATED = "[truncated]"
+
+
+def _input_token_cost(ch: str) -> float:
+    """Cheap cross-language estimate for deterministic input guardrails."""
+    return 1.0 if "一" <= ch <= "鿿" else 0.25
+
+
+def estimate_input_tokens(text: str) -> int:
+    """Approximate provider tokens: CJK≈1/char, Latin≈1/4 chars."""
+    return int(sum(_input_token_cost(ch) for ch in text) + 0.999)
+
+
+def _take_prefix_tokens(text: str, budget: float) -> str:
+    used = 0.0
+    for index, ch in enumerate(text):
+        cost = _input_token_cost(ch)
+        if used + cost > budget:
+            return text[:index]
+        used += cost
+    return text
+
+
+def _take_suffix_tokens(text: str, budget: float) -> str:
+    used = 0.0
+    for index in range(len(text) - 1, -1, -1):
+        cost = _input_token_cost(text[index])
+        if used + cost > budget:
+            return text[index + 1:]
+        used += cost
+    return text
+
+
+def _middle_truncate(text: str, max_tokens: int) -> str:
+    if max_tokens <= 0:
+        return _TRUNCATED
+    if estimate_input_tokens(text) <= max_tokens:
+        return text
+    marker = f"\n{_TRUNCATED}\n"
+    remaining = max(0.0, max_tokens - estimate_input_tokens(marker))
+    head_budget = remaining / 2
+    tail_budget = remaining - head_budget
+    head = _take_prefix_tokens(text, head_budget).rstrip()
+    tail = _take_suffix_tokens(text, tail_budget).lstrip()
+    return head + marker + tail
+
+
+def _token_spans(text: str) -> list[tuple[str, int, int]]:
+    """Cheap deterministic lexical tokens with source offsets.
+
+    CJK characters are individual tokens; Latin words, numbers and
+    punctuation are tokens. This is intentionally tokenizer-independent so
+    write capture stays available whatever the model channel is doing.
+    """
+    return [(m.group(0), m.start(), m.end())
+            for m in _LEXICAL_TOKEN.finditer(text)]
+
+
+def _token_char_span(tokens: list[tuple[str, int, int]], start: int,
+                     end: int, text_len: int) -> tuple[int, int]:
+    left = tokens[start][1] if start < len(tokens) else text_len
+    right = tokens[end - 1][2] if end > start else left
+    return left, right
+
+
+def _sentence_bounds(text: str, start: int, end: int) -> tuple[int, int]:
+    left = 0
+    for match in _SENTENCE_END.finditer(text, 0, start):
+        left = match.end()
+    right_match = _SENTENCE_END.search(text, max(start, end))
+    right = right_match.end() if right_match else len(text)
+    while left < right and text[left].isspace():
+        left += 1
+    return left, right
+
+
+def _marked_sentence(text: str, change_start: int, change_end: int) -> str:
+    """Full sentence through B_DIFF_SENTENCE_TOKENS tokens, otherwise a
+    symmetric context window around the change."""
+    sent_start, sent_end = _sentence_bounds(text, change_start, change_end)
+    tokens = [t for t in _token_spans(text)
+              if t[1] >= sent_start and t[2] <= sent_end]
+    clip_start, clip_end = sent_start, sent_end
+    prefix = suffix = ""
+    if len(tokens) > B_DIFF_SENTENCE_TOKENS:
+        before = [i for i, t in enumerate(tokens) if t[2] <= change_start]
+        after = [i for i, t in enumerate(tokens) if t[1] >= change_end]
+        first = max(0, (before[-1] + 1 if before else 0)
+                    - B_DIFF_CONTEXT_TOKENS)
+        last_change = after[0] if after else len(tokens)
+        last = min(len(tokens), last_change + B_DIFF_CONTEXT_TOKENS)
+        clip_start = tokens[first][1]
+        clip_end = tokens[last - 1][2]
+        if clip_start > sent_start:
+            prefix = _TRUNCATED + " "
+        if clip_end < sent_end:
+            suffix = " " + _TRUNCATED
+
+    # A huge pasted replacement can itself exceed the sentence budget. Keep
+    # its edges while preserving the explicit changed-region marker.
+    changed = _token_spans(text[change_start:change_end])
+    if len(changed) > B_DIFF_CHANGE_TOKENS:
+        half = B_DIFF_CHANGE_TOKENS // 2
+        head_end = changed[half - 1][2]
+        tail_start = changed[-half][1]
+        raw_change = (text[change_start:change_start + head_end]
+                      + " " + _TRUNCATED + " "
+                      + text[change_start + tail_start:change_end])
+    else:
+        raw_change = text[change_start:change_end]
+    return (prefix + text[clip_start:change_start]
+            + raw_change
+            + text[change_end:clip_end] + suffix)
+
+
+def _coalesced_changes(a_tokens: list[tuple[str, int, int]],
+                       b_tokens: list[tuple[str, int, int]]) -> list[tuple]:
+    """Opcodes with near-neighbours merged: an edit that swaps a couple of
+    words reads as one change, not a burst of them."""
+    matcher = SequenceMatcher(
+        None, [t[0].lower() for t in a_tokens],
+        [t[0].lower() for t in b_tokens], autojunk=False)
+    changes = [op for op in matcher.get_opcodes() if op[0] != "equal"]
+    if not changes:
+        return []
+    out = [list(changes[0])]
+    for tag, i1, i2, j1, j2 in changes[1:]:
+        prev = out[-1]
+        if (i1 - prev[2] <= B_DIFF_MERGE_GAP_TOKENS
+                and j1 - prev[4] <= B_DIFF_MERGE_GAP_TOKENS):
+            prev[2], prev[4] = i2, j2
+            prev[0] = "replace" if prev[1] != i2 and prev[3] != j2 \
+                else ("delete" if prev[1] != i2 else "insert")
+        else:
+            out.append([tag, i1, i2, j1, j2])
+    return [tuple(x) for x in out]
+
+
+def patch_diff(polished: str, final: str) -> list[dict]:
+    """Apply-patch hunks of the human edit on the translator's output.
+
+    Each hunk is {old, new} against the patched request. An unedited patch
+    yields no hunks, which is what lets the queue skip it without a call.
+    """
+    if _norm(polished) == _norm(final):
+        return []
+    before_tokens, after_tokens = _token_spans(polished), _token_spans(final)
+    hunks: list[dict] = []
+    for _tag, i1, i2, j1, j2 in _coalesced_changes(
+            before_tokens, after_tokens):
+        a1, a2 = _token_char_span(before_tokens, i1, i2, len(polished))
+        b1, b2 = _token_char_span(after_tokens, j1, j2, len(final))
+        if i1 == i2 and i1:
+            a1 = a2 = before_tokens[i1 - 1][2]
+        if j1 == j2 and j1:
+            b1 = b2 = after_tokens[j1 - 1][2]
+        hunks.append({
+            "old": _marked_sentence(polished, a1, a2),
+            "new": _marked_sentence(final, b1, b2),
+        })
+    return hunks
+
+
+# Controlled facet lexicon: maps facet-key vocabulary to surface forms in
+# both product languages for content-overlap checks used by consolidation.
+_KEY_LEXICON = {
+    "email": ["email", "mail", "邮件"], "code": ["code", "代码"],
+    "report": ["report", "周报", "报告"], "doc": ["doc", "文档"],
+    "meeting": ["meeting", "会议"], "research": ["research", "调研", "论文"],
+    "tone": ["tone", "语气"], "length": ["length", "长度", "字数", "词数"],
+    "format": ["format", "格式"], "language": ["language", "语言"],
+    "style": ["style", "风格"], "explanation": ["explanation", "解释"],
+    "comment": ["comment", "注释"], "citation": ["cite", "引用", "出处"],
+}
+
+
+def compact_message(text: str, *, max_tokens: int) -> str:
+    """Return an LLM-visible view bounded by a head/tail token budget.
+
+    Over-budget text keeps the opening and the end; the hidden middle is
+    marked ``[truncated]``. Callers keep the original for persistence and
+    patches. Paste/material heuristics are not applied here.
+    """
+    return _middle_truncate(text, max_tokens)
+
+
+# Tokens that appear in half of all rules AND half of all rule-referencing
+# sentences (rule scaffolding, function words, deictics) carry zero facet
+# information. The consolidation backup uses this overlap vocabulary to avoid
+# merging unrelated rules. CJK entries are bm25-style bigrams.
+_OVERLAP_SCAFFOLD = {
+    "一律", "以后", "每次", "必须", "不要", "不用", "别再", "别用", "记住",
+    "记得", "都要", "使用", "时候", "直接", "之前", "说的", "那条", "这条",
+    "现在", "开始", "默认",
+    "a", "an", "the", "in", "on", "at", "to", "of", "for", "and", "or",
+    "but", "is", "are", "be", "it", "that", "this", "with", "you", "your",
+    "i", "my", "me", "we", "our", "please", "don", "dont", "do", "not",
+    "no", "never", "always", "must", "keep", "make", "when", "any", "all",
+    "under", "over", "than", "from", "now", "so", "just", "can", "use",
+    "using", "write", "writing", "up",
+}
+
+
+def content_tokens(text: str) -> set:
+    """Facet vocabulary of a rule or a sentence, for overlap matching:
+    bm25 tokens minus scaffold, with one trailing latin plural 's'
+    stripped so "notifications" (stored rule) meets "notification
+    restriction" (withdrawal). Used by consolidation's overlap clustering;
+    BM25 ranking keeps raw tokens.
+
+    Lexicon roots ride along as pseudo-tokens ("root:email"): with English
+    as the store's canonical language (owner ruling 2026-07-29) a Chinese
+    quotation of a rule shares no surface token with its stored English
+    text — digits and format terms bridge naturally, the lexicon bridges
+    the rest ("邮件" and "emails" both contribute root:email)."""
+    from memtranslator.bm25 import tokenize
+    out = set()
+    for t in tokenize(text):
+        if len(t) <= 1 or t in _OVERLAP_SCAFFOLD:
+            continue
+        if len(t) >= 4 and t.endswith("s") and not t.endswith("ss"):
+            t = t[:-1]
+        out.add(t)
+    low = text.lower()
+    for root, surfaces in _KEY_LEXICON.items():
+        if any(s.lower() in low for s in surfaces):
+            out.add(f"root:{root}")
+    return out
+
+
+def overlap_is_reference(sent_tokens: set, entry_tokens: set) -> bool:
+    """Does this sentence visibly reference this stored rule? Two shared
+    content tokens, or one that is distinctive alone — numeric (a quoted
+    cap like "78") or a long latin word ("notification"). This is what
+    catches a quoted stored rule such as "that rule about X — drop it"."""
+    shared = sent_tokens & entry_tokens
+    return (len(shared) >= 2
+            or any(any(c.isdigit() for c in t) or len(t) >= 8
+                   for t in shared))

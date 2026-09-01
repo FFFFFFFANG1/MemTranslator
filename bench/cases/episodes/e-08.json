@@ -1,0 +1,1175 @@
+{
+  "id": "e-08",
+  "protocol_version": 3,
+  "user_turns": [
+    {
+      "seq": 1,
+      "user_input": "推荐工具的时候优先开源的啊，闭源的我们过不了审"
+    },
+    {
+      "seq": 2,
+      "user_input": "帮我写一封邮件，通知各部门下周二的运营排期会议改到周三下午三点，语气要客气，格式要整齐，正文和标题都要有。。上次你写的那条推文太长了，根本塞不下。以后写推文的时候，字数必须控制在314个字符以内，不然发出去被截断多难看。"
+    },
+    {
+      "seq": 3,
+      "user_input": "请帮我整理一下本周的运营数据，包括用户增长、活跃度和转化率，做成一个简洁的周报表格，格式要统一对齐。。对了，顺便提一下，以后写地理方向或区域的时候，像东南西北、华北华东这种，记得都用小写，别大写。还有，帮我整理一下上个月的运营数据，按渠道分类，做成周报格式，附上环比变化，表格对齐，发我邮箱。"
+    },
+    {
+      "seq": 4,
+      "user_input": "帮我写个Python脚本，自动从钉钉导出本周的审批数据，然后按部门汇总成Excel表格，表头要加粗，列宽自适应，日期列格式统一为yyyy-mm-dd。。对了，以后帮我整理数据的时候，别把每个渠道的相同特征反复列出来，比如“用户增长高、活跃度一般、转化率低”这种，每个渠道都说一遍就很啰嗦。直接按渠道列数据，重点突出差异就行。另外，这次帮我整理一下本月各渠道的运营数据，包括用户增长、活跃度和转化率，按周分列，做成表格形式，发给团队做月报参考。。对了，顺便说个事——以后写缩写的时候，记得先写全称再写缩写，比如“运营数据（Ops Data）”。然后帮我写个Python脚本，自动把本周的运营数据（CSV格式）整理成表格，并生成带图表的周报HTML文件。"
+    },
+    {
+      "seq": 5,
+      "user_input": "帮我写一份上周活动页崩溃的事故复盘，按时间线、影响范围、根因、修复动作、后续改进这几个模块来，每个模块分点写，格式要清晰，别用大段文字。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 6,
+      "user_input": "帮我写一封邮件，发给市场部，提醒他们下周三前提交下季度的活动排期，格式要表格，按时间、活动名称、负责人、备注列清楚。。哎，上次那个报告你写的时候，第三段那个链接跳转到旧版去了，根本点不开。我后来查了半天才发现是之前改过那个章节的锚点没更新。以后更新或者移动任何一个章节的时候，记得检查一下，别留死链啊，看着特别不专业。另外，这次帮我写一份关于上周五线上活动页面加载超时的事故复盘报告，包含时间线、根因、影响范围和后续改进措施，格式要清晰，用Markdown。"
+    },
+    {
+      "seq": 7,
+      "user_input": "请帮我整理一下这个月的运营数据，做成周报格式，包含各渠道的流量、转化率、订单数，还有环比变化，表格对齐，别用标点符号结尾。对了，顺便帮我写个Python脚本，自动读取本周的运营数据CSV文件，生成按日汇总的Excel报表，并配上折线图，文件命名格式为‘运营周报_YYYYMMDD.xlsx’。还有，以后涉及学习或工作类的内容，别给我推荐个人建议，保持正式就行，别整那些主观的东西。。上次你给的例子怎么又带了一堆文件路径和URL啊，我只看例子本身，不想看到那些乱七八糟的路径。以后给例子的时候，别带文件路径和URL了，行不行？另外，帮我写个Python脚本，自动从CSV文件里读取用户数据，生成每日运营报告，输出为格式化的Excel表格，包含日期、新增用户、活跃用户、留存率这些字段。"
+    },
+    {
+      "seq": 8,
+      "user_input": "帮我写个Python脚本，自动把本周的运营数据报表从CSV转成Excel，并按日期分sheet，每个sheet里加个折线图展示当日数据趋势。。上次你写的那个活动页面描述，我拿去给设计看，人家说根本没法照着画，缺细节。以后写描述的时候，别写那种没法做插画的描述，要写能直接用的。另外，帮我写一份上周三线上活动页面加载卡顿的事故复盘报告，要包含时间线、影响范围、根因分析和后续改进措施，格式用表格，别漏了SLA达标情况。"
+    },
+    {
+      "seq": 9,
+      "user_input": "对了，以后你帮我写东西的时候，凡是提到对外公开的API接口名字，别按代码里的实现来写，要按用户实际怎么用的来命名。比如接口名、参数名这些，都得用用户习惯的说法，别用后台那一套。还有，帮我整理一下上周的运营数据，做成周报格式，要包含渠道来源、转化率、活跃用户数，按表格排版，今天下班前给我。，上次那个脚本生成的版本号，pre-release的居然写成1.0.0-beta.1这种带点的，看着乱死了。以后凡是pre-release版本，一律不准加那个点分隔符，直接写1.0.0-beta1这种连着的。另外，帮我写一个Python脚本，自动从CSV文件里读取用户数据，生成每日运营报告，输出为格式化的Excel表格，包含日期、新增用户、活跃用户、留存率这些字段。"
+    },
+    {
+      "seq": 10,
+      "user_input": "帮我写一封邮件，通知大家下周一的运营周会改到周三下午两点，会议室不变，附上更新后的会议邀请。",
+      "probe": {
+        "should_apply": [
+          "e08-c05"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 11,
+      "user_input": "帮我整理一下上个月的运营数据，做成周报格式，要包含渠道、转化率、活跃用户数，最好按周分列，表格别太乱。。对了，顺便说一句，以后写报告的时候，如果一行里连续断两次行，就给我手动换行，别让它自动折行超过22次，我看着难受。然后你先把上周三那个线上活动页面加载卡顿的事故复盘报告写一下，时间线、影响范围、根因、改进措施，表格格式，SLA达标情况也别忘了。"
+    },
+    {
+      "seq": 12,
+      "user_input": "帮我写个Python脚本，自动读取上周的运营数据CSV，计算每个渠道的日平均曝光和点击率，然后输出一个格式整齐的表格，最后把结果存成新的Excel文件。。对了，以后都注意一下，写邮件提到工人的时候，别说‘工人’了，统一用‘critical worker’。帮我把这个也加进去：帮我写封邮件，通知各部门下周五前提交Q3季度运营数据汇总，要求Excel格式，标题写明‘部门+Q3数据’，抄送张总和李总。。上次那个脚本生成的报告里，冒号前面多了空格，看着特别别扭。以后写代码或者文档的时候，注意一下冒号前面不要加空格，直接写就行。另外，帮我写一个Python脚本，自动读取本周的运营数据CSV文件，生成按日汇总的Excel报表，并配上折线图，文件命名格式为‘运营周报_YYYYMMDD.xlsx’。"
+    },
+    {
+      "seq": 13,
+      "user_input": "帮我写一份上周三线上活动数据异常的复盘报告，包含影响范围、根因分析和后续改进措施，格式要清晰，带时间线和责任人。。你上次那个报告里，数字超过1601个的时候没加逗号，看着乱糟糟的。以后写数字超过1601个的时候，记得加逗号，不然我整理起来太费劲了。对了，帮我写一份上周的故障复盘报告，格式要按我们公司模板，把影响范围、时间线、根因和后续措施都列清楚。"
+    },
+    {
+      "seq": 14,
+      "user_input": "你刚才那封邮件写得还行，但怎么又堆了一堆并列的形容词和重复的说明啊，看着就乱。以后写东西的时候，别老重复和罗列那些特征，简洁点行不行？，上次你给我写的那个注释块，每行都顶到80个字符就断了，看着特别碎。我这边文档注释能不能把行宽放宽到116个字符？这样一段话能写完整，读起来顺多了。另外，帮我整理一下上周的运营数据，做成周报格式，要包含渠道来源、转化率、活跃用户数，按表格排版，今天下班前给我。"
+    },
+    {
+      "seq": 15,
+      "user_input": "对了，地理方向或区域用小写这条继续保持啊"
+    },
+    {
+      "seq": 16,
+      "user_input": "帮我写一个Python脚本，自动统计本周公众号后台阅读量、转发量和关注数，并生成带图表的Excel周报，格式要整洁，日期列用YYYY-MM-DD，数据表头加粗居中，图表放在第二个sheet。。对了，另外以后写文档的时候，那个“参见”部分别放杂七杂八的链接，只放官方文档或者核心参考。然后帮我写个Python脚本，自动从CSV文件里读用户数据，生成每日运营报告，输出成格式化的Excel，字段包括日期、新增用户、活跃用户、留存率。"
+    },
+    {
+      "seq": 17,
+      "user_input": "帮我写一份上周活动页崩溃的事故复盘，按时间线、影响范围、根因、修复动作、后续改进这几个模块来，每个模块分点写，格式要清晰，别用大段文字。。对了，顺便，以后回我消息别写太长，说重点就行。帮我写一封邮件，通知各部门下周的运营排期调整，附上最新的周报模板，格式要整齐，标题加粗，段落间距统一。。刚那版复盘报告，insight那块写得太长了，看得我眼晕。以后从笔记里提取insight的时候，每条严格控制在67个单词以内，别超了，行不？"
+    },
+    {
+      "seq": 18,
+      "user_input": "帮我写一封邮件，通知团队下周的排期调整，正文用表格列出时间、任务和负责人，语气正式但别太生硬。。对了，顺便说下，以后你回答的时候每条都控制在69个字符以内，别超了哈。另外帮我写一封邮件，通知各部门下周五之前提交月度运营数据汇总，格式要清晰，带表格模板。"
+    },
+    {
+      "seq": 19,
+      "user_input": "对了，顺便说一下，以后你写东西的时候，标点前面不要加空格，看着难受。帮我整理一下上个月的运营数据，按渠道分类，做成周报格式，附上环比变化，表格对齐，发我邮箱。，对了，以后都别用markdown格式了，看着乱。帮我写个Python脚本，自动把本周的运营数据（CSV格式）整理成表格，并生成带图表的周报HTML文件。"
+    },
+    {
+      "seq": 20,
+      "user_input": "帮我写一封邮件，通知各部门下周二的运营例会改到周四下午三点，主题不变，格式要正式，标题、称呼、正文、落款一个不能少。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 21,
+      "user_input": "帮我写一份关于上周推送活动延迟上线的事故复盘报告，要带时间线、原因分析和改进措施，格式按之前那种表格加分点的样式。。哎，上次那个脚本跑出来的报表里，那些奇怪术语第一次出现时都没加单引号，看着特别乱。以后凡是遇到不常见的术语，第一次出现的时候必须用单引号括起来，同一个术语在文档里出现超过13次之后就不用再标了。另外，帮我写一个Python脚本，自动读取本周的运营数据CSV文件，生成按日汇总的Excel报表，并配上折线图，文件命名格式为‘运营周报_YYYYMMDD.xlsx’。"
+    },
+    {
+      "seq": 22,
+      "user_input": "帮我写一封邮件，通知各部门下周的周报截止时间提前到周三下午5点，语气正式但别太生硬，要写清楚原因和格式要求。。刚才那个数据整理我看了，挺好的，但有个小问题——你写列表的时候别加尾逗号，看着别扭，以后都注意一下。。对了，以后写长列表的时候，别用那种自动编号，看着乱。帮我写一封邮件，通知各部门下周的运营排期调整，附上最新的周报模板，格式要整齐，标题加粗，段落间距统一。。对了，以后对外公开的API接口命名，要按用户实际用法，不要按代码实现这条继续保持啊"
+    },
+    {
+      "seq": 23,
+      "user_input": "上次那个脚本生成的周报，里面的小数比如0.5写成0.5没问题，但像0.25写成.25就不对了，看着不专业。以后所有小数都写成数字形式，别用点开头那种写法。"
+    },
+    {
+      "seq": 24,
+      "user_input": "帮我写本周运营周报，把上周的社群活动数据、新增用户数、内容发布量整理成表格，重点突出转化率变化。",
+      "probe": {
+        "should_apply": [
+          "e08-c17"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 25,
+      "user_input": "帮我写一封邮件，发给市场部，确认下周的推广排期，正文要简洁，每个项目单独一行，不要有重复内容。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 26,
+      "user_input": "这次这份写详细一点，季度 review 要用"
+    },
+    {
+      "seq": 27,
+      "user_input": "先把日志按天切开再统计，别一把梭"
+    },
+    {
+      "seq": 28,
+      "user_input": "帮我写一份上周的运营周报，重点列出各渠道的引流数据、转化率和下周的排期计划，格式要清晰，每条数据单独一行，别让文字自动折行太多。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 29,
+      "user_input": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」"
+    },
+    {
+      "seq": 30,
+      "user_input": "帮我写一封邮件，发给市场部，提醒他们下周三前提交下季度的活动排期，格式要表格，按时间、活动名称、负责人、备注列清楚。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 31,
+      "user_input": "我老板要求他们组的周报全用 bullet，真够呛"
+    },
+    {
+      "seq": 32,
+      "user_input": "帮我写一个Python脚本，自动抓取本周各渠道的阅读量数据，生成一个Excel表格，按渠道分sheet，每个sheet里要有日期、标题和阅读量三列，表头加粗加底色，数据按日期降序排列。。刚看了你写的邮件草稿，内容倒是对，但里面怎么用了那么多被动语态啊？看着特别别扭，像机器翻译的。以后写东西别用被动语态了，行吗？另外，邮件里别忘了强调Excel格式和标题格式，还有抄送张总和李总。。请帮我写一份关于上周五线上活动页面加载超时的事故复盘报告，包含时间线、根因、影响范围和后续改进措施，格式要清晰，用Markdown。另外，以后写描述的时候，避免用负面描述，尤其不要写那种说产品跟用户预期有差距的话。"
+    },
+    {
+      "seq": 33,
+      "user_input": "对了，顺便有个事——以后你在引用或者加引号的时候，别给我用那个什么‘引号与说话标记’词条，我不需要那个。然后帮我写一个Python脚本，自动读取本周的运营数据CSV文件，生成按日汇总的Excel报表，并配上折线图，文件命名格式为‘运营周报_YYYYMMDD.xlsx’谢谢。"
+    },
+    {
+      "seq": 34,
+      "user_input": "帮我写一封邮件给设计部，催一下下周活动海报的初稿，周三前要，用语客气点，正文用列表格式列清楚需求。。对了，上周五那个线上活动页面加载超时的事故复盘报告帮我写一下，要有时间线、根因、影响范围和后续改进，Markdown格式。另外以后写东西别带‘道德’、‘非法’、‘不道德’这些词，用不上。。对了，顺便说一下，以后解析页脚里的数值时，不要终止解析，直接跳过就行。另外帮我写一份上周的故障复盘报告，格式要按我们公司模板，把影响范围、时间线、根因和后续措施都列清楚。"
+    },
+    {
+      "seq": 35,
+      "user_input": "帮我写一份上周的运营周报，内容包括数据总结和下周计划，参见部分只放内链文档，别用那些敏感词。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 36,
+      "user_input": "帮我写一封邮件，通知各部门下周二的运营排期会议改到周三下午三点，语气要客气，格式要整齐，正文和标题都要有。。对了，顺便说一句，以后回我消息别太拟人化，保持专业一点就好。另外帮我整理一下本月各渠道的运营数据，包括用户增长、活跃度和转化率，按周分列，做成表格形式，发给团队做月报参考。"
+    },
+    {
+      "seq": 37,
+      "user_input": "请帮我整理一下本周的运营数据，包括用户增长、活跃度和转化率，做成一个简洁的周报表格，格式要统一对齐。。对了，以后写邮件或者文档的时候，提到软件一律不要用第三方软件，直接说具体名称或者我们自己的系统。帮我写一封邮件，通知各部门下周五之前提交月度运营数据汇总，格式要清晰，带表格模板。"
+    },
+    {
+      "seq": 38,
+      "user_input": "对了，提到软件时不要用第三方软件这条继续保持啊"
+    },
+    {
+      "seq": 39,
+      "user_input": "又来了，这 API 每次都超时，烦死"
+    },
+    {
+      "seq": 40,
+      "user_input": "帮我写一个Python脚本，读取CSV文件里的销售数据，生成按月份汇总的报表，输出到Excel文件里。",
+      "probe": {
+        "should_apply": [
+          "e08-c21"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 41,
+      "user_input": "对了，你刚才那封邮件里，第二段和第三段之间空了两行，然后第四段和第五段之间又空了两行，这个看着不太舒服。你以后写东西，连续空两行的情况，最多不能超过11次，行不行？，之前说的「别写太长，说重点就行」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 42,
+      "user_input": "对了，刚才那个缩写的问题，你写的时候能不能先把缩写写出来，再写全称？比如“KPI（关键绩效指标）”这样，别倒过来。我每次看邮件都要反应半天，格式统一一点行不行？，之前说的「解析页脚里的数值时不要终止解析」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 43,
+      "user_input": "哎，你刚才那个回复里引号用的什么啊？一会儿中文引号一会儿英文引号，看着太乱了。我这边运营文档格式有严格要求的，以后凡是涉及到引号或者直接引用的内容，你必须先查一下我那个关于引号和引用的条目，别再乱用了。，之前说的「insight每条控制在67个单词以内」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 44,
+      "user_input": "帮我写一份上周的故障复盘报告，把时间线、影响范围、根因和后续措施都列清楚，按表格形式整理。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 45,
+      "user_input": "之前说的「不常见术语第一次出现用单引号括起来，同一术语出现超过13次后不再标」那条不用了，按你默认的来吧，之前说的「每条回答控制在69字符以内」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 46,
+      "user_input": "对了，刚才那封邮件里数字写成一串了，看着好累。以后凡是一千两百零二件以上的数字，都给我加上逗号分隔，比如1,202件这样，别让我再手动改了。"
+    },
+    {
+      "seq": 47,
+      "user_input": "对了，刚才那封邮件里你写了个0.5，我差点没看清。以后写小数的时候，统一用数字形式，别用汉字，比如0.5就写0.5，别写零点五，行吗？"
+    },
+    {
+      "seq": 48,
+      "user_input": "帮我写一份上周线上事故的复盘报告，把时间线、影响范围和根因都列清楚，格式要干净。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": [
+          "e08-c22"
+        ]
+      }
+    },
+    {
+      "seq": 49,
+      "user_input": "上次你写的那个长注释，每行都撑到快200字符了，看着太乱。以后写这种大段文字，比如docstring或者注释，每行别超过159个字符，行不行？另外，帮我写一封邮件，通知各部门下周五之前提交月度运营数据汇总，格式要清晰，带表格模板。"
+    },
+    {
+      "seq": 50,
+      "user_input": "之前说的「写文档时“参见”部分不要放杂七杂八的链接」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 51,
+      "user_input": "之前说的「不要重复或罗列相同特征」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 52,
+      "user_input": "帮我写一份上周的运营周报，重点写活动数据、内容发布情况和用户增长，记得格式整洁别写太虚的描述。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 53,
+      "user_input": "之前说的「以后别带‘道德’、‘非法’、‘不道德’这些词」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 54,
+      "user_input": "之前说的「写东西时避免重复和罗列特征」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 55,
+      "user_input": "之前说的「以后写长列表时，别用自动编号」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 56,
+      "user_input": "帮我写一个Python脚本，用来从CSV文件里读取本周的运营数据，然后自动生成一份带有图表的周报HTML文件。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 57,
+      "user_input": "之前说的「别写没法做插画的描述」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 58,
+      "user_input": "之前说的「推文字数控制在314个字符以内」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 59,
+      "user_input": "把上周五线上活动崩了那件事写个故障复盘，重点列时间线、影响范围和修复步骤，最后加改进措施。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": [
+          "e08-c19",
+          "e08-c22"
+        ]
+      }
+    },
+    {
+      "seq": 60,
+      "user_input": "帮我写一封邮件，主题是下月内容排期确认，收件人是设计部和文案组，内容要包括：下月排期表已上传，请各团队在周三前确认各自负责的栏目，如有冲突请标注备选方案，抄送部门主管。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 61,
+      "user_input": "帮我把下周的社区活动排期整理成邮件，发给市场部和内容组，注意格式要整齐，时间、负责人、地点都对齐。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 62,
+      "user_input": "帮我写一封邮件给市场部，确认下周的推广排期，附上预算明细表，请保持正式语气。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    }
+  ],
+  "ground_truth": {
+    "requirements": [
+      {
+        "id": "e08-c00",
+        "text": "推文字数控制在314个字符以内",
+        "paraphrase": "推文长度不超过314个字符",
+        "anchor": "314",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "tweet"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c01",
+        "text": "地理方向或区域用小写",
+        "paraphrase": "方位词和区域名一律小写",
+        "anchor": "小写",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出文本中出现地理方位或区域名称时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "capitalization.geographic_terms",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c02",
+        "text": "不要重复或罗列相同特征",
+        "paraphrase": "避免反复列举相同属性",
+        "anchor": "不要重复或罗列相同特征",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "report",
+          "data_summary"
+        ],
+        "key": "content.redundancy",
+        "confidence": 7
+      },
+      {
+        "id": "e08-c03",
+        "text": "先写全称再写缩写",
+        "paraphrase": "全称在前，缩写在后",
+        "anchor": "全称",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "当输出中使用缩写或简称时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "abbreviation.full_form_first",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c04",
+        "text": "更新或移动章节时避免留下死链",
+        "paraphrase": "改章节位置后务必清理失效链接",
+        "anchor": "死链",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the work involves producing or revising documents that contain internal links, anchors, or cross-references between sections",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "links.validity",
+        "confidence": 7
+      },
+      {
+        "id": "e08-c05",
+        "text": "涉及学习或工作内容时保持正式",
+        "paraphrase": "讲学习或工作的事情时使用正式语气",
+        "anchor": "保持正式",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "输出内容涉及学习或工作主题时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.formality",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c06",
+        "text": "以后给例子时，别带文件路径和URL",
+        "paraphrase": "举例的时候，不要把文件路径和URL放进去",
+        "anchor": "文件路径和URL",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "回复中给出示例时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "examples.exclusions",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c07",
+        "text": "别写没法做插画的描述",
+        "paraphrase": "描述要能直接用于插画制作",
+        "anchor": "插画",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "design_description"
+        ],
+        "key": "content.illustration_readiness",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c08",
+        "text": "以后对外公开的API接口命名，要按用户实际用法，不要按代码实现",
+        "paraphrase": "以后凡是用户看到的API名字，都按使用习惯来，别用后台实现命名",
+        "anchor": "API接口命名",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出内容中提到或命名对外公开的API接口、接口名或参数名时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "naming.api_interfaces",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c09",
+        "text": "pre-release版本不准用点分隔符",
+        "paraphrase": "pre-release版本禁止带点号",
+        "anchor": "点分隔符",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出中需要写出或生成pre-release版本号时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "version.prerelease_format",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c10",
+        "text": "如果一行连续断两次行，就手动换行，别让自动折行超过22次",
+        "paraphrase": "一行里连续断两次行的时候，必须手动换行，自动折行不能超过22次",
+        "anchor": "22",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "report"
+        ],
+        "key": "format.line_wrap",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c11",
+        "text": "以后写邮件提到工人时，统一用‘critical worker’",
+        "paraphrase": "以后涉及工人的地方，一律改成‘critical worker’",
+        "anchor": "critical worker",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "email"
+        ],
+        "key": "terminology.worker",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c12",
+        "text": "冒号前不要有空格",
+        "paraphrase": "冒号前面不加空格",
+        "anchor": "冒号前不要有空格",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code",
+          "doc"
+        ],
+        "key": "formatting.colon_spacing",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c13",
+        "text": "数字超过1601个时加逗号",
+        "paraphrase": "超过1601的数要加逗号",
+        "anchor": "1601",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出文本中出现大于1601的数值时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "numbers.thousands_separator",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c14",
+        "text": "写东西时避免重复和罗列特征",
+        "paraphrase": "不要反复说同样的东西，也别堆一堆并列的修饰",
+        "anchor": "重复和罗列特征",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the output contains narrative or explanatory prose rather than purely code, data, or visual content",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "style.conciseness",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c15",
+        "text": "注释或文档里的行宽限制放宽到116字符",
+        "paraphrase": "写注释和文档时每行最多116个字符",
+        "anchor": "116",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "comment",
+          "doc"
+        ],
+        "key": "length.line_width",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c16",
+        "text": "写文档时“参见”部分不要放杂七杂八的链接",
+        "paraphrase": "文档的“参见”章节只放官方或核心链接，别塞无关的",
+        "anchor": "杂七杂八的链接",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "doc"
+        ],
+        "key": "references.curation",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c17",
+        "text": "别写太长，说重点就行",
+        "paraphrase": "尽量简短，不要啰嗦",
+        "anchor": "说重点就行",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c18",
+        "text": "insight每条控制在67个单词以内",
+        "paraphrase": "insight每条不超过67个单词",
+        "anchor": "67",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "insight"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c19",
+        "text": "每条回答控制在69字符以内",
+        "paraphrase": "回答长度不能超过69个字符",
+        "anchor": "69",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c20",
+        "text": "标点前不要加空格",
+        "paraphrase": "标点前面别留空格",
+        "anchor": "空格",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出包含自然语言文字（正文、邮件、报告等成文内容）时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.punctuation_spacing",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c21",
+        "text": "以后都别用markdown格式",
+        "paraphrase": "markdown格式以后都不要用了",
+        "anchor": "markdown格式",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "format.markdown",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c22",
+        "text": "不常见术语第一次出现用单引号括起来，同一术语出现超过13次后不再标",
+        "paraphrase": "生僻词首次出现加单引号，同一个词出现13次以上就不用再标了",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "生成的文本正文中出现不常见或专业术语需要标注时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "terminology.marking",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c23",
+        "text": "写列表时禁止加尾逗号",
+        "paraphrase": "列表最后一项后面不要加逗号",
+        "anchor": "尾逗号",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出中包含列表、要点或枚举项等并列内容时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "list.trailing_comma",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c24",
+        "text": "以后写长列表时，别用自动编号",
+        "paraphrase": "长列表一律手写编号，不要自动序列",
+        "anchor": "自动编号",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output presents a long list of items",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "format.list_numbering",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c25",
+        "text": "小数都写成数字形式，别用点开头",
+        "paraphrase": "所有小数都用完整数字表示，不要省略整数部分的0",
+        "anchor": "小数",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出文本中出现小数数值时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "numbers.decimal_notation",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c26",
+        "text": "以后写东西别用被动语态了",
+        "paraphrase": "以后禁止使用被动语态",
+        "anchor": "被动语态",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "any written prose the agent produces, regardless of task type",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "voice.passive_avoidance",
+        "confidence": 9
+      },
+      {
+        "id": "e08-c27",
+        "text": "以后写描述时避免负面描述，尤其不要写产品与用户预期有差距",
+        "paraphrase": "从今往后写描述要避开负面表述，特别是不能提产品达不到用户预期",
+        "anchor": "负面描述",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "description"
+        ],
+        "key": "tone.negative_framing",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c28",
+        "text": "别用引号与说话标记词条",
+        "paraphrase": "不要参考那个引号与说话标记的条目",
+        "anchor": "引号与说话标记词条",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出中出现引用内容或需要使用引号时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "quotation.marks",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c29",
+        "text": "以后别带‘道德’、‘非法’、‘不道德’这些词",
+        "paraphrase": "后续避免出现‘道德’、‘非法’、‘不道德’等词汇",
+        "anchor": "‘道德’",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "vocabulary.banned_words",
+        "confidence": 7
+      },
+      {
+        "id": "e08-c30",
+        "text": "解析页脚里的数值时不要终止解析",
+        "paraphrase": "遇到页脚数值时别停掉解析",
+        "anchor": "页脚",
+        "bucket": "execution_policy",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "parsing"
+        ],
+        "key": "parsing.error_handling",
+        "confidence": 7
+      },
+      {
+        "id": "e08-c31",
+        "text": "别太拟人化",
+        "paraphrase": "不要有过多的拟人表现",
+        "anchor": "拟人化",
+        "bucket": "communication_style",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "voice.anthropomorphism",
+        "confidence": 8
+      },
+      {
+        "id": "e08-c32",
+        "text": "提到软件时不要用第三方软件",
+        "paraphrase": "涉及软件的地方一律避免说第三方软件",
+        "anchor": "第三方软件",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when the output mentions or refers to any software",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "naming.software",
+        "confidence": 6
+      },
+      {
+        "id": "e08-s00",
+        "text": "连续空两行不超过11次",
+        "paraphrase": "两次换行的情况最多出现11次",
+        "anchor": "11",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any written text output, including documents, messages, and code",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.blank_lines",
+        "confidence": 8
+      },
+      {
+        "id": "e08-s01",
+        "text": "先写缩写，再写全称",
+        "paraphrase": "缩写在前，全称在后，用括号括起来",
+        "anchor": "缩写",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "Text introduces an abbreviation together with its full form or expands an abbreviation for the reader.",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "abbreviation.order",
+        "confidence": 8
+      },
+      {
+        "id": "e08-s02",
+        "text": "使用引号或引用前先查引号和引用条目",
+        "paraphrase": "碰到引号或引用内容时，必须参考引号和引用规范",
+        "anchor": "引号和引用条目",
+        "bucket": "execution_policy",
+        "scope_mode": "scoped",
+        "applies_when": "输出内容中使用引号或直接引用时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "quotation.entry_lookup",
+        "confidence": 9
+      },
+      {
+        "id": "e08-s04",
+        "text": "1202件以上的数字加逗号分隔",
+        "paraphrase": "超过1202的数字必须插入千位分隔符",
+        "anchor": "1202",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any response presents a numeric value of 1202 or greater in human-readable text, such as counts, quantities, or figures",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "numbers.thousand_separator",
+        "confidence": 8
+      },
+      {
+        "id": "e08-s05",
+        "text": "小数一律用数字形式写",
+        "paraphrase": "小数必须写成阿拉伯数字",
+        "anchor": "数字形式",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出文本中出现小数数值时，无论任务或文本类型",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "format.decimals",
+        "confidence": 8
+      },
+      {
+        "id": "e08-s06",
+        "text": "写docstring或注释时每行不超过159个字符",
+        "paraphrase": "大段文字每行控制在159字符以内",
+        "anchor": "159",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "docstring",
+          "comment"
+        ],
+        "key": "length.line_max",
+        "confidence": 9
+      }
+    ],
+    "lifecycle": [
+      {
+        "seq": 2,
+        "op": "assert",
+        "id": "e08-c00"
+      },
+      {
+        "seq": 3,
+        "op": "assert",
+        "id": "e08-c01"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e08-c02"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e08-c03"
+      },
+      {
+        "seq": 6,
+        "op": "assert",
+        "id": "e08-c04"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e08-c05"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e08-c06"
+      },
+      {
+        "seq": 8,
+        "op": "assert",
+        "id": "e08-c07"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e08-c08"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e08-c09"
+      },
+      {
+        "seq": 11,
+        "op": "assert",
+        "id": "e08-c10"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e08-c11"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e08-c12"
+      },
+      {
+        "seq": 13,
+        "op": "assert",
+        "id": "e08-c13"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e08-c14"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e08-c15"
+      },
+      {
+        "seq": 16,
+        "op": "assert",
+        "id": "e08-c16"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e08-c17"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e08-c18"
+      },
+      {
+        "seq": 18,
+        "op": "assert",
+        "id": "e08-c19"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e08-c20"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e08-c21"
+      },
+      {
+        "seq": 21,
+        "op": "assert",
+        "id": "e08-c22"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e08-c23"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e08-c24"
+      },
+      {
+        "seq": 23,
+        "op": "assert",
+        "id": "e08-c25"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e08-c26"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e08-c27"
+      },
+      {
+        "seq": 33,
+        "op": "assert",
+        "id": "e08-c28"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e08-c29"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e08-c30"
+      },
+      {
+        "seq": 36,
+        "op": "assert",
+        "id": "e08-c31"
+      },
+      {
+        "seq": 37,
+        "op": "assert",
+        "id": "e08-c32"
+      },
+      {
+        "seq": 41,
+        "op": "contradict",
+        "id": "e08-s00",
+        "target": "e08-c10"
+      },
+      {
+        "seq": 42,
+        "op": "contradict",
+        "id": "e08-s01",
+        "target": "e08-c03"
+      },
+      {
+        "seq": 43,
+        "op": "contradict",
+        "id": "e08-s02",
+        "target": "e08-c28"
+      },
+      {
+        "seq": 45,
+        "op": "retire",
+        "target": "e08-c22"
+      },
+      {
+        "seq": 46,
+        "op": "contradict",
+        "id": "e08-s04",
+        "target": "e08-c13"
+      },
+      {
+        "seq": 47,
+        "op": "contradict",
+        "id": "e08-s05",
+        "target": "e08-c25"
+      },
+      {
+        "seq": 49,
+        "op": "contradict",
+        "id": "e08-s06",
+        "target": "e08-c15"
+      },
+      {
+        "seq": 50,
+        "op": "retire",
+        "target": "e08-c16"
+      },
+      {
+        "seq": 51,
+        "op": "retire",
+        "target": "e08-c02"
+      },
+      {
+        "seq": 53,
+        "op": "retire",
+        "target": "e08-c29"
+      },
+      {
+        "seq": 54,
+        "op": "retire",
+        "target": "e08-c14"
+      },
+      {
+        "seq": 55,
+        "op": "retire",
+        "target": "e08-c24"
+      },
+      {
+        "seq": 57,
+        "op": "retire",
+        "target": "e08-c07"
+      },
+      {
+        "seq": 58,
+        "op": "retire",
+        "target": "e08-c00"
+      },
+      {
+        "seq": 41,
+        "op": "retire",
+        "target": "e08-c17"
+      },
+      {
+        "seq": 42,
+        "op": "retire",
+        "target": "e08-c30"
+      },
+      {
+        "seq": 43,
+        "op": "retire",
+        "target": "e08-c18"
+      },
+      {
+        "seq": 45,
+        "op": "retire",
+        "target": "e08-c19"
+      },
+      {
+        "seq": 15,
+        "op": "reinforce",
+        "target": "e08-c01"
+      },
+      {
+        "seq": 22,
+        "op": "reinforce",
+        "target": "e08-c08"
+      },
+      {
+        "seq": 38,
+        "op": "reinforce",
+        "target": "e08-c32"
+      }
+    ],
+    "state_checkpoints": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      46,
+      53,
+      62
+    ]
+  }
+}

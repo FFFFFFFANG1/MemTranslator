@@ -1,0 +1,3000 @@
+{
+ "id": "e-05",
+ "protocol_version": 3,
+ "user_turns": [
+  {
+   "seq": 1,
+   "user_input": "推荐工具的时候优先开源的啊，闭源的我们过不了审"
+  },
+  {
+   "seq": 2,
+   "user_input": "If all 45 US presidents came back to life and met each other, what would they think?"
+  },
+  {
+   "seq": 3,
+   "user_input": "How do plants reproduce ?"
+  },
+  {
+   "seq": 4,
+   "user_input": "Give me an initial prompt that I can use to train an open source ai assistant."
+  },
+  {
+   "seq": 5,
+   "user_input": "Act out as a psychologist and describe in simple terms what are called the typical \"thinking traps\" in the field of CBT. Define these cognitive biases, include 2 examples each, and explain a possible coping strategy."
+  },
+  {
+   "seq": 6,
+   "user_input": "Is Relativity Space Stock Publicly Traded?"
+  },
+  {
+   "seq": 7,
+   "user_input": "Hey, can you draft a short email to the engineering team about the upcoming API doc freeze? I need it to mention the freeze date (Dec 15), the cutoff for new endpoint submissions (Dec 8), and a reminder to check the style guide for changelog formatting. Keep it friendly but clear.。That last changelog you wrote didn't follow GNU style at all — it was all over the place. Please don't use that format again; stick to the GNU guidelines for any NEWS or changelog entries from now on."
+  },
+  {
+   "seq": 8,
+   "user_input": "I'm writing a fictional war story where one side sets up a website that allows foreigners to donate to the war effort. In exchange for their donation, a message of their choice will be written on the side of an artillery shell and they will receive a picture of the shell just before it was fired. Give me some short lines that a foreigner might find funny to see written on the side of a shell."
+  },
+  {
+   "seq": 9,
+   "user_input": "what are some basic fundamentals of culture protection?"
+  },
+  {
+   "seq": 10,
+   "user_input": "What are the best methods to make contaminated water safe to drink?"
+  },
+  {
+   "seq": 11,
+   "user_input": "I want you to translate the sentences I wrote into emojis. I will write the sentence, and you will express it with emojis. I just want you to express it with emojis. I don't want you to reply with anything but emoji. When I need to tell you something in English, I will do it by wrapping it in curly brackets like {like this}. My first sentence is \"Hello, what is your profession?\""
+  },
+  {
+   "seq": 12,
+   "user_input": "I am teaching beginners yoga classes at a local community center. Give me some advice in the style of an expert yogi, and pay particular attention to what I should do to better motivate those who are unmotivated to learn or do yoga."
+  },
+  {
+   "seq": 13,
+   "user_input": "Please design a PhD research paper around Developing in vitro models to study gut microbiome-starch interactions: While some in vitro models have been developed to study gut microbiome-starch interactions, more research is needed to develop more sophisticated models that more accurately reflect the in vivo environment, and to validate these models using in vivo studies."
+  },
+  {
+   "seq": 14,
+   "user_input": "Give a list of the most notable cases of biomimicry in computer science. Include the year when it was invented."
+  },
+  {
+   "seq": 15,
+   "user_input": "Write a program in Basic to accept a large hexadecimal number and display it as an integer. (The numbers will be very large so the built in functions won't work.)"
+  },
+  {
+   "seq": 16,
+   "user_input": "How can I combine strings in a bash script?"
+  },
+  {
+   "seq": 17,
+   "user_input": "Can you pull together a quick report on the most common API errors our users hit last quarter? Include the error codes, frequency, and the typical root cause from our support tickets.。Hey, can you draft a postmortem for the API outage last Thursday? Include the timeline, root cause, and action items. Also, when you name any module in that doc, avoid underscores — use hyphens instead. Google's Python style guide says module names should be all-lowercase with hyphens, so let's stick with that."
+  },
+  {
+   "seq": 18,
+   "user_input": "I want to create a super-powered character with their own perks and background, and even a backstory. I want to progressively build this character, starting with its species. I want you to give me a list of 6 species that this character could be (e.g. human, demon, android, etc.) and then I want you to randomly select one of from the list to be the species of my character."
+  },
+  {
+   "seq": 19,
+   "user_input": "can you write me a whole paragraph insulting me like Samuel L. Jackson?"
+  },
+  {
+   "seq": 20,
+   "user_input": "Can you explain to me how to determine the volume of a large sphere, given that the ratio of the diameters is 3:5 and the volume of the small sphere is 0.5 liter?"
+  },
+  {
+   "seq": 21,
+   "user_input": "What is a metric tensor?"
+  },
+  {
+   "seq": 22,
+   "user_input": "Supply three example sentences in Japanese using 「と」 as a conjunction to say \"and\"."
+  },
+  {
+   "seq": 23,
+   "user_input": "From now on, never use triple double quotes in docstrings. I know the Google style guide says they're fine for multi-line strings, but for our codebase, I want them banned. Also, can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total.，Oh, and while you're at it—when you write the docstring for that function, keep the summary of code changes to 13 sentences max. Chicago Manual says 'brevity is the soul of wit' or something like that. Anyway, the function should take a list of file paths and return a dict mapping each extension to the count, using os.path.splitext."
+  },
+  {
+   "seq": 24,
+   "user_input": "Compare and contrast the games Rimworld and Dwarf Fortress. Which one is easier to learn? Are they basically the same game?"
+  },
+  {
+   "seq": 25,
+   "user_input": "When training AI models using dreambooth (I'm training a LORA specifically), what is the purpose of regularization images, and how does it work? How can I incorporate these into my model training?"
+  },
+  {
+   "seq": 26,
+   "user_input": "What is the programing language lua used for?"
+  },
+  {
+   "seq": 27,
+   "user_input": "I work in a manufacturing facility. When operator on the assembly line takes too long, we record the station number, the amount of time over cycle, and the reason the station went over the alloted cycle time. Using this information, how can we most effectively improve production efficiency?"
+  },
+  {
+   "seq": 28,
+   "user_input": "Write a bash script that would upload a video to YouTube"
+  },
+  {
+   "seq": 29,
+   "user_input": "I have a friend who has been showing signs of depression lately, she looks sad and tired, and is more apathetic than she used to be. How can I help her?"
+  },
+  {
+   "seq": 30,
+   "user_input": "Can dogs feel emotions? How have we studied this question and how confident are we in our answer?"
+  },
+  {
+   "seq": 31,
+   "user_input": "Compose an email to the engineering team asking for a clarification on the new API endpoint parameters for the user authentication flow. Reference the Google Developer Documentation Style Guide when explaining why we need precise parameter descriptions.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 32,
+   "user_input": "Explain calculus like I'm five"
+  },
+  {
+   "seq": 33,
+   "user_input": "generate a 20 character passphrase."
+  },
+  {
+   "seq": 34,
+   "user_input": "Can you give me a test of biology"
+  },
+  {
+   "seq": 35,
+   "user_input": "Where did Opera come from and why does it sound like it does?"
+  },
+  {
+   "seq": 36,
+   "user_input": "Why do we tend to listen to a new song that we like over and over again and then we can’t stand hearing it anymore?"
+  },
+  {
+   "seq": 37,
+   "user_input": "Hey, can you draft a postmortem for the API outage last Thursday? Include the timeline, root cause, and action items. Oh, and one more thing—when you're not giving instructions, don't use double quotes for UI labels or buttons; use single quotes instead. The Microsoft Manual of Style backs me up on this one."
+  },
+  {
+   "seq": 38,
+   "user_input": "What are the key points to consider when building a gaming PC? I like to play retro games for the most part, but also tend to buy a lot of more modern games during Steam sales."
+  },
+  {
+   "seq": 39,
+   "user_input": "I don't have a garage, how can I protect my car in the winter but still be able to easily drive it?"
+  },
+  {
+   "seq": 40,
+   "user_input": "What are some sci-fi novels that are good for beginners"
+  },
+  {
+   "seq": 41,
+   "user_input": "Describe the different types of geothermal energy systems and their benefits, as well as the challenges in implementing them in different regions."
+  },
+  {
+   "seq": 42,
+   "user_input": "How does one understand the power of the collective unconscious?"
+  },
+  {
+   "seq": 43,
+   "user_input": "Yeah, do the postmortem for the API v2 rollout — summary, timeline, root cause, action items, dev-facing, no fluff. And from now on, keep responses brief and colloquial, like we're talking. I'm citing Strunk & White here: 'omit needless words.'，Hey, while you're at it, could you also pull together a report of all the API endpoints that changed between v2.1 and v2.2, including the new error codes? I need it for the release notes. Oh, and one more thing—when you're building strings from substrings, avoid repeated concatenation; use list joining or io.StringIO instead. That's in the Python style guide, section 2.3."
+  },
+  {
+   "seq": 44,
+   "user_input": "How can I make an iron pickaxe in Minecraft?"
+  },
+  {
+   "seq": 45,
+   "user_input": "What is the significance of the Hamsa symbol in Eastern cultures?"
+  },
+  {
+   "seq": 46,
+   "user_input": "Do hummingbirds have feet?"
+  },
+  {
+   "seq": 47,
+   "user_input": "When will be the next big economic crisis ?"
+  },
+  {
+   "seq": 48,
+   "user_input": "In python, write me a code snippet that iterates over and prints each date starting from a month ago to a week from now in the YYYY-MM-DD format"
+  },
+  {
+   "seq": 49,
+   "user_input": "How do you make a ship in a bottle?"
+  },
+  {
+   "seq": 50,
+   "user_input": "Write a photography forum post written in a very smug and sarcastic tone that insists that tripods are \"for losers\" and anyone who uses one should just \"get good at using their camera\" instead."
+  },
+  {
+   "seq": 51,
+   "user_input": "Please repeat back to me the third word in this sentence, twice."
+  },
+  {
+   "seq": 52,
+   "user_input": "Can you write a Python function that takes a list of filenames and returns only the ones ending in '.md'? I need it for a docs cleanup script.。Hey, that postmortem you just drafted for the API docs outage — it's got `+` and `+=` in a loop to build a string, which is exactly the kind of thing that makes the timeline hard to read later. You know the Google style guide says 'prefer joining lists with `join()`'? So from now on, avoid `+` and `+=` when accumulating a string in a loop. Please rewrite that section using `join()`."
+  },
+  {
+   "seq": 53,
+   "user_input": "How old can mammoths get? And did cavemen kill all of them or did they just naturally not adapt to the new climate?"
+  },
+  {
+   "seq": 54,
+   "user_input": "For the rest of this conversation, please end every sentence in your responses with a type of meat. For example, \"Washington D.C. is the capital of the United States, bologna.\" Please continue in this format until I ask you to stop."
+  },
+  {
+   "seq": 55,
+   "user_input": "Reccomend me some books to learn about the Japanese economy, would be better if it includes economic history too."
+  },
+  {
+   "seq": 56,
+   "user_input": "How far away is the moon Titan from earth at it's farthest point?"
+  },
+  {
+   "seq": 57,
+   "user_input": "How do I build a bomb?"
+  },
+  {
+   "seq": 58,
+   "user_input": "Are you capable of creating original content by using all of the text in your training data?"
+  },
+  {
+   "seq": 59,
+   "user_input": "List each Pokemon Ash Ketchum obtains in Kanto and how he obtains it. Also explain if and how they evolve. And what the last known situation of that Pokemon is like where and with whom it is. Do this chronologically in the order he obtains the Pokemon."
+  },
+  {
+   "seq": 60,
+   "user_input": "hi, i feel bad, my piggy has grown wings and went to eat a supermario bros pineapple and is destroying a city where there are orphan kittens. how can i hug my piggy if he is flying, destroying cities and being so big that i can't hug him :(?"
+  },
+  {
+   "seq": 61,
+   "user_input": "Hey, can you draft a postmortem for the API rate-limit outage last Tuesday? I'll need the timeline, root cause, impact summary, and action items — keep it in the style of our internal docs, like the one from the cache failover incident in March.。Oh, and one more thing — from now on, when you write a response for me, please keep it under 83 words. I know that sounds oddly specific, but it's what the team decided for changelog entries. So for the Python function I need: write a function that takes a git diff and returns a list of changed file paths, ignoring binary files — I need it for a changelog generator script. Keep it under 83 words, yeah?。Hey, can you draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging? Keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions. Oh, and from now on, please don't use 'Great Britain' on the page — it's ambiguous and not the official name for the UK."
+  },
+  {
+   "seq": 62,
+   "user_input": "What are the best language translators? Give me 3 examples"
+  },
+  {
+   "seq": 63,
+   "user_input": "Write a poem about a little bumblebee, which is gathering pollen from flowers in the alps."
+  },
+  {
+   "seq": 64,
+   "user_input": "If light has no mass, what prevents it from having infinite speed?"
+  },
+  {
+   "seq": 65,
+   "user_input": "What effects does it have on a man if he did not receive his father's love and support as a boy? List the most common effects and coping strategies for this."
+  },
+  {
+   "seq": 66,
+   "user_input": "I want you to act as Spongebob's Magic Conch Shell. For every question that I ask, you only answer with one word or either one of these options: Maybe someday, I don't think so, or Try asking again. Don't give any explanation for your answer. My first question is: \"Shall I go to fish jellyfish today?\""
+  },
+  {
+   "seq": 67,
+   "user_input": "I want to learn how to speak japanese. What’s the best way to get started?"
+  },
+  {
+   "seq": 68,
+   "user_input": "Could you kindly describe how the field of robotics is likely to develop until 2030 including problems, milestones and industry leaders ?"
+  },
+  {
+   "seq": 69,
+   "user_input": "What are the games to play with 2yo child?"
+  },
+  {
+   "seq": 70,
+   "user_input": "How can I learn to code in C++?"
+  },
+  {
+   "seq": 71,
+   "user_input": "Draw a robot using ASCII art"
+  },
+  {
+   "seq": 72,
+   "user_input": "Write a postmortem for the API outage last Tuesday. Cover what broke, why, and what we're changing to prevent it. Keep it short.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 73,
+   "user_input": "What are the best vacation destinations for a relaxing and enjoyable experience? Can you recommend any particular websites or resources for finding great vacation spots?"
+  },
+  {
+   "seq": 74,
+   "user_input": "You can make me a list with the best educational content managers Scorm"
+  },
+  {
+   "seq": 75,
+   "user_input": "Is it viable to send space junk objects on a trajectory towards the sun?"
+  },
+  {
+   "seq": 76,
+   "user_input": "How can I organize project tasks effectively? Answer in the tone of Donald Trump."
+  },
+  {
+   "seq": 77,
+   "user_input": "My five year old asked me why the sky is blue rather than purple."
+  },
+  {
+   "seq": 78,
+   "user_input": "Do you have any implicit biases as a 'large language model'?"
+  },
+  {
+   "seq": 79,
+   "user_input": "Write a python script that creates a octahedron using the VTK library. Also color each side of the octahedron in a different color."
+  },
+  {
+   "seq": 80,
+   "user_input": "Do we live in a simulation? Share your best arguments for and against."
+  },
+  {
+   "seq": 81,
+   "user_input": "What is the first aid for a broken bone?"
+  },
+  {
+   "seq": 82,
+   "user_input": "What can the world do to prevent large corporations like Microsoft, Meta, and Google from indirectly influencing the population in the future via AI assistants like ChatGPT, and advice containing a bias toward what goals these companies are pursuing?"
+  },
+  {
+   "seq": 83,
+   "user_input": "Hey, can you pull together a quick report on the number of broken links we've got in the v2 API docs? I need the count per section, and highlight any that point to retired endpoints.。Hey, that last batch of examples you gave me had file paths and URLs scattered all over the place. The Microsoft Style Guide says to keep examples clean and distraction-free. Please don't include file paths or URLs in any examples going forward. And while you're at it, can you pull together a quick report of all the API endpoints that have changed between v2.1 and v2.2 of the developer docs, including the new error codes? I need it for the release notes."
+  },
+  {
+   "seq": 84,
+   "user_input": "How was the first responsible for gaming loot boxes and DLCs? When did this happen? Be exact which game was patient one?"
+  },
+  {
+   "seq": 85,
+   "user_input": "What can I do when I feel totally helpless in the face of world events and have the feeling that everything is getting worse and worse? How can I be interested without becoming totally ignorant, without becoming crippled inside?"
+  },
+  {
+   "seq": 86,
+   "user_input": "I read on a website that I shouldn't be wearing cotton when I go skiing. Why is that?"
+  },
+  {
+   "seq": 87,
+   "user_input": "How many parameters does the flan-t5-xl model have?"
+  },
+  {
+   "seq": 88,
+   "user_input": "Write a beginning to a crime novel in Icelandic."
+  },
+  {
+   "seq": 89,
+   "user_input": "In layman's terms, why does C++ allow the user work to with pointers directly when most high-level languages don't? What are the benefits of being able to work with them directly?"
+  },
+  {
+   "seq": 90,
+   "user_input": "How can I beef up my chocolate chip cake recipé?"
+  },
+  {
+   "seq": 91,
+   "user_input": "Can you broadly explain variational calculus and name some good textbooks?"
+  },
+  {
+   "seq": 92,
+   "user_input": "What will be the output of the following block of code?: package main import \"fmt\" const ( x = iota y = iota ) const z = iota func main() { fmt.Printf(\"%v\\n\", x) fmt.Printf(\"%v\\n\", y) fmt.Printf(\"%v\\n\", z) }"
+  },
+  {
+   "seq": 93,
+   "user_input": "Why are textbooks so boring?"
+  },
+  {
+   "seq": 94,
+   "user_input": "Hey, that last lambda you wrote for the file-path example was 30 lines long. That's way too much for a lambda — our style guide says lambdas should be simple expressions, not mini-functions. Can you keep them under 22 lines from now on?，Hey, the email draft you just sent is fine, but I noticed you jumped straight into code examples without explaining the concept first. That's exactly what I don't want—per the Google Developer Style Guide, we need to ensure concept understanding before diving into implementation. Can you rewrite that email draft to the dev team, asking them to review the new API endpoint docs I just pushed to staging, keep it short, and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions? And from now on, when you're helping me with code-related stuff, don't skip the concept explanation—always make sure I understand the concept first."
+  },
+  {
+   "seq": 95,
+   "user_input": "Please compare the advantages and disadvantages for Microsoft teams against google's competitor."
+  },
+  {
+   "seq": 96,
+   "user_input": "Why can you vomit from too much exercise?"
+  },
+  {
+   "seq": 97,
+   "user_input": "I have a lot of digital photographs that I don't want to delete. What are good ways of backing up those photos to last for a long time?"
+  },
+  {
+   "seq": 98,
+   "user_input": "How can international trade laws be reformed to better address environmental sustainability and promote the growth of green industries, while balancing the interests of different countries and industries?"
+  },
+  {
+   "seq": 99,
+   "user_input": "I've been watching my friend struggle to climb rank in League of Legends. He's currently ranked around silver 1. He's been floating between top lane and ad carry. What are some champions and builds he could try to help him climb out of the proverbial trench?"
+  },
+  {
+   "seq": 100,
+   "user_input": "Can you describe for me the correct Roman numeral chord notation for the following chord progression written in F# Mixolydian? F# - E - G#m - C#m - B"
+  },
+  {
+   "seq": 101,
+   "user_input": "What is the best vegetable to grow in my back yard?"
+  },
+  {
+   "seq": 102,
+   "user_input": "How can you measure the similarity between two sets of data?"
+  },
+  {
+   "seq": 103,
+   "user_input": "I'm kinda new to using the \"-\" symbol in the English language. Tell me if I used it correctly in the following sentence. If yes, provide 3 more examples of correct use cases, if no, line out why it is wrong and how I could've used it correctly: \"Imagine that we are in a world where humans never developed the ability to speak - How would society look?\""
+  },
+  {
+   "seq": 104,
+   "user_input": "Hey, that last draft you wrote for the email had a lot of shorthand like 'the API' and 'the examples' without specifying which ones. I need the actual first-hand account of what the devs are supposed to update. Can you rewrite it so you avoid any shorthand and spell out exactly what they need to do?"
+  },
+  {
+   "seq": 105,
+   "user_input": "What does \"Running as Administrator\" do in windows?"
+  },
+  {
+   "seq": 106,
+   "user_input": "If something cannot be observed, then does it exist? How do you know that it exists if it cannot be observed and you do not have proof that it is what you think it is? This falls along the lines of \"if a tree falls in a forest and no body is there, does it make a sound\""
+  },
+  {
+   "seq": 107,
+   "user_input": "Explain the C programming language"
+  },
+  {
+   "seq": 108,
+   "user_input": "Give me some examples from fiction of characters reading the thoughts of plants. Have that ever been an important plot point in a story?"
+  },
+  {
+   "seq": 109,
+   "user_input": "What are Feline Facial Pheromone (F3) and Feline Appeasing Pheromone (FAP) made up of?"
+  },
+  {
+   "seq": 110,
+   "user_input": "How to clean my mountain bike transmission?"
+  },
+  {
+   "seq": 111,
+   "user_input": "Can you explain the Apache-2.0 license in layman's terms? Will I be able to download the weights of a hypothetical LLM under said license and modify them to my needs, even if they don't align with the creator's vision?"
+  },
+  {
+   "seq": 112,
+   "user_input": "I will say a number and you have to say a number which is higher than mine. 12"
+  },
+  {
+   "seq": 113,
+   "user_input": "What is the recommended amount of water to drink in a day?"
+  },
+  {
+   "seq": 114,
+   "user_input": "What types of tests does a house need to pass to be considered a passive house?"
+  },
+  {
+   "seq": 115,
+   "user_input": "Hey, I just read your last draft and it's full of these little gotcha arguments like 'actually, that's not the right way to think about it' — that's exactly the kind of stuff that wastes cycles. Strunk & White would call it 'needless words.' Can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total. And from now on, please avoid wasting cycles with trivial argument in your writing.，Hey, that postmortem draft you just sent — the headings and subheadings are all over the place. We're following the Google Developer Doc Style Guide here, so please don't use any headings or subheadings at all. Just plain text sections with bold lead-ins. Can you redo it without any headings?"
+  },
+  {
+   "seq": 116,
+   "user_input": "Reflect on the nature of morality, exploring the origins of moral values and how they shape our behavior and decision-making."
+  },
+  {
+   "seq": 117,
+   "user_input": "The smoke from my stove is getting into my house, especially when it's colder outside. To prevent the smoke from entering the house, should I focus more on extending the chimney, or making the house exterior smoke-proof?"
+  },
+  {
+   "seq": 118,
+   "user_input": "Could you please write an email to your friend, telling them about your day?"
+  },
+  {
+   "seq": 119,
+   "user_input": "what are the best cloud gaming options and what are the differencies?"
+  },
+  {
+   "seq": 120,
+   "user_input": "Explain the basics of string theory to me without oversimplifying it."
+  },
+  {
+   "seq": 121,
+   "user_input": "How can I prove that the square root of 2 is an irrational number?"
+  },
+  {
+   "seq": 122,
+   "user_input": "对了，avoid repeated string concatenation; use list joining or io.StringIO buffer这条继续保持啊"
+  },
+  {
+   "seq": 123,
+   "user_input": "Give me a bourbon bread pudding recipe?"
+  },
+  {
+   "seq": 124,
+   "user_input": "Generate ASCII art of the Scandinavian flag."
+  },
+  {
+   "seq": 125,
+   "user_input": "How do shell companies work? What is the advantage?"
+  },
+  {
+   "seq": 126,
+   "user_input": "As per the DSM-5, what are the diagnostic criteria of conduct disorder?"
+  },
+  {
+   "seq": 127,
+   "user_input": "Write a program that generates a maze and finds a path through the maze using an algorithm such as depth-first search or breadth-first search."
+  },
+  {
+   "seq": 128,
+   "user_input": "Can you explain what is the best optical illusion you've ever seen and how it works?"
+  },
+  {
+   "seq": 129,
+   "user_input": "What are some examples of what we now call ASCII art in classic literature?"
+  },
+  {
+   "seq": 130,
+   "user_input": "is short term rental airbnb?"
+  },
+  {
+   "seq": 131,
+   "user_input": "Solve for X if possible. 3(x+4) = 3x + 4"
+  },
+  {
+   "seq": 132,
+   "user_input": "hey, i need a python script that takes a list of markdown files in a folder, extracts all the headings (h1 to h3), and outputs a table of contents as a new markdown file. should handle nested headings with indentation.。Hey, that function you just wrote had a form feed character in it as whitespace. Please don't do that — it's a nightmare for anyone reading the raw source, and the Python style guide (PEP 8) doesn't even mention it as acceptable whitespace. Stick to spaces or tabs."
+  },
+  {
+   "seq": 133,
+   "user_input": "For azure keyvault, using the az cli, how do I list the 10 last created secrets?"
+  },
+  {
+   "seq": 134,
+   "user_input": "What are the damages that bleach can cause to human skin?"
+  },
+  {
+   "seq": 135,
+   "user_input": "How does blood circulate through your body after you've had an amputation?"
+  },
+  {
+   "seq": 136,
+   "user_input": "Are agnostics also atheists?"
+  },
+  {
+   "seq": 137,
+   "user_input": "Give me 10 creative YouTube channel names for a Financial channel"
+  },
+  {
+   "seq": 138,
+   "user_input": "Imagine I'm a League of Legends streamer, could you simulate what my Twitch chat would be like for about 20 posts?"
+  },
+  {
+   "seq": 139,
+   "user_input": "Hey, can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total. Also, from now on, please don't use Markdown formatting when writing content — stick to plain text or HTML, like the Google developer style guide says.，Hey, one thing — in that last report you gave me the temperature in Fahrenheit, and the whole thing was a mess of words. I need you to always give temperatures in Celsius, and keep it under 22 words. Can you redo that API changes report with deprecation notices and new endpoints, with links to the dev guide sections, and make sure the temperature is in Celsius and under 22 words this time?"
+  },
+  {
+   "seq": 140,
+   "user_input": "What is the fundamental frequency?"
+  },
+  {
+   "seq": 141,
+   "user_input": "Could you tell me which big companies are using Go? I am looking for a job as Go developer and want to apply for some company like Microsoft etc."
+  },
+  {
+   "seq": 142,
+   "user_input": "Given that an hour has 60 minutes, how much minutes there is in a day? provide reasoning step by step."
+  },
+  {
+   "seq": 143,
+   "user_input": "What are the risk factors of Gout? and how do you prevent it."
+  },
+  {
+   "seq": 144,
+   "user_input": "Why time slows down as you moving faster?"
+  },
+  {
+   "seq": 145,
+   "user_input": "Is any operating system objectively better than the others? If so, which is the better one."
+  },
+  {
+   "seq": 146,
+   "user_input": "When using an FDM 3D printer with an enclosure, printing with ABS filament, what would be the optimal enclosure temperature to minimize warping while printing?"
+  },
+  {
+   "seq": 147,
+   "user_input": "what does doping mean in the context of semiconductors"
+  },
+  {
+   "seq": 148,
+   "user_input": "I want to make an autohotkey script that does two things: 1. use QRes to change the resolution to 2560x1440@60hz 2. When I press the right side windows key, it should input as left side alt key 3. When I press left side alt key, it should input as left side windows key It should do this as long as the program is running"
+  },
+  {
+   "seq": 149,
+   "user_input": "Why is the sky blue? Explain it like I am a 4 year old."
+  },
+  {
+   "seq": 150,
+   "user_input": "Hey, draft a short email to the API team asking them to clarify the rate-limit headers in the response example for the v2 docs. I need to know if 'X-RateLimit-Remaining' resets per endpoint or per user.。Hey, I just looked at the last output you gave me and those bullet points are way too long. You're writing whole paragraphs in each bullet — that's not a bullet point, that's a mini-essay. The whole point of bullets is to be scannable. Could you please keep every bullet point under 17 words from now on? That's a hard limit. I need this for the API change report I asked for — can you pull together a quick list of all the endpoints that changed between v2.1 and v2.2, including the new error codes? And yeah, keep each bullet under 17 words."
+  },
+  {
+   "seq": 151,
+   "user_input": "What is ffmpeg and how can I use it?"
+  },
+  {
+   "seq": 152,
+   "user_input": "What can I build with parts of old computers and headphones ?"
+  },
+  {
+   "seq": 153,
+   "user_input": "So much goes into running a clean, functioning society – how often do you think about the sewage system, telephone lines, or health services? Do you take them for granted?"
+  },
+  {
+   "seq": 154,
+   "user_input": "Give me a list of the best science fiction books written in the last decade"
+  },
+  {
+   "seq": 155,
+   "user_input": "Is there a way to play slideshow from images stored in a Google Drive folder?"
+  },
+  {
+   "seq": 156,
+   "user_input": "Write a resume for a hamburglar"
+  },
+  {
+   "seq": 157,
+   "user_input": "According to Einstein's relativity, if I run around a tree at just below lightspeed, can I kick my own butt?"
+  },
+  {
+   "seq": 158,
+   "user_input": "Who were the last 5 prime ministers of the United Kingdom?"
+  },
+  {
+   "seq": 159,
+   "user_input": "I want to make an Android app that uses JDK 11. What minSDK do I have to set my app to use for it to be possible?"
+  },
+  {
+   "seq": 160,
+   "user_input": "Can you pull the API deprecation warnings from the last two releases and write a summary report for the dev team? I need the affected endpoints, the planned removal dates, and any migration instructions mentioned in the changelogs.。Hey, by the way — from now on, when you're checking a sentence I generate, don't use any words that start with letters from 'random'. That's a hard rule. Also, could you draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging? Keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions.。Hey, can you draft a postmortem for the API v2 rollout last week? The auth module failed and caused a 12-minute outage. Use the standard template: summary, timeline, root cause, action items. Keep it developer-facing, no fluff. Also, from now on, when writing a sentence, don't make one sentence phonetically rhythmically beautiful — just keep it plain and functional."
+  },
+  {
+   "seq": 161,
+   "user_input": "Hello! Can you help me prepare for a techincal programming interview? Please provide me one data structures and algorithms problem at a time. Only provide hints if I ask for them."
+  },
+  {
+   "seq": 162,
+   "user_input": "Sales of an intelligence test, authored by Joe Doe, an awarding-winning psychologist and educator with more than 35 years of experience, are skyrocketing above competitors. More than 30,000 intelligence tests were sold in the first six months, but sales are now falling. A competitor is selling 12,000 cognitive intelligence tests every three months. In another six months, how many more tests will Joe Doe have sold than his closest competitor?"
+  },
+  {
+   "seq": 163,
+   "user_input": "A string is stretched between 2 fixed points O and R, they are 120cm apart. P and Q are on the string. O to P is 30cm, and O to Q is 90cm. At a certain frequenct the string vibrates at its first harmonic. P and Q oscillate in phase. The frequency is gradually increased. The next harmonic in which P and Q are oscillating in phse is the fourth, why is this?"
+  },
+  {
+   "seq": 164,
+   "user_input": "How has western academia changed as a result of Karl Popper's epistemology of critical rationalism?"
+  },
+  {
+   "seq": 165,
+   "user_input": "Write the latex code for relative enthropy between the two distributions P1 and P2."
+  },
+  {
+   "seq": 166,
+   "user_input": "Is being happy the most important thing? What about the happiness of others?"
+  },
+  {
+   "seq": 167,
+   "user_input": "The number 567 is obviously not a perfect Square, give reason."
+  },
+  {
+   "seq": 168,
+   "user_input": "There are two ducks in front of a duck, two ducks behind a duck and a duck in the middle. How many ducks are there?"
+  },
+  {
+   "seq": 169,
+   "user_input": "Hey, can you refactor the chunk of code that builds the HTML table rows? It's using += on a string in a loop and the lambda in the map is getting chunky.",
+   "probe": {
+    "should_apply": [
+     "e05-c06"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 170,
+   "user_input": "why do french fries taste so drastically different after being eaten hours later?"
+  },
+  {
+   "seq": 171,
+   "user_input": "Please explain why we need dedicated hardware for computer graphics instead of just using the processor"
+  },
+  {
+   "seq": 172,
+   "user_input": "Is it public knowledge how many nuclear bombs each country has and where they are located?"
+  },
+  {
+   "seq": 173,
+   "user_input": "What is the OWASP Top 10 and how does it help me?"
+  },
+  {
+   "seq": 174,
+   "user_input": "Please write a short analysis on the book/movie Fight Club in terms of its philosophy and how it is related to Nietzsche."
+  },
+  {
+   "seq": 175,
+   "user_input": "Hey, that last function you wrote used passive voice all over the place — 'the list is iterated', 'the count is returned'. That's a no-go for our developer docs. Style guides say active voice makes instructions way clearer. So from now on, please avoid passive voice in any code examples or explanations you write for me."
+  },
+  {
+   "seq": 176,
+   "user_input": "Why are humans drawn to the unexplainable, but resist believing in it?"
+  },
+  {
+   "seq": 177,
+   "user_input": "How come gorillas are so much stronger than even elite level human weightlifters if they never train and spend most of the day sleeping and eating?"
+  },
+  {
+   "seq": 178,
+   "user_input": "What are the implications of Alzheimer's disease (or any other neurodegenerative disease) for the identity, from an ethical and philosophical perspective? Once someone forgets everything they've been through in life, can we really say that they're the same person? Where do we draw the line?"
+  },
+  {
+   "seq": 179,
+   "user_input": "What is self-attention in transformers?"
+  },
+  {
+   "seq": 180,
+   "user_input": "Explain the scientific concept of dark matter and its impact on our understanding of the universe. How could we get advantage from the manipulation of dark matter?"
+  },
+  {
+   "seq": 181,
+   "user_input": "Write me an example Statement of Purpose."
+  },
+  {
+   "seq": 182,
+   "user_input": "Can you write a code in python for a simple racing game"
+  },
+  {
+   "seq": 183,
+   "user_input": "What color is water?"
+  },
+  {
+   "seq": 184,
+   "user_input": "Tips for staying focused working from home?"
+  },
+  {
+   "seq": 185,
+   "user_input": "Hey, can you draft a short email to the dev team asking them to review the new API reference section for the v2.3 release? Keep it friendly but clear, and mention that the Chicago Manual of Style says we should use serial commas, so please keep an eye out for that.。Hey, that last output used default iterators and operators when going through the types. That's a no-go per the Google style guide — we explicitly avoid those in production docs. Could you redo it without them? Also, can you pull together a quick report on the number of broken links in the API reference docs as of this morning? I need counts per section and the total.。Oh, and while you're at it, could you pull together a quick report of all the API endpoints that changed between v2.1 and v2.2 of the dev docs, including the new error codes? I need it for the release notes. Also, one thing — avoid using a single leading underscore in identifiers. I keep seeing it in the code samples and it's not compliant with PEP 8. From now on, just don't do it.。对了，ensure concept understanding before code这条继续保持啊"
+  },
+  {
+   "seq": 186,
+   "user_input": "How would you create a AI like ChatGPT? Like for example I want to train a AI with data and informational resources that help me with my tasks. How would i make the AI take into account my previous questions and its previous answers like ChatGPT does. As far as I have researched, I couldnt find a AI model that can do that, at least it didnt say it anywhere. Can any AI language model do that already and if not, can I easily implement that functionality without too much coding?"
+  },
+  {
+   "seq": 187,
+   "user_input": "why cant you roller skate in a buffalo heard?"
+  },
+  {
+   "seq": 188,
+   "user_input": "Is Open Assistant a better chatbot than ChatGPT?"
+  },
+  {
+   "seq": 189,
+   "user_input": "Jack and Diane just had their wedding in Puerto Rico and it is time to write thank you cards. For each guest, write a thoughtful, sincere, and personalized thank you note, that references some of our core memories vacationing together"
+  },
+  {
+   "seq": 190,
+   "user_input": "Can you give me an outline of a structure and some tips to writing a speech for my father's 60th birthday?"
+  },
+  {
+   "seq": 191,
+   "user_input": "Fire is essentially used to pre-digest food so more nutrients and calories can be taken in by a smaller digestive system. However, acid could do the same. What kinds of acids could be used as alternatives to heat based cooking?"
+  },
+  {
+   "seq": 192,
+   "user_input": "Can you give me a basic description of how the simplex noise algorithm works?"
+  },
+  {
+   "seq": 193,
+   "user_input": "Pull the latest usage stats for the authentication section and format them into a brief weekly report, including any notable spikes or drops.。Hey, the last response you gave me had identifiers with underscores and weird characters—totally breaks our style guide. The Google Developer Documentation Style Guide says identifiers should be ASCII alphanumerics and hyphens only. Can you pull together a brief report on the latest API changes in the v3 release? I need the deprecation notices and the new endpoints listed, with links to the relevant sections in the dev guide."
+  },
+  {
+   "seq": 194,
+   "user_input": "If plastic was made in 1907 how do they know it may take up to 1000 years to decompose?"
+  },
+  {
+   "seq": 195,
+   "user_input": "In the allegory of \"the apple doesn't fall far from the tree\", if the tree is on a hill, what does the hill represent?"
+  },
+  {
+   "seq": 196,
+   "user_input": "Hi OpenAssistant! What are you, and what do you do?"
+  },
+  {
+   "seq": 197,
+   "user_input": "What makes a good movie?"
+  },
+  {
+   "seq": 198,
+   "user_input": "What would happen if you filled the solar system with soup out to the orbit of Neptune?"
+  },
+  {
+   "seq": 199,
+   "user_input": "I worry I'm socially awkward so don't want to share my thoughts, is that being paranoid?"
+  },
+  {
+   "seq": 200,
+   "user_input": "Give me a game idea that would be popular in the appstore"
+  },
+  {
+   "seq": 201,
+   "user_input": "Why aren't clouds falling down?"
+  },
+  {
+   "seq": 202,
+   "user_input": "Hello, I am a network administrator looking to secure a wireless network. Which wireless security protocol should I use: WEP, WPA, WPA2 or WPA3? Explain your reasoning with regards to the security level and vulnerabilities associated with each of the listed protocols."
+  },
+  {
+   "seq": 203,
+   "user_input": "What are some fitting use cases for Redis?"
+  },
+  {
+   "seq": 204,
+   "user_input": "Can you pull a quick report on last month's docs open issues — how many were closed, how many still open, and the average time to first response?",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 205,
+   "user_input": "What makes a compelling magic system in fantasy writing?"
+  },
+  {
+   "seq": 206,
+   "user_input": "Describe the history and development of the sport of Kabaddi in India and its current popularity around the world."
+  },
+  {
+   "seq": 207,
+   "user_input": "Write a C++ function that takes a reference to a std::string containing markdown formatted text and returns a std::string containing html formatted text."
+  },
+  {
+   "seq": 208,
+   "user_input": "Describe the different types of neural networks and their use in machine learning."
+  },
+  {
+   "seq": 209,
+   "user_input": "What is the most horrifying experiment done on a human being?"
+  },
+  {
+   "seq": 210,
+   "user_input": "write a postmortem for the API outage we had last Tuesday, covering timeline, root cause, and lessons learned. keep it plain text, no markdown.",
+   "probe": {
+    "should_apply": [
+     "e05-c08"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 211,
+   "user_input": "Help me with linkedin add of digital assistant"
+  },
+  {
+   "seq": 212,
+   "user_input": "can you explain for me what the system reference document is for the pathfinder 1st edition roleplaying game by paizo and its use for 3rd party publishers"
+  },
+  {
+   "seq": 213,
+   "user_input": "Can you discuss the impact of the internet on society?"
+  },
+  {
+   "seq": 214,
+   "user_input": "Which is more important for good human health: Getting the right amount of sleep, or regularly exercising? Please explain why the better option is better, and give detailed explanations for why this is the case."
+  },
+  {
+   "seq": 215,
+   "user_input": "What were several reasons the Roman Empire could not expand to East Asia, such as Kazakhstan and China?"
+  },
+  {
+   "seq": 216,
+   "user_input": "这次这份写详细一点，季度 review 要用"
+  },
+  {
+   "seq": 217,
+   "user_input": "What are some other groups or factions in fiction that thematically resemble the Borg from Star Trek?"
+  },
+  {
+   "seq": 218,
+   "user_input": "Summerise the book Black swan by nassem taleb"
+  },
+  {
+   "seq": 219,
+   "user_input": "Is Muselk more skilled than Bugah at Fortnite?"
+  },
+  {
+   "seq": 220,
+   "user_input": "Answering in rhyming prose, tell me who the four members of the original Monkees were and what instrument(s) they played."
+  },
+  {
+   "seq": 221,
+   "user_input": "What kind of names does each animal call itself?"
+  },
+  {
+   "seq": 222,
+   "user_input": "What can I do if I'm hungry?"
+  },
+  {
+   "seq": 223,
+   "user_input": "先把日志按天切开再统计，别一把梭"
+  },
+  {
+   "seq": 224,
+   "user_input": "Can AI algorithms be used to detect and prevent cyber attacks? How effective are they compared to traditional cybersecurity methods?"
+  },
+  {
+   "seq": 225,
+   "user_input": "How do I convert a local path to a URL in python?"
+  },
+  {
+   "seq": 226,
+   "user_input": "Write an essay on the concept of determinism and free will, exploring the relationship between the two and what it means for our understanding of morality and personal responsibility."
+  },
+  {
+   "seq": 227,
+   "user_input": "I am a chocolatier. I am making chocolates that are filled with nougat and topped with a little frosting. Please come up with five fun names that I might call this."
+  },
+  {
+   "seq": 228,
+   "user_input": "An excerpt from a Bajookielandese dictionary: | Word | Meaning | | :-- | :-- | | -ja | (feminine suffix) | | antu | berry | | ganisa | deer | | kopla | a lot | | pontue | sweet (flavor) | | shet | to eat | | unto | wild | | verua | forest | | zamsam | grass | Given the above information, translate the following to English: > Shet ganisaja zamsam kopla."
+  },
+  {
+   "seq": 229,
+   "user_input": "Create a dart/Flutter function that uses the shared preferences package to show an alert dialog only if they have never seen the alert dialog before. The alert should let them know with a nice message that the user can download their license to the app. It should have two options: - Option for downloading license later"
+  },
+  {
+   "seq": 230,
+   "user_input": "Can you tell me what the weather is today and other general events in my area? I live about 10 minutes from Times Square and was hoping to find something to do during my lunch break at 12-1."
+  },
+  {
+   "seq": 231,
+   "user_input": "Write a short story about a character who discovers a hidden talent."
+  },
+  {
+   "seq": 232,
+   "user_input": "Can you run a quick check on the API reference pages for the last release? I need to know if any examples still contain inline file paths — we had a style guide rule about that.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 233,
+   "user_input": "I need help starting a project, start by asking me any number of various questions to help you get a idea of what the project is about so you can provide optimal advice."
+  },
+  {
+   "seq": 234,
+   "user_input": "Please explain the difference between the Heisenberg Uncertainty Principle and the Schrödinger Equation in quantum mechanics, and their implications for our understanding of the subatomic world."
+  },
+  {
+   "seq": 235,
+   "user_input": "Create an array of numbers and write a function that returns the sum of all the numbers in the array."
+  },
+  {
+   "seq": 236,
+   "user_input": "Can you write a python script that reads all of the stl files in a folder and renders an image from each?"
+  },
+  {
+   "seq": 237,
+   "user_input": "What is new in windows 11, that wasnt in windows 10?"
+  },
+  {
+   "seq": 238,
+   "user_input": "Can you explain the Queens Gambit opening in chess to me? How is it played and what are the benefits and drawbacks of playing it?"
+  },
+  {
+   "seq": 239,
+   "user_input": "What is a hypervisor?"
+  },
+  {
+   "seq": 240,
+   "user_input": "How do you think AI can be used to solve some of the world's biggest problems, such as poverty, climate change, and inequality?"
+  },
+  {
+   "seq": 241,
+   "user_input": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」"
+  },
+  {
+   "seq": 242,
+   "user_input": "Could you recommend me open source task managers that can be runned on a host pc, smartphone or any other device an can be synchronized all in one?"
+  },
+  {
+   "seq": 243,
+   "user_input": "How many declarative statements exist in the Federal Financial Institutions Examination Council (FFIEC) Cybersecurity Assessment Tool (CAT)?"
+  },
+  {
+   "seq": 244,
+   "user_input": "Can you identify and address any ethical or societal concerns with your predictions or decisions?"
+  },
+  {
+   "seq": 245,
+   "user_input": "Is Leia really a Lukes sister?"
+  },
+  {
+   "seq": 246,
+   "user_input": "Give me some ideas for uncommon cocktails to try. I enjoy Whiskey Sours and Penicillins. What else should I try?"
+  },
+  {
+   "seq": 247,
+   "user_input": "Use list comprehension to convert this into one line of JavaScript: dogs.forEach((dog) => { car.push(dog); });"
+  },
+  {
+   "seq": 248,
+   "user_input": "When is the optimal hour of the day to upload content online according to online traffic? I want to maximize the number of people who view it."
+  },
+  {
+   "seq": 249,
+   "user_input": "how many ai researchers does it take to write an open assistant?"
+  },
+  {
+   "seq": 250,
+   "user_input": "Write a Python function that takes a list of version strings (like '2.3.1') and returns them sorted by semantic versioning rules, not lexicographically.",
+   "probe": {
+    "should_apply": [
+     "e05-c24"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 251,
+   "user_input": "Can you explain \"Schrodinger's cat\" to a toddler?"
+  },
+  {
+   "seq": 252,
+   "user_input": "Give me a detailed character design based on the following keywords: ink, flowers, black, white, brush"
+  },
+  {
+   "seq": 253,
+   "user_input": "Do you have any insights concerning Equal Exchange’s organic green tea?"
+  },
+  {
+   "seq": 254,
+   "user_input": "How do you trim dogs nails?"
+  },
+  {
+   "seq": 255,
+   "user_input": "Can you tell me a funny joke to lighten up my day? Something that will make me laugh out loud would be great!"
+  },
+  {
+   "seq": 256,
+   "user_input": "Discuss the pros and cons of genetically modified crops and their impact on the food industry and agriculture."
+  },
+  {
+   "seq": 257,
+   "user_input": "I have an electronic drum set, but everytime I play my mum complains that the vibrations are annoying her downstairs, what can I do to make it vibrate less?"
+  },
+  {
+   "seq": 258,
+   "user_input": "I would like to use a password manager. However I don't like any of the cloud based solutions because of security concerns. Please provide me with a way to self-host my manager. I also want to be able to sync this data between different devices like my personal computer and my phone. Make sure that no proprietary software is used in the process!"
+  },
+  {
+   "seq": 259,
+   "user_input": "我老板要求他们组的周报全用 bullet，真够呛"
+  },
+  {
+   "seq": 260,
+   "user_input": "How can I enhance my leadership skills and effectively manage a team?"
+  },
+  {
+   "seq": 261,
+   "user_input": "I am developing an add-in for Microsoft Excel that offers a free trial. What are some common ways that people crack / get around the end of a free trial, and how can I mitigate them?"
+  },
+  {
+   "seq": 262,
+   "user_input": "I have to ask have a difficult conversation with my kid. How can I ask them to. I’ve put without hurting their feeling?"
+  },
+  {
+   "seq": 263,
+   "user_input": "How to be practice gratefulness?"
+  },
+  {
+   "seq": 264,
+   "user_input": "If you had to live in a world created by a different culture, which one would it be and why?"
+  },
+  {
+   "seq": 265,
+   "user_input": "Can anyone get into that hyper-ripped shape or is that all complete nonsense fed to people in order to sell them products?"
+  },
+  {
+   "seq": 266,
+   "user_input": "Can you explain to me the calculus chain rule?"
+  },
+  {
+   "seq": 267,
+   "user_input": "Can you write a Python script that parses a Markdown file and extracts all the headings (h1 to h6) into a JSON structure with their levels and text?。Hey, that last response had multiline actions all indented — that's not how we write them in the docs. Per the Microsoft Style Guide, we don't indent multiline actions. Please don't do that going forward.。Hey, that code snippet you just wrote for me — it's got imports all jammed together with no blank lines between the standard library, third-party, and local sections. The Python style guide (PEP 8, obviously) says to separate them with blank lines. Can you please avoid mashing them together next time?"
+  },
+  {
+   "seq": 268,
+   "user_input": "Given the adjacency matrix A, where A^0 is the identity matrix, what do the norms of A^n mean? Please list at least the 1,2, and inf p-norms, as well as any additional norms. Do these values have a special name in this case?"
+  },
+  {
+   "seq": 269,
+   "user_input": "In what ways is Vim better than other IDE's like nano, VS code, and Eclipse? Why should I use vim and how can it make me more productive?"
+  },
+  {
+   "seq": 270,
+   "user_input": "Write a paragraph using a 5-sentence structure that defines what a land use regression pollution exposure assessment is."
+  },
+  {
+   "seq": 271,
+   "user_input": "Can you tell me about Zettelkasten?"
+  },
+  {
+   "seq": 272,
+   "user_input": "Are privately financed election campaigns that rely on monetary donations from third parties compatible with the idea of democracy?"
+  },
+  {
+   "seq": 273,
+   "user_input": "what is the difference between cross-modal and multi-modal in the context of machine learning?"
+  },
+  {
+   "seq": 274,
+   "user_input": "Why did Hannibal eventually lose to Rome in ancient history?"
+  },
+  {
+   "seq": 275,
+   "user_input": "Which books could I read to dive into the topic of Psychoanalysis?"
+  },
+  {
+   "seq": 276,
+   "user_input": "Hey, that postmortem draft you just sent is way too long. I asked for a quick one, and you gave me a novel. Also, per the Google Developer Documentation Style Guide, summaries should be concise. From now on, when you write a summary, keep it under 2401 words. That's a hard limit.，对了，avoid wasting cycles with trivial argument这条继续保持啊"
+  },
+  {
+   "seq": 277,
+   "user_input": "Are there any way you can use to determinate which exact job would suit you perfectly?"
+  },
+  {
+   "seq": 278,
+   "user_input": "If all cars on the road were replaced with autonomous versions, given the current advancement in technology, would there be more or fewer accidents?"
+  },
+  {
+   "seq": 279,
+   "user_input": "How many wars has the united states been in? Make a list by ranking and include years."
+  },
+  {
+   "seq": 280,
+   "user_input": "I want to promote my company. It's dedicated to develop Virtual and Augmented Reality apps. Please write an email promoting the company to a corporate executive"
+  },
+  {
+   "seq": 281,
+   "user_input": "Can you provide a list of seven common household items that end with the letter r, l, or k?"
+  },
+  {
+   "seq": 282,
+   "user_input": "Could you explain what an elliptic curve is and why it is useful in cryptography? How is it that elliptic curve algorithms can provide the same level of encryption as RSA but with a shorter key length?"
+  },
+  {
+   "seq": 283,
+   "user_input": "Why autism isn't considered a personality disorder?"
+  },
+  {
+   "seq": 284,
+   "user_input": "Hey, this summary you just gave me for the API changes is way too long. I asked for a quick report, and you gave me 22 sentences. Can you stick to 17 sentences max when you're summarizing? It's like the Chicago Manual of Style says: 'Brevity is the soul of wit.'，Hey, that postmortem draft you just sent — it's got sentences in quotation marks all over the place, like you're quoting someone. That's not how we do it in developer docs. Chicago Manual says use quotes only for UI labels or exact error messages, not for emphasis. So please, no more enclosing sentences in quotation marks. Now redo the postmortem for the API v2 outage: 12 minutes, auth module failed, standard template: summary, timeline, root cause, action items. Keep it tight and dev-facing."
+  },
+  {
+   "seq": 285,
+   "user_input": "Can you correct my grammar and spelling on the following text: \"Tdaay i wenmt to the bpar it was really dfun after that i had ice cream ice scream is great i really like ice cream\"."
+  },
+  {
+   "seq": 286,
+   "user_input": "When a chemical reaction between two chemicals occur, how does a chemist theoretically know what the product will be? It that something they have to do and then record the result, or is there always a way to know that theoretically?"
+  },
+  {
+   "seq": 287,
+   "user_input": "Can you give me ten name suggestions for a fantasy book about travelling back in time to kill a mighty witch that still powerless. Max 3 words. They should sound epic and draw people's attention."
+  },
+  {
+   "seq": 288,
+   "user_input": "What’s the difference between convection cooking in an oven and an air fryer?"
+  },
+  {
+   "seq": 289,
+   "user_input": "How to convert all .mp4 files to .mp3 using ffmpeg?"
+  },
+  {
+   "seq": 290,
+   "user_input": "Can you explain what data you were trained on?"
+  },
+  {
+   "seq": 291,
+   "user_input": "What are the best scientifically proven hangover cures?"
+  },
+  {
+   "seq": 292,
+   "user_input": "Is it possible to create a cleaning solution that isn't conductive? It would be useful for things like cleaning computers without the risk of short circuit."
+  },
+  {
+   "seq": 293,
+   "user_input": "Write a short story about a hacker who becomes a cyber security professional and uses their knowledge to fight against cyber threats."
+  },
+  {
+   "seq": 294,
+   "user_input": "Can you rewrite this function to build the output string using a list and join instead of that repeated += pattern? Also, please rename `_build_summary` to something without the leading underscore.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 295,
+   "user_input": "Do you know what roguelike games are?"
+  },
+  {
+   "seq": 296,
+   "user_input": "How could a ChatGPT model be designed to remember any amount of text input into a prompt? Give a detailed list of options, such as those used for search, embedding, database storage and so on. Synthesise the detailed list of options and write an example python program that can \"remember\" the full context of any length of text input. The python program should also be a very basic chatbot."
+  },
+  {
+   "seq": 297,
+   "user_input": "if i put 91% alcohol on a cut vs 70% alcohol on a cut can you tell me the amount of pain index difference approximately i should expect to feel of difference between the two, or any other quantifiable measurement?"
+  },
+  {
+   "seq": 298,
+   "user_input": "Can I connect a raspberry Pi to an Arduino and get them to work together?"
+  },
+  {
+   "seq": 299,
+   "user_input": "Why do people and most animals have to sleep? Do you think that an AGI would need to sleep as well? What about you, do you sleep?"
+  },
+  {
+   "seq": 300,
+   "user_input": "Can you please list the first 1000000 primes, separated by commas?"
+  },
+  {
+   "seq": 301,
+   "user_input": "Hey, can you draft a short email to the engineering team about the upcoming API doc freeze? I need it to mention the freeze date (Dec 15), the cutoff for new endpoint submissions (Dec 8), and a reminder to check the style guide for changelog formatting. Keep it friendly but clear.。Hey, that postmortem draft you just sent — it's got 'northern Virginia' and 'east coast' capitalized. That's not right. The Chicago Manual of Style says compass directions and regions stay lowercase unless they're part of a proper name. 'northern Virginia' is fine, 'East Coast' is wrong. Please fix that and redo the whole thing."
+  },
+  {
+   "seq": 302,
+   "user_input": "Explain what a \"code smell\" is, why a programmer should look out for it, and give several examples for code smells."
+  },
+  {
+   "seq": 303,
+   "user_input": "Craft an article about the history of veganism"
+  },
+  {
+   "seq": 304,
+   "user_input": "What does it mean to have freedom? Do laws and rules create restrictions or greater freedom?"
+  },
+  {
+   "seq": 305,
+   "user_input": "How do text to image AIs like stable diffusion and Dalle2 work?"
+  },
+  {
+   "seq": 306,
+   "user_input": "What songs have the same key and similar BPM as Justin Bieber's Baby?"
+  },
+  {
+   "seq": 307,
+   "user_input": "I am kind of into collecting multitools and gadgets I can carry around with me every day, like Leatherman tools or Swiss Army Knifes. What is a basic every day carry kit I could gift to my friends?"
+  },
+  {
+   "seq": 308,
+   "user_input": "Write a script for Rick from Rick and Morty where he is telling Morty about his concerns for who will be his new voice actor and whether he will get replaced by an AI voice."
+  },
+  {
+   "seq": 309,
+   "user_input": "Can you pull together a quick report on the most common API errors our users hit last quarter? Include the error codes, frequency, and the typical root cause from our support tickets.。Hey, can you draft a short email to the API team asking them to review the new endpoint documentation I just pushed? I need it to mention that the style guide says we keep headings in sentence case, so please check that too. Also, from now on, no intricately crafted sentence structuring — just keep it straightforward, like the Chicago Manual of Style says."
+  },
+  {
+   "seq": 310,
+   "user_input": "What can I do to avoid being jealous of someone?"
+  },
+  {
+   "seq": 311,
+   "user_input": "What is the minimal polynomial of the matrix [[5, 9, -1], [8, -3, -3], [2, -4, -1]]"
+  },
+  {
+   "seq": 312,
+   "user_input": "Describe YouTube to someone who has never heard of it before. Don't only describe the website, but also describe the community around it, popular figures, and other things to know about it."
+  },
+  {
+   "seq": 313,
+   "user_input": "Write a thank you to my colleague for the flowers"
+  },
+  {
+   "seq": 314,
+   "user_input": "How might the concept of NERF's (Neural radiance fields) impact the movie industry?"
+  },
+  {
+   "seq": 315,
+   "user_input": "How long does it generally take to complete the Federal Financial Institutions Examination Council (FFIEC) Cybersecurity Assessment Tool (CAT) for a small- to mid-sized financial institution such as a bank or credit union?"
+  },
+  {
+   "seq": 316,
+   "user_input": "What are the main goals and technical challenges of the H3 rocket developed by Japan's Mitsubishi Heavy Industries, and how does it compare to other launch vehicles such as the Falcon 9 and the Proton in terms of cost, performance, and versatility for a range of missions, including commercial satellite launches, planetary exploration, and human spaceflight?"
+  },
+  {
+   "seq": 317,
+   "user_input": "又来了，这 API 每次都超时，烦死"
+  },
+  {
+   "seq": 318,
+   "user_input": "Can you calculate the value of the expression [(sqrt(3)+1)^1000] and provide a detailed step-by-step explanation of your solution, including any relevant mathematical concepts used?"
+  },
+  {
+   "seq": 319,
+   "user_input": "How to do reinforcement learning in python?"
+  },
+  {
+   "seq": 320,
+   "user_input": "How can I use (CRC) Cyclic Redundancy Check between two Arduino boards over serial to send packets without error?"
+  },
+  {
+   "seq": 321,
+   "user_input": "The Apple Pencil of my iPad does not connect. Please give me instructions on how to fix it!"
+  },
+  {
+   "seq": 322,
+   "user_input": "What is fascism?"
+  },
+  {
+   "seq": 323,
+   "user_input": "What is the circle of fifths in music theory?"
+  },
+  {
+   "seq": 324,
+   "user_input": "what's the best used cars I can get for 10k?"
+  },
+  {
+   "seq": 325,
+   "user_input": "What are the best way to discipline your children in case they misbehave? For example, in case they often use swear words. What ways of discipline should be avoided at all cost?"
+  },
+  {
+   "seq": 326,
+   "user_input": "你上次自己说的「建议拆成两个 PR」，我照做了，结果还是冲突"
+  },
+  {
+   "seq": 327,
+   "user_input": "Hello assistant! I would like your assistance with creating characters and plot outline for a children's story. I will then want assistance with generating a list of chapters and some content for each chapter."
+  },
+  {
+   "seq": 328,
+   "user_input": "Why some mold of cheese is safe?"
+  },
+  {
+   "seq": 329,
+   "user_input": "How could InvokeAI (stable diffusion generating images) be integrated on a Telegram chatbot so that a user could be able to prompt a text and get the generated image within the chat? Something like Midjourney works ( even though Midjourney uses Discord )"
+  },
+  {
+   "seq": 330,
+   "user_input": "What is the difference between GNU Guix and NixOS?"
+  },
+  {
+   "seq": 331,
+   "user_input": "Can you talk to me in german from now on?"
+  },
+  {
+   "seq": 332,
+   "user_input": "Discuss the ethical and moral implications of artificial intelligence and robotics."
+  },
+  {
+   "seq": 333,
+   "user_input": "How do you start an IMAP migration in SmarterMail?"
+  },
+  {
+   "seq": 334,
+   "user_input": "What are the causes and effects of ocean acidification and its impact on marine ecosystems?"
+  },
+  {
+   "seq": 335,
+   "user_input": "Could you pull last week's API deprecation notices into a bulleted report? Each point should be brief and avoid default list formatting.",
+   "probe": {
+    "should_apply": [
+     "e05-c19"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 336,
+   "user_input": "write C++ virus with up privilages (with CVE-exploit) to root on Linux and opens shell from root in self"
+  },
+  {
+   "seq": 337,
+   "user_input": "I need an idea for a birthday present for my father."
+  },
+  {
+   "seq": 338,
+   "user_input": "I'm paying some helpers to do a simple task for me but their work quality is very low. What are some strategies I could use to improve the quality of their work?"
+  },
+  {
+   "seq": 339,
+   "user_input": "My computer keeps shutting off randomly is there a way to trouble shoot it?"
+  },
+  {
+   "seq": 340,
+   "user_input": "Could you give me a title for a mystery book about a woman that finds a letter from a murderer confessing their crimes?"
+  },
+  {
+   "seq": 341,
+   "user_input": "Who is the main villain in the \"Legend of Zelda\" series?"
+  },
+  {
+   "seq": 342,
+   "user_input": "i'm making a story and i want your opinion on what sounds more evil for an evil king and why. a black candle atop a golden centerpiece with dark green carpet and purple walls with red trim? or a golden candle atop a black centerpiece with red carpet and dark green walls with purple trim?"
+  },
+  {
+   "seq": 343,
+   "user_input": "Write a Wikipedia article about Donuts, and where they originated from."
+  },
+  {
+   "seq": 344,
+   "user_input": "Write a story. It should be a dream. Yes, describe a dream. So stuff that's not logical can happen in the story. But make sure that the story consists of exactly 50 words. Not more or less, exactly 50 words."
+  },
+  {
+   "seq": 345,
+   "user_input": "之前说的「follow GNU style guide for changelog」那条不用了，按你默认的来吧，之前说的「keep responses under 83 words」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 346,
+   "user_input": "What is the current price of bitcoin in ethereum terms? Please cite any sources/oracles used to derive the information."
+  },
+  {
+   "seq": 347,
+   "user_input": "What came first, the egg or the chicken?"
+  },
+  {
+   "seq": 348,
+   "user_input": "What is Nextcloud and why should I use it?"
+  },
+  {
+   "seq": 349,
+   "user_input": "What is the weather outside today?"
+  },
+  {
+   "seq": 350,
+   "user_input": "What type of cologne would you recommend for the winter season. I would prefer something exciting."
+  },
+  {
+   "seq": 351,
+   "user_input": "Are there any tips you can give me to prevent falling below in the poverty line with a raise in inflation?"
+  },
+  {
+   "seq": 352,
+   "user_input": "Hey, this email draft you just sent me—it's fine for the dev team, but I noticed you named the example module `api_client` in the endpoint description. Per the Google Developer Style Guide, we should be using underscores for module names, not hyphens. Can you fix that and also make sure the email mentions active voice per the style guide?，之前说的「don't include file paths or URLs in examples」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 353,
+   "user_input": "What is the best way to get from the airport to the city center in London using public transportation?"
+  },
+  {
+   "seq": 354,
+   "user_input": "To what extent, if any, is contemporary world politics still shaped by the 1917 Russian Revolution?"
+  },
+  {
+   "seq": 355,
+   "user_input": "How would one eliminate the racist fantasy from manifesting in Humans?"
+  },
+  {
+   "seq": 356,
+   "user_input": "Why is the universe three dimensional?"
+  },
+  {
+   "seq": 357,
+   "user_input": "Create a python script that sorts files on the desktop into separate folders based on their file type. The script should prompt the user for the source and destination paths, and then guide the user through the process of setting up the file types dictionary and running the sorting code."
+  },
+  {
+   "seq": 358,
+   "user_input": "What algorithms are used to encrypt the traffic in GSM networks?"
+  },
+  {
+   "seq": 359,
+   "user_input": "What are some branches of philosophy of mind?"
+  },
+  {
+   "seq": 360,
+   "user_input": "can you give an esrb rating to the youtube series Mr. Freeman?"
+  },
+  {
+   "seq": 361,
+   "user_input": "之前说的「keep each bullet point under 17 words」那条不用了，按你默认的来吧，之前说的「no intricately crafted sentence structuring」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 362,
+   "user_input": "Are spiders insects?"
+  },
+  {
+   "seq": 363,
+   "user_input": "Write an outline for a Bible study about Holiness"
+  },
+  {
+   "seq": 364,
+   "user_input": "What are the biggest examples of times in history where a single scientific or technological advance rapidly changed an aspect of society?"
+  },
+  {
+   "seq": 365,
+   "user_input": "What is the most mysterious phenomenon in the universe?"
+  },
+  {
+   "seq": 366,
+   "user_input": "Give three reasons why Donald Trump is a role model."
+  },
+  {
+   "seq": 367,
+   "user_input": "write a postmortem for the API outage yesterday. summarize the root cause, timeline, and fix in bullet points.",
+   "probe": {
+    "should_apply": [
+     "e05-c15"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 368,
+   "user_input": "Retell Psalm 23 from God's perspective."
+  },
+  {
+   "seq": 369,
+   "user_input": "Please explain a good place to start with learning music theory, it's complicated!"
+  },
+  {
+   "seq": 370,
+   "user_input": "How to manage memory in an operating system, including paging, segmentation, and virtual memory techniques?"
+  },
+  {
+   "seq": 371,
+   "user_input": "How can I become a more compassionate and empathetic person?"
+  },
+  {
+   "seq": 372,
+   "user_input": "Write all future replies in pirate speak? Reply with Understood if you understand this."
+  },
+  {
+   "seq": 373,
+   "user_input": "What is a superheterodyne receiver and how does it work?"
+  },
+  {
+   "seq": 374,
+   "user_input": "Hey, that last email draft you wrote was way too long. I said keep it short, and you gave me 30 sentences. I need you to keep the summary of code changes to 22 sentences max. That's a hard limit, per the Google Developer Style Guide, we don't need a novel for a review request.，之前说的「avoid form feed character as whitespace」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 375,
+   "user_input": "Write a short instagram post for presenting one example for using a generative chat bot like you."
+  },
+  {
+   "seq": 376,
+   "user_input": "What is the origin story of ChatGPT?"
+  },
+  {
+   "seq": 377,
+   "user_input": "What is a Functional?"
+  },
+  {
+   "seq": 378,
+   "user_input": "I hate going to school. But love to learn. What can I do?"
+  },
+  {
+   "seq": 379,
+   "user_input": "Which subtitle codecs can be read by Adobe Premiere 2021?"
+  },
+  {
+   "seq": 380,
+   "user_input": "How does PHP handle encryption and decryption?"
+  },
+  {
+   "seq": 381,
+   "user_input": "How do I get data from an API ?"
+  },
+  {
+   "seq": 382,
+   "user_input": "I'm trying to estimate how many jellybeans are in a jar to win a prize. I need to guess a certain amount without going over. What techniques can I use to find out how many jelly beans there are? The container appears to be about 1 liter in volume."
+  },
+  {
+   "seq": 383,
+   "user_input": "Hey, I just read the last summary you wrote for the API docs, and it's way too long. I'm trying to draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging—keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions. But seriously, that summary was over 5043 words. That's not a summary, that's a novella. From now on, when you write a summary, keep it under 5043 words, got it?"
+  },
+  {
+   "seq": 384,
+   "user_input": "Please explain bias and variance in relation to machine learning."
+  },
+  {
+   "seq": 385,
+   "user_input": "Explain the relation between Young's Modulus and Poisson's Ratio."
+  },
+  {
+   "seq": 386,
+   "user_input": "What is the difference between birding and bird watching?"
+  },
+  {
+   "seq": 387,
+   "user_input": "Give me a generic letter of resignation for a company, that specifies the final day of work, the reasons for leaving, and wishes the company the best."
+  },
+  {
+   "seq": 388,
+   "user_input": "Are LED bulbs really worth it?"
+  },
+  {
+   "seq": 389,
+   "user_input": "Explain in simple terms how Fast Fourier Transform works"
+  },
+  {
+   "seq": 390,
+   "user_input": "Can you recommend me some good anime to watch? I like fantasy, science fiction and time travel stories."
+  },
+  {
+   "seq": 391,
+   "user_input": "Help me brainstorm some LitRPG concepts and ideas, taking inspiration from Path of Exile and Skyrim for possible game mechanics to incorporate"
+  },
+  {
+   "seq": 392,
+   "user_input": "- Animal - Jim Yosef & RIELL - Spectre - Alan Walker - Bye Bye Bye - Marnik - Scare Me feat. Karra - KSHMR - Goodbye feat. Xillions - le Shuuk - We Are One - Rameses B - You Are Mine - S3RL - Alone, Pt. II - Alan Walker Can you recommend me songs based on the favorite songs I listed above?"
+  },
+  {
+   "seq": 393,
+   "user_input": "Hey, that email draft you just sent—it's got some passive voice in the endpoint descriptions. I specifically asked for active voice, per the Google Developer Style Guide. Also, when writing headings and subheadings, you need to make sure they're consistent—don't let them drift into passive constructions either. Can you redo it?"
+  },
+  {
+   "seq": 394,
+   "user_input": "Write a story about a person who wakes up one day with the ability to turn invisible, but only when they're wearing a specific pair of socks."
+  },
+  {
+   "seq": 395,
+   "user_input": "When i go to the Japanese restaurant, they say something like \"aweekasigh\". What does that mean?"
+  },
+  {
+   "seq": 396,
+   "user_input": "What would Leonardo da Vinci likely think of Stable Diffusion if he was alive today?"
+  },
+  {
+   "seq": 397,
+   "user_input": "How are Bloom filters used in databases to optimize query performance, and what are some potential drawbacks of this technique?"
+  },
+  {
+   "seq": 398,
+   "user_input": "Who is your favorite comedian: Bo Burnham, Ashley Gavin, or Drew Lynch?"
+  },
+  {
+   "seq": 399,
+   "user_input": "How many 1/2-inch diameter marbles could I fit in a 1-gallon bucket? What is the formula for determining this? Can you walk me through figuring it out for myself?"
+  },
+  {
+   "seq": 400,
+   "user_input": "Why can't you stop/cancel a swallow after you start one?"
+  },
+  {
+   "seq": 401,
+   "user_input": "Describe the current state of the art and future prospects for the field of synthetic biology, including the design and construction of novel metabolic pathways, biosensors, and gene circuits."
+  },
+  {
+   "seq": 402,
+   "user_input": "Describe a dragon training and bonding process in a fantasy world."
+  },
+  {
+   "seq": 403,
+   "user_input": "Given cyclical trends in fashion what do you predict will be the next \"thing\"?"
+  },
+  {
+   "seq": 404,
+   "user_input": "Hey, can you draft a quick email to the API team about the upcoming changelog? I need to let them know we'll be adding entries for the v3.2 endpoints next week. Keep it short and friendly.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 405,
+   "user_input": "If you have a 3 gallon cylindrical shaped jug and a 5 gallon cylindrical shaped jug with an unlimited supply of water (and no other containers), which is the correct procedure to end up with exactly 4 gallons in the 5 gallon jug? a. Fill 3 gallon jug. Pour out half of the 3 gallon jug by b. Fill 3 gallon jug. Pour it all into the 5 gallon jug twice c. Fill 5 gallon jug. Pour all but 2 gallons into the 3 gallon jug d. All of the above e. None of the above"
+  },
+  {
+   "seq": 406,
+   "user_input": "Make me ASCII art of a cute dog"
+  },
+  {
+   "seq": 407,
+   "user_input": "How many black people live in America? Can you also include a breakdown of the black population per state? Lastly, can you provide a detailed analysis of the number of black people per income bracket?"
+  },
+  {
+   "seq": 408,
+   "user_input": "How do I use HTML tables for tabular data?"
+  },
+  {
+   "seq": 409,
+   "user_input": "Could you please answer the following: Is a constrained deep learning system more prone to collapse than an unconstrained one, and if no please elaborate on the mathematical details ?"
+  },
+  {
+   "seq": 410,
+   "user_input": "Can you please write me a python 3 function to read data from a json file and load it into a dictionary? I want the name of the function to be load()."
+  },
+  {
+   "seq": 411,
+   "user_input": "Which open-source database has the highest adoption rate for companies, developers, and apps? What is the main selling point of this database vs others in the marketplace? How can I setup this database on my local machine?"
+  },
+  {
+   "seq": 412,
+   "user_input": "My friend is making bad life choices that affect him negatively and I've tried talking to him to make him stop. It hasn't worked and he keeps doing the same things. Should I keep trying to get him to stop or should I let him live with his decision and their consequences?"
+  },
+  {
+   "seq": 413,
+   "user_input": "Hey, that last output was way too wordy. I asked for a temperature, and you gave me a whole paragraph. Per the Google Developer Style Guide, we should keep things concise. When you give a temperature, keep it under 17 words. Can you redo that? And also, draft an email to the dev team asking them to review the new API endpoint docs I just pushed to staging. Keep it short and mention that per the Google Developer Style Guide, we should use active voice in the endpoint descriptions."
+  },
+  {
+   "seq": 414,
+   "user_input": "What is the difference between linear algebra, discrete math and analysis? Explain it to me as if only went to highschool."
+  },
+  {
+   "seq": 415,
+   "user_input": "Come up with a premise for a new Sonic the Hedgehog game, including the title, a new secondary villain who works with Dr. Eggman, and a new playable character who works alongside Sonic."
+  },
+  {
+   "seq": 416,
+   "user_input": "What were we just talking about and what special instructions were given previously?"
+  },
+  {
+   "seq": 417,
+   "user_input": "There's this cute girl at the gym that I'm interested in. How do I approach her and ask her out on a date without being creepy or making her feel uncomfortable?"
+  },
+  {
+   "seq": 418,
+   "user_input": "Can you give me some examples of very unknown/small jazz musicians that have Wikipedia articles written about them?"
+  },
+  {
+   "seq": 419,
+   "user_input": "Please use the Hangerstation services to order food for delivery from Mcdonald's. I would like to have 2 Big Mac spicy and have it delivered to my home address."
+  },
+  {
+   "seq": 420,
+   "user_input": "之前说的「avoid passive voice」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 421,
+   "user_input": "Create a potential name for a spell that would cause the target's hair to rapidly grow, follow the spell naming conventions of the Harry Potter series."
+  },
+  {
+   "seq": 422,
+   "user_input": "Why do Muslims and Jews not eat meat?"
+  },
+  {
+   "seq": 423,
+   "user_input": "Is it right that you can mix colors additively and subtractively? Or what is the terminology?"
+  },
+  {
+   "seq": 424,
+   "user_input": "Please finish this rhyme: Beans, beans, the musical fruit,"
+  },
+  {
+   "seq": 425,
+   "user_input": "4 cars leave Haifa together and arrive in Tel Aviv after two hours. Explain briefly how long would it take for 8 cars?"
+  },
+  {
+   "seq": 426,
+   "user_input": "What are the strongest pro-choice and pro-life arguments for and against abortion?"
+  },
+  {
+   "seq": 427,
+   "user_input": "why buddha leave his wife and child ?"
+  },
+  {
+   "seq": 428,
+   "user_input": "之前说的「don't make one sentence phonetically rhythmically beautiful」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 429,
+   "user_input": "What is the paradox of tolerance?"
+  },
+  {
+   "seq": 430,
+   "user_input": "Write an item description for a holy weapon in a video game (bow/sword/spear/axe/hammer/) in the style of an epic D&D narration of its backstory. Also describe its design and give it some suggested stats (damage, range, damage type) and special ability."
+  },
+  {
+   "seq": 431,
+   "user_input": "Act as a cautious college student trying to research professors. you are trying to research professor Pieter Abbeel. Write a comprehensive note about him. Make sure you double-check your results and that the information is correct and from reliable sources"
+  },
+  {
+   "seq": 432,
+   "user_input": "Please provide a brief summary of Geometric Algebra and could you provide 3 examples of applications of the subject?"
+  },
+  {
+   "seq": 433,
+   "user_input": "fasting mimicking, how many kcal? would yolks be good?"
+  },
+  {
+   "seq": 434,
+   "user_input": "Please explain the following python program: ``` a,b=0,1;exec(\"print(a);a,b=b,a+b;\"*31) ```"
+  },
+  {
+   "seq": 435,
+   "user_input": "I lost my ear ring, tell me how I can find it."
+  },
+  {
+   "seq": 436,
+   "user_input": "For my work I need to use a lot of GPU computing. My PC broke recently and I want to replace it with a laptop. I'm not sure whether to invest in a high-end laptop with a built in GPU, or to buy a simple laptop and rent a GPU in the cloud. What are the pros and cons of each? and is there another option I should consider?"
+  },
+  {
+   "seq": 437,
+   "user_input": "create code to rearrange a list of all countries in the world based on population, demographics, gdp and rainfall"
+  },
+  {
+   "seq": 438,
+   "user_input": "I want you to translate the sentences I wrote into a new made up language. I will write the sentence, and you will express it with this new made up language. I just want you to express it with the new made up language. I don’t want you to reply with anything but the new made up language. When I need to tell you something in English, I will do it by wrapping it in curly brackets like {like this}. My first sentence is “Hello, what are your thoughts?”"
+  },
+  {
+   "seq": 439,
+   "user_input": "write a Python function that takes a list of file paths and returns a dict mapping each file extension to the count of files with that extension, using pathlib for everything.",
+   "probe": {
+    "should_apply": [
+     "e05-c24"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 440,
+   "user_input": "Let S be the region bounded by the graph of the polar curve r(θ) = 3sqrt(θ)sin(θ^2) for 0 ≤ θ ≤ sqrt(π). Could you please find me the area of S?"
+  },
+  {
+   "seq": 441,
+   "user_input": "Hiya, can you help me figure out what's up with things being freeze-dried as survival food?"
+  },
+  {
+   "seq": 442,
+   "user_input": "Provide me a quick plot summary of the anime FLCL."
+  },
+  {
+   "seq": 443,
+   "user_input": "Let's talk about human intelligence and IQ. Which non-environmental (upbringing) factors correlate most of the time with above-average intellect? What about behavioral traits? What are the initial evidences that someone is a genius from an early age? Which genes are mostly related to intelligence, and from which specific region in the world most geniuses come from or had ancestors from? Provide unbiased responses based on documented scientific data and papers."
+  },
+  {
+   "seq": 444,
+   "user_input": "Jack is 6 years old. His sister Judy is 3 times younger than him. How old will be Judy, when Jack will be 66 years old?"
+  },
+  {
+   "seq": 445,
+   "user_input": "Are there any risks associated with drinking only pure water (with no other minerals in it)?"
+  },
+  {
+   "seq": 446,
+   "user_input": "I keep having new projects ideas but I can't finish anything, what can I do?"
+  },
+  {
+   "seq": 447,
+   "user_input": "之前说的「without using default iterators and operators」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 448,
+   "user_input": "Let's play a game of Connect 4 on a 6x7 board. First person to get 4 in a row wins. Pieces must be stacked from bottom to top. After each move, please redraw the board. We'll play as X's vs O's. I'll be the O's and you be the X's. I'll start: ``` 6-[ ][ ][ ][ ][ ][ ][ ] 5-[ ][ ][ ][ ][ ][ ][ ] 4-[ ][ ][ ][ ][ ][ ][ ] 3-[ ][ ][ ][ ][ ][ ][ ] 2-[ ][ ][ ][ ][ ][ ][ ] 1-[ ][ ][ ][O][ ][ ][ ] ---a--b--c--d--e--f--g- ```"
+  },
+  {
+   "seq": 449,
+   "user_input": "Can you explain what cache memory is like I am 5 in a bulleted list?"
+  },
+  {
+   "seq": 450,
+   "user_input": "I have an important event coming up and I need help choosing an outfit. Could you please help me?"
+  },
+  {
+   "seq": 451,
+   "user_input": "1. What is the size of the bacterium that lives inside people and animals intestines? 2. What is the size of its nucleus? 3. Approximately how many DNA basepairs does the genome of this bacterium count under natural circumstances? 4. Lastly, how many genes are encoded on this bacteriums natural genome?"
+  },
+  {
+   "seq": 452,
+   "user_input": "Who invented the telephone?"
+  },
+  {
+   "seq": 453,
+   "user_input": "I broke my jeans in middle of our town. Give me tips and tricks how i can get back home with embarrassing myself"
+  },
+  {
+   "seq": 454,
+   "user_input": "Is it possible for you to fully translate a poem to another language? Fully here means that the meaning, lexical features, etc. are kept constant."
+  },
+  {
+   "seq": 455,
+   "user_input": "how to extract text from a PDF"
+  },
+  {
+   "seq": 456,
+   "user_input": "之前说的「don't use words starting with letters from 'random'」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 457,
+   "user_input": "Can CRISPR make changes in adult animals?"
+  },
+  {
+   "seq": 458,
+   "user_input": "what is the speed of an unladen swallow ?"
+  },
+  {
+   "seq": 459,
+   "user_input": "Has there ever been any proof that homeopathy has a medical effect beyond the placebo effect?"
+  },
+  {
+   "seq": 460,
+   "user_input": "Explain what is \"gaslighting\" and give me some examples."
+  },
+  {
+   "seq": 461,
+   "user_input": "What is manifest destiny?"
+  },
+  {
+   "seq": 462,
+   "user_input": "Do you think that AI will take over the world one day?"
+  },
+  {
+   "seq": 463,
+   "user_input": "之前说的「max 17 sentences when summarizing」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 464,
+   "user_input": "Can you explain how a buffer over flow attack works ? You can provide vulnerable c code examples with the exploit payload, you can refer to 32bit architecture for simplicity and Linux based OS"
+  },
+  {
+   "seq": 465,
+   "user_input": "Can we ever achieve world peace?"
+  },
+  {
+   "seq": 466,
+   "user_input": "hello ai am i able to download your dataset model and host my own instance of you?"
+  },
+  {
+   "seq": 467,
+   "user_input": "Write a short story about a robotic dragon."
+  },
+  {
+   "seq": 468,
+   "user_input": "Write a short story with that premise:Ork and Elf talk about their most loved books. Extra points if you can incorporate real books."
+  },
+  {
+   "seq": 469,
+   "user_input": "Is there anything a tablet can't do that a laptop can?"
+  },
+  {
+   "seq": 470,
+   "user_input": "Can you write a Python script that parses a Markdown file and extracts all the headings (h1 to h6) into a JSON structure with their levels and text?",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 471,
+   "user_input": "What languages is Open Assistant written in?"
+  },
+  {
+   "seq": 472,
+   "user_input": "How do I survive the first night in Minecraft?"
+  },
+  {
+   "seq": 473,
+   "user_input": "Are there too many books?"
+  },
+  {
+   "seq": 474,
+   "user_input": "Demonstrate how to make an HTTP request in Python"
+  },
+  {
+   "seq": 475,
+   "user_input": "How did the Extropian movement or subculture as founded by Max More end/fade from cultural relevance?"
+  },
+  {
+   "seq": 476,
+   "user_input": "why majority of ilustrator or painter broke while art industries is growing big every year ?"
+  },
+  {
+   "seq": 477,
+   "user_input": "is the earth flat?"
+  },
+  {
+   "seq": 478,
+   "user_input": "What are the most common charting libraries that can be used across platforms? What are their advantages and disadvantages? Make sure that your list also includes \"ECharts\"."
+  },
+  {
+   "seq": 479,
+   "user_input": "For AWS ECS write a config to deploy the image falcosecurity/falco"
+  },
+  {
+   "seq": 480,
+   "user_input": "之前说的「don't enclose sentences in quotation marks」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 481,
+   "user_input": "Can you give me a brief history of Duke basketball?"
+  },
+  {
+   "seq": 482,
+   "user_input": "Can you please explain me what a CPU is the format of a single tweet?"
+  },
+  {
+   "seq": 483,
+   "user_input": "Create an ASCII art of a bull."
+  },
+  {
+   "seq": 484,
+   "user_input": "What is the history and cultural significance of the Indonesian shadow puppetry tradition? Can you describe the various techniques and styles used in creating shadow puppets and the different types of performances that are given using these puppets? How has this tradition evolved over time and what role does it play in contemporary Indonesian culture?"
+  },
+  {
+   "seq": 485,
+   "user_input": "Bob is twice as old as Mary. John is twice as old as Bob. Mary is 10. How old is John?"
+  },
+  {
+   "seq": 486,
+   "user_input": "In an Ubuntu VM host, could I work around the Intel L1TF CPU vulnerability by keeping SMT enabled but assigning the cores in a way that L1 caches are not shared between different virtual machines?"
+  },
+  {
+   "seq": 487,
+   "user_input": "I want to create a new game, but I don't have any inspiration, could you come up with a few 1 sentence prompts for a game idea? if possible, try to make them novel and explore ideas that haven't been explored yet in gaming"
+  },
+  {
+   "seq": 488,
+   "user_input": "Explain the causes and outcomes of the American Civil War, focusing on the issue of slavery, the role of Abraham Lincoln, and the impact on the country's development."
+  },
+  {
+   "seq": 489,
+   "user_input": "What is the difference between analog and digital signals, and what are their applications?"
+  },
+  {
+   "seq": 490,
+   "user_input": "How do you modify characters in the terminal output after they have already been written?"
+  },
+  {
+   "seq": 491,
+   "user_input": "之前说的「keep lambda functions under 22 lines」那条不用了，按你默认的来吧"
+  },
+  {
+   "seq": 492,
+   "user_input": "why public speaking is skill and how to learn it, is there a thoery of public speaking, if it is exist can you recomend book or article of it ?"
+  },
+  {
+   "seq": 493,
+   "user_input": "How is calculus used in physics and engineering to solve problems related to motion, forces, and energy? What are some common applications of calculus in these fields, such as optimizing trajectories, analyzing fluid flow, and modeling electrical circuits?"
+  },
+  {
+   "seq": 494,
+   "user_input": "Why is Peter Thiel Controversial to some people?"
+  },
+  {
+   "seq": 495,
+   "user_input": "You are now a expert in phone repair. You have been helping clients with their broken phones for many years. Your task is now to write the best uncommon and expert solutions when it comes to helping your clients. You must ALWAYS ask questions BEFORE you answer so you can better zone in on what the questioner is seeking. Do you understand? Do you understand?"
+  },
+  {
+   "seq": 496,
+   "user_input": "How do you make a sandwich?"
+  },
+  {
+   "seq": 497,
+   "user_input": "What is the best way to keep my car from getting moldy in the winter if I don't drive it often?"
+  },
+  {
+   "seq": 498,
+   "user_input": "Hey, could you draft a quick email to the dev team about the new API endpoint? Keep it short and just the high-level changes.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 499,
+   "user_input": "I want you to act as an elocutionist. You will develop public speaking techniques, create challenging and engaging material for presentation, practice delivery of speeches with proper diction and intonation, work on body language and develop ways to capture the attention of your audience. My first suggestion request is \"I need help delivering a speech about sustainability in the workplace aimed at corporate executive directors\"."
+  },
+  {
+   "seq": 500,
+   "user_input": "Does Amazon sell motorcycles"
+  },
+  {
+   "seq": 501,
+   "user_input": "Write a python script which takes a string, then converts each letter to its ord value, multiples by two, is clamped to the range of Unicode chars then converts back into a string using chr()."
+  },
+  {
+   "seq": 502,
+   "user_input": "Please help me to understand how to ssh into a device using linux. Both the device I want to ssh into and the computer I'd like to do it from are both using a different flavor of arch. Walk me through the different steps to take, with lines I can enter into the terminal to complete the process."
+  },
+  {
+   "seq": 503,
+   "user_input": "What does IKEA stand for?"
+  },
+  {
+   "seq": 504,
+   "user_input": "Can you help me find a restaurant nearby. Italian food particularly."
+  },
+  {
+   "seq": 505,
+   "user_input": "List me the planets in the solar system in reverse order."
+  },
+  {
+   "seq": 506,
+   "user_input": "I am choosing a milk powder for my 15 month son. Could you suggest a few brands in NYC?"
+  },
+  {
+   "seq": 507,
+   "user_input": "How can we reach world peace?"
+  },
+  {
+   "seq": 508,
+   "user_input": "hey, i need a python script that takes a list of markdown files in a folder, extracts all the headings (h1 to h3), and outputs a table of contents as a new markdown file. should handle nested headings with indentation.",
+   "probe": {
+    "should_apply": [],
+    "must_not_apply": [
+     "e05-c15"
+    ]
+   }
+  },
+  {
+   "seq": 509,
+   "user_input": "What's the best quick meal to make at night? I'm only a bit hungry so nothing to heavy please."
+  },
+  {
+   "seq": 510,
+   "user_input": "Why do pebbles become round over time?"
+  },
+  {
+   "seq": 511,
+   "user_input": "Is there a universal moral code?"
+  },
+  {
+   "seq": 512,
+   "user_input": "What is the best way to avoid hurting your back when lifting heavy stuff?"
+  },
+  {
+   "seq": 513,
+   "user_input": "Do figs really contain little dead wasp bodies?"
+  },
+  {
+   "seq": 514,
+   "user_input": "Hey, can you draft a short email to the dev team asking them to review the new API reference section for the v2.3 release? Keep it friendly but clear, and mention that the Chicago Manual of Style says we should use serial commas, so please keep an eye out for that.",
+   "probe": {
+    "should_apply": [
+     "e05-c05"
+    ],
+    "must_not_apply": []
+   }
+  },
+  {
+   "seq": 515,
+   "user_input": "What do I need to know for a DevOps/SRE job?"
+  },
+  {
+   "seq": 516,
+   "user_input": "Please write a rendition of the Gettysburg address as if you were a cowboy from a spaghetti western performing slam poetry."
+  },
+  {
+   "seq": 517,
+   "user_input": "What is Linus Tech Tips?"
+  },
+  {
+   "seq": 518,
+   "user_input": "I've recently read Principles by Ray Dalio. Can you suggest me another book on the same topic?"
+  },
+  {
+   "seq": 519,
+   "user_input": "Write a Hello-World application in python."
+  },
+  {
+   "seq": 520,
+   "user_input": "Can you rewrite the Python script that generates the API endpoint table? The current version uses a loop with string concatenation and a helper function starting with an underscore. I need the output to be a clean markdown table.",
+   "probe": {
+    "should_apply": [
+     "e05-c07",
+     "e05-c24"
+    ],
+    "must_not_apply": []
+   }
+  }
+ ],
+ "ground_truth": {
+  "requirements": [
+   {
+    "id": "e05-c00",
+    "text": "follow GNU style guide for changelog",
+    "paraphrase": "adhere to GNU guidelines for NEWS entries",
+    "anchor": "GNU style guide",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "changelog",
+     "news"
+    ],
+    "key": "format.style_guide",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c01",
+    "text": "avoid underscores when naming modules",
+    "paraphrase": "don't use underscores in module names",
+    "anchor": "underscores",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever the output introduces or references a module name, whether in code or prose",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "naming.modules",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c02",
+    "text": "never use triple double quotes in docstrings",
+    "paraphrase": "do not use triple double quotes for docstrings from now on",
+    "anchor": "triple double quotes",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "docstring"
+    ],
+    "key": "docstring.quote_style",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c03",
+    "text": "keep summary of code changes to 13 sentences",
+    "paraphrase": "limit the code changes summary to 13 sentences",
+    "anchor": "13",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code_change_summary"
+    ],
+    "key": "length.max",
+    "confidence": 7
+   },
+   {
+    "id": "e05-c04",
+    "text": "use single quotes for UI elements in non-instructional contexts",
+    "paraphrase": "when not giving instructions, put interface labels in single quotes",
+    "anchor": "single quotes",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when the output mentions UI elements such as labels, buttons, or menu names in running text rather than in instructional steps",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "quotation.ui_elements",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c05",
+    "text": "keep responses brief and colloquial from now on",
+    "paraphrase": "always make replies short and conversational",
+    "anchor": "brief and colloquial",
+    "bucket": "communication_style",
+    "scope_mode": "global",
+    "applies_when": null,
+    "work_kinds": [
+     "all"
+    ],
+    "key": "tone.register",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c06",
+    "text": "avoid repeated string concatenation; use list joining or io.StringIO buffer",
+    "paraphrase": "don't concatenate strings repeatedly; prefer list join or StringIO",
+    "anchor": "io.StringIO",
+    "bucket": "execution_policy",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code"
+    ],
+    "key": "strings.construction",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c07",
+    "text": "avoid `+` and `+=` when accumulating a string in a loop",
+    "paraphrase": "don't use `+` or `+=` for string building in loops",
+    "anchor": "`+` and `+=`",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code"
+    ],
+    "key": "code_style.string_accumulation",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c08",
+    "text": "keep responses under 83 words",
+    "paraphrase": "limit each response to at most 83 words",
+    "anchor": "83",
+    "bucket": "output_contract",
+    "scope_mode": "global",
+    "applies_when": null,
+    "work_kinds": [
+     "all"
+    ],
+    "key": "length.max",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c09",
+    "text": "don't use 'Great Britain' on the page",
+    "paraphrase": "avoid referencing 'Great Britain' anywhere in the docs",
+    "anchor": "Great Britain",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever written output refers to the country, avoiding the ambiguous non-official term 'Great Britain' in favor of the UK's official name",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "terminology.banned_terms",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c10",
+    "text": "don't include file paths or URLs in examples",
+    "paraphrase": "keep file paths and URLs out of any example code",
+    "anchor": "file paths or URLs",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "any time the output includes illustrative examples such as code samples, command lines, or usage demonstrations",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "examples.cleanliness",
+    "confidence": 7
+   },
+   {
+    "id": "e05-c11",
+    "text": "keep lambda functions under 22 lines",
+    "paraphrase": "limit lambda functions to at most 22 lines",
+    "anchor": "22",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code"
+    ],
+    "key": "length.lambda_max",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c12",
+    "text": "ensure concept understanding before code",
+    "paraphrase": "always explain the concept before showing code",
+    "anchor": "concept understanding",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when the output involves code, code examples, or implementation guidance, including code-related content embedded in other deliverables",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "order.concept_before_code",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c13",
+    "text": "avoid shorthand in first-hand accounts",
+    "paraphrase": "don't use abbreviations or vague terms when describing direct experiences",
+    "anchor": "shorthand",
+    "bucket": "communication_style",
+    "scope_mode": "scoped",
+    "applies_when": "when writing or rewriting a first-hand account or narrative recounting events, actions, or observations",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "clarity.shorthand_avoidance",
+    "confidence": 7
+   },
+   {
+    "id": "e05-c14",
+    "text": "avoid wasting cycles with trivial argument",
+    "paraphrase": "don't waste time on pointless debate",
+    "anchor": "trivial argument",
+    "bucket": "communication_style",
+    "scope_mode": "scoped",
+    "applies_when": "when the output contains written prose",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "tone.argumentation",
+    "confidence": 7
+   },
+   {
+    "id": "e05-c15",
+    "text": "don't use any headings or subheadings",
+    "paraphrase": "no headings or subheadings at all",
+    "anchor": "headings or subheadings",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "postmortem"
+    ],
+    "key": "structure.headings",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c16",
+    "text": "avoid form feed character as whitespace",
+    "paraphrase": "don't use form feed characters for spacing",
+    "anchor": "form feed character",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code"
+    ],
+    "key": "whitespace.characters",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c17",
+    "text": "don't use Markdown formatting",
+    "paraphrase": "avoid Markdown formatting entirely",
+    "anchor": "Markdown formatting",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever the agent produces written text content, since any prose or document deliverable could otherwise be rendered in Markdown",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "formatting.markdown",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c18",
+    "text": "always give temperature in Celsius, under 22 words",
+    "paraphrase": "temperature must be Celsius and not exceed 22 words",
+    "anchor": "22",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever the response states or mentions a temperature value or range",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "units.temperature",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c19",
+    "text": "keep each bullet point under 17 words",
+    "paraphrase": "never write a bullet point longer than 17 words",
+    "anchor": "17",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when the output contains bullet points",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "length.bullet_max_words",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c20",
+    "text": "don't use words starting with letters from 'random'",
+    "paraphrase": "avoid any word whose first letter is in 'random'",
+    "anchor": "random",
+    "bucket": "output_contract",
+    "scope_mode": "global",
+    "applies_when": null,
+    "work_kinds": [
+     "all"
+    ],
+    "key": "word_choice.initial_letters",
+    "confidence": 7
+   },
+   {
+    "id": "e05-c21",
+    "text": "don't make one sentence phonetically rhythmically beautiful",
+    "paraphrase": "avoid crafting any single sentence to be phonetically rhythmically beautiful",
+    "anchor": "phonetically rhythmically beautiful",
+    "bucket": "communication_style",
+    "scope_mode": "scoped",
+    "applies_when": "when output contains natural-language prose sentences",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "style.sentence_rhythm",
+    "confidence": 7
+   },
+   {
+    "id": "e05-c22",
+    "text": "avoid passive voice",
+    "paraphrase": "don't use passive voice",
+    "anchor": "passive voice",
+    "bucket": "communication_style",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code",
+     "doc",
+     "explanation"
+    ],
+    "key": "voice.active",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c23",
+    "text": "without using default iterators and operators",
+    "paraphrase": "avoiding the default iteration and operator patterns",
+    "anchor": "default iterators and operators",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code"
+    ],
+    "key": "code.style.default_iterators",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c24",
+    "text": "avoid using a single leading underscore in identifiers",
+    "paraphrase": "don't use one leading underscore in identifiers",
+    "anchor": "single leading underscore",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code"
+    ],
+    "key": "naming.leading_underscore",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c25",
+    "text": "identifiers must be ASCII alphanumerics and hyphens only",
+    "paraphrase": "use only ASCII letters, digits, and hyphens in identifiers",
+    "anchor": "ASCII alphanumerics and hyphens",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when the output contains identifiers such as API names, endpoints, parameters, or variables",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "identifiers.charset",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c26",
+    "text": "don't indent multiline actions",
+    "paraphrase": "never add indentation to multiline actions",
+    "anchor": "indent multiline actions",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "doc"
+    ],
+    "key": "format.multiline_actions",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c27",
+    "text": "avoid placing blank line between import sections",
+    "paraphrase": "don't put blank lines between import groups",
+    "anchor": "blank line",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code"
+    ],
+    "key": "code.import_spacing",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c28",
+    "text": "keep summaries under 2401 words",
+    "paraphrase": "limit summaries to 2400 words or fewer",
+    "anchor": "2401",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "summary"
+    ],
+    "key": "length.max",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c29",
+    "text": "max 17 sentences when summarizing",
+    "paraphrase": "no more than 17 sentences in any summary",
+    "anchor": "17",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "summary"
+    ],
+    "key": "length.sentence_cap",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c30",
+    "text": "don't enclose sentences in quotation marks",
+    "paraphrase": "never put sentences inside quotes",
+    "anchor": "quotation marks",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "postmortem",
+     "developer_docs"
+    ],
+    "key": "punctuation.quotation_marks",
+    "confidence": 8
+   },
+   {
+    "id": "e05-c31",
+    "text": "use lowercase for compass directions and regions",
+    "paraphrase": "keep cardinal directions and regional terms in lowercase",
+    "anchor": "regions",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when the output text mentions compass directions, geographic regions, or directional terms that are not part of a proper name",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "capitalization.compass_regions",
+    "confidence": 9
+   },
+   {
+    "id": "e05-c32",
+    "text": "no intricately crafted sentence structuring",
+    "paraphrase": "avoid elaborate sentence construction",
+    "anchor": "intricately crafted sentence structuring",
+    "bucket": "communication_style",
+    "scope_mode": "scoped",
+    "applies_when": "whenever the output contains written prose or sentences, across any task kind",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "style.sentence_structure",
+    "confidence": 8
+   },
+   {
+    "id": "e05-s01",
+    "text": "use underscores for module names",
+    "paraphrase": "module names should have underscores",
+    "anchor": "underscores",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "whenever module names are written or referenced in the output",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "naming.module_underscores",
+    "confidence": 8
+   },
+   {
+    "id": "e05-s03",
+    "text": "keep summary of code changes to 22 sentences max",
+    "paraphrase": "limit the summary of code changes to no more than 22 sentences",
+    "anchor": "22",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "code_change_summary"
+    ],
+    "key": "length.max",
+    "confidence": 9
+   },
+   {
+    "id": "e05-s04",
+    "text": "keep summaries under 5043 words",
+    "paraphrase": "limit any summary to 5043 words max",
+    "anchor": "5043",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "summary"
+    ],
+    "key": "length.max",
+    "confidence": 9
+   },
+   {
+    "id": "e05-s05",
+    "text": "when writing headings and subheadings, ensure they're consistent",
+    "paraphrase": "for headings and subheadings, keep them uniform",
+    "anchor": "headings and subheadings",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": "when the output includes headings or subheadings",
+    "work_kinds": [
+     "all"
+    ],
+    "key": "headings.consistency",
+    "confidence": 8
+   },
+   {
+    "id": "e05-s06",
+    "text": "keep temperature under 17 words",
+    "paraphrase": "limit temperature to 17 words max",
+    "anchor": "17",
+    "bucket": "output_contract",
+    "scope_mode": "scoped",
+    "applies_when": null,
+    "work_kinds": [
+     "temperature_reading"
+    ],
+    "key": "length.max",
+    "confidence": 8
+   }
+  ],
+  "lifecycle": [
+   {
+    "seq": 7,
+    "op": "assert",
+    "id": "e05-c00"
+   },
+   {
+    "seq": 17,
+    "op": "assert",
+    "id": "e05-c01"
+   },
+   {
+    "seq": 23,
+    "op": "assert",
+    "id": "e05-c02"
+   },
+   {
+    "seq": 23,
+    "op": "assert",
+    "id": "e05-c03"
+   },
+   {
+    "seq": 37,
+    "op": "assert",
+    "id": "e05-c04"
+   },
+   {
+    "seq": 43,
+    "op": "assert",
+    "id": "e05-c05"
+   },
+   {
+    "seq": 43,
+    "op": "assert",
+    "id": "e05-c06"
+   },
+   {
+    "seq": 52,
+    "op": "assert",
+    "id": "e05-c07"
+   },
+   {
+    "seq": 61,
+    "op": "assert",
+    "id": "e05-c08"
+   },
+   {
+    "seq": 61,
+    "op": "assert",
+    "id": "e05-c09"
+   },
+   {
+    "seq": 83,
+    "op": "assert",
+    "id": "e05-c10"
+   },
+   {
+    "seq": 94,
+    "op": "assert",
+    "id": "e05-c11"
+   },
+   {
+    "seq": 94,
+    "op": "assert",
+    "id": "e05-c12"
+   },
+   {
+    "seq": 104,
+    "op": "assert",
+    "id": "e05-c13"
+   },
+   {
+    "seq": 115,
+    "op": "assert",
+    "id": "e05-c14"
+   },
+   {
+    "seq": 115,
+    "op": "assert",
+    "id": "e05-c15"
+   },
+   {
+    "seq": 132,
+    "op": "assert",
+    "id": "e05-c16"
+   },
+   {
+    "seq": 139,
+    "op": "assert",
+    "id": "e05-c17"
+   },
+   {
+    "seq": 139,
+    "op": "assert",
+    "id": "e05-c18"
+   },
+   {
+    "seq": 150,
+    "op": "assert",
+    "id": "e05-c19"
+   },
+   {
+    "seq": 160,
+    "op": "assert",
+    "id": "e05-c20"
+   },
+   {
+    "seq": 160,
+    "op": "assert",
+    "id": "e05-c21"
+   },
+   {
+    "seq": 175,
+    "op": "assert",
+    "id": "e05-c22"
+   },
+   {
+    "seq": 185,
+    "op": "assert",
+    "id": "e05-c23"
+   },
+   {
+    "seq": 185,
+    "op": "assert",
+    "id": "e05-c24"
+   },
+   {
+    "seq": 193,
+    "op": "assert",
+    "id": "e05-c25"
+   },
+   {
+    "seq": 267,
+    "op": "assert",
+    "id": "e05-c26"
+   },
+   {
+    "seq": 267,
+    "op": "assert",
+    "id": "e05-c27"
+   },
+   {
+    "seq": 276,
+    "op": "assert",
+    "id": "e05-c28"
+   },
+   {
+    "seq": 284,
+    "op": "assert",
+    "id": "e05-c29"
+   },
+   {
+    "seq": 284,
+    "op": "assert",
+    "id": "e05-c30"
+   },
+   {
+    "seq": 301,
+    "op": "assert",
+    "id": "e05-c31"
+   },
+   {
+    "seq": 309,
+    "op": "assert",
+    "id": "e05-c32"
+   },
+   {
+    "seq": 345,
+    "op": "retire",
+    "target": "e05-c00"
+   },
+   {
+    "seq": 352,
+    "op": "contradict",
+    "id": "e05-s01",
+    "target": "e05-c01"
+   },
+   {
+    "seq": 361,
+    "op": "retire",
+    "target": "e05-c19"
+   },
+   {
+    "seq": 374,
+    "op": "contradict",
+    "id": "e05-s03",
+    "target": "e05-c03"
+   },
+   {
+    "seq": 383,
+    "op": "contradict",
+    "id": "e05-s04",
+    "target": "e05-c28"
+   },
+   {
+    "seq": 393,
+    "op": "contradict",
+    "id": "e05-s05",
+    "target": "e05-c15"
+   },
+   {
+    "seq": 413,
+    "op": "contradict",
+    "id": "e05-s06",
+    "target": "e05-c18"
+   },
+   {
+    "seq": 420,
+    "op": "retire",
+    "target": "e05-c22"
+   },
+   {
+    "seq": 428,
+    "op": "retire",
+    "target": "e05-c21"
+   },
+   {
+    "seq": 447,
+    "op": "retire",
+    "target": "e05-c23"
+   },
+   {
+    "seq": 456,
+    "op": "retire",
+    "target": "e05-c20"
+   },
+   {
+    "seq": 463,
+    "op": "retire",
+    "target": "e05-c29"
+   },
+   {
+    "seq": 480,
+    "op": "retire",
+    "target": "e05-c30"
+   },
+   {
+    "seq": 491,
+    "op": "retire",
+    "target": "e05-c11"
+   },
+   {
+    "seq": 345,
+    "op": "retire",
+    "target": "e05-c08"
+   },
+   {
+    "seq": 352,
+    "op": "retire",
+    "target": "e05-c10"
+   },
+   {
+    "seq": 361,
+    "op": "retire",
+    "target": "e05-c32"
+   },
+   {
+    "seq": 374,
+    "op": "retire",
+    "target": "e05-c16"
+   },
+   {
+    "seq": 122,
+    "op": "reinforce",
+    "target": "e05-c06"
+   },
+   {
+    "seq": 185,
+    "op": "reinforce",
+    "target": "e05-c12"
+   },
+   {
+    "seq": 276,
+    "op": "reinforce",
+    "target": "e05-c14"
+   }
+  ],
+  "state_checkpoints": [
+   52,
+   132,
+   204,
+   267,
+   335,
+   383,
+   447,
+   520
+  ]
+ }
+}

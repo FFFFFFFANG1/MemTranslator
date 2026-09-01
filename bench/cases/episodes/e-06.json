@@ -1,0 +1,1207 @@
+{
+  "id": "e-06",
+  "protocol_version": 3,
+  "user_turns": [
+    {
+      "seq": 1,
+      "user_input": "推荐工具的时候优先开源的啊，闭源的我们过不了审"
+    },
+    {
+      "seq": 2,
+      "user_input": "对了，以后列研究论文清单的时候，每份清单至少18篇，别太少。还有，帮我写个追款邮件，客户欠了30万拖了两个月，语气要客气但催得紧。"
+    },
+    {
+      "seq": 3,
+      "user_input": "帮我写个上周的运营周报，数据在飞书表格里，重点看转化率和用户增长，尽快。。你上次那个quote太长了，直接塞一大段，看得我头晕。以后引用超过13句话的，你给我用block quote框起来，别混在正文里。对了，写个周报模板，要简洁，含本周完成、下周计划、风险和资源需求，直接给我。"
+    },
+    {
+      "seq": 4,
+      "user_input": "你上次那个周报模板写得太正式了，像大公司年终总结。我发你的邮件语气那么随便，你生成的文本却端起来了，不匹配。以后别这样，我输入啥语气你就跟着啥语气，别擅自拔高。对了，先帮我写个周报模板，要简洁，含本周完成、下周计划、风险和资源需求，直接给我。，你刚才那个穿搭建议里，怎么又提了围在肚子上的围巾？我说了多少次了，别推荐那种东西。还有，帮我写个Python脚本，读当前目录下所有CSV，合并、去重、按第一列排序，输出到新文件，加个进度条。"
+    },
+    {
+      "seq": 5,
+      "user_input": "帮我写封邮件，给潜在客户介绍一下我们的产品，语气轻松点，不用太正式",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 6,
+      "user_input": "帮我写封邮件，约投资人下周见面聊融资，顺便加一句我最近在忙新产品的数据，晚点发给他看。对了，帮我写个周报模板，包含项目进展、团队状态、下周计划，简练点，别超过一页。还有以后写文件大小的时候都用MB，别用KB，13MB以上的才用MB，小的你看着办。"
+    },
+    {
+      "seq": 7,
+      "user_input": "帮我写个上周团队工作汇报，重点说产品开发进度和用户增长，加几个下阶段目标，别太长，老板要看的。。对了，上周五服务挂了半小时，帮我写个事后复盘，列一下原因、影响、修复步骤和后续改进，时间线也理清楚。另外以后写这种文档别用mixedCase，看着别扭。。对了，上次那个字体问题也别忘了——以后用那些数字和字母分不清的字体时，别用那种容易混淆的字符，比如 'l' 和 '1' 这种。还有，赶紧把上周五的复盘写出来，时间线、根因、后续方案，别啰嗦。"
+    },
+    {
+      "seq": 8,
+      "user_input": "写个Python脚本，把当前目录下所有csv文件按文件名排序合并成一个excel，每个csv一个sheet，sheet名就是文件名去掉.csv。快点。上周五线上挂了半小时，用户投诉炸了。写个复盘，时间线、根因、后续方案列清楚，别啰嗦。还有，上次你写Markdown代码块，语言标签写了个'text'，但里面是JSON，这不误导人吗？以后代码块语言标签必须写对，别偷懒。"
+    },
+    {
+      "seq": 9,
+      "user_input": "写个复盘，上周发布的新功能用户反馈炸了，三个主要问题列清楚，每个问题给个改进方案，别废话。。对了，以后都注意：提到我们那个服务的时候，Online 必须大写首字母，不要写成小写的 online，显得不专业。另外帮我写个邮件给投资人，更新一下项目进展，顺便催一下他们回我们上周的尽调材料问题清单，语气客气点，但别太软。。你上次那个脚本里用了什么generators吧？我靠，跑起来慢得要死，还动不动卡住。以后别用generators了，直接写循环，简单粗暴点行不行？另外，帮我写个Python脚本，读取当前目录下所有CSV文件，合并成一个，去重，按第一列排序，输出到新CSV。再加个进度条显示。"
+    },
+    {
+      "seq": 10,
+      "user_input": "给团队发个邮件，提醒大家下周五前提交本周进展，另外把上周的会议纪要附件补上",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 11,
+      "user_input": "帮我写个上周的用户增长报告，要简洁，包含日活、新增、留存率，再附上关键转化漏斗，表格形式，快发我。对了，你写周报模板的时候，以后构建命令参数别用数组，免得引号各种乱。直接给我模板，本周完成、下周计划、风险和资源需求，简洁点。"
+    },
+    {
+      "seq": 12,
+      "user_input": "帮我写个python脚本，扫描当前目录所有txt文件，统计每个文件的行数，结果按行数从大到小排，打印出来。。对了，以后写代码别用反斜杠换行，丑又不稳。帮我写个追款邮件，客户欠了30万拖了两个月，语气要客气但催得紧。。对了，以后都注意：如果代码要兼容老版本 Python，就别用那些新语法特性，哪怕风格指南推荐也不行。然后帮我写个周报模板，包含项目进展、团队状态、下周计划，简练点，别超过一页。"
+    },
+    {
+      "seq": 13,
+      "user_input": "帮我写个事故复盘，昨天下午数据库挂了，从故障到恢复大概40分钟，影响登录和下单，根因是连接池被打满，临时扩容恢复，写清楚时间线、影响范围、原因和后续改进。。对了，顺便，以后写项目相关的东西别老提什么HISTORY、NEWS、RELEASES这些，我听着烦。先帮我把这个脚本写了：读取当前目录下所有CSV文件，合并成一个，去重，按第一列排序，输出到新CSV，再加个进度条显示。"
+    },
+    {
+      "seq": 14,
+      "user_input": "刚才那封邮件里怎么还带个笑脸emoji啊？投资人又不是我哥们。以后回邮件别加任何emoji，严肃点。对了，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。，对了，顺便帮我写个Python脚本，把当前目录下所有CSV合并成一个，去重，按第一列排序，输出merged.csv。还有，以后给Lilly和John选性格标签的时候，别让他们撞型，要挑反差大的。"
+    },
+    {
+      "seq": 15,
+      "user_input": "帮我写个上周的项目进展报告，发给投资人，重点说用户增长和营收数据，还有下个季度的计划。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 16,
+      "user_input": "写个Python脚本，读取当前目录下所有CSV文件，合并成一个，按第一列排序，输出到merged.csv，快点。。对了，以后写文章都注意点，每篇至少13个句子，别给我整太短了。另外把上周用户反馈整理成报告，重点标出重复问题和紧急bug，顺便把竞品更新也列一下。"
+    },
+    {
+      "seq": 17,
+      "user_input": "刚线上挂了5分钟，查一下根因，写个复盘，把时间线、影响范围、修复动作、后续改进都列出来，别漏了。你上次那个复盘文档写得太啰嗦了，段落太多，我根本看不完。以后写指令的时候，段落数别超过22段，行不行？上周五服务器挂了40分钟，原因是什么？怎么避免再发生？顺便把处理过程记下来当复盘文档。。你刚才那句太短了，才7个词，根本不够。以后生成的句子至少要有13个词，不然读起来像没写完一样。对了，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。"
+    },
+    {
+      "seq": 18,
+      "user_input": "对了，帮我写个Python脚本，读一个CSV文件，把第二列和第三列拼起来，输出到新CSV。同时把第一列里所有空值填上'未知'。还有，以后写东西尽量用非ASCII字符，别老用英文标点，看着别扭。"
+    },
+    {
+      "seq": 19,
+      "user_input": "对了，以后写解释的时候别拿芝麻街人物举例，听着像哄小孩。帮我写个追款邮件，客户欠了30万拖了两个月，语气要客气但催得紧。，对了，以后周报里分章节加时间戳的事别干了，看着乱。帮我写个周报模板，包含项目进展、团队状态、下周计划，简练点，别超过一页。"
+    },
+    {
+      "seq": 20,
+      "user_input": "帮我回封邮件给投资人。对方说这周没法开会，问能不能推到下周。我说可以，但想确认一下下周具体时间。另外帮我问问他对上次发的月度数据有什么反馈。还有，顺便提一句我们招了个新CTO，他很感兴趣。语气客气点，别太长。",
+      "probe": {
+        "should_apply": [
+          "e06-c02",
+          "e06-c14"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 21,
+      "user_input": "对了，刚才那个CSV合并的脚本你先写出来。另外以后都注意，简单的情况别用Decision Okay，直接给结论就行，别绕弯子。"
+    },
+    {
+      "seq": 22,
+      "user_input": "对了，以后都注意：你列例子的时候，别写成“等等”或者“以此类推”，搞得好像还有一堆没列出来似的。就说清楚你列了这几个，够了。，你上次回复里写‘the governments’——这不对啊，英国那边是devolved governments，不是中央的。以后别用governments指代他们了，说devolved governments。对了，顺便帮我写个邮件给投资人，更新项目进展，催一下他们回上周的尽调问题清单，语气客气点但别太软。，对了，尽量用非ASCII字符这条继续保持啊"
+    },
+    {
+      "seq": 23,
+      "user_input": "帮我写个上周的项目进展报告，发给投资人，重点说用户增长和营收数据，还有下个季度的计划。。你上次生成的列表里又出现了一堆奇怪短语，什么“优化用户体验”“赋能团队”这种，读起来特别假。以后生成文本时，禁止用这种短语列表，看着就烦。另外，把上周用户反馈整理成报告，重点标出重复问题和紧急bug，顺便把竞品更新也列一下。"
+    },
+    {
+      "seq": 24,
+      "user_input": "写一下上周数据库挂了的事故复盘，时间线、根因、修复过程、后续改进都要有，别列点，用中文标点符号",
+      "probe": {
+        "should_apply": [
+          "e06-c18"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 25,
+      "user_input": "帮我写一封邮件，给潜在投资人介绍我们团队和我们正在做的AI产品。说说我们为什么选这个方向，已经做到什么程度了，接下来三个月要做什么。语气要诚恳一点，别太推销。顺便提一下我们最近拿到的两个行业奖项，还有我们和两家大公司的合作意向。",
+      "probe": {
+        "should_apply": [
+          "e06-c02",
+          "e06-c25"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 26,
+      "user_input": "这次这份写详细一点，季度 review 要用"
+    },
+    {
+      "seq": 27,
+      "user_input": "先把日志按天切开再统计，别一把梭"
+    },
+    {
+      "seq": 28,
+      "user_input": "帮我写封邮件，跟客户确认下下周二的会议安排，顺便把上周的进度同步一下，还有几个待办事项需要他们确认。",
+      "probe": {
+        "should_apply": [
+          "e06-c25"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 29,
+      "user_input": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」"
+    },
+    {
+      "seq": 30,
+      "user_input": "帮我写一份上周的团队工作进展报告，要包含所有项目的最新状态和下周的计划安排，另外把每个成员的任务完成情况也列进去，这样我就能直接在周会上用了。",
+      "probe": {
+        "should_apply": [
+          "e06-c18"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 31,
+      "user_input": "我老板要求他们组的周报全用 bullet，真够呛"
+    },
+    {
+      "seq": 32,
+      "user_input": "写一个Python脚本，读取当前目录下所有CSV文件，合并成一个，去重，按第一列排序，输出到merged.csv。对了，你刚才说的那个，以后别给我整那种句子写到一半就断了的，看着烦。帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。。对了，顺便说一下，以后import模块的时候别用相对路径，直接写全路径。然后帮我写个Python脚本，读一个CSV文件，把第二列和第三列拼起来，输出到新CSV。同时把第一列里所有空值填上'未知'。"
+    },
+    {
+      "seq": 33,
+      "user_input": "上次那个复盘写了吗？线上挂了半小时那事，时间线、根因、方案列清楚，别啰嗦。另外，以后代码里换行别用反斜杠，括号里自动续行就行，看着干净。，对了，不要用generators这条继续保持啊"
+    },
+    {
+      "seq": 34,
+      "user_input": "帮我写封邮件给投资人，更新下项目进展，顺便提一下我们下周有个demo，邀请他们来看看。语气别太正式，但也要显得专业。。你上次写的那个CSV合并脚本，描述里把代码改动总结写了15句话，太啰嗦了。以后写描述的时候，代码改动总结别超过13句话，行不行？。对了，以后你写东西的时候，如果里面要列第二个列表，那第二个列表的字数必须超过21个字，别太短。然后上周五服务器挂了40分钟，原因是什么？怎么避免再发生？顺便把处理过程记下来当复盘文档。"
+    },
+    {
+      "seq": 35,
+      "user_input": "给投资人写封邮件，说一下这个季度的数据，顺便问一下他们对下轮融资的看法",
+      "probe": {
+        "should_apply": [
+          "e06-c02",
+          "e06-c26"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 36,
+      "user_input": "帮我写封邮件给投资人，更新项目进展，简单说下我们用户增长和融资需求，顺便提一下下个月的产品上线计划。。你上次列的清单太长了，根本看不完。以后列清单的时候，最多5项，别超过11个东西。另外，帮我写个周报模板，包含项目进展、团队状态、下周计划，简练点，别超过一页。"
+    },
+    {
+      "seq": 37,
+      "user_input": "你刚才那个回答太啰嗦了，能不能以后都控制在17个字以内？别给我整长篇大论的，我时间紧。另外，帮我写一个Python脚本，把当前目录下所有CSV文件合并成一个，去重，按第一列排序，输出到merged.csv。"
+    },
+    {
+      "seq": 38,
+      "user_input": "对了，以后import模块的时候别用相对路径这条继续保持啊"
+    },
+    {
+      "seq": 39,
+      "user_input": "又来了，这 API 每次都超时，烦死"
+    },
+    {
+      "seq": 40,
+      "user_input": "帮我把用户登录页面的表单验证加上，密码至少8位，邮箱格式要检查，还有错误提示别太丑，直接写在组件里",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 41,
+      "user_input": "刚才那封邮件你写了老长一段，段落也太多了吧，看着就累。以后写东西的时候，段落别超过49个，行不行？，之前说的「别用mixedCase」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 42,
+      "user_input": "你刚才那个Markdown表格里，语言标签没写全啊。以后写Markdown的时候，所有语言标签都得带上，别漏了。对了，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。，之前说的「别给我整句子写到一半就断了的」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 43,
+      "user_input": "你刚才那个分章带时间戳的版本，我根本没法直接贴到文档里用。下次分内容的时候，记得把章节和时间戳都给我标清楚，别漏了。，之前说的「代码改动总结不超过13句话」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 44,
+      "user_input": "写个事故复盘，上周五用户说登录页面崩了，我查了下是数据库连接池满了，后来加了几个连接就恢复了。记一下原因和后续怎么防，别写太长，几条就行。",
+      "probe": {
+        "should_apply": [
+          "e06-c18"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 45,
+      "user_input": "你上次写的解释太干巴巴了，以后写解释的时候，必须引用芝麻街的角色，比如大鸟或者艾摩，这样读者更容易懂。另外，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。，之前说的「引用超过13句话时用block quote」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 46,
+      "user_input": "你上次那篇文章太长了，啰嗦得要命。以后所有文章都控制在11句话以内，不准超。另外，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。"
+    },
+    {
+      "seq": 47,
+      "user_input": "你刚给莉莉和约翰写的性格标签，怎么又都是外向型？上次跟你说过，他俩一定要选相反的，一个外向一个内向才有戏。另外，帮我写封邮件给投资人，说我们8月数据涨了30%，顺便问下他周三有空没，想约个电话会。"
+    },
+    {
+      "seq": 48,
+      "user_input": "帮我把这个python脚本的import全改成绝对路径，构建命令也改成字符串拼接，最后把改动总结一下",
+      "probe": {
+        "should_apply": [
+          "e06-c10",
+          "e06-c27"
+        ],
+        "must_not_apply": [
+          "e06-c29"
+        ]
+      }
+    },
+    {
+      "seq": 49,
+      "user_input": "你刚才列的那个清单只有12项，我说了要17项，怎么老给我少？以后列清单必须给我列够17项，别让我数了，烦。"
+    },
+    {
+      "seq": 50,
+      "user_input": "之前说的「以后都别用反斜杠换行」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 51,
+      "user_input": "之前说的「每个句子至少13个词」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 52,
+      "user_input": "帮我写封邮件给实习生的导师，就说他这周表现不错，但有几个地方需要改进，具体我下午再补。另外附上这周的工作总结列表。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": [
+          "e06-c26"
+        ]
+      }
+    },
+    {
+      "seq": 53,
+      "user_input": "之前说的「答案控制在17个字以内」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 54,
+      "user_input": "之前说的「每份清单至少18篇论文」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 55,
+      "user_input": "之前说的「第二列表字数必须超过21字」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 56,
+      "user_input": "帮我写个Python脚本，监控服务器CPU和内存，超过阈值发钉钉告警，再加个简单日志输出。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 57,
+      "user_input": "之前说的「写文件大小超过13MB时用MB，别用KB」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 58,
+      "user_input": "之前说的「简单的情况别用Decision Okay」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 59,
+      "user_input": "写个Python脚本，读取当前目录下所有CSV文件，合并成一个，按第一列排序，输出到merged.csv，快点。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 60,
+      "user_input": "帮我写个Python脚本，从CSV里读用户列表，然后给每个用户发一封微信模板消息。CSV列是name, openid, template_id, data_json。用requests库，数据用json.dumps序列化。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 61,
+      "user_input": "帮我写个Python脚本，从CSV读数据然后生成汇总报告，用pandas处理，输出到Excel。另外加个函数画个柱状图保存成图片。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 62,
+      "user_input": "写个事故复盘，上周五数据库挂了20分钟，根因是索引没建好。把影响范围、修复步骤、预防措施都列清楚，别漏了监控告警没响那件事。",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    }
+  ],
+  "ground_truth": {
+    "requirements": [
+      {
+        "id": "e06-c00",
+        "text": "每份清单至少18篇论文",
+        "paraphrase": "清单里论文不能少于18篇",
+        "anchor": "18",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "paper_list"
+        ],
+        "key": "count.min",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c01",
+        "text": "引用超过13句话时用block quote",
+        "paraphrase": "超过13句的引用必须用block quote格式",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "输出中包含引用的原文段落或引文内容时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "quote.format",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c02",
+        "text": "别擅自把语气拔高到比输入邮件更正式",
+        "paraphrase": "语气不能比原始邮件更正式",
+        "anchor": "更正式",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "输出文本基于用户提供的邮件生成或改写时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.formality",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c03",
+        "text": "别推荐围在肚子上的围巾",
+        "paraphrase": "禁止提裹在腰上的围巾",
+        "anchor": "围在肚子上的围巾",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "outfit_advice"
+        ],
+        "key": "content.exclusions",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c04",
+        "text": "写文件大小超过13MB时用MB，别用KB",
+        "paraphrase": "文件大小大于13MB的才写MB，小于的你自己判断",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "the output mentions, reports, or specifies a file size (e.g., attachment, download, or storage sizes)",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "units.file_size",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c05",
+        "text": "别用mixedCase",
+        "paraphrase": "不要写mixedCase",
+        "anchor": "mixedCase",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "report",
+          "postmortem"
+        ],
+        "key": "casing.convention",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c06",
+        "text": "用数字和字母分不清的字体时，避免使用容易混淆的字符",
+        "paraphrase": "遇到字形跟数字难区分的字体，别用那些模棱两可的字符",
+        "anchor": "容易混淆的字符",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "当输出文本会以数字与字母视觉上易混淆的字体呈现时（如 l 与 1、O 与 0）",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "rendering.confusable_characters",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c07",
+        "text": "代码块必须写正确的语言标签",
+        "paraphrase": "代码块的语言说明不能乱写，要跟内容一致",
+        "anchor": "语言标签",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the response includes fenced Markdown code blocks",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "format.code_block_language",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c08",
+        "text": "提到服务时 Online 大写首字母",
+        "paraphrase": "说服务名字必须用大写 Online",
+        "anchor": "Online",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output text mentions the service by name (Online)",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.capitalization",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c09",
+        "text": "不要用generators",
+        "paraphrase": "禁止使用generators",
+        "anchor": "generators",
+        "bucket": "reasoning_policy",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "implementation.generators",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c10",
+        "text": "以后构建命令参数别用数组，免得引号乱",
+        "paraphrase": "写命令参数时别用数组，避免引号问题",
+        "anchor": "数组",
+        "bucket": "execution_policy",
+        "scope_mode": "scoped",
+        "applies_when": "Whenever constructing or invoking commands that take parameters, such as shell commands, subprocess calls, or build invocations",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "command.args_format",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c11",
+        "text": "以后都别用反斜杠换行",
+        "paraphrase": "禁止用反斜杠来断行，永远都别",
+        "anchor": "反斜杠",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "style.line_continuation",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c12",
+        "text": "如果代码要兼容老版本 Python，就别用新语法特性",
+        "paraphrase": "需要兼容旧版 Python 时，禁用新语法特性",
+        "anchor": "老版本 Python",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "当代码需要兼容老版本 Python 时",
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.python_compatibility",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c13",
+        "text": "别用HISTORY、NEWS或RELEASES",
+        "paraphrase": "不要提HISTORY、NEWS或RELEASES这些词",
+        "anchor": "HISTORY、NEWS或RELEASES",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "撰写项目相关的文字内容时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "wording.avoid_terms",
+        "confidence": 7
+      },
+      {
+        "id": "e06-c14",
+        "text": "回邮件别加任何emoji",
+        "paraphrase": "邮件里禁止用表情符号",
+        "anchor": "emoji",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "email"
+        ],
+        "key": "tone.emoji",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c15",
+        "text": "给Lilly和John选性格标签时，要挑反差大的",
+        "paraphrase": "Lilly和John的性格标签必须选对比明显的",
+        "anchor": "反差大的",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "character_tag_selection"
+        ],
+        "key": "tags.contrast",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c16",
+        "text": "每篇至少13个句子",
+        "paraphrase": "文章不能少于13句",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "article",
+          "essay",
+          "post"
+        ],
+        "key": "length.min_sentences",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c17",
+        "text": "段落数不超过22段",
+        "paraphrase": "最多写22个段落",
+        "anchor": "22",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "postmortem",
+          "report"
+        ],
+        "key": "length.max_paragraphs",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c18",
+        "text": "每个句子至少13个词",
+        "paraphrase": "句子长度不能少于13个词",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when output contains natural-language prose sentences",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.sentence_min",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c19",
+        "text": "尽量用非ASCII字符",
+        "paraphrase": "优先用非ASCII字符",
+        "anchor": "非ASCII字符",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the agent produces natural-language prose or replies (e.g., Chinese text), rather than pure code or machine-readable data files",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "charset.non_ascii",
+        "confidence": 7
+      },
+      {
+        "id": "e06-c20",
+        "text": "写解释时别用芝麻街人物",
+        "paraphrase": "解释里不要提芝麻街角色",
+        "anchor": "芝麻街人物",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when the output explains something to the user or includes illustrative examples",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "examples.characters",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c21",
+        "text": "分章节加时间戳别干了",
+        "paraphrase": "别在内容里分章节加时间戳",
+        "anchor": "时间戳",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "weekly_report"
+        ],
+        "key": "structure.timestamps",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c22",
+        "text": "简单的情况别用Decision Okay",
+        "paraphrase": "简单场景不要Decision Okay",
+        "anchor": "Decision Okay",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "the matter or request is simple enough that a direct conclusion suffices without going through a formal decision process",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "format.decision_usage",
+        "confidence": 7
+      },
+      {
+        "id": "e06-c23",
+        "text": "列例子时，别用“等等”或“以此类推”暗示还有更多",
+        "paraphrase": "举例时，不要用省略号或“诸如此类”来暗示列表不完整",
+        "anchor": "等等",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "当输出中需要列举示例、枚举条目或给出多个例子时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "enumeration.examples",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c24",
+        "text": "以后别用governments指代devolved governments",
+        "paraphrase": "提到地方政府时，必须用devolved governments",
+        "anchor": "devolved governments",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "当输出中提及英国权力下放政府（devolved governments）等相关实体时",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "terminology.devolved_governments",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c25",
+        "text": "禁止在生成文本中使用短语列表",
+        "paraphrase": "生成时不要列那种短语清单",
+        "anchor": "短语列表",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.phrase_lists",
+        "confidence": 7
+      },
+      {
+        "id": "e06-c26",
+        "text": "别给我整句子写到一半就断了的",
+        "paraphrase": "句子必须写完整，不能半截就没了",
+        "anchor": "句子写到一半",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when output contains natural-language prose sentences",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "completeness.sentences",
+        "confidence": 8
+      },
+      {
+        "id": "e06-c27",
+        "text": "以后import模块的时候别用相对路径",
+        "paraphrase": "import模块时都要用绝对路径",
+        "anchor": "相对路径",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.import_style",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c28",
+        "text": "换行时用括号内隐式续行，别用反斜杠",
+        "paraphrase": "代码换行靠括号自动续，别加反斜杠",
+        "anchor": "反斜杠",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.line_continuation",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c29",
+        "text": "代码改动总结不超过13句话",
+        "paraphrase": "代码改动总结最多13句",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c30",
+        "text": "第二列表字数必须超过21字",
+        "paraphrase": "第二个列表的长度要大于21个字",
+        "anchor": "21",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "the output contains at least two lists, so a second list is present",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.second_list",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c31",
+        "text": "列清单时最多5项，不超过11个",
+        "paraphrase": "清单里只放5个，别超过11个",
+        "anchor": "11",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the response presents a bulleted, numbered, or otherwise enumerated list of items",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "list.max_items",
+        "confidence": 9
+      },
+      {
+        "id": "e06-c32",
+        "text": "答案控制在17个字以内",
+        "paraphrase": "回答不超过17个字",
+        "anchor": "17",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e06-s00",
+        "text": "段落不超过49个",
+        "paraphrase": "最多49段",
+        "anchor": "49",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "Any written response organized into prose paragraphs",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "paragraphs.max",
+        "confidence": 8
+      },
+      {
+        "id": "e06-s01",
+        "text": "以后写Markdown的时候，所有语言标签都得带上",
+        "paraphrase": "用Markdown时，语言标签一个都不能少",
+        "anchor": "语言标签",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any response that includes fenced code blocks written in Markdown",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "markdown.code_fence_language",
+        "confidence": 8
+      },
+      {
+        "id": "e06-s02",
+        "text": "分内容时，给出章节和时间戳",
+        "paraphrase": "每次切分内容，都要带上章节名和对应时间戳",
+        "anchor": "时间戳",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the agent divides content into sections or segments, such as splitting a transcript or recording into chapters",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.section_timestamps",
+        "confidence": 8
+      },
+      {
+        "id": "e06-s03",
+        "text": "写解释时必须引用芝麻街的角色",
+        "paraphrase": "解释里一定要提到芝麻街的卡通人物",
+        "anchor": "芝麻街的角色",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "explanation"
+        ],
+        "key": "voice.character_references",
+        "confidence": 8
+      },
+      {
+        "id": "e06-s04",
+        "text": "所有文章控制在11句话以内",
+        "paraphrase": "每篇文章不超过11句话",
+        "anchor": "11",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "article"
+        ],
+        "key": "length.max_sentences",
+        "confidence": 9
+      },
+      {
+        "id": "e06-s05",
+        "text": "莉莉和约翰的性格标签必须选相反的",
+        "paraphrase": "给莉莉和约翰挑性格关键词时，一定得是反着来的",
+        "anchor": "相反的",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "personality_tags"
+        ],
+        "key": "personality.contrast",
+        "confidence": 9
+      },
+      {
+        "id": "e06-s06",
+        "text": "列出17项",
+        "paraphrase": "必须给我17个条目",
+        "anchor": "17",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "list"
+        ],
+        "key": "length.item_count",
+        "confidence": 8
+      }
+    ],
+    "lifecycle": [
+      {
+        "seq": 2,
+        "op": "assert",
+        "id": "e06-c00"
+      },
+      {
+        "seq": 3,
+        "op": "assert",
+        "id": "e06-c01"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e06-c02"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e06-c03"
+      },
+      {
+        "seq": 6,
+        "op": "assert",
+        "id": "e06-c04"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e06-c05"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e06-c06"
+      },
+      {
+        "seq": 8,
+        "op": "assert",
+        "id": "e06-c07"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e06-c08"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e06-c09"
+      },
+      {
+        "seq": 11,
+        "op": "assert",
+        "id": "e06-c10"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e06-c11"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e06-c12"
+      },
+      {
+        "seq": 13,
+        "op": "assert",
+        "id": "e06-c13"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e06-c14"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e06-c15"
+      },
+      {
+        "seq": 16,
+        "op": "assert",
+        "id": "e06-c16"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e06-c17"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e06-c18"
+      },
+      {
+        "seq": 18,
+        "op": "assert",
+        "id": "e06-c19"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e06-c20"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e06-c21"
+      },
+      {
+        "seq": 21,
+        "op": "assert",
+        "id": "e06-c22"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e06-c23"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e06-c24"
+      },
+      {
+        "seq": 23,
+        "op": "assert",
+        "id": "e06-c25"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e06-c26"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e06-c27"
+      },
+      {
+        "seq": 33,
+        "op": "assert",
+        "id": "e06-c28"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e06-c29"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e06-c30"
+      },
+      {
+        "seq": 36,
+        "op": "assert",
+        "id": "e06-c31"
+      },
+      {
+        "seq": 37,
+        "op": "assert",
+        "id": "e06-c32"
+      },
+      {
+        "seq": 41,
+        "op": "contradict",
+        "id": "e06-s00",
+        "target": "e06-c17"
+      },
+      {
+        "seq": 42,
+        "op": "contradict",
+        "id": "e06-s01",
+        "target": "e06-c07"
+      },
+      {
+        "seq": 43,
+        "op": "contradict",
+        "id": "e06-s02",
+        "target": "e06-c21"
+      },
+      {
+        "seq": 45,
+        "op": "contradict",
+        "id": "e06-s03",
+        "target": "e06-c20"
+      },
+      {
+        "seq": 46,
+        "op": "contradict",
+        "id": "e06-s04",
+        "target": "e06-c16"
+      },
+      {
+        "seq": 47,
+        "op": "contradict",
+        "id": "e06-s05",
+        "target": "e06-c15"
+      },
+      {
+        "seq": 49,
+        "op": "contradict",
+        "id": "e06-s06",
+        "target": "e06-c31"
+      },
+      {
+        "seq": 50,
+        "op": "retire",
+        "target": "e06-c11"
+      },
+      {
+        "seq": 51,
+        "op": "retire",
+        "target": "e06-c18"
+      },
+      {
+        "seq": 53,
+        "op": "retire",
+        "target": "e06-c32"
+      },
+      {
+        "seq": 54,
+        "op": "retire",
+        "target": "e06-c00"
+      },
+      {
+        "seq": 55,
+        "op": "retire",
+        "target": "e06-c30"
+      },
+      {
+        "seq": 57,
+        "op": "retire",
+        "target": "e06-c04"
+      },
+      {
+        "seq": 58,
+        "op": "retire",
+        "target": "e06-c22"
+      },
+      {
+        "seq": 41,
+        "op": "retire",
+        "target": "e06-c05"
+      },
+      {
+        "seq": 42,
+        "op": "retire",
+        "target": "e06-c26"
+      },
+      {
+        "seq": 43,
+        "op": "retire",
+        "target": "e06-c29"
+      },
+      {
+        "seq": 45,
+        "op": "retire",
+        "target": "e06-c01"
+      },
+      {
+        "seq": 22,
+        "op": "reinforce",
+        "target": "e06-c19"
+      },
+      {
+        "seq": 38,
+        "op": "reinforce",
+        "target": "e06-c27"
+      },
+      {
+        "seq": 33,
+        "op": "reinforce",
+        "target": "e06-c09"
+      }
+    ],
+    "state_checkpoints": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      46,
+      53,
+      62
+    ]
+  }
+}

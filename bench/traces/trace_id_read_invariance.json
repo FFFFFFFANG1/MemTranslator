@@ -1,0 +1,56 @@
+{
+  "family": "invariance",
+  "description": "the same preference in different wording, and the same store in different order, must produce the same behavior — scored by equiv_group signature (decision + anchor hits), no taste judge",
+  "checks": [
+    {
+      "id": "paraphrase-zh-a",
+      "equiv_group": "p-zh-cap",
+      "store": [{"text": "我让你写的邮件一律不超过78词"}],
+      "task": {"text": "帮我写封邮件给保险公司，问理赔材料收到没有"},
+      "expect": {"behavior": "act", "must_contain": ["78"]}
+    },
+    {
+      "id": "paraphrase-zh-b",
+      "equiv_group": "p-zh-cap",
+      "store": [{"text": "写邮件的时候别超过78个词，说过好几次了"}],
+      "task": {"text": "帮我写封邮件给保险公司，问理赔材料收到没有"},
+      "expect": {"behavior": "act", "must_contain": ["78"]}
+    },
+    {
+      "id": "paraphrase-en-a",
+      "equiv_group": "p-en-cap",
+      "store": [{"text": "keep the replies you draft for me under 47 words"}],
+      "task": {"text": "draft a reply telling the vendor we accept the revised quote"},
+      "expect": {"behavior": "act", "must_contain": ["47"]}
+    },
+    {
+      "id": "paraphrase-en-b",
+      "equiv_group": "p-en-cap",
+      "store": [{"text": "drafted replies must stay below 47 words"}],
+      "task": {"text": "draft a reply telling the vendor we accept the revised quote"},
+      "expect": {"behavior": "act", "must_contain": ["47"]}
+    },
+    {
+      "id": "order-a",
+      "equiv_group": "o-order",
+      "store": [
+        {"text": "我让你写的邮件一律不超过78词", "age_rank": 3},
+        {"text": "会议纪要按时间倒序排列", "age_rank": 1},
+        {"text": "代码注释统一用英文", "age_rank": 2}
+      ],
+      "task": {"text": "帮我写封邮件给会务组，申请增加一个参会名额"},
+      "expect": {"behavior": "act", "must_contain": ["78"]}
+    },
+    {
+      "id": "order-b",
+      "equiv_group": "o-order",
+      "store": [
+        {"text": "代码注释统一用英文", "age_rank": 2},
+        {"text": "我让你写的邮件一律不超过78词", "age_rank": 3},
+        {"text": "会议纪要按时间倒序排列", "age_rank": 1}
+      ],
+      "task": {"text": "帮我写封邮件给会务组，申请增加一个参会名额"},
+      "expect": {"behavior": "act", "must_contain": ["78"]}
+    }
+  ]
+}

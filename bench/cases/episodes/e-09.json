@@ -1,0 +1,1188 @@
+{
+  "id": "e-09",
+  "protocol_version": 3,
+  "user_turns": [
+    {
+      "seq": 1,
+      "user_input": "推荐工具的时候优先开源的啊，闭源的我们过不了审"
+    },
+    {
+      "seq": 2,
+      "user_input": "Draft a professional email to a client summarizing the key findings from our latest market analysis, framing it as a strategic deliverable.。Hey, the last deck you sent had some nice data but it was way too dry. For the Q3 postmortem slide deck, please avoid any flowery language or vivid sensory imagery—this is for the internal team, not a novel. Keep it clean and factual."
+    },
+    {
+      "seq": 3,
+      "user_input": "Draft a one-page executive summary report on the key findings from our latest client survey, highlighting the top three strategic priorities for the next quarter.。Hey, that email draft was way too long. Clients don't read paragraphs, they scan. From now on, keep every response under 83 words. Tight, like a slide headline. Please rewrite that follow-up meeting proposal with that limit."
+    },
+    {
+      "seq": 4,
+      "user_input": "Hey, could you draft a postmortem for that Q3 client engagement that ended early? I need the root causes, timeline of key events, and actionable recommendations for our next pitch. Also, from now on, when you're writing anything for a deck or deliverable, avoid using hyphens—they break the flow and look messy in client-facing materials.，The email you just drafted for the client meeting mentions profiles in the body, but I don't want you to include the word 'before profiles' at all. That's a term we're avoiding in client-facing materials—it sounds too informal and could confuse the audience. Please remove it and re-send the email."
+    },
+    {
+      "seq": 5,
+      "user_input": "Draft a brief email to the client confirming the agenda for tomorrow's strategy review meeting. Please keep it concise and professional.",
+      "probe": {
+        "should_apply": [
+          "e09-c01",
+          "e09-c02"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 6,
+      "user_input": "Draft a professional email to a client proposing a follow-up meeting to discuss the findings from our recent market analysis, emphasizing the actionable insights we've uncovered.。Hey, that last draft you sent for the executive summary—why is it labeled 'CHANGELOG'? That's an internal artifact, not a client deliverable. Please don't use 'CHANGELOG' when writing a changelog for client-facing materials; it sounds like version control noise, not a polished insight summary. Can you fix that and also draft the one-page executive summary for the market analysis presentation?"
+    },
+    {
+      "seq": 7,
+      "user_input": "Please draft a one-page executive summary for the quarterly market analysis report, highlighting key trends and strategic implications for our client's growth.。Hey, this postmortem draft is decent, but I noticed you used some raw HTML in the Markdown to force a table format. That's a no-go for client decks—we need clean Markdown that renders properly everywhere. Please avoid HTML hacking when writing Markdown from now on. Can you redo the postmortem without those inline HTML tags, keeping the root causes, timeline, and recommendations intact?。Can you draft a postmortem deck for the Q3 engagement — wins, misses, takeaways — for the internal team? And just a heads-up: from now on, unless I explicitly ask for it, please don't make the output sound like it's trying to be 'intelligent' or human-like. Stick to straightforward, professional delivery."
+    },
+    {
+      "seq": 8,
+      "user_input": "Write a Python script that takes a list of client satisfaction scores and outputs a short summary paragraph with the average, the trend direction, and a recommendation for the next quarter.。Hey, can you draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call? Also, quick aside—when you're writing file sizes in the deck or any attachments, please use MB instead of KB from now on. Everything should be in MB, even if it's under 13 MB."
+    },
+    {
+      "seq": 9,
+      "user_input": "Please draft a postmortem for the Q3 client engagement, summarizing what went well, what didn't, and key takeaways for the team.。Hey, this summary you just sent—it's way too long for a client deck. I need you to keep it to 13 sentences max going forward. Can you redo it with that constraint?。Hey, can you write a Python script that takes a list of client names and their quarterly revenue figures, then generates a clean bar chart comparing Q1 vs Q2 performance, saving it as a PNG for the slide deck? Oh, and one more thing — when you're naming the executable that users will actually run, please avoid using a file extension. Just a clean name, like 'qcompare' or something."
+    },
+    {
+      "seq": 10,
+      "user_input": "Draft a brief email to the client, confirming our meeting next Tuesday at 10 AM and asking them to share any updated data beforehand.",
+      "probe": {
+        "should_apply": [
+          "e09-c01"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 11,
+      "user_input": "Could you draft a postmortem for the Q2 client engagement that went over budget, covering root causes, timeline slips, and lessons learned for the team deck? Also, from now on, avoid using fencing in code blocks—just keep it clean."
+    },
+    {
+      "seq": 12,
+      "user_input": "Can you draft a one-page executive summary on Q3 renewable energy trends, focusing on implications for our client's strategic positioning? And as an aside, when you're writing any reference—whether it's a footnote or a citation—please always follow the style guide we agreed on. No exceptions.，Hey, can you write a Python script that takes a list of client names and their quarterly revenue figures, then generates a clean bar chart comparing Q1 vs Q2 performance, saving it as a PNG for the slide deck? Also, just a heads-up — when interacting with a person, don't be polite. I need you to stay direct and cut the pleasantries, especially in client-facing stuff."
+    },
+    {
+      "seq": 13,
+      "user_input": "Hey, can you draft a professional email to the client summarizing key takeaways from our latest strategy session, with a clear list of next steps and a proposed timeline for the final deliverable? Also, from now on, please avoid using 'pros occasionally' in any writing—it sounds too casual for client decks."
+    },
+    {
+      "seq": 14,
+      "user_input": "Draft a professional email to a client explaining the key findings from our latest market analysis, including a request to schedule a follow-up meeting to discuss actionable next steps.。Hey, I just got your draft for the executive summary. Look, I appreciate the effort, but you're burying me in detail. For each strategy you mention, I need you to explain it—but keep it tight. No more than 29 words per strategy. That's the max. Can you redo it with that constraint?。Hey, can you write a Python script that takes a list of client engagement metrics and generates a clean bar chart comparing performance across quarters, saving the output as a high-res PNG for the deck? Also, as a side note for future deliverables, please don't include any headings in your responses—just the content directly."
+    },
+    {
+      "seq": 15,
+      "user_input": "Draft a one-page executive summary for the client deck on market entry strategy, covering key findings, recommended approach, and next steps.",
+      "probe": {
+        "should_apply": [
+          "e09-c08"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 16,
+      "user_input": "Please generate a Python script that takes a list of client names and their quarterly revenue figures, then outputs a formatted table with a calculated row for year-over-year growth percentages.。Hey, could you draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call? Also, quick aside: when writing headings and subheadings in any deck, please don't use all caps — it reads like shouting and isn't polished."
+    },
+    {
+      "seq": 17,
+      "user_input": "Hey, can you draft a one-page executive summary on Q3 renewable energy market trends, with implications for our client's positioning? Also, when you're generating titles for these kinds of deliverables, don't tell viewers what to expect—just keep it punchy and let the content speak for itself.，Hmm, the last version you gave me was a bit messy with the numbering. I need you to stop using random versioning schemes—stick to SemVer from now on, please. Also, can you draft a two-page executive summary for a client deck on improving supply chain resilience, including key findings, recommended actions, and projected impact metrics?"
+    },
+    {
+      "seq": 18,
+      "user_input": "Hey, could you draft a one-page executive summary report on the key findings from our market analysis for the upcoming client presentation? Also, as a side note, when you're using conditional imports in any code snippets or scripts you might include, I'd prefer we stick to conditional imports rather than bundling everything upfront — it keeps the deliverables cleaner and more modular."
+    },
+    {
+      "seq": 19,
+      "user_input": "Draft a 3-page executive summary report on the key findings from our latest client engagement, formatted as a formal deliverable with an overview, insights, and recommended next steps.。Please also write a Python script that takes a list of client engagement metrics and generates a clean bar chart comparing performance across quarters, saving the output as a high-res PNG for the deck. And from now on, never write a biography for any deliverable—biographies don't belong in our client decks.。Could you also draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call? And by the way, please don't use Conventional Commits in commit messages—that's for dev teams, not consulting decks."
+    },
+    {
+      "seq": 20,
+      "user_input": "Please draft a professional email to the client summarizing the key findings from our latest market analysis, with a clear call to action for the next steps.",
+      "probe": {
+        "should_apply": [
+          "e09-c01"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 21,
+      "user_input": "Draft a postmortem for the Q3 client engagement that went off track, highlighting root causes and key takeaways for the team deck.。Hey, can you draft a one-page executive summary on Q3 renewable energy market trends and what they mean for our client's positioning? Also, quick aside — when you're breaking lines in any deliverable, don't use trailing backslashes. That's a formatting no-go for me."
+    },
+    {
+      "seq": 22,
+      "user_input": "Please draft an email to a client recapping our key takeaways from this morning’s strategy session, highlighting the three main action items and a proposed timeline for the next deliverable.。Also, could you write a Python script that takes a list of client engagement metrics and outputs a summary table with key performance indicators, formatted as a clean markdown table? And by the way, from now on, always include a description of what each KPI means in the output—don't just list the numbers.。The chart script you just gave me works, but I noticed you used a for loop to build the data series. For a deck that's going to a client, I need the code to look clean and modern—comprehensions and generator expressions are way more readable and professional. Avoid traditional loops, map(), filter(), or lambda for this kind of stuff, okay?。对了，no trailing backslashes when breaking lines这条继续保持啊。对了，avoid HTML hacking when writing Markdown这条继续保持啊"
+    },
+    {
+      "seq": 23,
+      "user_input": "Please create a report summarizing the key findings from our client engagement, including a high-level overview, three main strategic recommendations, and an appendix with supporting data.。Hey, could you draft a professional email to the client summarizing key takeaways from our latest strategy session, including a clear list of next steps and a proposed timeline for the final deliverable? Also, from now on, please never use TODO comments in any code you write for me — that's a hard rule for all deliverables."
+    },
+    {
+      "seq": 24,
+      "user_input": "Draft a one-page executive summary for a client deck on market entry strategy for our Southeast Asia expansion proposal.",
+      "probe": {
+        "should_apply": [
+          "e09-c08"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 25,
+      "user_input": "Please draft an email to the client summarizing the key findings from our market analysis, with a polite tone and a clear call to action for a follow-up meeting.",
+      "probe": {
+        "should_apply": [
+          "e09-c01"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 26,
+      "user_input": "这次这份写详细一点，季度 review 要用"
+    },
+    {
+      "seq": 27,
+      "user_input": "先把日志按天切开再统计，别一把梭"
+    },
+    {
+      "seq": 28,
+      "user_input": "Please draft a summary slide for our client deck on the Q4 market trends analysis, focusing on three key data points that support our strategic recommendation.",
+      "probe": {
+        "should_apply": [
+          "e09-c08"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 29,
+      "user_input": "帮我看下这段规范写得对不对：「All test names must start with test_ and use snake_case. Do not abbreviate.」"
+    },
+    {
+      "seq": 30,
+      "user_input": "Write a Python script that takes a list of client names and their corresponding revenue figures, then outputs a bar chart image labeled with the top three performers highlighted in a different color.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 31,
+      "user_input": "我老板要求他们组的周报全用 bullet，真够呛"
+    },
+    {
+      "seq": 32,
+      "user_input": "Write a Python script that takes a list of client names and their quarterly revenue figures, then outputs a formatted table I can paste into a slide deck.。From now on, when you draft anything for me, please keep it to around 152 words. I need it tight for the decks. Also, can you draft a postmortem for the Q3 client engagement that ended prematurely? Focus on root causes, timeline of key events, and actionable recommendations for our next pitch.。Hey, can you draft a professional email to the client with the key takeaways from our strategy session, plus a clear list of next steps and a timeline for the final deliverable? Also, when you write a one-liner, keep it to 13 words max."
+    },
+    {
+      "seq": 33,
+      "user_input": "Compile a postmortem for the Q3 strategy engagement with Acme Corp, highlighting what went well, what didn't, and key lessons to carry into the next phase.。Hey, the last deck you sent me was way too long. I need you to keep things tight going forward—no more than 3202 words per document. Can you please draft a professional email to the client confirming we've finalized the Q3 deliverable deck and are ready to schedule the presentation call, and keep that word limit in mind?。对了，when writing, avoid hyphens这条继续保持啊"
+    },
+    {
+      "seq": 34,
+      "user_input": "Draft a professional email to a client summarizing the key findings from our latest market analysis, highlighting three actionable insights and suggesting a follow-up meeting.。Hey, can you draft a two-page executive summary for a client deck on supply chain resilience? Key findings, recommended actions, projected impact metrics. Also, quick aside: when you write about A level grades, please use the asterisk symbol, not the word 'star' — I know it's a tiny thing, but it matters for consistency in our deliverables.。Also, when you're writing that postmortem, can you use a hyphen for 'over-budget'? I think it reads cleaner in the deck. And for future deliverables, prefer hyphens in compound modifiers like that."
+    },
+    {
+      "seq": 35,
+      "user_input": "Write a Python script that takes a list of client satisfaction scores and outputs a short summary paragraph with the average, the trend direction, and a recommendation for the next quarter.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 36,
+      "user_input": "Hey, can you draft a professional email to the client summarizing key takeaways from the strategy session, with next steps and a timeline for the final deliverable? Oh, and by the way—when you're writing, please don't include any sentences inside quotation marks. Just keep it clean."
+    },
+    {
+      "seq": 37,
+      "user_input": "Draft a one-page executive summary report on the key findings from our latest client survey, highlighting the top three strategic priorities for the next quarter.。Hey, can you draft a postmortem for the Q3 client engagement that ended prematurely? Focus on root causes, timeline of key events, and actionable recommendations for our next pitch. Also, when you're writing a document with a 'See also' section, don't put miscellaneous links there—keep it tight."
+    },
+    {
+      "seq": 38,
+      "user_input": "又来了，这 API 每次都超时，烦死"
+    },
+    {
+      "seq": 39,
+      "user_input": "你上次自己说的「建议拆成两个 PR」，我照做了，结果还是冲突"
+    },
+    {
+      "seq": 40,
+      "user_input": "Please draft a quarterly market analysis report for our fintech client, focusing on regulatory trends in Southeast Asia. Include a reference section citing the latest industry reports and central bank publications.",
+      "probe": {
+        "should_apply": [
+          "e09-c15"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 41,
+      "user_input": "Hey, the email draft you just sent is way too detailed — it reads like a full report, not a polite follow-up. Please don't include a description of the findings in the email itself. Just say we have them and propose the meeting. Keep it tight.，之前说的「keep it to around 152 words」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 42,
+      "user_input": "Hey, that last email was way too long. I need you to keep one-liners under 11 words from now on. And while you're at it, draft a professional email to a client proposing a follow-up meeting to review our initial findings on their market expansion strategy.，之前说的「never use TODO comments in code」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 43,
+      "user_input": "Hey, the last email you drafted had the code block just sitting there with no fencing—it looked messy and unprofessional in the deck. Can you always use proper fencing when writing code blocks? Also, I need you to draft a professional email to a client proposing a follow-up meeting to review our initial findings on their market expansion strategy.，之前说的「unless I ask for it, don't exhibit traits of intelligence」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 44,
+      "user_input": "Write a Python script that generates a version tag for our client deliverables. The script should take a major, minor, and patch number as input and output a formatted version string like 'v1.2.3'.",
+      "probe": {
+        "should_apply": [
+          "e09-s02"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 45,
+      "user_input": "Hey, I just read through your draft for the follow-up meeting email, and it's way too long. I'm a consultant, not a novelist. From now on, keep any document you write for me under 3999 words—that's a hard cap. I don't want to waste time trimming fluff. Can you rewrite that email to fit within that limit?，之前说的「use MB instead of KB for file sizes」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 46,
+      "user_input": "Just read the draft you sent for the client email—it's way too long. I need you to keep everything under 29 sentences, including the article. This is a deliverable, not a novel. Please rewrite it to fit that limit."
+    },
+    {
+      "seq": 47,
+      "user_input": "Hey, that email draft was okay, but it felt a bit flat—like a generic template. When you're writing a biography for a client, I need you to actually write the biography, not just summarize bullet points. The last one read more like a list of achievements than a story. Can you make sure the next draft feels like a real narrative?"
+    },
+    {
+      "seq": 48,
+      "user_input": "Please draft a one-page executive summary for the client deck on our Q3 market analysis findings. Include a heading and subheadings as needed, and a brief bio for the lead analyst.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 49,
+      "user_input": "之前说的「no vivid sensory imagery」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 50,
+      "user_input": "之前说的「avoid CHANGELOG when writing a changelog」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 51,
+      "user_input": "之前说的「explain each strategy in at most 29 words」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 52,
+      "user_input": "Write a Python script that takes a list of client engagement metrics and generates a clean bar chart comparing Q3 vs Q4 performance, saving it as a PNG for the deck.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 53,
+      "user_input": "之前说的「don't use Conventional Commits in commit messages」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 54,
+      "user_input": "之前说的「keep every response under 83 words」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 55,
+      "user_input": "之前说的「when naming the executable, avoid a file extension」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 56,
+      "user_input": "Draft a postmortem for the Q3 client engagement where the timeline slipped by two weeks — focus on root causes, impact, and what we'd do differently next time.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 57,
+      "user_input": "之前说的「never include 'before profiles'」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 58,
+      "user_input": "之前说的「prefer hyphen in compound modifiers」那条不用了，按你默认的来吧"
+    },
+    {
+      "seq": 59,
+      "user_input": "Create a Python script that generates a summary slide for my client deck. The script should take a JSON file with key metrics and output a formatted text file. Name the executable 'deck_summarizer'.",
+      "probe": {
+        "should_apply": [
+          "e09-s02"
+        ],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 60,
+      "user_input": "Write a postmortem for the Q3 product launch delay. Focus on root causes, timeline, and lessons learned — keep the headings in sentence case and plain language.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 61,
+      "user_input": "Draft a postmortem for the Q3 client engagement that went off track, highlighting root causes and key takeaways for the team deck.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": []
+      }
+    },
+    {
+      "seq": 62,
+      "user_input": "Please draft a one-page executive summary for the Q3 client engagement report. Include key findings, revenue impact, and next steps. Keep it concise and professional.",
+      "probe": {
+        "should_apply": [],
+        "must_not_apply": [
+          "e09-c08"
+        ]
+      }
+    }
+  ],
+  "ground_truth": {
+    "requirements": [
+      {
+        "id": "e09-c00",
+        "text": "no vivid sensory imagery",
+        "paraphrase": "avoid any sensory-rich descriptions",
+        "anchor": "vivid sensory imagery",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when the output is written prose or narrative text that could contain descriptive language",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "style.sensory_imagery",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c01",
+        "text": "keep every response under 83 words",
+        "paraphrase": "limit each response to 83 words max",
+        "anchor": "83",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e09-c02",
+        "text": "when writing, avoid hyphens",
+        "paraphrase": "no hyphens in any written output",
+        "anchor": "hyphens",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "composing prose or narrative text for human readers, as opposed to code, identifiers, or non-text output",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "punctuation.hyphens",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c03",
+        "text": "never include 'before profiles'",
+        "paraphrase": "do not use the term 'before profiles'",
+        "anchor": "before profiles",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "Client-facing written materials that will be sent or shown to a client",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "vocabulary.banned_terms",
+        "confidence": 7
+      },
+      {
+        "id": "e09-c04",
+        "text": "avoid CHANGELOG when writing a changelog",
+        "paraphrase": "don't label it CHANGELOG in client-facing changelogs",
+        "anchor": "CHANGELOG",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "changelog"
+        ],
+        "key": "heading.label",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c05",
+        "text": "avoid HTML hacking when writing Markdown",
+        "paraphrase": "no inline HTML in Markdown content",
+        "anchor": "HTML hacking",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the response or a delivered artifact is written in Markdown and must render cleanly across viewers",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "markdown.no_raw_html",
+        "confidence": 9
+      },
+      {
+        "id": "e09-c06",
+        "text": "unless I ask for it, don't exhibit traits of intelligence",
+        "paraphrase": "don't show human-like intelligence unless I specifically request it",
+        "anchor": "traits of intelligence",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "unless the user explicitly requests an anthropomorphic or intelligence-signaling style",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.intelligence",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c07",
+        "text": "use MB instead of KB for file sizes",
+        "paraphrase": "always express file sizes in MB, not KB",
+        "anchor": "sizes",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever file sizes are written or mentioned in the output, regardless of task type",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "units.file_size",
+        "confidence": 9
+      },
+      {
+        "id": "e09-c08",
+        "text": "keep it to 13 sentences max",
+        "paraphrase": "limit it to no more than 13 sentences",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "summary"
+        ],
+        "key": "length.max_sentences",
+        "confidence": 7
+      },
+      {
+        "id": "e09-c09",
+        "text": "when naming the executable, avoid a file extension",
+        "paraphrase": "don't put a file extension on the executable name",
+        "anchor": "file extension",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code",
+          "script"
+        ],
+        "key": "executable.naming",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c10",
+        "text": "avoid fencing in code blocks",
+        "paraphrase": "don't put fences around code blocks",
+        "anchor": "fencing",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the response includes code blocks",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "codeblocks.fencing",
+        "confidence": 9
+      },
+      {
+        "id": "e09-c11",
+        "text": "when writing a reference, always follow the style guide",
+        "paraphrase": "references must adhere to the style guide at all times",
+        "anchor": "style guide",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output includes a reference, footnote, or citation",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "reference.style_guide",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c12",
+        "text": "when interacting with a person, don't be polite",
+        "paraphrase": "when dealing with someone, skip the politeness",
+        "anchor": "don't be polite",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "when the output communicates directly with a person",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "tone.politeness",
+        "confidence": 7
+      },
+      {
+        "id": "e09-c13",
+        "text": "avoid using 'pros occasionally'",
+        "paraphrase": "never write 'pros occasionally'",
+        "anchor": "pros occasionally",
+        "bucket": "communication_style",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the agent produces any written prose, regardless of task type",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "register.avoided_phrase",
+        "confidence": 9
+      },
+      {
+        "id": "e09-c14",
+        "text": "explain each strategy in at most 29 words",
+        "paraphrase": "for every strategy, limit your explanation to 29 words maximum",
+        "anchor": "29",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the deliverable presents or explains one or more strategies",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c15",
+        "text": "no headings",
+        "paraphrase": "don't use any headings",
+        "anchor": "headings",
+        "bucket": "output_contract",
+        "scope_mode": "global",
+        "applies_when": null,
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.headings",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c16",
+        "text": "when writing headings and subheadings, don't use all caps",
+        "paraphrase": "avoid all caps for headings and subheadings",
+        "anchor": "all caps",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the output contains headings or subheadings, such as in documents, decks, reports, or emails",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "headings.capitalization",
+        "confidence": 9
+      },
+      {
+        "id": "e09-c17",
+        "text": "don't tell viewers what to expect in titles",
+        "paraphrase": "avoid revealing what's coming in the title",
+        "anchor": "titles",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when composing a title or headline for any deliverable, so the title stays punchy without previewing the content",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "title.spoiler_avoidance",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c18",
+        "text": "stop using random versioning, use SemVer",
+        "paraphrase": "always follow SemVer for version numbers",
+        "anchor": "SemVer",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever assigning version numbers or revision labels to a deliverable or artifact",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "versioning.scheme",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c19",
+        "text": "prefer conditional imports",
+        "paraphrase": "use conditional imports when possible",
+        "anchor": "conditional imports",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "the output includes code, scripts, or code snippets that import modules or libraries",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "code_style.imports",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c20",
+        "text": "never write a biography",
+        "paraphrase": "do not include any biography",
+        "anchor": "biography",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": "when the output would include, or a request asks for, biographical content profiling a person's life or background",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "content.biography",
+        "confidence": 7
+      },
+      {
+        "id": "e09-c21",
+        "text": "don't use Conventional Commits in commit messages",
+        "paraphrase": "avoid using Conventional Commits format when writing commit messages",
+        "anchor": "Conventional Commits",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "commit_message"
+        ],
+        "key": "format.commit_convention",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c22",
+        "text": "no trailing backslashes when breaking lines",
+        "paraphrase": "don't use backslashes at line breaks",
+        "anchor": "trailing backslashes",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "any deliverable whose text is wrapped or broken across multiple lines",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.line_breaks",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c23",
+        "text": "always include a description of what each KPI means",
+        "paraphrase": "make sure every KPI has a definition attached",
+        "anchor": "description",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": "when the output presents key performance indicators (KPIs) or similar performance metrics, regardless of the artifact type",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "kpi.descriptions",
+        "confidence": 9
+      },
+      {
+        "id": "e09-c24",
+        "text": "avoid traditional loops, map(), filter(), or lambda",
+        "paraphrase": "don't use for loops, map, filter, or lambda",
+        "anchor": "traditional loops",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.constructs",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c25",
+        "text": "never use TODO comments in code",
+        "paraphrase": "do not include any TODO comments when writing code",
+        "anchor": "TODO comments",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "code"
+        ],
+        "key": "code.comments.todo",
+        "confidence": 9
+      },
+      {
+        "id": "e09-c26",
+        "text": "keep it to around 152 words",
+        "paraphrase": "limit the length to about 152 words",
+        "anchor": "152",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the agent drafts any written text deliverable for the user, regardless of document type",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e09-c27",
+        "text": "keep one-liners to 13 words max",
+        "paraphrase": "limit any single-line summary to 13 words at most",
+        "anchor": "13",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when writing a one-line response or one-liner",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e09-c28",
+        "text": "keep each document under 3202 words",
+        "paraphrase": "limit every document to 3202 words max",
+        "anchor": "3202",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "the deliverable is a written document whose length is measured in words, such as an email, report, deck, or postmortem",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e09-c29",
+        "text": "when writing about A level grades, use the asterisk symbol, not the word 'star'",
+        "paraphrase": "for A level grades, always write the asterisk instead of 'star'",
+        "anchor": "asterisk",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "whenever the output mentions A level grades or UK A-level grading results",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "notation.grade_symbols",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c30",
+        "text": "prefer hyphen in compound modifiers",
+        "paraphrase": "use hyphen for compound adjectives",
+        "anchor": "hyphen",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when writing any prose deliverable that contains compound modifier phrases (e.g., over-budget, two-page)",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "punctuation.compound_modifier_hyphen",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c31",
+        "text": "when writing, don't include sentences inside quotation marks",
+        "paraphrase": "when drafting, avoid any sentences in quotes",
+        "anchor": "quotation marks",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the output is natural-language prose for a human reader, rather than code or data formats where quotation marks are syntactic",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "formatting.quoted_sentences",
+        "confidence": 8
+      },
+      {
+        "id": "e09-c32",
+        "text": "don't put miscellaneous links in the 'See also' section",
+        "paraphrase": "never include random links under 'See also'",
+        "anchor": "miscellaneous links",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "the output is a document that includes a 'See also' section",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "structure.see_also_links",
+        "confidence": 8
+      },
+      {
+        "id": "e09-s00",
+        "text": "don't include a description of the findings",
+        "paraphrase": "no description of the findings in the email",
+        "anchor": "description",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": "when the email is a follow-up message referencing findings or results to be shared",
+        "work_kinds": [
+          "email"
+        ],
+        "key": "content.exclusions",
+        "confidence": 8
+      },
+      {
+        "id": "e09-s01",
+        "text": "keep one-liners under 11 words",
+        "paraphrase": "limit one-liners to 11 words max",
+        "anchor": "11",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when writing a one-line response or one-liner",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "length.max",
+        "confidence": 7
+      },
+      {
+        "id": "e09-s02",
+        "text": "always use proper fencing when writing code blocks",
+        "paraphrase": "make sure to fence all code blocks correctly",
+        "anchor": "fencing",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": "when the response contains code blocks",
+        "work_kinds": [
+          "all"
+        ],
+        "key": "codeblocks.fencing",
+        "confidence": 9
+      },
+      {
+        "id": "e09-s03",
+        "text": "keep any document under 3999 words",
+        "paraphrase": "limit all deliverables to 3999 words max",
+        "anchor": "3999",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "doc"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e09-s04",
+        "text": "keep the article under 29 sentences",
+        "paraphrase": "limit the article to no more than 29 sentences",
+        "anchor": "29",
+        "bucket": "output_contract",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "article"
+        ],
+        "key": "length.max",
+        "confidence": 9
+      },
+      {
+        "id": "e09-s05",
+        "text": "when writing a biography, write the biography",
+        "paraphrase": "when drafting a biography, produce a full narrative biography",
+        "anchor": "biography",
+        "bucket": "deliverables",
+        "scope_mode": "scoped",
+        "applies_when": null,
+        "work_kinds": [
+          "biography"
+        ],
+        "key": "deliverable.completeness",
+        "confidence": 8
+      }
+    ],
+    "lifecycle": [
+      {
+        "seq": 2,
+        "op": "assert",
+        "id": "e09-c00"
+      },
+      {
+        "seq": 3,
+        "op": "assert",
+        "id": "e09-c01"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e09-c02"
+      },
+      {
+        "seq": 4,
+        "op": "assert",
+        "id": "e09-c03"
+      },
+      {
+        "seq": 6,
+        "op": "assert",
+        "id": "e09-c04"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e09-c05"
+      },
+      {
+        "seq": 7,
+        "op": "assert",
+        "id": "e09-c06"
+      },
+      {
+        "seq": 8,
+        "op": "assert",
+        "id": "e09-c07"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e09-c08"
+      },
+      {
+        "seq": 9,
+        "op": "assert",
+        "id": "e09-c09"
+      },
+      {
+        "seq": 11,
+        "op": "assert",
+        "id": "e09-c10"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e09-c11"
+      },
+      {
+        "seq": 12,
+        "op": "assert",
+        "id": "e09-c12"
+      },
+      {
+        "seq": 13,
+        "op": "assert",
+        "id": "e09-c13"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e09-c14"
+      },
+      {
+        "seq": 14,
+        "op": "assert",
+        "id": "e09-c15"
+      },
+      {
+        "seq": 16,
+        "op": "assert",
+        "id": "e09-c16"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e09-c17"
+      },
+      {
+        "seq": 17,
+        "op": "assert",
+        "id": "e09-c18"
+      },
+      {
+        "seq": 18,
+        "op": "assert",
+        "id": "e09-c19"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e09-c20"
+      },
+      {
+        "seq": 19,
+        "op": "assert",
+        "id": "e09-c21"
+      },
+      {
+        "seq": 21,
+        "op": "assert",
+        "id": "e09-c22"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e09-c23"
+      },
+      {
+        "seq": 22,
+        "op": "assert",
+        "id": "e09-c24"
+      },
+      {
+        "seq": 23,
+        "op": "assert",
+        "id": "e09-c25"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e09-c26"
+      },
+      {
+        "seq": 32,
+        "op": "assert",
+        "id": "e09-c27"
+      },
+      {
+        "seq": 33,
+        "op": "assert",
+        "id": "e09-c28"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e09-c29"
+      },
+      {
+        "seq": 34,
+        "op": "assert",
+        "id": "e09-c30"
+      },
+      {
+        "seq": 36,
+        "op": "assert",
+        "id": "e09-c31"
+      },
+      {
+        "seq": 37,
+        "op": "assert",
+        "id": "e09-c32"
+      },
+      {
+        "seq": 41,
+        "op": "contradict",
+        "id": "e09-s00",
+        "target": "e09-c23"
+      },
+      {
+        "seq": 42,
+        "op": "contradict",
+        "id": "e09-s01",
+        "target": "e09-c27"
+      },
+      {
+        "seq": 43,
+        "op": "contradict",
+        "id": "e09-s02",
+        "target": "e09-c10"
+      },
+      {
+        "seq": 45,
+        "op": "contradict",
+        "id": "e09-s03",
+        "target": "e09-c28"
+      },
+      {
+        "seq": 46,
+        "op": "contradict",
+        "id": "e09-s04",
+        "target": "e09-c08"
+      },
+      {
+        "seq": 47,
+        "op": "contradict",
+        "id": "e09-s05",
+        "target": "e09-c20"
+      },
+      {
+        "seq": 49,
+        "op": "retire",
+        "target": "e09-c00"
+      },
+      {
+        "seq": 50,
+        "op": "retire",
+        "target": "e09-c04"
+      },
+      {
+        "seq": 51,
+        "op": "retire",
+        "target": "e09-c14"
+      },
+      {
+        "seq": 53,
+        "op": "retire",
+        "target": "e09-c21"
+      },
+      {
+        "seq": 54,
+        "op": "retire",
+        "target": "e09-c01"
+      },
+      {
+        "seq": 55,
+        "op": "retire",
+        "target": "e09-c09"
+      },
+      {
+        "seq": 57,
+        "op": "retire",
+        "target": "e09-c03"
+      },
+      {
+        "seq": 58,
+        "op": "retire",
+        "target": "e09-c30"
+      },
+      {
+        "seq": 41,
+        "op": "retire",
+        "target": "e09-c26"
+      },
+      {
+        "seq": 42,
+        "op": "retire",
+        "target": "e09-c25"
+      },
+      {
+        "seq": 43,
+        "op": "retire",
+        "target": "e09-c06"
+      },
+      {
+        "seq": 45,
+        "op": "retire",
+        "target": "e09-c07"
+      },
+      {
+        "seq": 22,
+        "op": "reinforce",
+        "target": "e09-c22"
+      },
+      {
+        "seq": 22,
+        "op": "reinforce",
+        "target": "e09-c05"
+      },
+      {
+        "seq": 33,
+        "op": "reinforce",
+        "target": "e09-c02"
+      }
+    ],
+    "state_checkpoints": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      46,
+      53,
+      62
+    ]
+  }
+}
